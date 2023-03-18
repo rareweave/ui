@@ -84,10 +84,9 @@
 import Arweave from "arweave"
 import ArDB from "ardb";
 import { DeployPlugin } from 'warp-contracts-plugin-deploy';
-import { Warp, Contract, WarpFactory } from 'warp-contracts'
-import { JSONPath } from 'jsonpath-plus';
-import Account from "arweave-account";
 
+import Account from "arweave-account";
+const { Warp, Contract, WarpFactory } = await import("warp-contracts")
 
 
 let accountToolsState = useState("accountTools", () => new Account({

@@ -138,16 +138,14 @@
 
 <script setup>
 import Arweave from "arweave"
-import { Warp, Contract, WarpFactory } from 'warp-contracts'
-
 import Account from "arweave-account";
+const  { Warp, Contract, WarpFactory } =await import( 'warp-contracts')
 let account = useState("account", () => null);
 let accountToolsState = useState("accountTools", () => new Account({
     cacheIsActivated: true,
     cacheSize: 100,
     cacheTime: 60,
 }))
-console.log(WarpFactory)
 let walletState = useState("wallet", () => null);
 let wallet = walletState.value
 const arweave = Arweave.init({

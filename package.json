@@ -8,10 +8,11 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "nuxt": "^3.2.0"
+    "nuxt": "^3.3.1"
   },
   "dependencies": {
     "@bundlr-network/client": "^0.10.5",
+    "@nuxt/webpack-builder": "^3.3.1",
     "@nuxtjs/tailwindcss": "^6.3.1",
     "ardb": "^1.1.10",
     "arweave": "^1.12.4",

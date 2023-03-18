@@ -1,5 +1,4 @@
-// https://v3.nuxtjs.org/api/configuration/nuxt.config
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
+
 export default defineNuxtConfig({
     modules: ['@nuxtjs/tailwindcss'],
     target: "static",
@@ -16,8 +15,9 @@ export default defineNuxtConfig({
             htmlAttrs: { "data-theme": "business", }
         }
     },
-    vite: {
-        plugins: [
-        ],
+    builder: "vite",
+    experimental: {
+        payloadExtraction: false
+
     }
 });
