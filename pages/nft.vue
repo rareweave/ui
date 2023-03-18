@@ -147,6 +147,7 @@ let accountToolsState = useState("accountTools", () => new Account({
     cacheSize: 100,
     cacheTime: 60,
 }))
+console.log(WarpFactory)
 let walletState = useState("wallet", () => null);
 let wallet = walletState.value
 const arweave = Arweave.init({
