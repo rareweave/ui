@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "nuxt": "^3.2.0"
+  },
+  "dependencies": {
+    "@bundlr-network/client": "^0.10.5",
+    "@nuxtjs/tailwindcss": "^6.3.1",
+    "ardb": "^1.1.10",
+    "arweave": "^1.12.4",
+    "arweave-account": "^1.3.5",
+    "arweave-wallet-connector": "^1.0.0",
+    "daisyui": "^2.50.0",
+    "jsonpath-plus": "^7.2.0",
+    "vite-plugin-node-polyfills": "^0.7.0",
+    "warp-contracts": "^1.2.56",
+    "warp-contracts-plugin-deploy": "^1.0.0"
+  }
+}

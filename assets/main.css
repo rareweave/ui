@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Averia+Sans+Libre:wght@300;400;700&display=swap');
+
+.rareweave-font {
+    background: rgb(63, 94, 251);
+    background: radial-gradient(circle, #3f5efb 0%, #fc466b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 150% 150%;
+    animation: rareweave-font 3s infinite;
+    font-family: 'Averia Sans Libre', cursive;
+    font-weight: 700;
+    display: inline
+}
+
+@keyframes rareweave-font {
+    from {
+        background-size: 150% 150%;
+        background-position-x: 0%;
+    }
+
+    50% {
+        background-size: 350% 350%;
+        background-position-x: 100%;
+    }
+
+    to {
+        background-size: 150% 150%;
+        background-position-x: 0%;
+    }
+}
+
+@keyframes loading {
+    from {
+        background-size: 150% 150%;
+        background-position-x: 0%;
+
+        background-position-y: 0%;
+        transform: rotate3d(-1, 1, 0, 0deg);
+    }
+
+    50% {
+        background-size: 350% 350%;
+        background-position-x: 250%;
+        transform: rotate3d(-3, 1, 0, 80deg);
+        background-position-y: 100%;
+    }
+
+    75% {
+        background-size: 450% 450%;
+
+
+        background-position-y: 50%;
+    }
+
+    to {
+        background-size: 150% 150%;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        transform: rotate3d(-1, 1, 0, 0deg);
+    }
+}
+
+@keyframes spin {
+    from {
+        padding: 2.5rem;
+        border-radius: 50%;
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+
+    50% {
+        padding: 1.5rem;
+        transform: rotate(180deg);
+
+        border-radius: 5%;
+        opacity: 0.7;
+    }
+
+    to {
+        padding: 2.5rem;
+        transform: rotate(360deg);
+        border-radius: 50%;
+        opacity: 1;
+    }
+}
+
+#__nuxt {
+    height: 100vh;
+    width: 100%;
+
+}
+
+.loading {
+    padding: 2rem;
+    background: hsla(20, 29%, 20%, 1);
+    box-shadow: 0px 0px 10px 6px rgba(160, 84, 173, 0.6) inset;
+    background: repeating-radial-gradient(circle, rgba(253, 187, 45, 1) 10%, rgba(160, 84, 173, 1) 20%, rgba(63, 133, 210, 1) 26%, rgba(160, 84, 173, 1) 40%, rgba(253, 187, 45, 1) 65%);
+
+    transform-style: preserve-3d;
+    border-radius: 50%;
+    animation: loading 3s linear infinite, spin 1.5s infinite;
+}
+
+.h-full-navbared {
+    min-height: calc(100% - 82px)
+}
+
+.amazing-button {
+    background: rgb(97, 9, 168);
+    background: radial-gradient(circle, rgba(97, 9, 168, 1) 0%, rgba(121, 41, 9, 1) 25%, rgba(179, 22, 83, 1) 50%, rgba(171, 49, 107, 1) 61%, rgba(167, 40, 83, 1) 73%, rgb(185, 25, 36) 100%);
+    background-size: 300% 300%;
+    animation: amazing-bg 10s linear infinite;
+}
+
+.amazing-button2 {
+    background: rgb(238, 174, 202);
+    color: black;
+    border: 2px solid black;
+    background: linear-gradient(45deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+}
+
+
+.amazing-button2:disabled {
+    border: none;
+    color: black;
+    cursor: not-allowed;
+    opacity: 0.5;
+    background: #292929;
+}
+
+.amazing-button:disabled {
+
+    opacity: 0.5;
+
+}
