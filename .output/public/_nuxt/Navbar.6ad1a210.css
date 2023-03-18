@@ -1,0 +1,1 @@
+@keyframes amazing-bg{0%{background-position-x:0}50%{background-position-x:200%}to{background-position-x:0}}.amazing-button{animation:amazing-bg 10s linear infinite;background:#6109a8;background:radial-gradient(circle,#6109a8 0,#792909 25%,#b31653 50%,#ab316b 61%,#a72853 73%,#b91924 100%);background-size:300% 300%}
