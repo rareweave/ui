@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full w-full flex flex-col items-center justify-center">
+    <div class="h-full-navbared w-full flex flex-col items-center justify-center">
         <h1 class="text-3xl text-center">Welcome to <p class="rareweave-font">RareWeave</p>
         </h1>
         <p class="font-mono mt-2 p-2 text-center"> <span>You've arrived on wonderful land - at RareWeave, the NFT

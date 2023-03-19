@@ -1,0 +1,1 @@
+import{_ as e}from"./Navbar.f1c921f3.js";import{O as s,b as r,p as a,N as c,o as n}from"./entry.4bfdd21c.js";import"./nuxt-link.a6ffc336.js";const _={},f={class:"h-full"};function l(o,i){const t=e;return n(),r("div",f,[a(t),c(o.$slots,"default")])}const u=s(_,[["render",l]]);export{u as default};
