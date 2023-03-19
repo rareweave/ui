@@ -79,10 +79,13 @@ async function connectArweaveApp() {
 
 }
 async function connectArconnect() {
-    window.arweaveWallet.connect([
+    await window.arweaveWallet.connect([
         "ACCESS_ADDRESS",
+        "ACCESS_ALL_ADDRESSES",
         "ACCESS_PUBLIC_KEY",
         "DISPATCH",
+        "SIGN_TRANSACTION",
+        "ACCESS_ARWEAVE_CONFIG"
     ]);
     let address = await window.arweaveWallet.getActiveAddress()
     account.value = await accountTools.get(address);
