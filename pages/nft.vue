@@ -66,7 +66,7 @@
                     class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between">
                     Price:
                     <template v-if="isNftOwner">
-                        <div class="p-1 pr-2 bg-zinc-700 text-sm"><input v-model="nftPrice" type="number"
+                        <div class="p-1 pr-2 bg-zinc-700 text-sm"><input v-model="nftPrice" type="number" step="0.1"
                                 class="input text-start  appearance-[textfield] w-14 rounded-none px-1 input-sm bg-transparent"
                                 placeholder="Price" /> AR
                         </div>
@@ -139,7 +139,7 @@
 <script setup>
 import Arweave from "arweave"
 import Account from "arweave-account";
-const  { Warp, Contract, WarpFactory } =await import( 'warp-contracts')
+const { Warp, Contract, WarpFactory } = await import('warp-contracts')
 let account = useState("account", () => null);
 let accountToolsState = useState("accountTools", () => new Account({
     cacheIsActivated: true,
@@ -159,7 +159,7 @@ const arweave = Arweave.init({
 let height = ref((await $fetch("https://arweave.net/info")).height)
 const accountTools = accountToolsState.value
 const warp = WarpFactory.forMainnet({
-    inMemory: false,
+    inMemory: true,
 }, false, arweave)
 let nftId = useRoute().hash.slice(1)
 let nftContract = account.value ? warp.contract(nftId).setEvaluationOptions({
