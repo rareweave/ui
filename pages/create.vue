@@ -84,7 +84,7 @@
 import Arweave from "arweave"
 import ArDB from "ardb";
 import { DeployPlugin } from 'warp-contracts-plugin-deploy';
-
+import { Buffer } from "buffer";
 import Account from "arweave-account";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts")
 
@@ -172,12 +172,11 @@ async function mint() {
         "royalty": royalty.value / 100
     }
     uploading.value = true
-    // console.log(fileMeta.value)
+    let tx
+    if (nftContent.byteLength > 100000) {
+        tx = await arweave.createTransaction({
 
-    let tx = await wallet.dispatch(
-        await arweave.createTransaction({
-
-            data: new Uint8Array(nftContent), tags: encodeTags([
+            data: Buffer.from(new Uint8Array(nftContent)), tags: encodeTags([
                 { name: "App-Name", value: "SmartWeaveContract" },
                 { name: "App-Version", value: "0.3.0" },
                 { name: "Contract-Src", value: "hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg" },
@@ -191,7 +190,35 @@ async function mint() {
                 { name: "Contract-Manifest", value: JSON.stringify({ "evaluationOptions": { "unsafeClient": "allow", waitForConfirmation: false } }) }
             ])
         },)
-    )
+        await arweave.transactions.sign(tx)
+        let uploader = await arweave.transactions.getUploader(tx);
+
+        while (!uploader.isComplete) {
+            await uploader.uploadChunk();
+            console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
+        }
+    } else {
+        tx = await wallet.dispatch(
+            await arweave.createTransaction({
+
+                data: new Uint8Array(nftContent), tags: encodeTags([
+                    { name: "App-Name", value: "SmartWeaveContract" },
+                    { name: "App-Version", value: "0.3.0" },
+                    { name: "Contract-Src", value: "hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg" },
+                    { name: "SDK", value: "Warp" },
+                    { name: "Nonce", value: Date.now().toString() },
+                    { name: "Content-Type", value: fileMeta.value.type },
+                    { name: "Init-State", value: JSON.stringify(initState) },
+                    { name: 'Title', value: title.value },
+                    { name: 'Description', value: description.value },
+                    { name: "Signing-Client", value: "RareWeave" },
+                    { name: "Contract-Manifest", value: JSON.stringify({ "evaluationOptions": { "unsafeClient": "allow", waitForConfirmation: false } }) }
+                ])
+            },)
+        )
+    }
+
+
     await warp.register(tx.id, "node1").catch(e => null)
     await warp.register(tx.id, "node2").catch(e => null)
     let contractInstance = warp.contract(tx.id).setEvaluationOptions({
