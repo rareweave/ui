@@ -85,7 +85,10 @@
                 :class="['btn', 'amazing-button2', 'rounded-md', 'w-full', 'my-2', , changed ? '' : 'btn-disabled']"
                 :disabled="!changed" @click="saveChangesToNft">Save
                 changes</button>
-
+            <label v-if="isNftOwner" for="transfer-modal" :class="{
+                'btn': true, 'btn-primary': true, 'rounded-md': true, 'w-full': true, 'my-2': true, 'text-md': true,
+                'btn-disabled': isSomeoneElseBuying
+            }">Transfer</label>
             <label v-else-if="account && account.addr && nftState.forSale" for="buy-modal" :class="{
                 'btn': true, 'amazing-button': true, 'rounded-md': true, 'w-full': true, 'my-2': true, 'text-lg': true,
                 'btn-disabled': isSomeoneElseBuying
@@ -133,6 +136,28 @@
                 </div>
             </div>
         </div>
+
+        <input type="checkbox" id="transfer-modal" class="modal-toggle" :checked="false" v-model="transferModalOpened" />
+        <div class="modal">
+            <div class="modal-box relative flex flex-col " v-if="!isSomeoneElseBuying">
+                <label for="transfer-modal" class="btn btn-sm absolute right-2 top-2">✕</label>
+                <h3 class="font-bold text-lg text-center">Transfer "{{ nftState.name }}"</h3>
+
+                <form class="modal-action" @submit.prevent="transfer">
+                    <input v-model="transferRecipient" class="input input-bordered w-full rounded-lg p-2" type="text"
+                        required placeholder="Recipient's arweave address" />
+                    <button type="submit" class="btn btn-primary rounded-lg">Transfer</button>
+                </form>
+            </div>
+            <div class="modal-box relative flex flex-col items-center" v-else>
+                <label for="transfer-modal" class="btn btn-sm  absolute right-2 top-2  ">✕</label>
+                <h3 class="font-bold text-lg text-center">Can't transfer "{{ nftState.name }}"</h3>
+                <span class="text-md text-center">Somebody is buying this NFT now.</span>
+                <div class="modal-action">
+                    <label for="transfer-modal" class="btn">Close</label>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -173,7 +198,7 @@ let nftContract = account.value ? warp.contract(nftId).setEvaluationOptions({
 
 
 let nftStateOrig = ref((await nftContract.readState()).cachedValue.state)
-
+let transferModalOpened = ref(false)
 let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig.value)))
 let isBuying = computed(() => nftState.value.reservationTxId && (height.value - nftState.value.reservationBlockHeight) < 16 && nftState.value.reserver == account.value?.addr)
 let isSomeoneElseBuying = computed(() => nftState.value.reservationTxId && (height.value - nftState.value.reservationBlockHeight) < 16 && nftState.value.reserver != account.value?.addr)
@@ -181,7 +206,7 @@ let isSomeoneElseBuying = computed(() => nftState.value.reservationTxId && (heig
 
 let payingRoyalty = ref(false)
 let buyStatus = ref(0)
-
+let transferRecipient = ref("")
 let nftPrice = ref(parseFloat(parseFloat(arweave.ar.winstonToAr(nftState.value.price)).toFixed(3)))
 let nftRoyalty = ref(parseFloat(nftState.value.royalty * 100))
 let nftOwner = ref(await accountTools.get(nftState.value.owner))
@@ -318,6 +343,17 @@ async function finalizeBuy() {
 
 
 }
+async function transfer() {
+    await nftContract.writeInteraction({
+        function: "transfer",
+        target: transferRecipient.value
+    })
+    nftState.value.owner = transferRecipient.value
+    nftStateOrig.value = JSON.parse(JSON.stringify(nftState.value))
+    nftOwner.value = await accountTools.get(nftState.value.owner)
+    transferModalOpened.value = false
+}
+
 definePageMeta({
     layout: "without-auth",
 });
