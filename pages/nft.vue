@@ -165,6 +165,8 @@
 import Arweave from "arweave"
 import Account from "arweave-account";
 const { Warp, Contract, WarpFactory } = await import('warp-contracts')
+const w = await import('warp-contracts')
+console.log(w)
 let account = useState("account", () => null);
 let accountToolsState = useState("accountTools", () => new Account({
     cacheIsActivated: true,
