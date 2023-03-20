@@ -185,6 +185,8 @@ async function mint() {
                 { name: "Content-Type", value: fileMeta.value.type },
                 { name: "Init-State", value: JSON.stringify(initState) },
                 { name: 'Title', value: title.value },
+                { name: "Type", value: "Tradable-SW-NFT" },
+                { name: "Topics", value: "NFTs, Atomic Assets" },
                 { name: 'Description', value: description.value },
                 { name: "Signing-Client", value: "RareWeave" },
                 { name: "Contract-Manifest", value: JSON.stringify({ "evaluationOptions": { "unsafeClient": "allow", waitForConfirmation: false } }) }
