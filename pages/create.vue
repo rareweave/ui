@@ -167,7 +167,7 @@ async function mint() {
         "price": parseInt(arweave.ar.arToWinston(price.value)),
         "reservationBlockHeight": 0,
         "reserver": null,
-        "divisibility": 1,
+        "divisibility": 0,
         "reservationTxId": null,
         "royalty": royalty.value / 100
     }
