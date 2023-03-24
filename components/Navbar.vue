@@ -4,7 +4,7 @@
         <NuxtLink
             class="bg-neutral font-mono hover:bg-neutral-focus transition-all rounded-xl p-2 inline-flex flex-row items-center border border-base-300 cursor-pointer hover:rounded-2xl"
             :to="'/profile/#' + account.addr">
-            <img class="h-[2rem] mr-2" :src="account.profile.avatarURL" />{{ account.handle }}
+            <img class="h-[2rem] mr-2" :src="account.profile.avatarURL" />{{ ansAddr || account.handle }}
         </NuxtLink>
     </div>
     <div v-else class="py-4 px-2 bg-base-300 w-full flex flex-row justify-between items-center">
@@ -40,5 +40,6 @@
 </style>
 <script setup>
 let account = useState("account", () => null);
+let ansAddr = useState("ansAddr", () => null)
 console.log(account.value)
 </script>

@@ -32,7 +32,7 @@
 
                     <img :src="nftOwner.profile.avatarURL" class="w-8 rounded-xl mr-2" />
                     {{
-                        nftOwner.handle }}
+                        nftOwnerANS || nftOwner.handle }}
                 </NuxtLink>
             </div>
             <div
@@ -45,7 +45,7 @@
 
                     <img :src="nftMinter.profile.avatarURL" class="w-8 rounded-xl mr-2" />
                     {{
-                        nftMinter.handle }}
+                        nftMinterANS || nftMinter.handle }}
                 </NuxtLink>
             </div>
             <div
@@ -165,8 +165,7 @@
 import Arweave from "arweave"
 import Account from "arweave-account";
 const { Warp, Contract, WarpFactory } = await import('warp-contracts')
-const w = await import('warp-contracts')
-console.log(w)
+
 let account = useState("account", () => null);
 let accountToolsState = useState("accountTools", () => new Account({
     cacheIsActivated: true,
@@ -213,6 +212,8 @@ let nftPrice = ref(parseFloat(parseFloat(arweave.ar.winstonToAr(nftState.value.p
 let nftRoyalty = ref(parseFloat(nftState.value.royalty * 100))
 let nftOwner = ref(await accountTools.get(nftState.value.owner))
 let nftMinter = await accountTools.get(nftState.value.minter)
+let nftOwnerANS = ref((await $fetch(`https://ans-resolver.herokuapp.com/resolve/${nftOwner.value.addr}`))?.domain)
+let nftMinterANS = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${nftMinter.addr}`))?.domain
 let isNftOwner = computed(() => account.value && account.value.addr && account.value.addr == nftOwner.value.addr)
 let changed = computed(() => {
     let ch = nftPrice.value != parseFloat(parseFloat(arweave.ar.winstonToAr(nftStateOrig.value.price)).toFixed(3))
@@ -228,6 +229,7 @@ let updaterInterval = setInterval(async () => {
         nftState.value = JSON.parse(JSON.stringify(nftStateOrig.value))
         nftPrice.value = parseFloat(parseFloat(arweave.ar.winstonToAr(nftState.value.price)).toFixed(3))
         nftOwner.value = await accountTools.get(nftState.value.owner)
+        nftOwnerANS.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${nftOwner.value.addr}`))?.domain
     }
 }, 50000)
 console.log((await nftContract.readState()))
@@ -353,6 +355,7 @@ async function transfer() {
     nftState.value.owner = transferRecipient.value
     nftStateOrig.value = JSON.parse(JSON.stringify(nftState.value))
     nftOwner.value = await accountTools.get(nftState.value.owner)
+    nftOwnerANS.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${nftOwner.value.addr}`))?.domain
     transferModalOpened.value = false
 }
 
