@@ -8,8 +8,8 @@
     background-clip: text;
     background-size: 150% 150%;
     animation: rareweave-font 3s infinite;
-    font-family: 'Martian Mono', monospace;
-    font-weight: 700;
+    /* font-family: 'Martian Mono', monospace; */
+
     display: inline
 }
 
