@@ -201,7 +201,7 @@ let nftContract = account.value ? warp.contract(nftId).setEvaluationOptions({
 let nftStateOrig = ref((await nftContract.readState()).cachedValue.state)
 let transferModalOpened = ref(false)
 let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig.value)))
-let isBuying = computed(() => nftState.value.reservationTxId && (height.value - nftState.value.reservationBlockHeight) < 16 && nftState.value.reserver == account.value?.addr)
+let isBuying = computed(() => nftState.value.reservationTxId && (height.value - nftState.value.reservationBlockHeight) < 12 && nftState.value.reserver == account.value?.addr)
 let isSomeoneElseBuying = computed(() => nftState.value.reservationTxId && (height.value - nftState.value.reservationBlockHeight) < 16 && nftState.value.reserver != account.value?.addr)
 
 
