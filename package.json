@@ -16,7 +16,7 @@
     "@nuxtjs/tailwindcss": "^6.3.1",
     "ardb": "^1.1.10",
     "arweave": "^1.12.4",
-    "arweave-account": "^1.3.5",
+    "arweave-account": "^1.3.6",
     "arweave-wallet-connector": "^1.0.0",
     "buffer": "^6.0.3",
     "daisyui": "^2.50.0",

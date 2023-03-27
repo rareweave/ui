@@ -172,26 +172,25 @@ async function mint() {
         "royalty": royalty.value / 100
     }
     uploading.value = true
-    let tx
-    if (nftContent.byteLength > 100000) {
-        tx = await arweave.createTransaction({
+    let tx = await arweave.createTransaction({
 
-            data: Buffer.from(new Uint8Array(nftContent)), tags: encodeTags([
-                { name: "App-Name", value: "SmartWeaveContract" },
-                { name: "App-Version", value: "0.3.0" },
-                { name: "Contract-Src", value: "hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg" },
-                { name: "SDK", value: "Warp" },
-                { name: "Nonce", value: Date.now().toString() },
-                { name: "Content-Type", value: fileMeta.value.type },
-                { name: "Init-State", value: JSON.stringify(initState) },
-                { name: 'Title', value: title.value },
-                { name: "Type", value: "Tradable-SW-NFT" },
-                { name: "Topics", value: "NFTs, Atomic Assets" },
-                { name: 'Description', value: description.value },
-                { name: "Signing-Client", value: "RareWeave" },
-                { name: "Contract-Manifest", value: JSON.stringify({ "evaluationOptions": { "unsafeClient": "allow", waitForConfirmation: false } }) }
-            ])
-        },)
+        data: Buffer.from(new Uint8Array(nftContent)), tags: encodeTags([
+            { name: "App-Name", value: "SmartWeaveContract" },
+            { name: "App-Version", value: "0.3.0" },
+            { name: "Contract-Src", value: "hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg" },
+            { name: "SDK", value: "Warp" },
+            { name: "Nonce", value: Date.now().toString() },
+            { name: "Content-Type", value: fileMeta.value.type },
+            { name: "Init-State", value: JSON.stringify(initState) },
+            { name: 'Title', value: title.value },
+            { name: "Type", value: "Tradable-SW-NFT" },
+            { name: "Topics", value: "NFTs, Atomic Assets" },
+            { name: 'Description', value: description.value },
+            { name: "Signing-Client", value: "RareWeave" },
+            { name: "Contract-Manifest", value: JSON.stringify({ "evaluationOptions": { "unsafeClient": "allow", waitForConfirmation: false } }) }
+        ])
+    })
+    if (nftContent.byteLength > 100000) {
         await arweave.transactions.sign(tx)
         let uploader = await arweave.transactions.getUploader(tx);
 
@@ -200,24 +199,7 @@ async function mint() {
             console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
         }
     } else {
-        tx = await wallet.dispatch(
-            await arweave.createTransaction({
-
-                data: new Uint8Array(nftContent), tags: encodeTags([
-                    { name: "App-Name", value: "SmartWeaveContract" },
-                    { name: "App-Version", value: "0.3.0" },
-                    { name: "Contract-Src", value: "hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg" },
-                    { name: "SDK", value: "Warp" },
-                    { name: "Nonce", value: Date.now().toString() },
-                    { name: "Content-Type", value: fileMeta.value.type },
-                    { name: "Init-State", value: JSON.stringify(initState) },
-                    { name: 'Title', value: title.value },
-                    { name: 'Description', value: description.value },
-                    { name: "Signing-Client", value: "RareWeave" },
-                    { name: "Contract-Manifest", value: JSON.stringify({ "evaluationOptions": { "unsafeClient": "allow", waitForConfirmation: false } }) }
-                ])
-            },)
-        )
+        tx = await wallet.dispatch(tx)
     }
 
 
