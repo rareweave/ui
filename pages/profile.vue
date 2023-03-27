@@ -2,10 +2,10 @@
     <div class="h-full-navbared w-full flex flex-col items-center justify-center" :style="{
         backgroundImage: ` linear-gradient(-200deg,rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)),radial-gradient(#000000a0, #000000ff), url('${user.profile.banner != 'ar://a0ieiziq2JkYhWamlrUCHxrGYnHWUAMcONxRmfkWt-k' ? user.profile.bannerURL : '/profile-default-bg.jpg'}')`,
         backgroundAttachment: 'fixed',
-        backgroundRepeat: 'no-repeat',
+        backgroundRepeat: 'repeat',
         backgroundClip: 'border-box',
-        backgroundSize: 'auto 100%'
-
+        backgroundPosition: '0% 0%',
+        backgroundSize: 'cover'
     }">
         <template v-if="selfProfile">
             <div class="flex flex-col items-center justify-center w-full md:w-96 m-4 pt-4 px-4">
