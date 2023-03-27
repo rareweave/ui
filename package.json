@@ -3,7 +3,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxi generate",
+    "generate": "nuxi generate && rm -f ./dist/404.html",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
