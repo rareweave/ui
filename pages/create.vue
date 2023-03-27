@@ -234,7 +234,7 @@ async function mint() {
 
 
     await checkNFT(tx.id)
-    await navigateTo('/nft/#' + tx.id)
+    await navigateTo('/nft/' + tx.id)
 
 }
 function encodeTags(tags) {

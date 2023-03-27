@@ -27,7 +27,7 @@
                 Owner:
                 <div v-if="account && account.addr && account.addr == nftOwner.addr"
                     class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center ">You</div>
-                <NuxtLink :to="'/profile/#' + nftOwner.addr" v-else
+                <NuxtLink :to="'/profile/' + nftOwner.addr" v-else
                     class="text-sm rounded-xl p-1 ml-2 bg-zinc-700 flex-row flex items-center ">
 
                     <img :src="nftOwner.profile.avatarURL" class="w-8 rounded-xl mr-2" />
@@ -40,7 +40,7 @@
                 Minter:
                 <div v-if="account && account.addr && account.addr == nftMinter.addr"
                     class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center ">You</div>
-                <NuxtLink :to="'/profile/#' + nftMinter.addr" v-else
+                <NuxtLink :to="'/profile/' + nftMinter.addr" v-else
                     class="text-sm rounded-xl p-1 ml-2 bg-zinc-700 flex-row flex items-center ">
 
                     <img :src="nftMinter.profile.avatarURL" class="w-8 rounded-xl mr-2" />
@@ -187,7 +187,7 @@ const accountTools = accountToolsState.value
 const warp = WarpFactory.forMainnet({
     inMemory: true,
 }, false, arweave)
-let nftId = useRoute().hash.slice(1)
+let nftId = useRoute().params.id || useRoute().hash.slice(1)
 let nftContract = account.value ? warp.contract(nftId).setEvaluationOptions({
     unsafeClient: "allow", waitForConfirmation: false, //we are using anchoring
 

@@ -129,7 +129,7 @@ import Arweave from "arweave"
 import Account from "arweave-account";
 import { Buffer } from "buffer";
 const { Warp, Contract, WarpFactory } = await import('warp-contracts')
-let profileAddress = useRoute().hash.slice(1)
+let profileAddress = computed(() => useRoute().params.address || useRoute().hash.slice(1)).value
 let account = useState("account", () => null);
 let ansAddr = useState("ansAddr", () => null)
 

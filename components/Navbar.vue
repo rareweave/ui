@@ -3,7 +3,7 @@
         <NuxtLink to="/" class="rareweave-font font-mono text-3xl ml-2">RareWeave</NuxtLink>
         <NuxtLink
             class="bg-neutral font-mono hover:bg-neutral-focus transition-all rounded-xl p-2 inline-flex flex-row items-center border border-base-300 cursor-pointer hover:rounded-2xl"
-            :to="'/profile/#' + account.addr">
+            :replace="false" :to="'/profile/' + account.addr">
             <img class="h-[2rem] mr-2" :src="account.profile.avatarURL" />{{ ansAddr || account.handle }}
         </NuxtLink>
     </div>
