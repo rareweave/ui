@@ -19,5 +19,15 @@ export default defineNuxtConfig({
     experimental: {
         payloadExtraction: false
 
+    },
+    generate: {
+        fallback: "index.html",
+
+    },
+    nitro: {
+        prerender: {
+            ignore: ["404.html"],
+
+        }
     }
 });
