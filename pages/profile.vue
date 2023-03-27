@@ -87,6 +87,38 @@
                     class="m-2 max-w-[16rem] w-max font-mono text-sm font-light text-gray-400 text-center whitespace-pre-wrap">
                     {{
                         user.profile.bio }}</div>
+                <label class="input-group my-1 w-full"> <span class="min-w-[7rem] text-center justify-center"
+                        v-if="user.profile.links.github">Github:</span><span
+                        class=" w-full border-t border-r border-b border-gray-700 box-border bg-black bg-opacity-75 text-lg">
+                        <a class=" link-accent" :href="'https://github.com/' + user.profile.links.github"> {{
+                            user.profile.links.github }}</a>
+                    </span>
+
+                </label>
+                <label class="input-group my-1 w-full" v-if="user.profile.links.twitter"> <span
+                        class="min-w-[7rem] text-center justify-center">Twitter:</span><span
+                        class=" w-full border-t border-r border-b border-gray-700 box-border bg-black bg-opacity-75 text-lg">
+                        <a class=" link-accent" :href="'https://twitter.com/' + user.profile.links.twitter"> {{
+                            user.profile.links.twitter }}</a>
+                    </span>
+
+                </label>
+                <label class="input-group my-1 w-full" v-if="user.profile.links.instagram"> <span
+                        class="min-w-[7rem] text-center justify-center">Instagram:</span><span
+                        class=" w-full border-t border-r border-b border-gray-700 box-border bg-black bg-opacity-75 text-lg">
+                        <a class=" link-accent" :href="'https://instagram.com/' + user.profile.links.instagram">@{{
+                            user.profile.links.instagram }}</a>
+                    </span>
+
+                </label>
+                <label class="input-group my-1 w-full" v-if="user.profile.links.discord"> <span
+                        class="min-w-[7rem] text-center justify-center">Discord:</span><span
+                        class=" w-full border-t border-r border-b border-gray-700 box-border bg-black bg-opacity-75 text-lg">
+                        {{
+                            user.profile.links.discord }}
+                    </span>
+
+                </label>
             </div>
         </template>
     </div>
