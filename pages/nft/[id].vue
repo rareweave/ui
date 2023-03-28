@@ -185,10 +185,13 @@ const arweave = Arweave.init({
 let height = ref((await $fetch("https://arweave.net/info")).height)
 const accountTools = accountToolsState.value
 const warp = WarpFactory.forMainnet({
+
     inMemory: true,
 }, false, arweave)
+warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`
 let nftId = useRoute().params.id || useRoute().hash.slice(1)
 let nftContract = account.value ? warp.contract(nftId).setEvaluationOptions({
+
     unsafeClient: "allow", waitForConfirmation: false, //we are using anchoring
 
 }).connect("use_wallet") : warp.contract(nftId).setEvaluationOptions({
