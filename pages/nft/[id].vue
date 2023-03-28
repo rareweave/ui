@@ -188,7 +188,7 @@ const warp = WarpFactory.forMainnet({
 
     inMemory: true,
 }, false, arweave)
-warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`
+
 let nftId = useRoute().params.id || useRoute().hash.slice(1)
 let nftContract = account.value ? warp.contract(nftId).setEvaluationOptions({
 
@@ -198,7 +198,8 @@ let nftContract = account.value ? warp.contract(nftId).setEvaluationOptions({
     unsafeClient: "allow", waitForConfirmation: false, //we are using anchoring
 
 });
-
+warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`
+warp.interactionsLoader.delegate.baseUrl = `https://prophet.rareweave.store`
 
 
 let nftStateOrig = ref((await nftContract.readState()).cachedValue.state)
