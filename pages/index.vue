@@ -9,7 +9,7 @@
     }">
     <div class="hero-content flex-col lg:flex-row justify-between w-full  ">
       <div class="text-center">
-        <h1 class="text-6xl font-bold rareweave-font">RareWeave</h1>
+        <h1 class="text-6xl font-bold rareweave-font" @click="nextUrl()">RareWeave</h1>
         <div>
           <p class="font-mono mt-2 p-2 text-center max-w-[50rem]">
             <span>You've arrived on wonderful land - at RareWeave, the NFT marketplace of the Arweave ecosystem. </span>
@@ -27,15 +27,23 @@
           </div>
         </div>
       </div>
-      <img src="../assets/logo-01.png" class="max-w-sm rounded-sm shadow-2xl" />
+      <div class="randomNFT">
+        <img
+        :src="'https://arweave.net/' + randomNft.contractTxId"  class="max-w-sm rounded-sm shadow-2xl" />
     </div>
+      </div>
   </div>
 </template>
+
 <script setup>
+  let raw = await fetch('https://prophet.rareweave.store/nfts')
+  let nfts = await raw.json()
+  let randomNft = nfts.result[Math.floor(Math.random()*nfts.result.length)];
+  
   definePageMeta({
-    layout: "without-auth",
-  });
-</script>
+    layout: "without-auth"
+  })
+</script> 
 <style>
   @keyframes amazing-bg {
     from {
@@ -57,4 +65,16 @@
     background-size: 300% 300%;
     animation: amazing-bg 10s linear infinite;
   }
+
+  .randomNFT {
+    transform: perspective(1500px) rotateY(15deg);
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    transition: transform 1s ease 0s;
+
+}
+
+.randomNFT:hover {
+    transform: perspective(3000px) rotateY(5deg);
+ }
 </style>
