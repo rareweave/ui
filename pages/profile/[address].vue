@@ -69,8 +69,9 @@
                     :disabled="!changed" @click="saveChangesToProfile">Save
                     changes</button>
             </div>
-
+            <h2 class="text-center text-2xl font-mono">Owned NFTs:</h2>
             <div class="w-full flex flex-wrap justify-center flex-row mt-4 self-end">
+
                 <NuxtLink
                     class="card flex flex-col max-w-[12rem]  mx-4 shadow-xl bg-black bg-opacity-50 font-mono border justify-center items-center border-gray-900"
                     v-for="nft of ownedNfts" :to="'/nft/' + nft.contractTxId">
@@ -134,6 +135,7 @@
 
                 </label>
             </div>
+            <h2 class="text-center text-2xl font-mono">Owned NFTs:</h2>
             <div class="w-full flex flex-wrap justify-center flex-row mt-4 self-end">
                 <NuxtLink
                     class="card flex flex-col max-w-[12rem]  mx-4 shadow-xl bg-black bg-opacity-50 font-mono border justify-center items-center border-gray-900"
