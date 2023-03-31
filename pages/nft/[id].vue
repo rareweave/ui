@@ -201,7 +201,7 @@ let nftContract = account.value ? warp.contract(nftId).setEvaluationOptions({
 warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`
 warp.interactionsLoader.delegate.baseUrl = `https://prophet.rareweave.store`
 
-
+fetch(`https://prophet.rareweave.store/index?id=` + nftId)
 let nftStateOrig = ref((await nftContract.readState()).cachedValue.state)
 let transferModalOpened = ref(false)
 let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig.value)))
