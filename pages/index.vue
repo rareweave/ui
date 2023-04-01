@@ -39,7 +39,7 @@
   let raw = await fetch('https://prophet.rareweave.store/nfts')
   let nfts = await raw.json()
   let randomNft = nfts.result[Math.floor(Math.random()*nfts.result.length)];
-  
+
   definePageMeta({
     layout: "without-auth"
   })
@@ -67,11 +67,10 @@
   }
 
   .randomNFT {
-    transform: perspective(1500px) rotateY(15deg);
+    transform: perspective(1500px) rotateY(-15deg);
     border-radius: 1rem;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
     transition: transform 1s ease 0s;
-
 }
 
 .randomNFT:hover {
