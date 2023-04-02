@@ -13,7 +13,7 @@
                 </label>
             </div>
         </div>
-        <div class="flex flex-row flex-wrap justify-around">
+        <div class="flex flex-row flex-wrap justify-center">
             <NftCard v-for="nft in nfts.result" :key="nft.contractTxId" :nft="nft"></NftCard>
         </div>
 
