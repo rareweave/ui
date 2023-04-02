@@ -9,7 +9,7 @@
     }">
     <div class="hero-content flex-col lg:flex-row justify-between w-full  ">
       <div class="text-center">
-        <h1 class="text-6xl font-bold rareweave-font" @click="nextUrl()">RareWeave</h1>
+        <h1 class="text-6xl font-bold rareweave-font">RareWeave</h1>
         <div>
           <p class="font-mono mt-2 p-2 text-center max-w-[50rem]">
             <span>You've arrived on wonderful land - at RareWeave, the NFT marketplace of the Arweave ecosystem. </span>
