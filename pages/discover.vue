@@ -1,6 +1,18 @@
 <template>
-    <div class="h-full-navbared w-full flex flex-col items-center justify-center ">
-        <h1 class="font-mono text-3xl">Discover NFTs</h1>
+    <div class="h-full-navbared w-full flex flex-col items-center justify-start ">
+        <div class="pt-4 px-4 my-4 bg-black bg-opacity-30 flex flex-col items-center">
+            <h1 class="font-mono text-3xl">Discover NFTs</h1>
+            <input class="input input-bordered rounded-lg input-accent mt-2 w-96"
+                placeholder="Search by name/description/etc." v-model="searchCondition" @input="refreshResults" />
+            <div class="form-control">
+                <label class="cursor-pointer label">
+
+                    <input type="checkbox" v-model="forSaleOnly" class="checkbox checkbox-warning"
+                        @change="refreshResults" />
+                    <span class="label-text ml-2">For sale only</span>
+                </label>
+            </div>
+        </div>
         <div class="flex flex-row flex-wrap justify-around">
             <NftCard v-for="nft in nfts.result" :key="nft.contractTxId" :nft="nft"></NftCard>
         </div>
@@ -10,8 +22,13 @@
 </template>
 
 <script setup>
-let nfts = await $fetch("https://prophet.rareweave.store/nfts")
-console.log(nfts)
+let nfts = ref(await $fetch("https://prophet.rareweave.store/nfts"))
+let searchCondition = ref("")
+let forSaleOnly = ref(false)
+
+async function refreshResults() {
+    nfts.value = await $fetch(`https://prophet.rareweave.store/nfts?search=${searchCondition.value}${forSaleOnly.value ? '&forSaleOnly=true' : ''}`)
+}
 definePageMeta({
     layout: "without-auth",
 });
