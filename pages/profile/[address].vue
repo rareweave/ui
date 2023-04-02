@@ -72,23 +72,11 @@
             <h2 class="text-center text-2xl font-mono">Owned NFTs:</h2>
             <div class="w-full flex flex-wrap justify-center flex-row mt-4 self-end">
 
-                <NuxtLink
-                    class="card flex flex-col max-w-[12rem]  mx-4 shadow-xl bg-black bg-opacity-50 font-mono border justify-center items-center border-gray-900"
-                    v-for="nft of ownedNfts" :to="'/nft/' + nft.contractTxId">
-                    <figure class="px-4 pt-4">
-                        <img :src="'https://arweave.net/' + nft.contractTxId
-                        " alt="Shoes" class="rounded-xl h-32" />
-                    </figure>
-                    <div class="card-body items-center text-center">
-                        <h2 class="card-title">{{ nft.state.name }}</h2>
-                        <span class="card-title text-sm text-gray-400" v-if="nft.state.forSale">Price: {{
-                            parseFloat(parseFloat(arweave.ar.winstonToAr(nft.state.price)).toFixed(3)) }} AR</span>
-                    </div>
-                </NuxtLink>
+                <NftCard v-for="nft in ownedNfts" :key="nft.contractTxId" :nft="nft"></NftCard>
             </div>
         </template>
         <template v-else>
-            <img :src="user.profile.avatarURL" class="w-64 rounded-xl mx-4 backdrop-blur-sm" />
+            <img :src="user.profile.avatarURL" class="w-64 rounded-xl mx-4 backdrop-blur-sm mt-8" />
             <h1 class="text-xl font-mono text-white">{{ user.handle }}</h1>
             <span class="text-xs text-gray-500">{{ user.addr }}</span>
             <div class="bg-black bg-opacity-50 font-mono mt-2 text-white px-4 flex flex-col justify-center items-center">
@@ -137,19 +125,7 @@
             </div>
             <h2 class="text-center text-2xl font-mono">Owned NFTs:</h2>
             <div class="w-full flex flex-wrap justify-center flex-row mt-4 self-end">
-                <NuxtLink
-                    class="card flex flex-col max-w-[12rem]  mx-4 shadow-xl bg-black bg-opacity-50 font-mono border justify-center items-center border-gray-900"
-                    v-for="nft of ownedNfts" :to="'/nft/' + nft.contractTxId">
-                    <figure class="px-4 pt-4">
-                        <img :src="'https://arweave.net/' + nft.contractTxId
-                        " alt="Shoes" class="rounded-xl h-32" />
-                    </figure>
-                    <div class="card-body items-center text-center">
-                        <h2 class="card-title">{{ nft.state.name }}</h2>
-                        <span class="card-title text-sm text-gray-400" v-if="nft.state.forSale">Price: {{
-                            parseFloat(parseFloat(arweave.ar.winstonToAr(nft.state.price)).toFixed(3)) }} AR</span>
-                    </div>
-                </NuxtLink>
+                <NftCard v-for="nft in ownedNfts" :key="nft.contractTxId" :nft="nft"></NftCard>
             </div>
         </template>
     </div>

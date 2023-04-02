@@ -1,7 +1,8 @@
 <template>
     <div class="h-full-navbared w-full flex flex-col items-center justify-center">
         <div class="m-2 rounded mt-6"> <img v-if="nftState?.contentType?.startsWith('image')"
-                :src="'https://arweave.net/' + nftId" class=" inline-flex max-h-[20rem] max-w-20rem" />
+                :src="'https://prophet.rareweave.store/_ipx/width_320,f_webp/https://arweave.net/' + nftId"
+                class=" inline-flex max-h-[20rem] max-w-20rem" />
             <video v-else-if="nftState?.contentType?.startsWith('video')" autoplay muted controls>
                 <source :src="'https://arweave.net/' + nftId" :type="nftState?.contentType">
                 Your browser does not support the video tag.
