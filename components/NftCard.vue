@@ -7,7 +7,7 @@
             backgroundClip: 'border-box',
 
             backgroundColor: `black`,
-            backgroundImage: `radial-gradient(#00000030, #00000015), url('https://arweave.net/${nft.contractTxId}')`
+            backgroundImage: `radial-gradient(#00000030, #00000015), url('https://prophet.rareweave.store/_ipx/width_420/https://arweave.net/${nft.contractTxId}')`
         }">
 
 
