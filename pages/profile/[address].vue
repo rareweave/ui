@@ -69,8 +69,23 @@
                     :disabled="!changed" @click="saveChangesToProfile">Save
                     changes</button>
             </div>
+            <h2 class="text-center text-2xl font-mono">Owned NFTs:</h2>
+            <div class="w-full flex flex-wrap justify-center flex-row mt-4 self-end">
 
-
+                <NuxtLink
+                    class="card flex flex-col max-w-[12rem]  mx-4 shadow-xl bg-black bg-opacity-50 font-mono border justify-center items-center border-gray-900"
+                    v-for="nft of ownedNfts" :to="'/nft/' + nft.contractTxId">
+                    <figure class="px-4 pt-4">
+                        <img :src="'https://arweave.net/' + nft.contractTxId
+                        " alt="Shoes" class="rounded-xl h-32" />
+                    </figure>
+                    <div class="card-body items-center text-center">
+                        <h2 class="card-title">{{ nft.state.name }}</h2>
+                        <span class="card-title text-sm text-gray-400" v-if="nft.state.forSale">Price: {{
+                            parseFloat(parseFloat(arweave.ar.winstonToAr(nft.state.price)).toFixed(3)) }} AR</span>
+                    </div>
+                </NuxtLink>
+            </div>
         </template>
         <template v-else>
             <img :src="user.profile.avatarURL" class="w-64 rounded-xl mx-4 backdrop-blur-sm" />
@@ -111,7 +126,7 @@
                     </span>
 
                 </label>
-                <label class="input-group my-1 w-full" v-if="user.profile.links.discord"> <span
+                <label class="input-group my-1 mb-4 w-full" v-if="user.profile.links.discord"> <span
                         class="min-w-[7rem] text-center justify-center">Discord:</span><span
                         class=" w-full border-t border-r border-b border-gray-700 box-border bg-black bg-opacity-75 text-lg">
                         {{
@@ -119,6 +134,22 @@
                     </span>
 
                 </label>
+            </div>
+            <h2 class="text-center text-2xl font-mono">Owned NFTs:</h2>
+            <div class="w-full flex flex-wrap justify-center flex-row mt-4 self-end">
+                <NuxtLink
+                    class="card flex flex-col max-w-[12rem]  mx-4 shadow-xl bg-black bg-opacity-50 font-mono border justify-center items-center border-gray-900"
+                    v-for="nft of ownedNfts" :to="'/nft/' + nft.contractTxId">
+                    <figure class="px-4 pt-4">
+                        <img :src="'https://arweave.net/' + nft.contractTxId
+                        " alt="Shoes" class="rounded-xl h-32" />
+                    </figure>
+                    <div class="card-body items-center text-center">
+                        <h2 class="card-title">{{ nft.state.name }}</h2>
+                        <span class="card-title text-sm text-gray-400" v-if="nft.state.forSale">Price: {{
+                            parseFloat(parseFloat(arweave.ar.winstonToAr(nft.state.price)).toFixed(3)) }} AR</span>
+                    </div>
+                </NuxtLink>
             </div>
         </template>
     </div>
@@ -156,6 +187,8 @@ const warp = WarpFactory.forMainnet({
 let userProfileOrig = ref(await accountTools.get(profileAddress))
 let user = ref(JSON.parse(JSON.stringify(userProfileOrig.value)))
 let userAnsName = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${user.value.addr}`))?.domain
+let ownedNfts = (await $fetch(`https://prophet.rareweave.store/nfts?ownedBy=` + user.value.addr))?.result
+console.log(ownedNfts)
 let changed = computed(() => {
     let ch = JSON.stringify(user.value) != JSON.stringify(userProfileOrig.value)
     return ch

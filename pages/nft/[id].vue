@@ -174,13 +174,13 @@ let accountToolsState = useState("accountTools", () => new Account({
 }))
 let walletState = useState("wallet", () => null);
 let wallet = walletState.value
-const arweave = Arweave.init({
+const arweave = (useState("arweave", () => Arweave.init({
     host: "arweave.net",
     port: 443,
     protocol: "https",
     timeout: 60_000,
     logging: false,
-});
+}))).value;
 
 let height = ref((await $fetch("https://arweave.net/info")).height)
 const accountTools = accountToolsState.value
@@ -201,7 +201,7 @@ let nftContract = account.value ? warp.contract(nftId).setEvaluationOptions({
 warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`
 warp.interactionsLoader.delegate.baseUrl = `https://prophet.rareweave.store`
 
-
+fetch(`https://prophet.rareweave.store/index?id=` + nftId)
 let nftStateOrig = ref((await nftContract.readState()).cachedValue.state)
 let transferModalOpened = ref(false)
 let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig.value)))
