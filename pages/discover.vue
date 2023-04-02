@@ -1,6 +1,6 @@
 <template>
     <div class="h-full-navbared w-full flex flex-col items-center justify-center ">
-        <h1 class="font-mono text-2xl">Discover NFTs</h1>
+        <h1 class="font-mono text-3xl">Discover NFTs</h1>
         <div class="flex flex-row flex-wrap justify-around">
             <NftCard v-for="nft in nfts.result" :key="nft.contractTxId" :nft="nft"></NftCard>
         </div>

@@ -18,6 +18,7 @@
     "arweave": "^1.12.4",
     "arweave-account": "^1.3.6",
     "arweave-wallet-connector": "^1.0.0",
+    "bn.js": "^5.2.1",
     "buffer": "^6.0.3",
     "daisyui": "^2.50.0",
     "jsonpath-plus": "^7.2.0",

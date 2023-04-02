@@ -174,13 +174,13 @@ let accountToolsState = useState("accountTools", () => new Account({
 }))
 let walletState = useState("wallet", () => null);
 let wallet = walletState.value
-const arweave = Arweave.init({
+const arweave = (useState("arweave", () => Arweave.init({
     host: "arweave.net",
     port: 443,
     protocol: "https",
     timeout: 60_000,
     logging: false,
-});
+}))).value;
 
 let height = ref((await $fetch("https://arweave.net/info")).height)
 const accountTools = accountToolsState.value

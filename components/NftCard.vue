@@ -17,6 +17,13 @@
             <h2 class="card-title">{{ nft.state.name }}</h2>
             <p v-if="nft.state.description">{{ nft.state.description.length < 80 ? nft.state.description :
                 nft.state.description.slice(0, 77) + "..." }}</p>
+                    <span class=" mt-1 text-sm text-gray-400" v-if="nft.state.forSale">Price: {{
+                        parseFloat(parseFloat(arweave.ar.winstonToAr(nft.state.price)).toFixed(3)) }} {{
+        nft.state.listingDenom || 'AR' }}</span>
+
+                    <span class=" mt-1 text-sm text-gray-300" v-if="nft.owner">Owner: <NuxtLink class="link"
+                            :to="'/profile/' + nft.owner.address">{{
+                                nft.owner.ansName || nft.owner.account.handle }}</NuxtLink></span>
 
         </div>
 
@@ -40,6 +47,25 @@
 }
 </style>
 <script setup>
+
+import Arweave from 'arweave';
 const { nft } = defineProps(["nft"])
-console.log(nft)
+
+const arweaveState = await useState("arweave", () =>
+    Arweave.init({
+        host: "arweave.net",
+        port: 443,
+        protocol: "https",
+        timeout: 60_000,
+        logging: false,
+    })
+);
+
+
+
+const arweave = arweaveState.value;
+
+
+console.log(arweave, arweaveState)
+
 </script>
