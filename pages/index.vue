@@ -1,12 +1,12 @@
 <template>
   <div class="bg-black bg-opacity-50 p-4 rounded-none backdrop-blur-sm hero h-full-navbared
-                   min-h-screen" :style="{
-                     backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.jpg')`,
-                     backgroundAttachment: 'fixed',
-                     backgroundColor: 'rgb(2,2,2)',
-                     backgroundRepeat: 'no-repeat',
-                     backgroundSize: 'auto 100%'
-                   }">
+                     min-h-screen" :style="{
+                       backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.jpg')`,
+                       backgroundAttachment: 'fixed',
+                       backgroundColor: 'rgb(2,2,2)',
+                       backgroundRepeat: 'no-repeat',
+                       backgroundSize: 'auto 100%'
+                     }">
     <div class="hero-content flex-col lg:flex-row justify-between w-full  ">
       <div class="text-center">
         <h1 class="text-6xl font-bold rareweave-font">RareWeave</h1>
@@ -51,27 +51,6 @@ definePageMeta({
 })
 </script> 
 <style>
-@keyframes amazing-bg {
-  from {
-    background-position-x: 0%;
-  }
-
-  50% {
-    background-position-x: 200%;
-  }
-
-  to {
-    background-position-x: 0%;
-  }
-}
-
-.amazing-button {
-  background: rgb(97, 9, 168);
-  background: radial-gradient(circle, rgba(97, 9, 168, 1) 0%, rgba(121, 41, 9, 1) 25%, rgba(179, 22, 83, 1) 50%, rgba(171, 49, 107, 1) 61%, rgba(167, 40, 83, 1) 73%, rgb(185, 25, 36) 100%);
-  background-size: 300% 300%;
-  animation: amazing-bg 10s linear infinite;
-}
-
 .randomNFT {
   transform: perspective(1500px) rotateY(-15deg);
   border-radius: 1rem;
