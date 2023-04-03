@@ -295,7 +295,7 @@ async function payRoyalty() {
         { name: "SDK", value: "0.3.0" }
     ]
     try {
-        let feeEstimate = await fetch(`https://arweave.net/price/1000000`).then(res => res.text())
+        let feeEstimate = await fetch(`https://arweave.net/price/1000000/${nftState.value.minter}`).then(res => res.text())
         let tx = await arweave.createTransaction({ tags: encodeTags(tags), target: nftState.value.minter, quantity: (parseInt(arweave.ar.arToWinston(nftPrice.value)) * nftState.value.royalty).toString(), reward: feeEstimate })
         await arweave.transactions.sign(tx)
         await arweave.transactions.post(tx)
@@ -338,7 +338,7 @@ async function finalizeBuy() {
       }`
         })
     }).then(tx => tx.json())).data.transaction.block.id
-    let feeEstimate = await fetch(`https://arweave.net/price/1000000`).then(res => res.text())
+    let feeEstimate = await fetch(`https://arweave.net/price/1000000/${nftState.value.owner}`).then(res => res.text())
     let tx = await arweave.createTransaction({ tags: encodeTags(tags), target: nftState.value.owner, quantity: arweave.ar.arToWinston(nftPrice.value), reward: feeEstimate, last_tx: royaltyAnchor })
     await arweave.transactions.sign(tx)
     await arweave.transactions.post(tx)
