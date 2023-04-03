@@ -1,15 +1,15 @@
 <template>
   <div class="bg-black bg-opacity-50 p-4 rounded-none backdrop-blur-sm hero h-full-navbared
-                         min-h-screen" :style="{
-                           backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.jpg')`,
-                           backgroundAttachment: 'fixed',
-                           backgroundColor: 'rgb(2,2,2)',
-                           backgroundRepeat: 'no-repeat',
-                           backgroundSize: 'auto 100%'
-                         }">
+                           min-h-screen" :style="{
+                             backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.jpg')`,
+                             backgroundAttachment: 'fixed',
+                             backgroundColor: 'rgb(2,2,2)',
+                             backgroundRepeat: 'no-repeat',
+                             backgroundSize: 'auto 100%'
+                           }">
     <div class="hero-content flex-col lg:flex-row justify-between w-full  ">
       <div class="text-center">
-        <h1 class="text-6xl font-bold rareweave-font">RareWeave</h1>
+        <h1 class="text-6xl font-bold rareweave-font font-mono">RareWeave</h1>
         <div>
           <p class="font-mono mt-2 p-2 text-center max-w-[50rem]">
             <span>You've arrived on wonderful land - at RareWeave, the NFT marketplace of the Arweave ecosystem. </span>
