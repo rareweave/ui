@@ -1,7 +1,7 @@
 <template>
   <div class="bg-black bg-opacity-50 p-4 rounded-none backdrop-blur-sm hero h-full-navbared
                              min-h-screen" :style="{
-                               backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.jpg')`,
+                               backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.png')`,
                                backgroundAttachment: 'fixed',
                                backgroundColor: 'rgb(2,2,2)',
                                backgroundRepeat: 'no-repeat',
@@ -27,10 +27,10 @@
           </p>
           <div class="flex flex-row w-full flex-wrap justify-center ">
             <NuxtLink to="/create"
-              class="btn btn-xl text-lg amazing-button2 rounded-md hover:rounded-lg transition-all font-mono m-1"> Mint
+              class="btn btn-xl text-lg amazing-button2 rounded-md hover:rounded-lg transition-all font-mono m-1 w-48"> Mint
             </NuxtLink>
             <NuxtLink to="/discover"
-              class="btn btn-xl text-lg amazing-button font-mono rounded-md hover:rounded-lg transition-all m-1"> Discover
+              class="btn btn-xl text-lg amazing-button font-mono rounded-md hover:rounded-lg transition-all m-1 w-48"> Discover
             </NuxtLink>
           </div>
         </div>
