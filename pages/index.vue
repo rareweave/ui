@@ -1,7 +1,7 @@
 <template>
   <div class="bg-black bg-opacity-50 p-4 rounded-none backdrop-blur-sm hero h-full-navbared
                              min-h-screen" :style="{
-                               backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.gif')`,
+                               backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.png')`,
                                backgroundAttachment: 'fixed',
                                backgroundColor: 'rgb(2,2,2)',
                                backgroundRepeat: 'no-repeat',
