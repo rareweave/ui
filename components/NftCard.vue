@@ -53,7 +53,7 @@ const { nft } = defineProps(["nft"])
 
 const arweaveState = await useState("arweave", () =>
     Arweave.init({
-        host: "arweave.net",
+        host: "arweave.dev",
         port: 443,
         protocol: "https",
         timeout: 60_000,

@@ -110,7 +110,7 @@ let forSale = ref(true)
 
 const arweaveState = useState("arweave", () => {
     Arweave.init({
-        host: "arweave.net",
+        host: "arweave.dev",
         port: 443,
         protocol: "https",
         timeout: 60_000,
@@ -125,6 +125,8 @@ const warp = WarpFactory.forMainnet({
     inMemory: false,
 
 }, false, arweave).use(new DeployPlugin());
+warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`
+warp.interactionsLoader.delegate.baseUrl = `https://prophet.rareweave.store`
 // console.log(warp.deploy())
 const ardbState = useState("ardb", () => new ArDB(arweave.value));
 
@@ -166,9 +168,6 @@ async function mint() {
         "forSale": forSale.value,
         "price": parseInt(arweave.ar.arToWinston(price.value)),
         "reservationBlockHeight": 0,
-        "reserver": null,
-        "divisibility": 0,
-        "reservationTxId": null,
         "royalty": royalty.value / 100
     }
     uploading.value = true
@@ -185,8 +184,7 @@ async function mint() {
             { name: 'Title', value: title.value },
             { name: "Type", value: "Tradable-SW-NFT" },
             { name: "Topics", value: "NFTs, Atomic Assets" },
-            { name: 'Description', value: description.value },
-            { name: "Signing-Client", value: "RareWeave" },
+            { name: 'Description', value: "RareWeave NFT" },
             { name: "Contract-Manifest", value: JSON.stringify({ "evaluationOptions": { "unsafeClient": "allow", waitForConfirmation: false } }) }
         ])
     })
