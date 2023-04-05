@@ -83,12 +83,10 @@
         <div class="modal-box relative flex flex-col items-center" v-else>
           <label for="buy-modal" class="btn btn-sm  absolute right-2 top-2  ">✕</label>
           <h3 class="font-bold text-lg text-center">Successfully bought "{{ nftState.name }}"</h3>
-
-          <img v-if="nftState?.contentType?.startsWith('image')" :src="'https://prophet.rareweave.store/_ipx/width_320,f_webp/https://arweave.net/' + nftId" class=" inline-flex max-h-[20rem] max-w-20rem" />
+          <img v-if="nftState?.contentType?.startsWith('image')" :src="'https://prophet.rareweave.store/_ipx/width_320,f_webp/https://arweave.net/' + nftId" class=" inline-flex max-h-[20rem] max-w-20rem my-4 purchased" />
           <video v-else-if="nftState?.contentType?.startsWith('video')" autoplay muted controls>
             <source :src="'https://arweave.net/' + nftId" :type="nftState?.contentType"> Your browser does not support the video tag.
           </video>
-          
           <span class="text-md text-center">Now you own {{ nftState.name }}!</span>
           <div class="modal-action">
             <label for="buy-modal" class="btn">Close</label>
@@ -337,3 +335,17 @@
       layout: "without-auth",
     });
   </script>
+  
+  <style>
+    .purchased {
+      border-radius: 1rem;
+      box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+      transition: transform 1s ease 0s;
+    }
+  
+    .purchased:hover {
+      transition: transform 0.5s ease 0s;
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+    }
+  </style>
