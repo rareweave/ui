@@ -110,7 +110,7 @@ let forSale = ref(true)
 
 const arweaveState = useState("arweave", () => {
     Arweave.init({
-        host: "arweave.dev",
+        host: "prophet.rareweave.store",
         port: 443,
         protocol: "https",
         timeout: 60_000,

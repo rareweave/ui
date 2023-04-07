@@ -165,13 +165,13 @@ let accountToolsState = useState("accountTools", () => new Account({
 let walletState = useState("wallet", () => null);
 let wallet = walletState.value
 const arweave = (useState("arweave", () => Arweave.init({
-    host: "arweave.net",
+    host: "prophet.rareweave.store",
     port: 443,
     protocol: "https",
     timeout: 60_000,
     logging: false,
 }))).value;
-let height = ref((await $fetch("https://arweave.net/info")).height)
+let height = ref((await $fetch("https://prophet.rareweave.store/info")).height)
 const accountTools = accountToolsState.value
 const warp = WarpFactory.forMainnet({
     inMemory: true,
