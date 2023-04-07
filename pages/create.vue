@@ -122,7 +122,7 @@ const arweaveState = useState("arweave", () => {
 
 const arweave = arweaveState.value;
 const warp = WarpFactory.forMainnet({
-    remoteStateSyncSource: "https://prophet.rareweave.dev",
+    remoteStateSyncSource: "https://prophet.rareweave.store/contract",
     remoteStateSyncEnabled: true,
 
 }, false, arweave).use(new DeployPlugin());

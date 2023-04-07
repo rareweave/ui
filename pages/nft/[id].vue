@@ -178,12 +178,12 @@ const warp = WarpFactory.forMainnet({
 }, false, arweave)
 let nftId = useRoute().params.id || useRoute().hash.slice(1)
 let nftContract = account.value ? warp.contract(nftId).setEvaluationOptions({
-    remoteStateSyncSource: "https://prophet.rareweave.dev",
+    remoteStateSyncSource: "https://prophet.rareweave.store/contract",
     remoteStateSyncEnabled: true,
     unsafeClient: "allow",
     waitForConfirmation: false, //we are using anchoring
 }).connect("use_wallet") : warp.contract(nftId).setEvaluationOptions({
-    remoteStateSyncSource: "https://prophet.rareweave.dev",
+    remoteStateSyncSource: "https://prophet.rareweave.store/contract",
     remoteStateSyncEnabled: true,
     unsafeClient: "allow",
     waitForConfirmation: false, //we are using anchoring
