@@ -211,7 +211,7 @@ let changed = computed(() => {
     return ch
 })
 let updaterInterval = setInterval(async () => {
-    height.value = (await $fetch("https://arweave.net/info")).height
+    height.value = (await $fetch("https://prophet.rareweave.store/info")).height
     if (!changed.value) {
         nftStateOrig.value = (await nftContract.readState()).cachedValue.state
         if (!nftStateOrig.value.reservationTxId && (height.value - nftStateOrig.value.reservationBlockHeight) < 12 && nftStateOrig.value.reserver == account.value?.addr && nftStateOrig.value.reservationTxId != nftState.value.reservationTxId) {
