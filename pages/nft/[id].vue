@@ -178,9 +178,13 @@ const warp = WarpFactory.forMainnet({
 }, false, arweave)
 let nftId = useRoute().params.id || useRoute().hash.slice(1)
 let nftContract = account.value ? warp.contract(nftId).setEvaluationOptions({
+    remoteStateSyncSource: "https://prophet.rareweave.dev",
+    remoteStateSyncEnabled: true,
     unsafeClient: "allow",
     waitForConfirmation: false, //we are using anchoring
 }).connect("use_wallet") : warp.contract(nftId).setEvaluationOptions({
+    remoteStateSyncSource: "https://prophet.rareweave.dev",
+    remoteStateSyncEnabled: true,
     unsafeClient: "allow",
     waitForConfirmation: false, //we are using anchoring
 });
@@ -377,7 +381,8 @@ definePageMeta({
 });
 </script>
   
-<style>.purchased {
+<style>
+.purchased {
     border-radius: 1rem;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
     transition: transform 1s ease 0s;
@@ -387,4 +392,5 @@ definePageMeta({
     transition: transform 0.5s ease 0s;
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
-}</style>
+}
+</style>
