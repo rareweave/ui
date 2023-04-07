@@ -231,13 +231,17 @@ let updaterInterval = setInterval(async () => {
 
     if (!changed.value) {
         nftStateOrig.value = (await nftContract.readState()).cachedValue.state
+        if (!nftStateOrig.value.reservationTxId && (height.value - nftStateOrig.value.reservationBlockHeight) < 12 && nftStateOrig.value.reserver == account.value?.addr && nftStateOrig.value.reservationTxId != nftState.value.reservationTxId) {
+            finalizeBuy()
+        }
         nftState.value = JSON.parse(JSON.stringify(nftStateOrig.value))
         nftPrice.value = parseFloat(parseFloat(arweave.ar.winstonToAr(nftState.value.price)).toFixed(3))
         nftOwner.value = await accountTools.get(nftState.value.owner)
         nftOwnerANS.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${nftOwner.value.addr}`))?.domain
+
     }
 }, 50000)
-console.log((await nftContract.readState()))
+
 onBeforeUnmount(() => clearInterval(updaterInterval))
 
 async function saveChangesToNft() {
