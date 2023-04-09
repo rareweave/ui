@@ -110,7 +110,7 @@ let forSale = ref(true)
 
 const arweaveState = useState("arweave", () => {
     Arweave.init({
-        host: "arweave.dev",
+        host: "arweave.net",
         port: 443,
         protocol: "https",
         timeout: 60_000,
@@ -122,7 +122,8 @@ const arweaveState = useState("arweave", () => {
 
 const arweave = arweaveState.value;
 const warp = WarpFactory.forMainnet({
-    inMemory: false,
+    remoteStateSyncSource: "https://prophet.rareweave.store/contract",
+    remoteStateSyncEnabled: true,
 
 }, false, arweave).use(new DeployPlugin());
 warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`
