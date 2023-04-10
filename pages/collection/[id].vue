@@ -130,7 +130,7 @@ let nftBeingAdded = ref("");
 
 let state = (
   await (
-    await fetch("https://dre-1.warp.cc/contract?id=" + collectionId)
+    await fetch("https://prophet.rareweave.store/contract?id=" + collectionId)
   ).json()
 ).state;
 
