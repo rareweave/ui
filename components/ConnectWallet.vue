@@ -49,7 +49,7 @@ const show = ref(props.show || false);
 const wallet = useState("wallet", () => null);
 
 const arweave = useState("arweave", () => Arweave.init({
-    host: 'arweave.dev',
+    host: 'prophet.rareweave.store',
     port: 443,
     protocol: 'https',
     timeout: 60000,
