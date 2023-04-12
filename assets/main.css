@@ -1,6 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Averia+Sans+Libre:wght@300;400;700&family=Martian+Mono:wght@300;400;600&family=Sono:wght@500;700&display=swap');
+:root {
+    --nav-height: 82px;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
 
 .rareweave-font {
+    display: inline;
     background: rgb(63, 94, 251);
     background: radial-gradient(circle, #3f5efb 0%, #fc466b 100%);
     -webkit-background-clip: text;
@@ -8,9 +19,6 @@
     background-clip: text;
     background-size: 150% 150%;
     animation: rareweave-font 3s infinite;
-    /* font-family: 'Martian Mono', monospace; */
-
-    display: inline
 }
 
 @keyframes rareweave-font {
@@ -34,7 +42,6 @@
     from {
         background-size: 150% 150%;
         background-position-x: 0%;
-
         background-position-y: 0%;
         transform: rotate3d(-1, 1, 0, 0deg);
     }
@@ -48,8 +55,6 @@
 
     75% {
         background-size: 450% 450%;
-
-
         background-position-y: 50%;
     }
 
@@ -72,7 +77,6 @@
     50% {
         padding: 1.5rem;
         transform: rotate(180deg);
-
         border-radius: 5%;
         opacity: 0.7;
     }
@@ -88,7 +92,6 @@
 #__nuxt {
     height: 100vh;
     width: 100%;
-
 }
 
 .loading {
@@ -96,14 +99,13 @@
     background: hsla(20, 29%, 20%, 1);
     box-shadow: 0px 0px 10px 6px rgba(160, 84, 173, 0.6) inset;
     background: repeating-radial-gradient(circle, rgba(253, 187, 45, 1) 10%, rgba(160, 84, 173, 1) 20%, rgba(63, 133, 210, 1) 26%, rgba(160, 84, 173, 1) 40%, rgba(253, 187, 45, 1) 65%);
-
     transform-style: preserve-3d;
     border-radius: 50%;
     animation: loading 3s linear infinite, spin 1.5s infinite;
 }
 
 .h-full-navbared {
-    min-height: calc(100% - 82px)
+    min-height: calc(100% - var(--nav-height));
 }
 
 .amazing-button {
@@ -130,7 +132,5 @@
 }
 
 .amazing-button:disabled {
-
     opacity: 0.5;
-
 }
