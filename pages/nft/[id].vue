@@ -165,7 +165,7 @@ let accountToolsState = useState("accountTools", () => new Account({
 let walletState = useState("wallet", () => null);
 let wallet = walletState.value
 const arweave = (useState("arweave", () => Arweave.init({
-    host: "arweave.net",
+    host: "prophet.rareweave.store",
     port: 443,
     protocol: "https",
     timeout: 60_000,
