@@ -5,7 +5,8 @@
                 :src="'https://prophet.rareweave.store/_ipx/width_320,f_webp/https://arweave.net/' + nftId"
                 class=" inline-flex max-h-[20rem] max-w-20rem" />
             <video v-else-if="nftState?.contentType?.startsWith('video')" autoplay muted controls>
-                <source :src="'https://arweave.net/' + nftId" :type="nftState?.contentType"> Your browser does not support
+                <source :src="'https://prophet.rareweave.store/' + nftId" :type="nftState?.contentType"> Your browser does
+                not support
                 the video tag.
             </video>
         </div>
@@ -117,7 +118,8 @@
                     :src="'https://prophet.rareweave.store/_ipx/width_320,f_webp/https://arweave.net/' + nftId"
                     class=" inline-flex max-h-[20rem] max-w-20rem my-4 purchased" />
                 <video v-else-if="nftState?.contentType?.startsWith('video')" autoplay muted controls>
-                    <source :src="'https://arweave.net/' + nftId" :type="nftState?.contentType"> Your browser does not
+                    <source :src="'https://prophet.rareweave.store/' + nftId" :type="nftState?.contentType"> Your browser
+                    does not
                     support the video tag.
                 </video>
                 <span class="text-md text-center">Now you own {{ nftState.name }}!</span>
@@ -293,7 +295,7 @@ async function payRoyalty() {
         value: "0.3.0"
     }]
     try {
-        let feeEstimate = await fetch(`https://arweave.net/price/1000000/${nftState.value.minter}`).then(res => res.text())
+        let feeEstimate = await fetch(`https://prophet.rareweave.store/price/1000000/${nftState.value.minter}`).then(res => res.text())
         let tx = await arweave.createTransaction({
             tags: encodeTags(tags),
             target: nftState.value.minter,
@@ -332,7 +334,7 @@ async function finalizeBuy() {
         name: "SDK",
         value: "0.3.0"
     }]
-    let royaltyAnchor = (await fetch(`https://arweave.net/graphql`, {
+    let royaltyAnchor = (await fetch(`https://prophet.rareweave.store/graphql`, {
         method: "POST",
         headers: {
             "Content-type": "application/json"
@@ -348,7 +350,7 @@ async function finalizeBuy() {
         }`
         })
     }).then(tx => tx.json())).data.transaction.block.id
-    let feeEstimate = await fetch(`https://arweave.net/price/1000000/${nftState.value.owner}`).then(res => res.text())
+    let feeEstimate = await fetch(`https://prophet.rareweave.store/price/1000000/${nftState.value.owner}`).then(res => res.text())
     let tx = await arweave.createTransaction({
         tags: encodeTags(tags),
         target: nftState.value.owner,
