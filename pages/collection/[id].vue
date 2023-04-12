@@ -88,11 +88,7 @@ let forSaleOnly = ref(false);
 let addModalOpened = ref(false);
 let nftBeingAdded = ref("");
 
-let state = (
-  await (
-    await fetch("https://prophet.rareweave.store/contract?id=" + collectionId)
-  ).json()
-).state;
+let state = ref((await $fetch("https://prophet.rareweave.store/contract?id=" + collectionId)).state);
 
 const warp = WarpFactory.forMainnet(
   {
@@ -123,17 +119,17 @@ let nftContract = account.value
 
 async function refreshResults() {
   nfts.value = await $fetch(
-    `https://prophet.rareweave.store/nfts?collection=${collectionId}&search=${searchCondition.value}${forSaleOnly.value ? "&forSaleOnly=true" : ""
+    `https://prophet.rareweave.store/nfts?collection=${collectionId}&${searchCondition.value ? '&search=' + searchCondition.value : ''}${forSaleOnly.value ? "&forSaleOnly=true" : ""
     }`
   );
 }
 
 async function add() {
-  let nfts = nftBeingAdded.value.split(" ");
+  let newNfts = nftBeingAdded.value.split(" ");
 
   let inputs = [];
 
-  for (let nft of nfts) {
+  for (let nft of newNfts) {
     inputs.push({
       function: "add-item",
       item: nft,
@@ -147,7 +143,8 @@ async function add() {
 
   addModalOpened.value = false;
 
-  location.reload();
+  state.value = (await fetch("https://prophet.rareweave.store/contract?id=" + collectionId).then(res => res.json())).state
+  refreshResults()
 }
 
 async function deleteNFT(contract) {
