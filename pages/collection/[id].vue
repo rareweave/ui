@@ -82,7 +82,7 @@ const arweave = useState("arweave", () =>
 ).value;
 
 let collectionId = useRoute().params.id || useRoute().hash.slice(1);
-let nfts = ref(await $fetch("https://prophet.rareweave.store/nfts"));
+let nfts = ref(await $fetch("https://prophet.rareweave.store/nfts?collection=" + collectionId));
 let searchCondition = ref("");
 let forSaleOnly = ref(false);
 let addModalOpened = ref(false);
@@ -109,6 +109,7 @@ let nftContract = account.value
       remoteStateSyncSource: "https://prophet.rareweave.store/contract",
       remoteStateSyncEnabled: true,
       unsafeClient: "allow",
+      allowBigInt: true,
       waitForConfirmation: false,
     })
     .connect("use_wallet")
@@ -116,12 +117,13 @@ let nftContract = account.value
     remoteStateSyncSource: "https://prophet.rareweave.store/contract",
     remoteStateSyncEnabled: true,
     unsafeClient: "allow",
+    allowBigInt: true,
     waitForConfirmation: false,
   });
 
 async function refreshResults() {
   nfts.value = await $fetch(
-    `https://prophet.rareweave.store/nfts?search=${searchCondition.value}${forSaleOnly.value ? "&forSaleOnly=true" : ""
+    `https://prophet.rareweave.store/nfts?collection=${collectionId}&search=${searchCondition.value}${forSaleOnly.value ? "&forSaleOnly=true" : ""
     }`
   );
 }
@@ -154,13 +156,10 @@ async function deleteNFT(contract) {
     item: contract,
   });
 
-  console.log(nfts.value);
-
   nfts.value.result = nfts.value.result.filter(
     (nft) => nft.contractTxId != contract
   );
 
-  console.log(nfts.value);
 }
 
 definePageMeta({
