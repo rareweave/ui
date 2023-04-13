@@ -108,6 +108,10 @@ body {
     min-height: calc(100% - var(--nav-height));
 }
 
+.max-h-full-navbared {
+    max-height: calc(100vh - 82px)
+}
+
 .amazing-button {
     background: rgb(97, 9, 168);
     background: radial-gradient(circle, rgba(97, 9, 168, 1) 0%, rgba(121, 41, 9, 1) 25%, rgba(179, 22, 83, 1) 50%, rgba(171, 49, 107, 1) 61%, rgba(167, 40, 83, 1) 73%, rgb(185, 25, 36) 100%);

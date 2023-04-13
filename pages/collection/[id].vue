@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full-navbared w-full flex flex-col lg:flex-row justify-between" :style="{
+  <div class="h-full-navbared w-full flex flex-col lg:flex-row justify-between  " :style="{
     backgroundImage: `linear-gradient(-200deg,rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)),radial-gradient(#000000a0, #000000ff), url('/profile-default-bg.jpg')`,
     backgroundAttachment: 'fixed',
     backgroundRepeat: 'repeat',
@@ -7,7 +7,7 @@
     backgroundPosition: '0% 0%',
     backgroundSize: 'cover',
   }">
-    <div class="pt-4 px-4 my-4 ml-4 bg-black bg-opacity-30 flex flex-col items-center">
+    <div class="pt-4 px-4 my-4 ml-4 bg-black bg-opacity-30 flex flex-col items-center justify-start lg:h-full-navbared ">
       <h1 class="font-mono text-3xl">{{ state.name }}</h1>
       <input class="input input-bordered rounded-lg input-accent mt-2 w-96" placeholder="Search by name/description/etc."
         v-model="searchCondition" @input="refreshResults" />
@@ -24,19 +24,13 @@
       </template>
     </div>
 
-    <div class="flex flex-row flex-wrap items-start">
-      <template v-if="account && account.addr && state.admins.includes(account.addr)">
-        <template v-for="nft in nfts.result">
-          <NftCard v-if="state.items.includes(nft.contractTxId)" :key="nft.contractTxId" :nft="nft" :disposable="true"
-            @remove-item="deleteNFT"></NftCard>
-        </template>
-      </template>
-      <template v-else>
-        <template v-for="nft in nfts.result">
-          <NftCard v-if="state.items.includes(nft.contractTxId)" :key="nft.contractTxId" :nft="nft" :disposable="false">
-          </NftCard>
-        </template>
-      </template>
+    <div class="inline-flex flex-row flex-wrap overflow-auto items-center justify-center  content-center">
+
+
+      <NftCard v-for="nft in nfts.result" :key="nft.contractTxId" :nft="nft"
+        :disposable="account && account.addr && state.admins.includes(account.addr)" @remove-item="deleteNFT"></NftCard>
+
+
     </div>
   </div>
   <input type="checkbox" id="add-modal" class="modal-toggle" :checked="false" v-model="addModalOpened" />
@@ -82,17 +76,13 @@ const arweave = useState("arweave", () =>
 ).value;
 
 let collectionId = useRoute().params.id || useRoute().hash.slice(1);
-let nfts = ref(await $fetch("https://prophet.rareweave.store/nfts"));
+let nfts = ref(await $fetch("https://prophet.rareweave.store/nfts?collection=" + collectionId));
 let searchCondition = ref("");
 let forSaleOnly = ref(false);
 let addModalOpened = ref(false);
 let nftBeingAdded = ref("");
 
-let state = (
-  await (
-    await fetch("https://prophet.rareweave.store/contract?id=" + collectionId)
-  ).json()
-).state;
+let state = ref((await $fetch("https://prophet.rareweave.store/contract?id=" + collectionId)).state);
 
 const warp = WarpFactory.forMainnet(
   {
@@ -109,6 +99,7 @@ let nftContract = account.value
       remoteStateSyncSource: "https://prophet.rareweave.store/contract",
       remoteStateSyncEnabled: true,
       unsafeClient: "allow",
+      allowBigInt: true,
       waitForConfirmation: false,
     })
     .connect("use_wallet")
@@ -116,22 +107,23 @@ let nftContract = account.value
     remoteStateSyncSource: "https://prophet.rareweave.store/contract",
     remoteStateSyncEnabled: true,
     unsafeClient: "allow",
+    allowBigInt: true,
     waitForConfirmation: false,
   });
 
 async function refreshResults() {
   nfts.value = await $fetch(
-    `https://prophet.rareweave.store/nfts?search=${searchCondition.value}${forSaleOnly.value ? "&forSaleOnly=true" : ""
+    `https://prophet.rareweave.store/nfts?collection=${collectionId}&${searchCondition.value ? '&search=' + searchCondition.value : ''}${forSaleOnly.value ? "&forSaleOnly=true" : ""
     }`
   );
 }
 
 async function add() {
-  let nfts = nftBeingAdded.value.split(" ");
+  let newNfts = nftBeingAdded.value.split(" ");
 
   let inputs = [];
 
-  for (let nft of nfts) {
+  for (let nft of newNfts) {
     inputs.push({
       function: "add-item",
       item: nft,
@@ -145,7 +137,8 @@ async function add() {
 
   addModalOpened.value = false;
 
-  location.reload();
+  state.value = (await fetch("https://prophet.rareweave.store/contract?id=" + collectionId).then(res => res.json())).state
+  refreshResults()
 }
 
 async function deleteNFT(contract) {
@@ -154,13 +147,10 @@ async function deleteNFT(contract) {
     item: contract,
   });
 
-  console.log(nfts.value);
-
   nfts.value.result = nfts.value.result.filter(
     (nft) => nft.contractTxId != contract
   );
 
-  console.log(nfts.value);
 }
 
 definePageMeta({
