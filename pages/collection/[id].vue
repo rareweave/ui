@@ -7,7 +7,7 @@
     backgroundPosition: '0% 0%',
     backgroundSize: 'cover',
   }">
-    <div class="pt-4 px-4 my-4 ml-4 bg-black bg-opacity-30 flex flex-col items-center justify-start h-full-navbared ">
+    <div class="pt-4 px-4 my-4 ml-4 bg-black bg-opacity-30 flex flex-col items-center justify-start lg:h-full-navbared ">
       <h1 class="font-mono text-3xl">{{ state.name }}</h1>
       <input class="input input-bordered rounded-lg input-accent mt-2 w-96" placeholder="Search by name/description/etc."
         v-model="searchCondition" @input="refreshResults" />
