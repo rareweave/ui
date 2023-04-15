@@ -57,6 +57,14 @@
                 <span class="w-12 text-center justify-center">%</span>
             </label>
 
+            <label class="label">
+                <span class="label-text">Collection</span>
+            </label>
+            <label class="input-group">
+                <input v-model="collectionId" type="text" required placeholder="Collection" class="input input-bordered" />
+                <span class="w-12 text-center justify-center">ID</span>
+            </label>
+
             <label class="cursor-pointer label my-2 mx-0 pr-0">
                 <span class="label-text">For sale</span>
                 <input type="checkbox" class="toggle toggle-accent" checked v-model="forSale" />
@@ -104,6 +112,7 @@ let description = ref("")
 let price = ref(0.5)
 let royalty = ref(3)
 let forSale = ref(true)
+let collectionId = ref("")
 
 
 
@@ -229,6 +238,36 @@ async function mint() {
         return new Promise((resolve) => {
             setTimeout(resolve, ms)
         })
+    }
+
+    if(collectionId.value != "") {
+      let collectionContract = account.value
+  ? warp
+    .contract(collectionId.value)
+    .setEvaluationOptions({
+      remoteStateSyncSource: "https://prophet.rareweave.store/contract",
+      remoteStateSyncEnabled: true,
+      unsafeClient: "allow",
+      allowBigInt: true,
+      waitForConfirmation: false,
+    })
+    .connect("use_wallet")
+  : warp.contract(collectionId.value).setEvaluationOptions({
+    remoteStateSyncSource: "https://prophet.rareweave.store/contract",
+    remoteStateSyncEnabled: true,
+    unsafeClient: "allow",
+    allowBigInt: true,
+    waitForConfirmation: false,
+  });
+
+  let add = await collectionContract.writeInteraction({
+      function: "bulk",
+      inputs: [{
+        function: "add-item",
+        item: tx.id,
+      }],
+    });
+    console.log(add)
     }
 
 
