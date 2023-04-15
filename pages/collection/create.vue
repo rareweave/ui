@@ -67,7 +67,7 @@ import ArDB from "ardb";
 import { DeployPlugin } from "warp-contracts-plugin-deploy";
 import { Buffer } from "buffer";
 import Account from "arweave-account";
-const { WarpFactory } = await import("warp-contracts");
+const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 let accountToolsState = useState(
   "accountTools",
   () =>
@@ -77,15 +77,14 @@ let accountToolsState = useState(
       cacheTime: 60,
     })
 );
+const accountTools = accountToolsState.value;
 let account = useState("account", () => null);
 let walletState = useState("wallet", () => null);
-
+let wallet = walletState.value;
 let uploading = ref(false);
-
 let title = ref("");
 let description = ref("");
 let tags = ref("");
-
 const arweaveState = useState("arweave", () => {
   Arweave.init({
     host: "prophet.rareweave.store",
@@ -104,10 +103,11 @@ const warp = WarpFactory.forMainnet(
   false,
   arweave
 ).use(new DeployPlugin());
-
 warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`;
 warp.interactionsLoader.delegate.baseUrl = `https://prophet.rareweave.store`;
-
+// console.log(warp.deploy())
+const ardbState = useState("ardb", () => new ArDB(arweave.value));
+let ardb = ardbState.value;
 async function Create() {
   let tagArray = tags.value.split(" ");
   let init_state = {
@@ -119,9 +119,7 @@ async function Create() {
     items: [],
     links: {},
   };
-
   uploading.value = true;
-
   let tx = await arweave.createTransaction({
     data: Buffer.from(JSON.stringify(init_state), "utf8"),
     tags: encodeTags([
@@ -177,30 +175,26 @@ async function Create() {
     ]),
   });
   await arweave.transactions.sign(tx);
-
   let uploader = await arweave.transactions.getUploader(tx);
-
   while (!uploader.isComplete) {
     await uploader.uploadChunk();
     console.log(
       `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
     );
   }
-
   await warp.register(tx.id, "node1").catch((e) => null);
   await warp.register(tx.id, "node2").catch((e) => null);
-
   let contractInstance = warp.contract(tx.id).setEvaluationOptions({
     unsafeClient: "allow",
     waitForConfirmation: false, //we are using anchoring
     remoteStateSyncEnabled: false,
   });
-
   async function checkContract(nftId, tries = 0) {
     if (tries >= 100) {
       return "error";
     }
     try {
+      let res = await contractInstance.readState();
       return "ok";
     } catch (e) {
       console.log(e, contractInstance);
