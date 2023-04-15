@@ -1,12 +1,12 @@
 <template>
   <div class="bg-black bg-opacity-50 p-4 rounded-none backdrop-blur-sm hero h-full-navbared
-                                                       min-h-screen" :style="{
-                                                         backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.jpg')`,
-                                                         backgroundAttachment: 'fixed',
-                                                         backgroundColor: 'rgb(2,2,2)',
-                                                         backgroundRepeat: 'no-repeat',
-                                                         backgroundSize: 'auto 100%'
-                                                       }">
+                                                         min-h-screen" :style="{
+                                                           backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.jpg')`,
+                                                           backgroundAttachment: 'fixed',
+                                                           backgroundColor: 'rgb(2,2,2)',
+                                                           backgroundRepeat: 'no-repeat',
+                                                           backgroundSize: 'auto 100%'
+                                                         }">
     <div class="hero-content flex-col lg:flex-row justify-between w-full  ">
       <div class="text-center">
         <h1 class="text-6xl font-bold rareweave-font font-mono">RareWeave</h1>
@@ -31,8 +31,8 @@
           </div>
         </div>
       </div>
-      <NuxtLink class="randomNFT" :to="'/nft/' + randomNft.contractTxId">
-        <img :src="'https://prophet.rareweave.store/_ipx/width_384,f_webp/https://arweave.net/' + randomNft.contractTxId"
+      <NuxtLink class="randomNFT" :to="'/nft/' + randomNft?.contractTxId">
+        <img :src="'https://prophet.rareweave.store/_ipx/width_384,f_webp/https://arweave.net/' + randomNft?.contractTxId"
           class="max-w-sm rounded-md shadow-2xl " />
       </NuxtLink>
     </div>
