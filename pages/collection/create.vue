@@ -117,7 +117,7 @@ async function Create() {
     tags: encodeTags([
       { name: "App-Name", value: "SmartWeaveContract" },
       { name: "App-Version", value: "0.3.0" },
-      { name: 'Content-Type', value: 'text/plain' },
+      { name: 'Content-Type', value: 'application/json' },
       {
         name: "Contract-Src",
         value: "mhbnvFZFgAEjiP-islmBgox8_qD70xNcR1CCcNPo3ps",
