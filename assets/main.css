@@ -121,7 +121,7 @@
     background: rgb(238, 174, 202);
     color: black;
     border: 2px solid black;
-    background: linear-gradient(45deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+    background: linear-gradient(45deg, rgb(107, 99, 194) 0%, rgb(216, 140, 211) 100%);
 }
 
 
