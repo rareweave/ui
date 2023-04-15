@@ -129,6 +129,15 @@
           :nft="nft"
         ></NftCard>
       </div>
+
+      <h2 class="text-center text-2xl mt-2 font-mono">Owned Collections:</h2>
+      <div class="flex flex-wrap justify-center flex-col">
+        <CollectionCard
+          v-for="collection in ownedCollections"
+          :key="collection.contractTxId"
+          :collection="collection"
+        ></CollectionCard>
+      </div>
     </template>
     <template v-else>
       <img
