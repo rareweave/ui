@@ -1,9 +1,6 @@
 <template>
-  <form
-    v-if="!uploading"
-    class="h-full-navbared w-full flex flex-col items-center justify-center font-mono"
-    @submit.prevent="Create"
-  >
+  <form v-if="!uploading" class="h-full-navbared w-full flex flex-col items-center justify-center font-mono"
+    @submit.prevent="Create">
     <h1 class="text-3xl text-center">
       Create
       <p class="rareweave-font">Collection</p>
@@ -13,49 +10,28 @@
       <label class="label">
         <span class="label-text">Collection name</span>
       </label>
-      <input
-        v-model="title"
-        required
-        type="text"
-        maxlength="40"
-        placeholder="RareWeave Collection"
-        class="input input-bordered"
-      />
+      <input v-model="title" required type="text" maxlength="40" placeholder="RareWeave Collection"
+        class="input input-bordered" />
       <label class="label">
         <span class="label-text">Describe your Collection</span>
       </label>
 
-      <textarea
-        placeholder="Super Awesome NFT's!"
-        v-model="description"
-        class="textarea textarea-bordered textarea-xs w-full max-w-xs"
-      ></textarea>
+      <textarea placeholder="Super Awesome NFT's!" v-model="description"
+        class="textarea textarea-bordered textarea-xs w-full max-w-xs"></textarea>
 
       <label class="label">
         <span class="label-text">Tags</span>
       </label>
-      <input
-        v-model="tags"
-        required
-        type="text"
-        maxlength="40"
-        placeholder="doge rare cool..."
-        class="input input-bordered"
-      />
+      <input v-model="tags" required type="text" maxlength="40" placeholder="doge rare cool..."
+        class="input input-bordered" />
 
-      <button
-        type="submit"
-        class="btn btn-lg py-3 amazing-button rounded-lg min-h-0 h-auto my-2"
-      >
+      <button type="submit" class="btn btn-lg py-3 amazing-button rounded-lg min-h-0 h-auto my-2">
         Create!
       </button>
     </div>
   </form>
 
-  <div
-    v-else
-    class="h-full-navbared w-full flex flex-col items-center justify-center font-mono"
-  >
+  <div v-else class="h-full-navbared w-full flex flex-col items-center justify-center font-mono">
     <div class="loading-wrapper h-20 m-2 flex items-center justify-center">
       <div class="loading"></div>
     </div>
@@ -146,21 +122,10 @@ async function Create() {
         value: "mhbnvFZFgAEjiP-islmBgox8_qD70xNcR1CCcNPo3ps",
       },
       { name: "SDK", value: "Warp" },
-      { name: "Nonce", value: Date.now().toString() },
       { name: "Init-State", value: JSON.stringify(init_state) },
       { name: "Title", value: title.value },
-      { name: "Type", value: "SW-Contract" },
       { name: "Topics", value: "NFTs, Atomic Assets, Collection" },
-      { name: "Description", value: "RareWeave Collection" },
-      {
-        name: "Contract-Manifest",
-        value: JSON.stringify({
-          evaluationOptions: {
-            unsafeClient: "allow",
-            waitForConfirmation: false,
-          },
-        }),
-      },
+      { name: "Description", value: description.value },
     ]),
   });
 
