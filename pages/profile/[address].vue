@@ -127,6 +127,11 @@
             <div class="w-full flex flex-wrap justify-center flex-row mt-4 self-end">
                 <NftCard v-for="nft in ownedNfts" :key="nft.contractTxId" :nft="nft"></NftCard>
             </div>
+
+            <h2 class="text-center text-2xl font-mono">Owned Collection's:</h2>
+            <div class="w-full flex flex-wrap justify-center flex-row mt-4 self-end">
+                <CollectionCard v-for="collection in ownedCollections" :key="collection.contractTxId" :collection="collection"></CollectionCard>
+            </div>
         </template>
     </div>
 </template>
@@ -164,7 +169,9 @@ let userProfileOrig = ref(await accountTools.get(profileAddress))
 let user = ref(JSON.parse(JSON.stringify(userProfileOrig.value)))
 let userAnsName = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${user.value.addr}`))?.domain
 let ownedNfts = (await $fetch(`https://prophet.rareweave.store/nfts?ownedBy=` + user.value.addr))?.result
-console.log(ownedNfts)
+let ownedCollections = (await $fetch(`https://prophet.rareweave.store/collections?ownedBy=${user.value.addr}`))?.result
+
+console.log(ownedCollections)
 let changed = computed(() => {
     let ch = JSON.stringify(user.value) != JSON.stringify(userProfileOrig.value)
     return ch
