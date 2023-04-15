@@ -122,6 +122,7 @@ const arweaveState = useState("arweave", () => {
 
 const arweave = arweaveState.value;
 const warp = WarpFactory.forMainnet({
+    inMemory: true,
     remoteStateSyncSource: "https://prophet.rareweave.store/contract",
     remoteStateSyncEnabled: true,
 
