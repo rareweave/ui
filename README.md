@@ -11,7 +11,7 @@ This project is built using [Nuxt.js](https://nuxtjs.org), a powerful Vue.js fra
 3. [Production](#production)
 
 ## Setup
-To get started with the RareWeave UI, first ensure that you have [Nuxt.js](https://nuxtjs.org/docs/get-started/installation) and [Yarn](https://yarnpkg.com) installed on your system. Once you have these prerequisites, follow the steps below:
+To get started with the RareWeave UI, first ensure that you have [Node.js](https://nodejs.org/en) and [Yarn](https://yarnpkg.com) installed on your system. Once you have these prerequisites, follow the steps below:
 
 1. Clone the repository to your local machine:
 ```bash
@@ -37,7 +37,7 @@ This will start the development server on http://localhost:3000. Open your brows
 
 ## Production
 
-When you're ready to build the RareWeave UI for production, use the following command:
+When you're ready to build the RareWeave UI for production (dist/ static dir), use the following command:
 ```bash
 yarn generate
 ```
