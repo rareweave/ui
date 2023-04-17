@@ -1,12 +1,12 @@
 <template>
   <div class="bg-black bg-opacity-50 p-4 rounded-none backdrop-blur-sm hero h-full-navbared
-                                                         min-h-screen" :style="{
-                                                           backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.webp')`,
-                                                           backgroundAttachment: 'fixed',
-                                                           backgroundColor: 'rgb(2,2,2)',
-                                                           backgroundRepeat: 'no-repeat',
-                                                           backgroundSize: 'auto 100%'
-                                                         }">
+                                                               min-h-screen" :style="{
+                                                                 backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.webp')`,
+                                                                 backgroundAttachment: 'fixed',
+                                                                 backgroundColor: 'rgb(2,2,2)',
+                                                                 backgroundRepeat: 'no-repeat',
+                                                                 backgroundSize: 'auto 100%'
+                                                               }">
     <div class="hero-content flex-col lg:flex-row justify-between w-full  ">
       <div class="text-center">
         <h1 class="text-6xl font-bold rareweave-font font-mono">RareWeave</h1>
@@ -31,7 +31,9 @@
           </div>
           <div id="gap" class="pt-4">
           </div>
-          <a class="badge color-[#2dd4bf] badge-outline rounded-full" href="https://ucfobtm3o5iblpls37lmzbktytxjoo24guajfciszltxbetweaba.arweave.net/oIrgzZt3UBW9ct_WzIVTxO6XO1w1AJKJEsrncJJ2IAI">Read the specification  ⭐</a>
+          <a class="badge color-[#2dd4bf] badge-outline rounded-full"
+            href="https://ucfobtm3o5iblpls37lmzbktytxjoo24guajfciszltxbetweaba.arweave.net/oIrgzZt3UBW9ct_WzIVTxO6XO1w1AJKJEsrncJJ2IAI">Read
+            the specification ⭐</a>
         </div>
       </div>
       <NuxtLink class="randomNFT" :to="'/nft/' + randomNft?.contractTxId">
@@ -52,13 +54,7 @@ definePageMeta({
 </script> 
 <style>
 .randomNFT {
-  transform: perspective(1500px) rotateY(-15deg);
   border-radius: 1rem;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-  transition: transform 1s ease-in-out 0s;
-}
-
-.randomNFT:hover {
-  transform: perspective(3000px) rotateY(5deg);
 }
 </style>
