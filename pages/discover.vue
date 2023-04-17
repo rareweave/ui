@@ -1,6 +1,6 @@
 <template>
-    <div class="h-full-navbared w-full flex flex-col items-center justify-start ">
-        <div class="pt-4 px-4 my-4 bg-black bg-opacity-30 flex flex-col items-center">
+    <div class="h-full-navbared w-full flex flex-col items-center justify-start">
+        <div class="pt-4 px-4 my-4 pb-4 bg-black bg-opacity-30 flex flex-col items-center rounded-xl">
             <h1 class="font-mono text-3xl">Discover NFTs</h1>
             <input class="input input-bordered rounded-lg input-accent mt-2 w-96"
                 placeholder="Search by name/description/etc." v-model="searchCondition" @input="refreshResults" />

@@ -29,6 +29,9 @@
               Discover
             </NuxtLink>
           </div>
+          <div id="gap" class="pt-4">
+          </div>
+          <a class="badge color-[#2dd4bf] badge-outline rounded-full" href="https://ucfobtm3o5iblpls37lmzbktytxjoo24guajfciszltxbetweaba.arweave.net/oIrgzZt3UBW9ct_WzIVTxO6XO1w1AJKJEsrncJJ2IAI">Read the specification  ⭐</a>
         </div>
       </div>
       <NuxtLink class="randomNFT" :to="'/nft/' + randomNft?.contractTxId">

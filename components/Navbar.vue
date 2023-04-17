@@ -1,15 +1,15 @@
 <template>
-    <div v-if="account" class="py-4 px-2 bg-base-300 w-full flex flex-row justify-between items-center">
-        <NuxtLink to="/" class="rareweave-font font-mono text-3xl ml-2">RareWeave</NuxtLink>
+    <div v-if="account" class="py-4 px-2 bg-zinc-950 w-full flex flex-row justify-between items-center">
+        <NuxtLink to="/" class="rareweave-font font-mono text-2xl ml-2">RareWeave</NuxtLink>
         <NuxtLink
-            class="bg-neutral font-mono hover:bg-neutral-focus transition-all rounded-xl p-2 inline-flex flex-row items-center border border-base-300 cursor-pointer hover:rounded-2xl"
+            class="bg-neutral font-mono hover:bg-neutral-focus transition-all rounded-full p-2 inline-flex flex-row items-center border border-base-300 cursor-pointer"
             :replace="false" :to="'/profile/' + account.addr">
             <img class="h-[2rem] mr-2" :src="account.profile.avatarURL" />{{ ansAddr || account.handle }}
         </NuxtLink>
     </div>
-    <div v-else class="py-4 px-2 bg-base-300 w-full flex flex-row justify-between items-center">
-        <NuxtLink to="/" class="rareweave-font text-3xl ml-2 font-mono">RareWeave</NuxtLink>
-        <NuxtLink class="btn amazing-button2 rounded-md hover:rounded-xl transition-all font-mono" to="/login">Login
+    <div v-else class="py-4 px-2 bg-zinc-950 w-full flex flex-row justify-between items-center">
+        <NuxtLink to="/" class="rareweave-font text-2xl ml-2 font-mono">RareWeave</NuxtLink>
+        <NuxtLink class="btn amazing-button2 rounded-full transition-all font-mono" to="/login">Login
         </NuxtLink>
     </div>
 </template>
