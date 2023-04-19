@@ -27,7 +27,8 @@
 
       <span class="mt-1 text-sm text-gray-300" v-if="nft.owner">Owner:
         <NuxtLink class="link" :to="'/profile/' + nft.owner.address">{{
-          nft.owner.ansName || nft.owner.account.handle
+          nft?.owner?.ansName || nft?.owner?.account?.handle || (nft.state.owner.length > 11 ? nft.state.owner.slice(0, 4)
+            + '...' + nft.state.owner.slice(-4) : nft.state.owner)
         }}</NuxtLink>
       </span>
     </div>

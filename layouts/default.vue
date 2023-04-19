@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full" v-if="wallet">
+    <div class="h-full antialiased" v-if="wallet">
         <Navbar />
         <slot />
     </div>

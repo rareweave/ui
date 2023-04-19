@@ -1,17 +1,19 @@
 <template>
-  <div class="bg-black bg-opacity-50 p-4 rounded-none backdrop-blur-sm hero h-full-navbared
-                                                               min-h-screen" :style="{
-                                                                 backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.webp')`,
-                                                                 backgroundAttachment: 'fixed',
-                                                                 backgroundColor: 'rgb(2,2,2)',
-                                                                 backgroundRepeat: 'no-repeat',
-                                                                 backgroundSize: 'auto 100%'
-                                                               }">
+  <div
+    class="bg-black bg-opacity-50 p-4 rounded-none backdrop-blur-sm hero h-full-navbared
+                                                                                                                                                                                                                 min-h-screen"
+    :style="{
+      backgroundImage: `radial-gradient(#000000a0,#000000ff, #000000ff), url('/main-page-banner.webp')`,
+      backgroundAttachment: 'fixed',
+      backgroundColor: 'rgb(2,2,2)',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'auto 100%'
+    }">
     <div class="hero-content flex-col lg:flex-row justify-between w-full  ">
       <div class="text-center">
-        <h1 class="text-6xl font-bold rareweave-font font-mono">RareWeave</h1>
+        <h1 class="text-6xl font-bold text-white font-sans ">RareWeave</h1>
         <div>
-          <p class="font-mono mt-2 p-2 text-center max-w-[50rem]">
+          <p class="font-sans mt-2 p-2 text-center max-w-[50rem]">
             <span>You've arrived on wonderful land - at RareWeave, the NFT marketplace of the Arweave ecosystem. </span>
             <br />
             <span>Here you can buy unicorn JPEGs at price of just few gold ounces! </span>
@@ -20,19 +22,22 @@
             <a class="text-[#4946fc] m-1 inline-block" href="https://discord.gg/2esZrmXsqs">[Discord]</a>
           </p>
           <div class="flex flex-row w-full flex-wrap justify-center ">
-            <NuxtLink to="/create"
-              class="btn btn-xl text-lg amazing-button2 rounded-md hover:rounded-lg transition-all font-mono m-1 w-48">
-              Mint
+            <NuxtLink to="/create" class="amazing-button2 mr-2">
+
+              Create
+
             </NuxtLink>
-            <NuxtLink to="/discover"
-              class="btn btn-xl text-lg amazing-button font-mono rounded-md hover:rounded-lg transition-all m-1 w-48">
-              Discover
+            <NuxtLink to="/discover" class="amazing-button">
+              <span class="relative px-5 inline-flex items-center justify-center h-full bg-[rgb(12,12,12)] rounded-md ">
+                Discover
+              </span>
             </NuxtLink>
+
           </div>
           <div id="gap" class="pt-4">
           </div>
-          <a class="badge color-[#2dd4bf] badge-outline rounded-full"
-            href="https://ucfobtm3o5iblpls37lmzbktytxjoo24guajfciszltxbetweaba.arweave.net/oIrgzZt3UBW9ct_WzIVTxO6XO1w1AJKJEsrncJJ2IAI">Read
+          <a class="badge color-[#2dd4bf] p-3 badge-outline rounded-full"
+            href="https://arweave.dev/oIrgzZt3UBW9ct_WzIVTxO6XO1w1AJKJEsrncJJ2IAI">Read
             the specification ⭐</a>
         </div>
       </div>

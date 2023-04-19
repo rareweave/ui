@@ -1,6 +1,6 @@
 
 export default defineNuxtConfig({
-    modules: ['@nuxtjs/tailwindcss'],
+    modules: [],
     target: "static",
     mode: "spa",
     typescript: false,
@@ -8,6 +8,12 @@ export default defineNuxtConfig({
     css: ["~/assets/main.css"],
     colorMode: {
         dataValue: "luxury"
+    },
+    postcss: {
+        plugins: {
+            tailwindcss: {},
+            autoprefixer: {},
+        }
     },
     app: {
         head: {
