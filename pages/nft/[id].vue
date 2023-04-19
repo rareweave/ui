@@ -10,7 +10,7 @@
         Your browser does not support the video tag.
       </video>
     </div>
-    <h1 class="text-3xl text-center font-sans">{{ nftState.name }}</h1>
+    <h1 class="text-3xl text-center font-mono">{{ nftState.name }}</h1>
     <template v-if="account && account.addr && account.addr == nftState.owner">
       <textarea
         class="text-md textarea font-sans m-2 max-w-[32rem] w-full overflow-auto transition-none textarea-bordered rounded-md"
