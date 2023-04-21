@@ -1,48 +1,23 @@
 <template>
-  <form
-    v-if="!uploading"
-    class="h-full-navbared w-full flex flex-col items-center justify-center font-mono"
-    @submit.prevent="mint"
-  >
+  <form v-if="!uploading" class="h-full-navbared w-full flex flex-col items-center justify-center font-mono"
+    @submit.prevent="mint">
     <h1 class="text-3xl text-center">
       Upload
       <p class="rareweave-font">RareWeave</p>
       NFT
     </h1>
     <div class="flex items-center justify-center w-full md:w-96 m-4 pt-4 px-4">
-      <label
-        for="dropzone-file"
-        class="flex flex-col items-center justify-center w-full min-h-64 border-2 border-dashed rounded-lg cursor-pointer bg-base-300 hover:bg-base-200 border-zinc-800"
-      >
+      <label for="dropzone-file"
+        class="flex flex-col items-center justify-center w-full min-h-64 border-2 border-dashed rounded-lg cursor-pointer bg-base-300 hover:bg-base-200 border-zinc-800">
         <div class="flex flex-col items-center justify-center pt-5 pb-6">
-          <svg
-            v-if="!imageObjectUrl"
-            aria-hidden="true"
-            class="w-10 h-10 mb-3 mt-3 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-            ></path>
+          <svg v-if="!imageObjectUrl" aria-hidden="true" class="w-10 h-10 mb-3 mt-3 text-gray-400" fill="none"
+            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
           </svg>
           <template v-else>
-            <img
-              v-if="fileMeta?.type?.startsWith('image')"
-              :src="imageObjectUrl"
-              class="inline-flex"
-            />
-            <video
-              v-else-if="fileMeta?.type?.startsWith('video')"
-              autoplay
-              muted
-              controls
-            >
+            <img v-if="fileMeta?.type?.startsWith('image')" :src="imageObjectUrl" class="inline-flex" />
+            <video v-else-if="fileMeta?.type?.startsWith('video')" autoplay muted controls>
               <source :src="imageObjectUrl" :type="fileMeta.type" />
               Your browser does not support the video tag.
             </video>
@@ -54,100 +29,55 @@
             SVG, PNG, JPG, GIF, MP4, HTML
           </p>
         </div>
-        <input
-          id="dropzone-file"
-          type="file"
-          class="hidden"
-          required
-          @change="uploadNftContent"
-        />
+        <input id="dropzone-file" type="file" class="hidden" required @change="uploadNftContent" />
       </label>
     </div>
     <div class="form-control mb-2 pb-2 px-2">
       <label class="label">
         <span class="label-text">Enter NFT title</span>
       </label>
-      <input
-        v-model="title"
-        required
-        type="text"
-        maxlength="40"
-        placeholder="Name for your NFT"
-        class="input input-bordered"
-      />
+      <input v-model="title" required type="text" maxlength="40" placeholder="Name for your NFT"
+        class="input input-bordered" />
       <label class="label">
         <span class="label-text">Describe your NFT</span>
       </label>
-      <textarea
-        placeholder="NFT description"
-        v-model="description"
-        class="textarea textarea-bordered textarea-xs w-full max-w-xs"
-      ></textarea>
+      <textarea placeholder="NFT description" v-model="description"
+        class="textarea textarea-bordered textarea-xs w-full max-w-xs"></textarea>
       <label class="label">
         <span class="label-text">Enter NFT price</span>
       </label>
       <label class="input-group">
-        <input
-          v-model="price"
-          type="number"
-          placeholder="0,5"
-          step="0.01"
-          class="input input-bordered"
-        />
+        <input v-model="price" type="number" placeholder="0,5" step="0.01" class="input input-bordered" />
         <span class="w-12 text-center justify-center">AR</span>
       </label>
       <label class="label">
         <span class="label-text">Enter royalty</span>
       </label>
       <label class="input-group">
-        <input
-          v-model="royalty"
-          type="number"
-          required
-          placeholder="3"
-          step="0.1"
-          class="input input-bordered"
-        />
+        <input v-model="royalty" type="number" required placeholder="3" step="0.1" class="input input-bordered" />
         <span class="w-12 text-center justify-center">%</span>
       </label>
       <label class="label">
-        <span class="label-text"
-          >Collection
-          <NuxtLink to="/collection/create" class="text-[#fc466b]"
-            >(Create Collection)</NuxtLink
-          ></span>
+        <span class="label-text">Collection
+          <NuxtLink to="/collection/create" class="text-[#fc466b]">(Create Collection)</NuxtLink>
+        </span>
       </label>
       <label class="input-group">
-        <input
-          v-model="collectionId"
-          type="text"
-          required
-          placeholder="Collection"
-          class="input input-bordered"
-        />
+        <input v-model="collectionId" type="text" placeholder="Collection" class="input input-bordered" />
         <span class="w-12 text-center justify-center">ID</span>
       </label>
       <label class="cursor-pointer label my-2 mx-0 pr-0">
         <span class="label-text">For sale</span>
-        <input
-          type="checkbox"
-          class="toggle toggle-accent"
-          checked
-          v-model="forSale"
-        />
+        <input type="checkbox" class="toggle toggle-accent" checked v-model="forSale" />
       </label>
-      <button
-        type="submit"
-        class="btn btn-lg py-3 amazing-button rounded-lg min-h-0 h-auto"
-      >
-        Mint!
+      <button type="submit" class="btn btn-lg py-3 amazing-button rounded-lg min-h-0 h-auto">
+        <span class="relative w-full inline-flex items-center justify-center h-full bg-[rgb(12,12,12)] rounded-md ">
+          Mint!
+        </span>
       </button>
     </div>
   </form>
-  <div
-    v-else
-    class="h-full-navbared w-full flex flex-col items-center justify-center font-mono"
-  >
+  <div v-else class="h-full-navbared w-full flex flex-col items-center justify-center font-mono">
     <div class="loading-wrapper h-20 m-2 flex items-center justify-center">
       <div class="loading"></div>
     </div>
@@ -301,16 +231,7 @@ async function mint() {
       },
       {
         name: "Description",
-        value: "RareWeave NFT",
-      },
-      {
-        name: "Contract-Manifest",
-        value: JSON.stringify({
-          evaluationOptions: {
-            unsafeClient: "allow",
-            waitForConfirmation: false,
-          },
-        }),
+        value: description.value || "RareWeave NFT",
       },
     ]),
   });
@@ -355,7 +276,7 @@ async function mint() {
     });
   }
 
-  if (collectionId.value != "") {
+  if (collectionId.value && collectionId.value != "") {
     let collectionContract = warp
       .contract(collectionId.value)
       .setEvaluationOptions({
