@@ -117,7 +117,7 @@
         'text-lg': true,
         'btn-disabled': isSomeoneElseBuying,
       }">
-        <span class="relative px-5 w-full inline-flex items-center justify-center h-full bg-[rgb(12,12,12)] rounded-md ">
+        <span>
           Buy
         </span>
       </label>

@@ -115,7 +115,11 @@
 }
 
 .amazing-button {
-    @apply btn normal-case shadow-lg transition-shadow ease-in duration-100 text-lg relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden font-mono rounded-lg bg-gradient-to-br to-orange-400 from-pink-500 text-white
+    @apply btn normal-case shadow-lg transition-shadow ease-in duration-100 text-lg relative inline-flex items-center justify-center p-0.5 overflow-hidden font-mono rounded-lg bg-gradient-to-br to-orange-400 from-pink-500 text-white
+}
+
+.amazing-button:first-child {
+    @apply relative px-5 w-full inline-flex items-center justify-center h-full bg-[#0c0c0c] rounded-md;
 }
 
 .amazing-button2 {
