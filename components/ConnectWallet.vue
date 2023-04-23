@@ -5,7 +5,7 @@
         <div class="modal-box">
             <h3 class="font-bold text-3xl text-center">Select your arweave wallet</h3>
             <div class="py-4 flex justify-center">
-                <div class="card card-compact m-2 w-1/3 bg-base-200" @click="connectArconnect">
+                <div class="card card-compact m-2 w-1/3 bg-base-200 cursor-pointer" @click="connectArconnect">
                     <figure>
                         <img src="https://7qx7gbohuua3h7r32vf6ddrjoi7mkdmczz6cdtcq2e3dhdpavd3q.arweave.net/_C_zBcelAbP-O9VL4Y4pcj7FDYLOfCHMUNE2M43gqPc"
                             alt="ArConnect" height="200" />
@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <!-- ArConnect uses own encryption method, which is not normal RSA encryption and not compatible with most software -->
-                <div class="card card-compact m-2 w-1/3 bg-base-200" @click="connectArweaveApp">
+                <div class="card card-compact m-2 w-1/3 bg-base-200 cursor-pointer" @click="connectArweaveApp">
                     <figure>
                         <img src="https://yctstiqqys3b4j5qb55sxtn6airb6a56tlwxtkfi36of6cbg2a5a.arweave.net/wKcpohDEth4nsA97K82-AiIfA76a7XmoqN-cXwgm0Do"
                             alt="Arweave.app" width="900" />
@@ -82,6 +82,9 @@ async function connectArweaveApp() {
 
 }
 async function connectArconnect() {
+    if(!('arweaveWallet' in window && 'connect' in window.arweaveWallet)) {
+        return
+    }
     await window.arweaveWallet.connect([
         "ACCESS_ADDRESS",
         "ACCESS_ALL_ADDRESSES",
