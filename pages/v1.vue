@@ -250,7 +250,16 @@
             <span class="V1__menuFilterbuttons">
               <button 
                 class="V1__menuButton"
-                @click="forSaleOnly = true; searchNFTs()"
+                @click="forSaleOnly = true; nfts = nfts.result.reduce((acc, cur) => {
+                  if (cur.state.forSale) {
+                      acc.result.push(cur);
+                      acc.total++;
+                  }
+                  return acc;
+                }, {
+                  result: [],
+                  total: 0}
+                ); searchNFTs()"
               >
                 Apply
               </button>
@@ -838,7 +847,7 @@ definePageMeta({
     }
   }
 
-@media screen and (max-width: 860px) {
+@media screen and (max-width: 1380px) {
   .V1__menu {
     animation: fold-in .63s forwards linear 1;
     overflow-y: hidden;

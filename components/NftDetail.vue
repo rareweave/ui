@@ -5,12 +5,27 @@
       class="detail-line"
     >
       <span class="wrapper image">
-        <span
-          class="img"
-          :style="{
-            backgroundImage: `radial-gradient(#00000030, #00000015), url('https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${nft.contractTxId}')`,
-          }"
-        ></span>
+        <img
+          v-if="nft.state?.contentType?.startsWith('image')"
+          class="NftDetail__Image"
+          :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${nft.contractTxId}`"
+          :alt="nft.state.name  || 'NFT'"
+          @load="imgHasBeenLoaded"
+        />
+        <video
+          v-else-if="nft.state?.contentType?.startsWith('video')" 
+          autoplay 
+          muted 
+          controls
+          loop
+          class="NftDetail__Video"
+        >
+          <source
+            :src="`https://prophet.rareweave.store/${nft.contractTxId}`"
+            :type="nft.state?.contentType"
+          />
+          Your browser does not support the video tag.
+        </video>
       </span>  
       <div class="details-info">
         <span class="title-label">
@@ -124,5 +139,16 @@
   height: calc((100%) - 1rem * 2);
   margin: 1rem 0;
   padding: 0 1rem;
+}
+
+.NftDetail__Image,
+.NftDetail__Video {
+  width: 286px;
+  height: 100%;
+  object-fit: contain;
+  aspect-ratio: 1;
+  border-radius: 0.5rem;
+  transition: 100ms ease-in-out;
+  transition: .36s ease-in-out;
 }
 </style>
