@@ -16,11 +16,26 @@
           <span class=""></span>
         </div>
         <img
+          v-if="nft.state?.contentType?.startsWith('image')"
           class="NftCard__Image"
           :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${nft.contractTxId}`"
           :alt="nft.state.name  || 'NFT'"
           @load="imgHasBeenLoaded"
         />
+        <video
+          v-else-if="nft.state?.contentType?.startsWith('video')" 
+          autoplay 
+          muted 
+          controls
+          loop
+          class="NftCard__Video"
+        >
+          <source
+            :src="`https://prophet.rareweave.store/${nft.contractTxId}`"
+            :type="nft.state?.contentType"
+          />
+          Your browser does not support the video tag.
+        </video>
       </div>
       <div class="NftCard__buttons">
         <button 
@@ -78,8 +93,12 @@
   );
   const arweave = arweaveState.value;
   function imgHasBeenLoaded(e) {
-    e.target.parentElement.querySelector(".NftCard__ImageLoading").style.display =
+    e.target.parentNode.parentNode.querySelector(".NftCard__ImageLoading").style.display =
       "none";
+  }
+  function vidHasBeenLoaded(e) {
+    e.target.parentNode.parentNode.querySelector(".NftCard__ImageLoading").style.visibility =
+      "collapse";
   }
 </script>
 <style>
@@ -155,7 +174,8 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 286px;
+  /* height: 286px; */
+  aspect-ratio: 1;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -176,6 +196,19 @@
   background-color: rgba(0,0,0,0);
   object-fit: cover;
   transition: .36s ease-in-out;
+}
+
+.NftCard__Video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: rgba(0,0,0,0);
+  object-fit: cover;
+  z-index: 99999;
 }
 
 .NftCard__Image:hover {
@@ -221,7 +254,6 @@
     transform: rotate(45deg);
     transition: .36s ease-in-out;
 }
-
 
 .NftCard__buttons {
   position: relative;

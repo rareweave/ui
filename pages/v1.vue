@@ -94,7 +94,7 @@
         :class="{ active: view === 'list' }"
         @click="view = 'list'"
       >
-        details
+        list
       </button>
     </div>
   </div>
@@ -102,11 +102,14 @@
   <div class="V1__page">
     <div class="V1__menu">
       <div class="V1__menuSection">
-        <h2 class="V1__menuHeader">
+        <h2 
+          class="V1__menuHeader"
+        >
           Rarified
         </h2>
         <div class="V1__menuOptions">
-          <div class="V1__menuOption highlite sliding"
+          <div 
+            class="highlite V1__menuOption"
             :style="{
               animationDuration: `${0.1266 + (0.1266 * 1)}s`
             }"
@@ -118,7 +121,7 @@
               ARnimals...[3]
             </button>
           </div>
-          <div class="V1__menuOption highlite sliding"
+          <div class="highlite V1__menuOption"
             :style="{
               animationDuration: `${0.1266 + (0.1266 * 2)}s`
             }"
@@ -130,7 +133,7 @@
               ARgonauts...[1]
             </button>
           </div>
-          <div class="V1__menuOption highlite sliding"
+          <div class="highlite V1__menuOption"
             :style="{
               animationDuration: `${0.1266 + (0.1266 * 3)}s`
             }"
@@ -142,7 +145,7 @@
               Ducks Collection...[14]
             </button>
           </div>
-          <div class="V1__menuOption highlite sliding"
+          <div class="highlite V1__menuOption"
             :style="{
               animationDuration: `${0.1266 + (0.1266 * 4)}s`
             }"
@@ -154,7 +157,7 @@
               Pure Mattness...[5]
             </button>
           </div>
-          <div class="V1__menuOption highlite sliding"
+          <div class="highlite V1__menuOption"
             :style="{
               animationDuration: `${0.1266 + (0.1266 * 5)}s`
             }"
@@ -166,7 +169,7 @@
               Perceptions...[1]
             </button>
           </div>
-          <div class="V1__menuOption highlite sliding"
+          <div class="highlite V1__menuOption"
             :style="{
               animationDuration: `${0.1266 + (0.1266 * 6)}s`
             }"
@@ -178,7 +181,7 @@
               Kaleidoscopic Flower...[4]
             </button>
           </div>
-          <div class="V1__menuOption highlite sliding"
+          <div class="highlite V1__menuOption"
             :style="{
               animationDuration: `${0.1266 + (0.1266 * 7)}s`
             }"
@@ -190,7 +193,7 @@
               Awesome Sauce...[3]
             </button>
           </div>
-          <div class="V1__menuOption highlite sliding"
+          <div class="highlite V1__menuOption"
             :style="{
               animationDuration: `${0.1266 + (0.1266 * 8)}s`
             }"
@@ -247,15 +250,15 @@
             <span class="V1__menuFilterbuttons">
               <button 
                 class="V1__menuButton"
-                @click="searchNFTs()"
+                @click="forSaleOnly = true; searchNFTs()"
               >
-                Search
+                Apply
               </button>
               <button 
                 class="V1__menuResetbutton"
-                @click="searchInput = ''; searchCondition = ''; searchType = ''; filter = { minPrice: 0, maxPrice: 0 }; forSaleOnly = false; getNFTs()"
+                @click="filter = { minPrice: 0, maxPrice: 0 }; forSaleOnly = false; searchNFTs()"
               >
-                Reset
+                Remove filter
               </button>
             </span>
           </div>
@@ -288,6 +291,14 @@
             </button>
           </div>
         </div>
+      </div>
+      <div
+        class="V1__menuFoldOverlay"
+        v-if="!isFolded.menu"
+      >
+        <span>
+          >
+        </span>
       </div>
     </div>
     <div class="V1__nfts">
@@ -334,13 +345,20 @@
 import { ref, onMounted } from 'vue';
 import NftCard from '../components/NftCard.vue';
 import NftDetail from '../components/NftDetail.vue';
+
 const nfts = ref([]);
 const collections = ref([]);
+
 const isLoading = ref({
   nfts: false,
   collections: false
 });
+const isFolded = ref({
+  menu: false
+});
+
 const view = ref('grid');
+
 const searchCondition = ref('');
 const searchType = ref('');
 const forSaleOnly = ref(false);
@@ -466,6 +484,7 @@ definePageMeta({
   margin: 0;
   padding: 0 var(--page-spacing);
   color: var(--text-primary);
+  overflow: hidden;
 }
 .V1__padding {
   flex: 0 0 23%;
@@ -578,9 +597,10 @@ definePageMeta({
   margin: 0;
   padding: 0 var(--page-spacing);
   color: var(--text-primary);
-  flex-wrap: wrap-reverse;
+  flex-wrap: wrap;
 }
 .V1__menu {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -593,8 +613,8 @@ definePageMeta({
   border-right: 1px dotted rgba(146, 158, 161, .75);
   overflow-x: hidden;
   overflow-y: scroll;
-  margin: 0 auto;
-  min-width: 286px;
+  /* margin: 0 auto; */
+  min-width: 306px;
 }
 .V1__menuSection {
   display: flex;
@@ -680,9 +700,10 @@ definePageMeta({
   height: auto;
   margin: 0 2px 0 -2px !important;
   padding: .1875rem .375rem !important;
-  background: rgba(233, 194, 117, 0.938) !important;
+  background: rgba(219, 174, 57, 0.938) !important;
   color: rgba(23, 32, 42, 1) !important;
   border-radius: 2px;
+  border: var(--border-primary) !important;
 }
 
 .V1__menuResetbutton {
@@ -719,14 +740,13 @@ definePageMeta({
   display: flex;
   justify-items: flex-start;
   align-items: flex-start;
-  flex: .79 .79 0px;
+  flex: .99 .99 0px;
   height: var(--page-height);
   margin: 0;
   padding: 0;
   overflow-x: hidden;
   overflow-y: scroll;
   margin: 0 auto;
-  min-width: 60vw;
 }
 .V1__empty {
   position: relative;
@@ -761,16 +781,97 @@ definePageMeta({
   padding: 0;
 }
 
-@media screen and (max-width: 768px) {
+
+.V1__menu {
+  animation: fold-out .63s forwards linear 1;
+}
+.V1__menuHeader,
+.V1__menuOption {
+    animation: slide-in .63s forwards linear 1;
+    white-space: nowrap;
+  }
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0%);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      opacity: 1;
+      transform: translateX(0%);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes fold-in {
+    from {
+      min-width: 306px;
+    }
+    to {
+      min-width: 32px;
+      max-width: 32px;
+    }
+  }
+  
+  @keyframes fold-out {
+    from {
+      min-width: 32px;
+    }
+    to {
+      min-width: 306px;
+
+    }
+  }
+
+  @keyframes darken {
+    0% {
+      background: rgba(17,23,32, 0);
+    }
+    100% {
+      background: rgba(17,23,32, 0.999);
+    }
+  }
+
+@media screen and (max-width: 860px) {
   .V1__menu {
+    animation: fold-in .63s forwards linear 1;
+    overflow-y: hidden;
+  }
+  .V1__select {
+    flex-wrap: wrap;
+  }
+  .V1__padding {
     display: none;
   }
-  .sliding {
-    animation-name: slide-in;
-    animation-direction: forwards;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    animation-timing-function: linear;
+  .V1__menuFoldOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--page-height);
+    background: rgba(17,23,32, 0);
+    animation: darken .63s forwards linear 1;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .V1__menuSection {
+    overflow: hidden;
+  }  
+  .V1__menuHeader,
+  .V1__menuOption {
+    animation: slide-out .63s forwards linear 1;
   }
 }
 </style>

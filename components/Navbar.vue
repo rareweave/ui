@@ -9,11 +9,60 @@
                     RareWeave
                 </NuxtLink>
             </div>
-            <div 
-                class="Nav__right"
+            <div
+                class="Nav__right --desktop"
                 v-if="account"
             >
-                
+                <NuxtLink 
+                    class="Amazing__theme Nav__link"
+                    to="/v1"
+                >
+                    Marketplace
+                </NuxtLink>
+                <NuxtLink 
+                    class="Amazing__theme Nav__link"
+                    to="/create"
+                >
+                    Mint NFT
+                </NuxtLink>
+                <NuxtLink 
+                    class="Amazing__theme Nav__link"
+                    to="/collection/create"
+                >
+                    Create collection
+                </NuxtLink>
+                <NuxtLink
+                    class="Amazing__theme Nav__menu__button"
+                    :replace="false" 
+                    :to="'/profile/' + account.addr"
+                >
+                    <span
+                        :style="{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }"
+                    >
+                        <img 
+                            class="Pfp" 
+                            :src="account.profile.avatarURL"
+                        />
+                        {{ ansAddr || account.handle }}
+                    </span>
+                </NuxtLink>
+                <div class="Nav__balance">
+                    <span class="icon">
+                        a
+                    </span>
+                    <span class="amount">
+                        {{ Math.floor(spendable * 10_000) / 10_000 }}
+                    </span>
+                </div>
+            </div>
+            <div 
+                class="Nav__right --mobile"
+                v-if="account"
+            >   
                 <div class="Nav__menu__mobile">
                     <button 
                         class="Amazing__theme Nav__menu__button"
@@ -24,6 +73,7 @@
                     <div 
                         v-if="showMenu" 
                         @mouseleave="showMenu = false"
+                        @focusout="showMenu = false"
                         class="Nav__menu__dropdown"
                     >
                         <NuxtLink 
@@ -36,7 +86,7 @@
                             class="Amazing__theme Nav__dropdown__item" 
                             to="/create"
                         >
-                            MINT
+                            Mint NFT
                         </NuxtLink>
                         <NuxtLink 
                             class="Amazing__theme Nav__dropdown__item" 
@@ -64,18 +114,29 @@
                             </span>
                             {{ Math.floor(spendable * 100) / 100 + " AR" }}
                         </NuxtLink>
-                        <!-- <NuxtLink 
-                            class="amazing-button" 
-                            to="/logout"
-                        >
-                            Logout
-                        </NuxtLink> -->
                     </div>
                 </div>
             </div>
             <div 
-                v-else 
-                class="Nav__right"
+                v-if="!account" 
+                class="Nav__right --desktop"
+            >
+                <NuxtLink 
+                    class="Amazing__theme Nav__link"
+                    to="/v1"
+                >
+                    Marketplace
+                </NuxtLink>
+                <NuxtLink 
+                    class="Amazing__theme Nav__menu__button"
+                    to="/login"
+                >
+                    Login
+                </NuxtLink>
+            </div>
+            <div 
+                v-if="!account" 
+                class="Nav__right --mobile"
             >
                 <div class="Nav__menu__mobile">
                     <button 
@@ -115,7 +176,8 @@ let account = useState("account", () => null);
 let ansAddr = useState("ansAddr", () => null);
 let showMenu = useState("showMenu", () => false);
 let spendable = useState("spendable", () => 0);
-console.log(account.value+`\n`+spendable.value);
+const _s = x => JSON.stringify(x.value, null, 2);
+console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
 </script>
 <style>
 @keyframes amazing-bg {
@@ -172,7 +234,7 @@ console.log(account.value+`\n`+spendable.value);
 }
 
 .Nav__left {
-    flex: 1 1 0px;
+    flex: 0 0 max-content;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -180,14 +242,66 @@ console.log(account.value+`\n`+spendable.value);
 
 .Logo {
     font-size: 24pt;
-    margin: .375rem .75rem;
+    margin: .25rem;
 }
 
 .Nav__right {
     flex: 1 1 0px;
-    display: flex;
     align-items: center;
     justify-content: flex-end;
+}
+.Nav__right.--desktop {
+    display: flex;
+}
+.Nav__right.--mobile {
+    display: none;
+}
+
+.Nav__link {
+    background: rgba(0, 0, 0, 0) !important;
+    margin: .25rem 0 .25rem 2.5vw;
+}
+
+.Nav__balance {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    height: auto;
+    color: var(--color-primary);
+    font-size: 16pt;
+    font-weight: 600;
+    font-family: var(--font-secondary);
+    border-radius: 2px;
+}
+
+.Nav__balance .icon {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 8px 0 0;
+    padding: 0;
+    aspect-ratio: 1;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background-color: aliceblue;
+    color: rgba(17,23,32,1);
+}
+
+.Nav__balance .icon::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    display: block;
+    width: calc((100% - (2px * 2)));
+    height: calc((100% - (2px * 2)));
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0);
+    border: 1px solid rgba(17,23,32,1);
 }
 
 .Nav__menu__mobile {
@@ -203,10 +317,11 @@ console.log(account.value+`\n`+spendable.value);
 
 .Nav__menu__button {
     position: relative;
-    margin: .25rem .5rem;
+    display: flex;
+    margin: .25rem 0 .25rem 2.5vw;
     padding: 4px 8px;
     font-size: 15pt;
-    border: 1px solid rgba(143, 156, 172, .5);
+    border: var(--border-primary);
     border-radius: 2px;
 }
 
@@ -285,5 +400,13 @@ console.log(account.value+`\n`+spendable.value);
         rgba(219, 174, 89, .5) 50%,
         rgba(219, 174, 89, .5) 100%
     );
+}
+@media screen and (max-width: 860px) {
+    .Nav__right.--mobile {
+        display: flex !important;
+    }
+    .Nav__right.--desktop {
+        display: none !important;
+    }
 }
 </style>

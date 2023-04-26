@@ -19,9 +19,3 @@
 let wallet = useState("wallet", () => null);
 // router.push("#connectWallet");
 </script>
-<style>
-#__nuxt {
-    height: 100vh;
-    width: 100%;
-}
-</style>

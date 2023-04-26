@@ -47,7 +47,7 @@
           {{ nft.state.listingDenom || "AR" }}
         </span>
         <span class="price-value">
-          {{ (parseFloat(parseFloat(arweave.ar.winstonToAr(nft.state.price)).toFixed(3))).toFixed(2) }}
+          {{ nft.state.price > 0 ? (parseFloat(parseFloat(arweave.ar.winstonToAr(nft.state.price)).toFixed(3))).toFixed(2)+" ("+(nft.state.price)+" winston)" : "free" }}
         </span>
         <span class="royalty-label">
           Royalty:
