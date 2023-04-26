@@ -42,7 +42,8 @@
         </div>
       </div>
       <NuxtLink class="randomNFT" :to="'/nft/' + randomNft?.contractTxId">
-        <img :src="'https://prophet.rareweave.store/_ipx/width_384,f_webp/https://arweave.net/' + randomNft?.contractTxId"
+        <img
+          :src="'https://prophet.rareweave.store/_ipx/width_384,animated,f_webp/https://arweave.net/' + randomNft?.contractTxId"
           class="max-w-sm rounded-md shadow-2xl " />
       </NuxtLink>
     </div>
