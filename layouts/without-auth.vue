@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full">
+    <div class="">
         <Navbar />
         <slot />
     </div>

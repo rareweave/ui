@@ -1,11 +1,18 @@
 
 export default defineNuxtConfig({
-    modules: [],
+    modules: [
+        '@nuxtjs/tailwindcss',
+        'nuxt-lazy-load'
+    ],
     target: "static",
     mode: "spa",
     typescript: false,
     ssr: false,
-    css: ["~/assets/main.css"],
+    css: [
+        "~/assets/styles/theme.css",
+        "~/assets/styles/main.css",
+        "~/assets/styles/loader.css"
+    ],
     colorMode: {
         dataValue: "luxury"
     },
@@ -17,8 +24,14 @@ export default defineNuxtConfig({
     },
     app: {
         head: {
-            link: [],
-            htmlAttrs: { "data-theme": "business", }
+            link: [
+                {
+                    rel: "icon",
+                    type: "image/x-icon",
+                    href: "/favicon.ico"
+                }
+            ],
+            title: "RareWeave | Liquid NFTs on Arweave"
         }
     },
     builder: "vite",

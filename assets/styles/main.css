@@ -1,0 +1,106 @@
+html,
+body {
+    position: static;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    
+    font-family: var(--font-primary);
+    text-shadow: 
+        0px 1px 1px rgba(0, 0, 0, 0.12), 
+        1px 2px 2px rgba(0, 0, 0, 0.12), 
+        2px 4px 4px rgba(0, 0, 0, 0.12),
+        4px 8px 8px rgba(0, 0, 0, 0.12),
+        8px 16px 16px rgba(0, 0, 0, 0.12),
+        16px 32px 32px rgba(0, 0, 0, 0.12)
+    ;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+
+    background: var(--bg-primary);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper.image {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.--hidden {
+    display: none !important;
+}
+
+
+.rareweave-font,
+.Rareweave__font {
+    background: rgb(63, 94, 251);
+    background: radial-gradient(circle, #3f5efb 0%, #fc466b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 150% 150%;
+    animation: rareweave-amazing-font 3s infinite;
+    display: inline;
+}
+
+@keyframes rareweave-amazing-font {
+    from {
+        background-size: 150% 150%;
+        background-position-x: 0%;
+    }
+
+    50% {
+        background-size: 350% 350%;
+        background-position-x: 100%;
+    }
+
+    to {
+        background-size: 150% 150%;
+        background-position-x: 0%;
+    }
+}
+
+.amazing-button {
+    background: rgb(97, 9, 168);
+    background: radial-gradient(circle,
+        rgba(97, 9, 168, 1) 0%,
+        rgba(121, 41, 9, 1) 25%,
+        rgba(179, 22, 83, 1) 50%,
+        rgba(171, 49, 107, 1) 61%,
+        rgba(167, 40, 83, 1) 73%,
+        rgba(185, 25, 36, 1) 100%);
+    background-size: 300% 300%;
+    animation: amazing-bg 10s linear infinite;
+}
+    .amazing-button:disabled {
+        opacity: 0.5;
+    }
+
+.amazing-button2 {
+    background: rgb(238, 174, 202);
+    color: black;
+    border: 2px solid black;
+    background: linear-gradient(45deg, rgba(107, 99, 194, 1) 0%, rgba(216, 140, 211, 1) 100%);
+}
+    .amazing-button2:disabled {
+        border: none;
+        color: black;
+        cursor: not-allowed;
+        opacity: 0.5;
+        background: #292929;
+    }
+
