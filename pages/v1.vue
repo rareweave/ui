@@ -292,13 +292,10 @@
           </div>
         </div>
       </div>
-      <div
-        class="V1__menuFoldOverlay"
-        v-if="!isFolded.menu"
-      >
-        <span>
-          >
-        </span>
+      <div class="V1__menuSection">
+        <h2 class="V1__menuHeader">
+          Made with love
+        </h2>
       </div>
     </div>
     <div class="V1__nfts">
