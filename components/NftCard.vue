@@ -208,7 +208,7 @@
   padding: 0;
   background-color: rgba(0,0,0,0);
   object-fit: cover;
-  z-index: 99999;
+  z-index: 1;
 }
 
 .NftCard__Image:hover {

@@ -266,7 +266,7 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0;
+    margin: .25rem .25rem .25rem 1.25vw;
     padding: 0;
     width: auto;
     height: auto;
@@ -348,7 +348,7 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
     max-width: 380px;
     margin: -4px 8px;
     font-size: 15pt;
-    z-index: 999;
+    z-index: 99999;
 }
 
 .Nav__dropdown__item {
@@ -401,7 +401,7 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
         rgba(219, 174, 89, .5) 100%
     );
 }
-@media screen and (max-width: 860px) {
+@media screen and (max-width: 1080px) {
     .Nav__right.--mobile {
         display: flex !important;
     }
