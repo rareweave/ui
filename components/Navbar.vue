@@ -55,7 +55,7 @@
                         a
                     </span>
                     <span class="amount">
-                        {{ Math.floor(spendable * 10_000) / 10_000 }}
+                        {{ (Math.floor(spendable * 10_000) / 10_000).toFixed(3) }}
                     </span>
                 </div>
             </div>
