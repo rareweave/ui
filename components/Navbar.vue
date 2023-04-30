@@ -14,25 +14,25 @@
                 v-if="account"
             >
                 <NuxtLink 
-                    class="Amazing__theme Nav__link"
+                    class="Nav__link"
                     to="/v1"
                 >
                     Marketplace
                 </NuxtLink>
                 <NuxtLink 
-                    class="Amazing__theme Nav__link"
+                    class="Nav__link"
                     to="/create"
                 >
                     Mint NFT
                 </NuxtLink>
                 <NuxtLink 
-                    class="Amazing__theme Nav__link"
+                    class="Nav__link"
                     to="/collection/create"
                 >
                     Create collection
                 </NuxtLink>
                 <NuxtLink
-                    class="Amazing__theme Nav__menu__button"
+                    class="Nav__menu__button"
                     :replace="false" 
                     :to="'/profile/' + account.addr"
                 >
@@ -112,7 +112,11 @@
                                 />
                                 {{ ansAddr || account.handle }}
                             </span>
-                            {{ Math.floor(spendable * 100) / 100 + " AR" }}
+                            <span
+                                v-if="true"
+                            >
+                                {{ Math.floor(spendable * 100) / 100 + " AR" }}
+                            </span>
                         </NuxtLink>
                     </div>
                 </div>
@@ -346,7 +350,7 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
     width: 100%;
     min-width: 232px;
     max-width: 380px;
-    margin: -4px 8px;
+    margin: 0;
     font-size: 15pt;
     z-index: 99999;
 }
