@@ -136,15 +136,18 @@
             <span class="text-lg" v-else>Paying royalty... Don't close this tab</span>
           </li>
           <li :class="{ step: true, 'step-primary': isBuying }">
+
             <button :disabled="!isBuying" v-if="!isSomeoneElseBuying && buyStatus != 2"
-              class="btn amazing-button rounded-lg btn-sm" @click="finalizeBuy">
-              Finalize buy ({{ nftPrice }} AR)
+              class="btn btn-lg py-3 amazing-button rounded-lg min-h-0 h-auto" @click="finalizeBuy">
+              <span class="relative w-full inline-flex items-center justify-center h-full bg-[rgb(12,12,12)] rounded-md ">
+                Finalize buy ({{ nftPrice }} AR)</span>
             </button>
             <span v-else-if="buyStatus == 2" class="text-lg">Finalizing buy...
             </span>
             <button v-else class="btn btn-error btn-outline rounded-lg btn-sm">
               Someone else did reserve this NFT before you
             </button>
+
           </li>
         </ul>
         <div class="modal-action">

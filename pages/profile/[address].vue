@@ -95,14 +95,14 @@
           </label>
         </div>
         <button :class="[
-          'btn',
-          'amazing-button2',
-          'rounded-md',
-          'w-full',
-          'my-2',
-          ,
-          changed ? '' : 'btn-disabled',
-        ]" :disabled="!changed" @click="saveChangesToProfile">
+            'btn',
+            'amazing-button2',
+            'rounded-md',
+            'w-full',
+            'my-2',
+            ,
+            changed ? '' : 'btn-disabled',
+          ]" :disabled="!changed" @click="saveChangesToProfile">
           Save changes
         </button>
       </div>
@@ -128,7 +128,7 @@
         </div>
         <div v-else class="m-2">
           ANS Name:
-          <a href="https://ans.gg" class="btn btn-sm amazing-button">Get one</a>
+          <a href="https://ans.gg" class="btn btn-sm amazing-button"><span>Get one</span></a>
         </div>
         <div class="m-2 max-w-[16rem] w-max font-mono text-sm font-light text-gray-400 text-center whitespace-pre-wrap">
           {{ user?.profile?.bio }}
