@@ -17,8 +17,12 @@ export default defineNuxtConfig({
     },
     app: {
         head: {
-            link: [],
+            title: 'Rareweave',
+            link: [
+                { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+            ],
             htmlAttrs: { "data-theme": "business", }
+
         }
     },
     builder: "vite",
@@ -35,5 +39,6 @@ export default defineNuxtConfig({
             ignore: ["404.html"],
 
         }
-    }
+    },
+
 });
