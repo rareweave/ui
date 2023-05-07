@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Iosevka';
+    font-display: swap;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    src: url('/ttf/iosevka-medium.ttf') format('truetype'), url('/woff2/iosevka-medium.woff2') format('woff2');
+}

@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     mode: "spa",
     typescript: false,
     ssr: false,
-    css: ["~/assets/main.css"],
+    css: ["~/assets/fonts.css", "~/assets/main.css"],
     colorMode: {
         dataValue: "luxury"
     },

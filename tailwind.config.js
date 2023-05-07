@@ -5,7 +5,7 @@ module.exports = {
         fontFamily: {
             'sans': ['Nunito Sans', 'sans-serif'],
             'serif': ['ui-serif', 'Georgia'],
-            'mono': ['JetBrains Mono', 'monospace'],
+            'mono': ['Iosevka', 'monospace'],
             'display': ['Oswald'],
             'body': ['"Open Sans"'],
         }
