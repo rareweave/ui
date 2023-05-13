@@ -513,11 +513,11 @@ definePageMeta({
 }
 
 .V1__reset:hover {
-  text-decoration: underline 1px rgba(219,174,98,1);
+  text-decoration: underline 1px rgb(18, 243, 119);
 }
 
 .V1__reset:hover .V1__resetIcon {
-  fill: rgba(219,174,98,1);
+  fill: rgb(59, 238, 103);
 }
 
 .V1__views {
@@ -644,8 +644,8 @@ definePageMeta({
     flex: 0 0 24px;
     height: 100%;
     margin-left: 2px;
-    border-left: 1px dotted rgba(146, 158, 161, .75);
-    transform: scaleY(1.55);
+    border-left: 1px solid rgba(146, 158, 161, .33);
+    transform: scaleY(1.6183);
   }
 
   .V1__button_decoration::after {
@@ -669,8 +669,6 @@ definePageMeta({
     opacity: 1;
   }
   .V1__button_wrapper:hover .V1__button {
-    /* text-decoration: 1px underline rgba(163, 255, 217, 0.75); */
-    /* font-weight: 900; */
     color: rgba(216, 221, 232, 0.99);
   }
 
@@ -679,8 +677,6 @@ definePageMeta({
     background: rgba(110, 205, 147, 0.945);
   }
   .V1__button_wrapper.--active .V1__button {
-    /* text-decoration: 1px underline rgba(163, 255, 217, 0.75); */
-    /* font-weight: 900; */
     color: rgba(110, 205, 147, 0.945);
   }
 
