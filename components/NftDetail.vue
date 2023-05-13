@@ -102,7 +102,7 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  background: var(--card-primary);
+  background: rgb(24 15 56 / 60%);
   width: 100%;
 }
 

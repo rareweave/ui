@@ -10,10 +10,7 @@ body {
     text-shadow: 
         0px 1px 1px rgba(0, 0, 0, 0.12), 
         1px 2px 2px rgba(0, 0, 0, 0.12), 
-        2px 4px 4px rgba(0, 0, 0, 0.12),
-        4px 8px 8px rgba(0, 0, 0, 0.12),
-        8px 16px 16px rgba(0, 0, 0, 0.12),
-        16px 32px 32px rgba(0, 0, 0, 0.12)
+        2px 4px 4px rgba(0, 0, 0, 0.12)
     ;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -88,8 +85,14 @@ body {
         rgba(171, 49, 107, 1) 61%,
         rgba(167, 40, 83, 1) 73%,
         rgba(185, 25, 36, 1) 100%);
+
+    background: radial-gradient(
+        circle,
+        rgb(23 122 255), 
+        rgb(106 234 156)
+    );
     background-size: 300% 300%;
-    animation: amazing-bg 10s linear infinite;
+    /* animation: amazing-bg 10s linear infinite; */
 }
     .amazing-button:disabled {
         opacity: 0.5;

@@ -159,13 +159,50 @@
     rgba(218, 90, 218, 1),
     rgba(232, 241, 93, 1)
   ) !important;
+  background: conic-gradient(
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999)
+  ) !important;
   border-radius: 6px;
   z-index: -1;
   background-size: 200% 200%;
 }
 
 .NftCard__Card:hover {
-  border: 1px solid rgba(219,174,89,1);
+  border: 1px solid rgba(255, 255, 255, 0);
+}
+
+.NftCard__Wrapper:hover .NftCard__Card::after {
+  background: conic-gradient(
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(252, 252, 252, 0.004),
+    rgba(236, 236, 236, 0.999),
+    rgba(236, 236, 236, 0.004)
+  ) !important;
 }
 
 .NftCard__ImageWrapper {
@@ -256,8 +293,11 @@
 }
 
 .NftCard__buttons {
-  position: relative;
+  position: absolute;
   display: flex;
+  top: 0;
+  right: 0;
+  margin: 0.5em 1em;
 }
 
 .NftCard__Info {

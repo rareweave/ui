@@ -3,7 +3,7 @@
         <div class="Nav__view">
             <div class="Nav__left">
                 <NuxtLink 
-                    class="rareweave-font Logo"
+                    class="Logo"
                     to="/"
                     >
                     RareWeave
@@ -32,7 +32,7 @@
                     Create collection
                 </NuxtLink>
                 <NuxtLink
-                    class="Nav__menu__button"
+                    class="Nav__button"
                     :replace="false" 
                     :to="'/profile/' + account.addr"
                 >
@@ -65,7 +65,7 @@
             >   
                 <div class="Nav__menu__mobile">
                     <button 
-                        class="Amazing__theme Nav__menu__button"
+                        class="amazing-button Nav__button"
                         @click="showMenu = !showMenu"
                     >
                         Menu
@@ -77,19 +77,19 @@
                         class="Nav__menu__dropdown"
                     >
                         <NuxtLink 
-                            class="Amazing__theme Nav__dropdown__item" 
+                            class="amazing-button Nav__dropdown__item" 
                             to="/v1"
                         >
                             Marketplace
                         </NuxtLink>
                         <NuxtLink 
-                            class="Amazing__theme Nav__dropdown__item" 
+                            class="amazing-button Nav__dropdown__item" 
                             to="/create"
                         >
                             Mint NFT
                         </NuxtLink>
                         <NuxtLink 
-                            class="Amazing__theme Nav__dropdown__item" 
+                            class="amazing-button Nav__dropdown__item" 
                             to="/collection/create"
                         >
                             Create collection
@@ -126,13 +126,19 @@
                 class="Nav__right --desktop"
             >
                 <NuxtLink 
-                    class="Amazing__theme Nav__link"
+                    class="amazing-button Nav__link"
+                    to="/"
+                >
+                    Home
+                </NuxtLink>
+                <NuxtLink 
+                    class="amazing-button Nav__link"
                     to="/v1"
                 >
                     Marketplace
                 </NuxtLink>
                 <NuxtLink 
-                    class="Amazing__theme Nav__menu__button"
+                    class="amazing-button Nav__button"
                     to="/login"
                 >
                     Login
@@ -144,7 +150,7 @@
             >
                 <div class="Nav__menu__mobile">
                     <button 
-                        class="Amazing__theme Nav__menu__button" 
+                        class="amazing-button Nav__button" 
                         @click="showMenu = !showMenu"
                     >
                         Menu
@@ -155,13 +161,19 @@
                         class="Nav__menu__dropdown"
                     >
                         <NuxtLink 
-                            class="Amazing__theme Nav__dropdown__item" 
+                            class="amazing-button Nav__dropdown__item" 
+                            to="/"
+                        >
+                            Home
+                        </NuxtLink>
+                        <NuxtLink 
+                            class="amazing-button Nav__dropdown__item" 
                             to="/v1"
                         >
                             Marketplace
                         </NuxtLink>
                         <NuxtLink 
-                            class="Amazing__theme Nav__dropdown__item" 
+                            class="amazing-button Nav__dropdown__item" 
                             to="/login"
                         >
                             Login
@@ -176,13 +188,19 @@
     </div>
 </template>
 <script setup>
-let account = useState("account", () => null);
+import { useCollections, useAccount, useNfts, useIsLoading } from '../composables/useState';
+
 let ansAddr = useState("ansAddr", () => null);
 let showMenu = useState("showMenu", () => false);
-let spendable = useState("spendable", () => 0);
-const _s = x => JSON.stringify(x.value, null, 2);
-console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
+
+const account = useAccount();
+const spendable = useSpendable();
+
+const collections = useCollections();
+const nfts = useNfts();
+const isLoading = useIsLoading();
 </script>
+
 <style>
 @keyframes amazing-bg {
     from {
@@ -194,18 +212,6 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
     to {
         background-position-x: 0%;
     }
-}
-.Amazing__theme {
-    background: rgb(97, 9, 168);
-    background: radial-gradient(circle,
-        rgba( 97,  9,168, 1)  0%,
-        rgba(121, 41,  9, 1) 25%,
-        rgba(179, 22, 83, 1) 50%,
-        rgba(171, 49,107, 1) 61%,
-        rgba(167, 40, 83, 1) 73%,
-        rgba(185, 25, 36, 1)100%);
-    background-size: 300% 300%;
-    animation: amazing-bg 10s linear infinite;
 }
 
 .Nav {
@@ -220,9 +226,6 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
     height: auto;
     min-height: 48px;
     color: var(--color-primary);
-    font-size: 16pt;
-    font-weight: 600;
-    font-family: var(--font-secondary);
     border-radius: 0;
     z-index: 999;
 }
@@ -235,6 +238,7 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
     margin: 0;
     padding: 0;
     width: calc((100% - var(--page-spacing) * 2));
+    max-width: var(--page-max-width);
 }
 
 .Nav__left {
@@ -245,8 +249,13 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
 }
 
 .Logo {
-    font-size: 24pt;
+    font-size: 18pt;
+    font-weight: 600;
     margin: .25rem;
+    background: rgba(137,255,183,1);
+    background: linear-gradient(175deg, rgba(137,255,183,1), rgba(137,255,183,1), rgb(12 176 255));
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
 }
 
 .Nav__right {
@@ -275,9 +284,6 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
     width: auto;
     height: auto;
     color: var(--color-primary);
-    font-size: 16pt;
-    font-weight: 600;
-    font-family: var(--font-secondary);
     border-radius: 2px;
 }
 
@@ -288,9 +294,9 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
     align-items: center;
     margin: 0 8px 0 0;
     padding: 0;
+    width: 24px;
     aspect-ratio: 1;
-    width: 1.75rem;
-    height: 1.75rem;
+    font-weight: 700;
     border-radius: 50%;
     background-color: aliceblue;
     color: rgba(17,23,32,1);
@@ -319,14 +325,25 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
     height: auto;
 }
 
-.Nav__menu__button {
+.Nav__button {
     position: relative;
     display: flex;
     margin: .25rem 0 .25rem 2.5vw;
     padding: 4px 8px;
-    font-size: 15pt;
-    border: var(--border-primary);
     border-radius: 2px;
+    margin: 0 0 0 32px;
+    padding: 0.25rem calc((0.5rem) + 6px);
+    border-radius: 18px;
+    color: rgba(17,23,32,1);
+}
+
+.Nav__button span img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(0,0,0,1);
+    color: rgba(255,255,255,1);
+    margin: 3px;
 }
 
 .Nav__menu__dropdown {
@@ -395,6 +412,7 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
 .Nav__border {
     position: relative;
     width: calc((100% - var(--page-spacing) * 2));
+    max-width: var(--page-max-width);
     margin: 0 calc(var(--page-spacing));
     height: 1px;
     background: linear-gradient(
@@ -403,6 +421,13 @@ console.log([_s(account),_s(spendable)].join(`\n`) + `\n\n`);
         rgba(219, 174, 89, .5) 50%,
         rgba(219, 174, 89, .5) 50%,
         rgba(219, 174, 89, .5) 100%
+    );
+    background: linear-gradient(
+        to right,
+        rgb(255 243 221 / 50%) 0%,
+        rgb(220 215 205 / 50%) 50%,
+        rgb(216 215 213 / 50%) 50%,
+        rgb(251 251 251 / 50%) 100%
     );
 }
 @media screen and (max-width: 1080px) {

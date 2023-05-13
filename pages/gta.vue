@@ -1,4 +1,5 @@
 <template>
+  <div class="Banner"></div>
   <div class="Page">
     <div class="Header">
       <h1 class="Title">
@@ -8,10 +9,10 @@
         <div class="Cta__card">
           <div class="Cta__row">
             <h2>
-              Title
+              A collection of 500 gang members. First edition.
             </h2>
             <p>
-              Description of the project
+              
             </p>
           </div>
           <div class="Cta__row">
@@ -30,13 +31,21 @@
           >
             <span class="Cta__button">
               <button
-                class="btn btn-primary"
+                class="Gta2__styled"
                 @click.prevent.stop="mint()"
               >
-                MINT
+                PRESS MINT
               </button>
-              Cost: gas only
+              <span>
+                *Price: gas only!
+              </span>
             </span>
+          </span>
+          <span
+            v-else
+            class="Cta__buttons"
+          >
+            Login to mint
           </span>
         </div>
       </div>
@@ -54,47 +63,63 @@
         <h2>
           Roadmap
         </h2>
-        <!-- <div class="Roadmap">
+        <div class="Roadmap">
+
           <div
-            v-for="(milestone, i) in roadmap"
-            class="Row"
+            v-for="(milestone, i) in milestones"
+            class="Milestone"
+            :class="i % 2 === 0 ? '--left' : '--right'"
           >
-            <div
-              v-if="i % 2 === 0"
-              class="Milestone"
-            >
-              <span></span>
-              <span>
-                {{ i + 1 }}
-              </span>
-              <div>
-                <h4>
-                  {{ milestone.title }}
-                </h4>
-                <p>
-                  {{ milestone.description }}
-                </p>
-              </div>
+            <div class="Road"></div>
+            <div class="No">
+              {{ i + 1 }}
             </div>
-            <div
-              v-else
-              class="Milestone"
-            >
-              <div>
-                <h4>
-                  {{ milestone.title }}
-                </h4>
-                <p>
-                  {{ milestone.description }}
-                </p>
-              </div>
-              <span>
-                {{ i + 1 }}
-              </span>
-              <span></span>
+            <div class="Desc">
+              <h3>
+                {{ milestone.title }}
+              </h3>
+              <p>
+                {{ milestone.description }}
+              </p>
             </div>
           </div>
-        </div> -->
+          <div class="Milestone --end">
+            And more to come...
+          </div>
+        </div>
+      </div>
+      <div class="Higlight__section">
+        
+      </div>
+      <div class="Section">
+        <h2>
+          Team
+        </h2>
+        <div class="Team">
+          <div 
+            v-for="member in teammembers"
+            class="Member"
+          >
+            
+              <span class="Avatar">
+                <img
+                  src="/avatar.png"
+                  alt=""
+                  width=""
+                  height=""
+                />
+              </span>
+              <div class="Info">
+                <h3>
+                  {{ member.name }}
+                </h3>
+                <p>
+                  {{ member.description }}
+                </p>
+              </div>
+            
+          </div>
+        </div>
       </div>
     </div>
     <div 
@@ -106,7 +131,7 @@
       </div>
     </div>
     <div 
-      v-if="!isReachable"
+      v-if="errors"
       class="Busy"
     >
       <div>
@@ -124,7 +149,7 @@ const { WarpFactory } = await import("warp-contracts");
 let account = useState("account", () => null);
 
 const isUploading = ref(false);
-const isReachable = ref(true);
+const errors = ref(false);
 
 const arweaveState = useState("arweave", () => {
   Arweave.init({
@@ -151,6 +176,36 @@ const warp = WarpFactory.forMainnet(
 
 warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`;
 warp.interactionsLoader.delegate.baseUrl = `https://prophet.rareweave.store`;
+
+const milestones = ref([
+  {
+    title: "Launch!!!",
+    description: "Mintpage where the community can mint their own GTA NFTs and join the gang."
+  },
+  {
+    title: "Minting party!",
+    description: "All 500 First edition GTA NFTs have been minted and are now decentralized."
+  },
+  {
+    title: "Website 2.0",
+    description: "The website has been updated with a new design and a gallery / profile for each holder will be added."
+  },
+  {
+    title: "Game on!",
+    description: "The NFTs can now enter the text-based game and build their crime families."
+  }
+]);
+
+const teammembers = ref([
+  {
+    name: "Sh1Tt",
+    description: "Founder, CEO, Dev"
+  },
+  {
+    name: "Elon",
+    description: "Founder, Community manager"
+  }
+]);
 
 function readAsArrayBuffer(file) {
   return new Promise(resolve => {
@@ -328,13 +383,15 @@ class NFT {
   }
 
   async registerNodes(nodes) {
+    if (errors.value)
+      return;
+
     try {
-      await Promises.all([ 
-        nodes.map(async node => await warp
-          .register(this.tx.id, node)
-          .catch(err => null)
-        )
-      ]);
+      const { id } = this.tx;
+      nodes.map(async node => await warp
+        .register(id, node)
+        .catch(err => null)
+      );
     }
     catch(e) {
       console.log(e);
@@ -342,7 +399,7 @@ class NFT {
   }
 
   async upload() {
-    if (!isReachable.value)
+    if (errors.value)
       return;
 
     isUploading.value = true;
@@ -404,7 +461,9 @@ class GtaNFT extends NFT {
         },
         cors: false
       });
-      const { id, filename, image } = data = await res.json();
+      const data = await res.json();
+
+      const { id, image, filename } = data;
       
       this.attributes.name = `GTA #${(id + 1).toString().padStart(3, "0")}`;
 
@@ -418,7 +477,8 @@ class GtaNFT extends NFT {
       this.buffer = await readAsArrayBuffer(Image);
     }
     catch(err) {
-      isReachable.value = false;
+      errors.value = true;
+      console.log(err);
     };
   }
 }
@@ -431,6 +491,8 @@ async function mint() {
       createdAt: Date.now()
     });
     await Nft.fetchMetadata();
+    if (errors.value)
+      throw new Error("Could not fetch metadata");
     await Nft.createTx();
     await Nft.upload();
     await Nft.registerNodes([
@@ -469,6 +531,21 @@ definePageMeta({
 });
 </script>
 <style scoped>
+.Banner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 var(--page-spacing);
+  width: 100%;
+  height: auto;
+  min-height: 5rem;
+  background: var(--primary-color);
+  color: var(--primary-color-inverted);
+  text-align: center;
+}
 .Page {
   position: relative;
   display: flex;
@@ -495,6 +572,7 @@ definePageMeta({
 }
 .Title {
   font-size: 38pt;
+  margin: 1em 0 0.25em;
 }
 
 .Cta__wrapper {
@@ -506,11 +584,13 @@ definePageMeta({
   margin: auto;
   padding: 0;
   width: 640px;
-  aspect-ratio: 16/9;;
+  aspect-ratio: 16/9;
+
 }
 
 .Cta__card {
   position: relative;
+  text-align: center;
 }
 
 .Cta__row {
@@ -534,6 +614,36 @@ definePageMeta({
   flex-direction: column;
 }
 
+.Gta2__styled {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  padding: .375rem .75rem;
+  width: max-content;
+  height: auto;
+  font-size: 32pt;
+  font-weight: 1000;
+  background: linear-gradient(0deg,rgb(255, 94, 0), rgba(255, 238, 0, 0.986));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.Gta2__styled::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 38px;
+  background: rgba(8,18,41,1);
+  z-index: -1;
+}
+
 .Main {
   flex: 1;
   display: flex;
@@ -549,7 +659,7 @@ definePageMeta({
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  margin: 0;
+  margin: 2rem 0;
   padding: 0;
   width: 100%;
   height: auto;
@@ -584,6 +694,124 @@ definePageMeta({
   align-items: center;
   justify-content: flex-start;
   width: 680px;
+}
+
+.Milestone {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  min-height: 128px;
+  
+}
+
+.Road {
+  position: absolute;
+  top: 0;
+  left: calc((50%) - 6px);
+  width: 12px;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1) 2px, rgba(255, 255, 255, 0) 2px, rgba(255, 255, 255, 0) 4px), repeating-linear-gradient(90deg, rgb(179, 19, 19), rgb(192, 31, 31) 2px, rgba(255, 255, 255, 0) 2px, rgba(255, 255, 255, 0) 4px);
+}
+
+.No {
+  position: absolute;
+  top: 0;
+  left: calc((50%) - 28px);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgba(21,26,37,1);
+  border: 4px dashed  rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: content-box;
+}
+
+.Desc {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  width: calc((50%) - 38px);
+}
+
+.--left {
+  justify-content: flex-end;
+  text-align: left;
+}
+
+.--right {
+  justify-content: flex-start;
+  text-align: right;
+}
+
+.--end {
+  justify-content: center;
+  text-align: center;
+}
+
+.Higlight__section {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 2rem 0;
+  width: 100%;
+  height: auto;
+  min-height: 9rem;
+  background-color: rgb(5, 71, 97);
+  background: linear-gradient(37deg, rgba(142, 196, 43, 0.849), rgba(5, 71, 97, 1), rgba(62, 151, 54, 0.801), rgba(5, 71, 97, 1));
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+  
+}
+
+.Team {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0;
+  padding: 0;
+}
+
+.Member {
+  flex: .25 .25 0px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 2rem 4rem;
+  
+  background-color: rgba(21,26,37,1);
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+
 }
 
 </style>

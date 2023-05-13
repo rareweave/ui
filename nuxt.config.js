@@ -4,6 +4,9 @@ export default defineNuxtConfig({
         '@nuxtjs/tailwindcss',
         'nuxt-lazy-load'
     ],
+    plugins: [
+        "~/plugins/prophet.js",
+    ],
     target: "static",
     mode: "spa",
     typescript: false,
@@ -19,7 +22,7 @@ export default defineNuxtConfig({
     postcss: {
         plugins: {
             tailwindcss: {},
-            autoprefixer: {},
+            autoprefixer: {}
         }
     },
     app: {
@@ -31,7 +34,7 @@ export default defineNuxtConfig({
                     href: "/favicon.ico"
                 }
             ],
-            title: "RareWeave | Liquid NFTs on Arweave"
+            title: "RareWeave | Nft Marketplace"
         }
     },
     builder: "vite",
