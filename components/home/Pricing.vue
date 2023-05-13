@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="Pricing__calcualtor">
-                <p>
+                <p class="Pricing__calculator_intro">
                     Calculate the total cost of creating your collection
                 </p>
                 <div class="Pricing__calculator_content">
@@ -53,10 +53,9 @@
                         <h4 class="Pricing__rate_title">
                             Arweave ${{ rates.arweave?.usd?.toFixed(2) }}
                         </h4>
-                        <p cass="Pricing__rate_desc">
+                        <p class="Pricing__rate_desc">
                             All cost are depending on the arweave network.
                             Enter the amount of NFTs you want to mint and the average size of each NFT and click on calculate.
-
                         </p>
                     </div>
                     <form
@@ -390,6 +389,10 @@ onMounted(async () => {
 
     }
 
+    .Pricing__calculator_intro {
+        margin: 1rem 0;
+    }
+
     .Pricing__calculator_content {
         position: relative;
         display: flex;
@@ -397,6 +400,8 @@ onMounted(async () => {
         justify-content: space-between;
         align-items: center;
         max-width: 820px;
+        border-radius: 1.5rem;
+        background: rgba(17,23,32,.75)
     }
 
     .Pricing__rate {
@@ -411,15 +416,17 @@ onMounted(async () => {
         padding: 0;
     }
 
-    .Pricing__rate_title,
-    .Pricing__rate_desc {
-        margin: 1rem 2rem;
-    }
-
+    
     .Pricing__rate_title {
+        margin: 1rem 2rem;
         font-size: 1.5rem;
         font-weight: 600;
         color: var(--color-white);
+    }
+
+    .Pricing__rate_desc {
+        margin: 1rem 2rem;
+        box-sizing: border-box;
     }
 
     .Pricing__form {
@@ -430,6 +437,7 @@ onMounted(async () => {
         align-items: stretch;
         flex: 1 1 0px;
         height: auto;
+        min-height: 168px;
         margin: 2rem 0;
         padding: 0;
         border-left: 1px solid rgba(255,255,255,1);
@@ -439,12 +447,6 @@ onMounted(async () => {
         margin: 1rem 2rem;
     }
     
-
-    .Pricing__calculator_content {
-        border-radius: 1.5rem;
-        background: rgba(17,23,32,.75)
-    }
-
     .Row {
         position: relative;
         display: flex;
@@ -457,6 +459,10 @@ onMounted(async () => {
         padding: 0;
     }
 
+    .Row:nth-child(4) {
+        flex: 0 0 96px;
+    }
+
     .Row span {
         position: relative;
         display: flex;
@@ -467,7 +473,6 @@ onMounted(async () => {
         position: relative;
         display: flex;
         flex: 1 1 0px;
-        background-color: rgba(57, 57, 58, 1);
         color: var(--color-white);
         padding: 0 .375rem;
     }
