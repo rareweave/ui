@@ -304,7 +304,7 @@ const nfts = useNfts();
 const collections = useCollections();
 const isLoading = useIsLoading();
 
-// const rarifiedCollections = useRarifiedcollections();
+const rarifiedCollections = useRarifiedcollections();
 
 const view = ref('grid');
 
