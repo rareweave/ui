@@ -55,7 +55,7 @@
                         </h4>
                         <p class="Pricing__rate_desc">
                             All cost are depending on the arweave network.
-                            Enter the amount of NFTs you want to mint and the average size of each NFT and click on calculate.
+                            Enter the number of NFTs you want to mint and the average size of each NFT and click on calculate.
                         </p>
                     </div>
                     <form
@@ -68,7 +68,7 @@
                         </h4>
                         <div class="Row">
                             <label>
-                                Enter the quantity of NFTs you want to mint:
+                                Enter the number of NFTs you want to mint:
                             </label>
                             <span class="Pricing__calculate_inputWrapper">
                                 <input
