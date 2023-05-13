@@ -103,10 +103,26 @@
                     v-if="topNfts.length === 0"
                     class="Hero__topNfts_loader"
                 >
-                    <div class="Hero__topNft_placeholder"></div>
-                    <div class="Hero__topNft_placeholder"></div>
-                    <div class="Hero__topNft_placeholder"></div>
-                    <div class="Hero__topNft_placeholder"></div>
+                    <div class="Hero__topNft_placeholder">
+                        <div class="Hero__topNft_detailsPlaceholder">
+                            <h4 class="Hero__topNft_titlePlaceholder"></h4>
+                        </div>
+                    </div>
+                    <div class="Hero__topNft_placeholder">
+                        <div class="Hero__topNft_detailsPlaceholder">
+                            <h4 class="Hero__topNft_titlePlaceholder"></h4>
+                        </div>
+                    </div>
+                    <div class="Hero__topNft_placeholder">
+                        <div class="Hero__topNft_detailsPlaceholder">
+                            <h4 class="Hero__topNft_titlePlaceholder"></h4>
+                        </div>
+                    </div>
+                    <div class="Hero__topNft_placeholder">
+                        <div class="Hero__topNft_detailsPlaceholder">
+                            <h4 class="Hero__topNft_titlePlaceholder"></h4>
+                        </div>
+                    </div>
                 </div>
                 <div class="Hero__topNfts_figure">
                     <div
@@ -461,7 +477,8 @@ onMounted(async () => {
         content: '';
         width: 180%;
         height: 100%;
-        background: linear-gradient(93deg, rgba(17, 18, 23, 0), rgba(75, 75, 77, 0.15), rgba(91, 91, 92, 0.99), rgba(61, 62, 63, 0.15), rgba(17, 18, 23, 0), rgba(17, 18, 23, 0), rgba(17, 18, 23, 0), rgba(75, 75, 77, 0.15), rgba(91, 91, 92, 0.99), rgba(61, 62, 63, 0.15), rgba(17, 18, 23, 0), rgba(17, 18, 23, 0));
+        max-height: 246px;
+        background: linear-gradient(93deg, rgba(17, 18, 23, 0), rgba(75, 75, 77, 0.15), rgba(68, 68, 87, 0.99), rgba(61, 62, 63, 0.15), rgba(17, 18, 23, 0), rgba(17, 18, 23, 0), rgba(17, 18, 23, 0), rgba(75, 75, 77, 0.15), rgba(83, 83, 99, 0.99), rgba(61, 62, 63, 0.15), rgba(17, 18, 23, 0), rgba(17, 18, 23, 0));
         background-position: 0% 50%; 
         background-size: 100% 100%;
         background-repeat: no-repeat;
@@ -594,6 +611,46 @@ onMounted(async () => {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    .Hero__topNft_detailsPlaceholder {
+        position: absolute;
+        top: 268px;
+        left: 20px;
+        width: calc((100%) - 2 * 20px);
+        height: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        z-index: 99999;
+    }
+
+    .Hero__topNft_titlePlaceholder {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        border-radius: 4px;
+    }
+
+    .Hero__topNft_titlePlaceholder::after {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        content: '';
+        width: 200%;
+        height: 100%;
+        max-height: 246px;
+        background: linear-gradient(93deg, rgba(17, 18, 23, 0), rgba(75, 75, 77, 0.15), rgba(68, 68, 87, 0.99), rgba(61, 62, 63, 0.15), rgba(17, 18, 23, 0), rgba(17, 18, 23, 0), rgba(17, 18, 23, 0), rgba(75, 75, 77, 0.15), rgba(83, 83, 99, 0.99), rgba(61, 62, 63, 0.15), rgba(17, 18, 23, 0), rgba(17, 18, 23, 0));
+        background-position: 0% 50%; 
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        animation: loadingGlimmer 1.5s ease-in-out infinite;
+        transform: translate3d(0, 0, 0);
+        z-index: 9999;
     }
 
     @keyframes stepper {
