@@ -584,7 +584,7 @@ definePageMeta({
   width: 100%;
   height: max-content;
   border-radius: 0.75rem;
-  background-color: rgba(17,23,32,1);
+  /* background-color: rgba(17,23,32,1); */
   margin: 0 0 1.375rem;
   padding: 0.5rem 1rem;
 }
