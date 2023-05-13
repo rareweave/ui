@@ -415,20 +415,7 @@ const isLoading = useIsLoading();
     max-width: var(--page-max-width);
     margin: 0 calc(var(--page-spacing));
     height: 1px;
-    background: linear-gradient(
-        to right,
-        rgba(219, 174, 89, .5) 0%,
-        rgba(219, 174, 89, .5) 50%,
-        rgba(219, 174, 89, .5) 50%,
-        rgba(219, 174, 89, .5) 100%
-    );
-    background: linear-gradient(
-        to right,
-        rgb(255 243 221 / 50%) 0%,
-        rgb(220 215 205 / 50%) 50%,
-        rgb(216 215 213 / 50%) 50%,
-        rgb(251 251 251 / 50%) 100%
-    );
+    background: rgba(17,23,32,1);
 }
 @media screen and (max-width: 1080px) {
     .Nav__right.--mobile {

@@ -537,13 +537,7 @@ definePageMeta({
   width: calc((100vw) - var(--page-spacing) * 2);
   height: 1px;
   max-width: var(--page-max-width);
-  background: repeating-linear-gradient(
-    45deg, 
-    var(--bg-primary) 0, 
-    var(--bg-primary) 2px,
-    grey 2px,
-    grey 4px
-  );
+  background: rgba(17,23,32,1);
   margin: 0 auto;
 }
 

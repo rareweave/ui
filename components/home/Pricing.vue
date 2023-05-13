@@ -231,7 +231,9 @@ onMounted(async () => {
         align-items: center;
         width: 100%;
         max-width: var(--page-max-width);
-        margin: 15rem auto 3.75rem;
+        margin: 20rem auto 5rem;
+        flex: 1 1 0px;
+
     }
     .Pricing__wrapper {
         position: relative;
