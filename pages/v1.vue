@@ -866,6 +866,13 @@ definePageMeta({
     }
   }
 
+@media screen and (max-width: 1776px) {
+  .V1__nfts {
+    flex: 0 0 928px;
+    margin-right: 0;
+  }
+}
+
 @media screen and (max-width: 1380px) {
   .V1__menu {
     animation: fold-in .63s forwards linear 1;
@@ -897,6 +904,20 @@ definePageMeta({
   .V1__menuHeader,
   .V1__menuOption {
     animation: slide-out .63s forwards linear 1;
+  }
+}
+
+@media screen and (max-width: 1128px) {
+  .V1__nfts {
+    flex: 0 0 628px;
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 724px) {
+  .V1__nfts {
+    flex: 0 0 328px;
+    margin-right: 0;
   }
 }
 
