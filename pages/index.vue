@@ -3,21 +3,23 @@
     <div class="Main">
       <Centerfold />
       <Pricing />
-      <About />
+      <Collections />
       <Highlites />
       <Howto />
+      <Qa />
     </div>
   </div>
 </template>
 
 <script setup>
 import Centerfold from '../components/home/Centerfold.vue';
-import About from '../components/home/About.vue';
+import Collections from '../components/home/Collections.vue';
 import Highlites from '../components/home/Highlights.vue';
 import Howto from '../components/home/Howto.vue';
 import Pricing from '../components/home/Pricing.vue';
-onMounted(() => {
-  
+import Qa from '../components/home/Qa.vue';
+
+onMounted(() => {  
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -30,19 +32,17 @@ onMounted(() => {
     });
   },
   { 
-    threshold: 0.5
+    threshold: 0.1
   });
-
   const observables = document.querySelectorAll(`.--observe`);
   observables.forEach(observable => {
     observer.observe(observable);
   });
-
 });
 definePageMeta({
   layout: "without-auth"
 });
-</script> 
+</script>
 
 <style scoped>
 .Page {
@@ -53,19 +53,17 @@ definePageMeta({
   align-items: stretch;
   width: 100%;
   height: calc(var(--page-height) + var(--filter-height) + var(--filter-padding) + var(--footer-height));
+  overflow-x: clip;
   overflow-y: auto;
   padding: 0 var(--page-padding);
 }
-
 .Main {
   position: relative;
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  height: max-content;
   max-width: var(--page-max-width);
+  height: 100%;
   margin: 0 auto;
-  padding: 0 0 0 12px;
+  /* padding: 0 0 0 12px; */
   text-align: left;
 }
 </style>

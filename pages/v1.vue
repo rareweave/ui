@@ -28,20 +28,6 @@
           items: {{ nfts.result?.length }}
         </div>
       </div>
-      <!-- <div class="Sort">
-        <button>
-          Sort by
-        </button>
-        <button>
-          Newest
-        </button>
-        <button>
-          Oldest
-        </button>
-        <button>
-          Price
-        </button>
-      </div> -->
       <div class="Search">
         <label>
           Search:
@@ -225,7 +211,8 @@
         <div 
           v-else-if="collections.result?.length > 0"   
           class="MenuOptions"
-          v-for="(collection, index) in [...new Set(collections.result?.filter(collection => collection.state.name !== undefined && collection.state.name !== ''))].filter(collection => ![...rarifiedCollections.map(_ => _.name)].includes(collection.state.name))"
+          v-for="(collection, index) in [...new Set(collections.result?.filter(collection => collection.state.name !== undefined && collection.state.name !== ''))]
+            .filter(collection => ![...rarifiedCollections.map(_ => _.name)].includes(collection.state.name))"
           :key="collection.contractTxId"
         >
           <div 
@@ -279,10 +266,10 @@
         />
       </div>
       <div 
-        v-if="view === 'list'" 
+        v-if="!isLoading.nfts && view === 'list'" 
         class="Details"
       >
-        <NftDetail 
+        <NftRow 
           v-for="nft in nfts.result" 
           :key="nft.contractTxId" 
           :nft="nft"
@@ -295,7 +282,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import NftCard from '../components/NftCard.vue';
-import NftDetail from '../components/NftDetail.vue';
+import NftRow from '../components/NftRow.vue';
 import { useNfts, useCollections, useIsLoading } from '../composables/useState';
 import { useRarifiedcollections } from '../composables/useRarifiedcollections';
 import Api from '../plugins/prophet';
@@ -483,7 +470,7 @@ definePageMeta({
 
 .Input__Search:focus {
   outline: none;
-  border: 1px solid rgba(27, 224, 116, 0.438);
+  border: 1px solid rgba(18, 245, 177, 0.829);
 }
 
 .SearchIcon {

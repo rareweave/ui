@@ -1,8 +1,12 @@
 <template>
-    <div :class="['Section','Centerfold'].join(' ')">
-        <div class="Wrapper">
+    <div 
+        :class="['Section','Centerfold'].join(' ')"
+    >
+        <div 
+            :class="['Layout','Hero'].join(' ')"
+        >
             <div class="Column">
-                <div>
+                <div class="Header">
                     <span class="Editionlabel">
                         Alpha Edition
                     </span>
@@ -31,7 +35,7 @@
                 </div>
             </div>
             <div class="Column">
-                <div class="Picked">
+                <div class="Hero">
                     <div 
                         class="Imagewrapper"
                         v-for="nft in NFTs.filter((nft, i) => i < 1)"
@@ -61,7 +65,9 @@
                 </div>
             </div>
         </div>
-        <div class="Bar">
+        <div
+            :class="['Layout','Features'].join(' ')"
+        >
             <div>
                 <h2 class="Title">
                     Explore the arweave market for <span class="Amazing-text">liquid NFTs</span>
@@ -151,41 +157,41 @@ import Api from '../../plugins/prophet';
 
 const nfts = useNfts();
 const NFTs = ref([]);
-const NFTsIndex = ref(0);
+const index = ref(0);
 
-const displayNfts = 1 + 4 + 1; // first and last are invisible for animation purposes
+const displayNfts = 1 + 4 + 1; // first and last are invisible for animation
 
 function randomIndex () {
     if (!nfts.value.result) 
         return 100;
     
-    return Math.floor(Math.random() * nfts.value.result.length - displayNfts);
+    return Math.floor(Math.random() * nfts.value.result.length - displayNfts - 3);
 };
 
 function incrementIndex() {
-    if (NFTsIndex.value + displayNfts >= nfts.value.result.length) {
-        // NFTsIndex.value = 0;
+    if (index.value + displayNfts >= nfts.value.result.length) {
+        // index.value = 0;
     } else {
-        NFTsIndex.value += 1;
+        index.value += 1;
     }
-    NFTs.value = nfts.value.result.filter((nft, i) => i >= NFTsIndex.value && i <= NFTsIndex.value + (displayNfts - 1));
+    NFTs.value = nfts.value.result.filter((nft, i) => i >= index.value && i <= index.value + (displayNfts - 1));
 };
 
 function decrementIndex() {
-    if (NFTsIndex.value <= 0) {
-        // NFTsIndex.value = nfts.value.result.length - 3;
+    if (index.value <= 0) {
+        // index.value = nfts.value.result.length - 3;
     } else {
-        NFTsIndex.value -= 1;
+        index.value -= 1;
     }
-    NFTs.value = nfts.value.result.filter((nft, i) => i >= NFTsIndex.value && i <= NFTsIndex.value + (displayNfts - 1));
+    NFTs.value = nfts.value.result.filter((nft, i) => i >= index.value && i <= index.value + (displayNfts - 1));
 };
 
 onMounted(async () => {
-    Api('nfts', { forSaleOnly: true })
+    Api('nfts')
         .then(res => {
             nfts.value = res;
-            NFTsIndex.value = randomIndex();
-            NFTs.value = res.result.filter((nft, i) => i >= NFTsIndex.value && i <= NFTsIndex.value + (displayNfts - 1));
+            index.value = randomIndex();
+            NFTs.value = res.result.filter((nft, i) => i >= index.value && i <= index.value + (displayNfts - 1));
         })
         .catch(err => {
             console.log(err);
@@ -194,30 +200,19 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-    .Centerfold {
-        margin-top: 15rem;
-    }
-
-    .Wrapper {
-        display: flex;
+    .Layout.Hero {
         flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
         flex-wrap: wrap;
-        width: 100%;
-        width: calc((100%) - var(--page-spacing) * 2);
-        height: 100%;
+        margin: 0 auto;
     }
 
-    .Bar {
-        position: relative;
-        display: flex;
+    .Layout.Features {
         flex-direction: column;
         justify-content: space-evenly;
         align-items: center;
-        width: calc((100%) - var(--page-spacing) * 2);
+        width: var(--content-width);
         height: 100%;
-        margin-top: 10rem;
+        margin: 10rem auto 0;
         z-index: 0;
     }
 
@@ -229,32 +224,16 @@ onMounted(async () => {
         align-items: center;
         width: 100%;
     }
+    
     .Column:nth-child(2) {
         justify-content: flex-end;
-    }
-
-    .Title {
-        color: rgba(251,250,255,1);
-        text-align: center;
-        white-space: nowrap;
-        width: min-content;
-        height: auto;
-        margin: 0;
-        padding: 0;
-    }
-    h1.Title {
-        font-size: 28pt;
-        font-weight: 600;
-    }
-    h2.Title {
-        font-size: 24pt;
-        font-weight: 600;
     }
 
     .Desc {
         font-size: 14pt;
         margin: 1rem 0;
     }
+
     .CTAs {
         margin: .675rem .125rem;
     }
@@ -274,7 +253,7 @@ onMounted(async () => {
         border: 1px solid rgba(251,250,255,0);
     }
 
-    .Picked {
+    .Hero {
         height: 100%;
         aspect-ratio: 1/1;
         position: relative;
@@ -288,8 +267,12 @@ onMounted(async () => {
     }
 
     .Imagewrapper {
-        transform: rotate3d(1,1,1,7.2deg);
         animation: hover-like-clouds 10s infinite forwards;
+        object-fit: contain;
+        object-position: center;
+        width: 100%;
+        max-width: 420px;
+        max-height: 420px;
     }
 
     @keyframes hover-like-clouds {
@@ -317,7 +300,7 @@ onMounted(async () => {
     .Video {
         position: relative;
         transform-style: preserve-3d;
-        transform: rotate3d(1,1,1,3.6deg);
+        transform: rotate3d(1,1,1,6deg) translate3d(0,25px,0);
         border-radius: 3.75rem;
         box-shadow: 
             0px 1px 1px rgba(0,0,0,0.2), 
@@ -325,9 +308,9 @@ onMounted(async () => {
             2px 4px 4px rgba(0,0,0,0.2), 
             4px 8px 8px rgba(0,0,0,0.2)
         ;
+        width: 100%;
+        height: 100%;
     }
-
-
 
     .NFTs {
         position: relative;

@@ -17,7 +17,7 @@
                     class="Nav__link"
                     to="/v1"
                 >
-                    Marketplace
+                    Explore
                 </NuxtLink>
                 <NuxtLink 
                     class="Nav__link"
@@ -65,7 +65,7 @@
             >   
                 <div class="Nav__menu__mobile">
                     <button 
-                        class="amazing-button Nav__button"
+                        class="Amazing--button Nav__button"
                         @click="showMenu = !showMenu"
                     >
                         Menu
@@ -77,25 +77,25 @@
                         class="Nav__menu__dropdown"
                     >
                         <NuxtLink 
-                            class="amazing-button Nav__dropdown__item" 
+                            class="Amazing--red Nav__dropdown__item" 
                             to="/v1"
                         >
-                            Marketplace
+                            Explore
                         </NuxtLink>
                         <NuxtLink 
-                            class="amazing-button Nav__dropdown__item" 
+                            class="Amazing--red Nav__dropdown__item" 
                             to="/create"
                         >
                             Mint NFT
                         </NuxtLink>
                         <NuxtLink 
-                            class="amazing-button Nav__dropdown__item" 
+                            class="Amazing--red Nav__dropdown__item" 
                             to="/collection/create"
                         >
                             Create collection
                         </NuxtLink>
                         <NuxtLink
-                            class="Amazing__them Nav__dropdown__item Account"
+                            class="Nav__dropdown__item Account"
                             :replace="false" 
                             :to="'/profile/' + account.addr"
                         >
@@ -126,19 +126,19 @@
                 class="Nav__right --desktop"
             >
                 <NuxtLink 
-                    class="amazing-button Nav__link"
+                    class="Nav__link"
                     to="/"
                 >
                     Home
                 </NuxtLink>
                 <NuxtLink 
-                    class="amazing-button Nav__link"
+                    class="Nav__link"
                     to="/v1"
                 >
-                    Marketplace
+                    Explore
                 </NuxtLink>
                 <NuxtLink 
-                    class="amazing-button Nav__button"
+                    class="Amazing--button Nav__button"
                     to="/login"
                 >
                     Login
@@ -150,7 +150,7 @@
             >
                 <div class="Nav__menu__mobile">
                     <button 
-                        class="amazing-button Nav__button" 
+                        class="Amazing--button Nav__button" 
                         @click="showMenu = !showMenu"
                     >
                         Menu
@@ -161,19 +161,19 @@
                         class="Nav__menu__dropdown"
                     >
                         <NuxtLink 
-                            class="amazing-button Nav__dropdown__item" 
+                            class="Nav__dropdown__item" 
                             to="/"
                         >
                             Home
                         </NuxtLink>
                         <NuxtLink 
-                            class="amazing-button Nav__dropdown__item" 
+                            class="Nav__dropdown__item" 
                             to="/v1"
                         >
-                            Marketplace
+                            Explore
                         </NuxtLink>
                         <NuxtLink 
-                            class="amazing-button Nav__dropdown__item" 
+                            class="Amazing--button Nav__dropdown__item" 
                             to="/login"
                         >
                             Login

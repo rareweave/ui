@@ -1,6 +1,6 @@
 <template>
     <div :class="['Section','Howto'].join(' ')">
-        <div class="Wrapper">
+        <div class="Layout">
             <h2 class="Title">
                 Create and sell your NFTs
             </h2>
@@ -71,20 +71,14 @@ const steps = [
         position: relative;        
     }
 
-    .Wrapper {
-        position: relative;
-        display: flex;
-        flex-direction: column;
+    .Layout {
         justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
     }
 
     .Title {
-        font-size: 24px;
+        /* font-size: 24px;
         font-weight: 600;
-        color: var(--text-primary);
+        color: var(--text-primary); */
         margin-bottom: 24px;
     }
 

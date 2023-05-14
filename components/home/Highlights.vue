@@ -1,21 +1,32 @@
 <template>
     <div :class="['Section','Highlights'].join(' ')">
-        <div class="Wrapper">
+        <div class="Layout">
             <h2 class="Title">
-                Highlighted NFTs
+                Highlighted
             </h2>
             <div class="Showcase --observe">
                 <div
+                    v-if="isLoading.nfts"
+                    v-for="i in 8"
+                    :key="i+`loading`"
+                    class="NFT --loading"
+                >
+                    <div class="loading">
+                        <span></span>
+                    </div>
+                </div>
+                <div
                     class="NFT"
+                    v-else
                     v-for="nft in selectionNfts"
+                    :key="nft.contractTxId"
                 >
                     <div class="Imagewrapper">
-
                         <img
                             v-if="nft.state?.contentType?.startsWith('image')"
-                            class="Image"
                             :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${nft.contractTxId}`"
                             :alt="nft.state.name  || 'NFT'"
+                            class="Image"
                             @load="imgHasBeenLoaded"
                         />
                         <video
@@ -29,6 +40,7 @@
                             <source
                                 :src="`https://prophet.rareweave.store/${nft.contractTxId}`"
                                 :type="nft.state?.contentType"
+                                @load="imgHasBeenLoaded"
                             />
                             Your browser does not support the video tag.
                         </video>
@@ -70,19 +82,14 @@ onMounted(async () => {
         height: 100%;
     }
 
-    .Wrapper {
-        display: flex;
-        flex-direction: column;
+    .Layout {
         justify-content: flex-start;
-        align-items: center;
-        width: calc((100%) - var(--page-spacing) * 2);
-        height: 100%;
     }
 
     .Title {
-        font-size: 24px;
+        /* font-size: 24px;
         font-weight: 600;
-        color: var(--text-primary);
+        color: var(--text-primary); */
         margin-bottom: 24px;
     }
 
@@ -105,17 +112,35 @@ onMounted(async () => {
         justify-content: flex-start;
         align-items: center;
         width: 306px;
+        aspect-ratio: 1/1;
+        margin: 0 auto 48px;
         background: var(--bg-secondary);
+        overflow: hidden;
     }
-
+    
     .Imagewrapper {
         position: relative;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         width: 100%;
-        height: 306px;
-        background: var(--bg-secondary);
+        height: 100%;
+        overflow: hidden;
+        border-radius: 1rem 1rem 0 0;
+    }
+
+    .Image,
+    .Video {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        max-height: 306px;
+        object-fit: cover;
+        object-position: center;
     }
 </style>

@@ -1,7 +1,9 @@
 <template>
-    <div class="Pricing">
-        <div class="Wrapper">
-            <div>
+    <div 
+        :class="['Section','Pricing'].join(' ')"
+    >
+        <div class="Layout">
+            <div class="Header">
                 <h2 class="Title">
                     Low costs for minting your own <span class="Amazing-text">NFT collection</span>
                 </h2>
@@ -43,7 +45,7 @@
                     </div>
                 </div>
             </div>
-            <div class="Calculator">
+            <div class="Calculator --observe">
                 <p class="Intro">
                     Calculate the cost of minting your own NFT collection.
                 </p>
@@ -230,23 +232,16 @@ onMounted(async () => {
         align-items: center;
         width: 100%;
         max-width: var(--page-max-width);
-        margin: 20rem auto 5rem;
-        flex: 1 1 0px;
-
-    }
-    .Wrapper {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        width: calc((100%) - var(--page-spacing) * 2);
-        height: 100%;
-        margin: 0;
+        height: auto;
+        margin: 0 auto;
         padding: 0;
     }
 
-    .Title {
+    .Layout {
+        justify-content: flex-start;
+    }
+
+    /* .Title {
         color: rgba(251,250,255,1);
         text-align: center;
         white-space: nowrap;
@@ -255,7 +250,7 @@ onMounted(async () => {
         margin: 0;
         padding: 0;font-size: 24pt;
         font-weight: 600;
-    }
+    } */
 
     .Desc {
         font-size: 14pt;
@@ -271,7 +266,7 @@ onMounted(async () => {
         align-items: center;
         width: 100%;
         height: 100%;
-        margin: 3rem auto 0;
+        margin: 5rem auto 0;
         padding: 0;
         transform-style: preserve-3d;
     }
@@ -384,9 +379,8 @@ onMounted(async () => {
         align-items: center;
         width: calc(100% - var(--page-spacing) * 2);
         height: 100%;
-        margin: 3rem auto 0;
+        margin: 5rem auto 0;
         padding: 0;
-
     }
 
     .Intro {
