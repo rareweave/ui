@@ -1,78 +1,77 @@
 <template>
     <div class="Pricing">
-        <div class="Pricing__wrapper">
+        <div class="Wrapper">
             <div>
-                <h2 class="Pricing__title">
+                <h2 class="Title">
                     Low costs for minting your own <span class="Amazing-text">NFT collection</span>
                 </h2>
-                <p class="Pricing__desc">
+                <p class="Desc">
                     The cost of minting NFTs on RareWeave depend on the storage rates of the Arweave network.
                     Pay once, store forever. Currently the RareWeave market does not charge any additional fees.
                     <span>Please note that this policy is most likely to change in the near future, to discourage spamming of both network and marketplace.</span>
                 </p>
             </div>
-            <div class="Pricing__tiers">
+            <div class="Tiers">
                 <div 
                     v-for="(size, index) in Object.keys(Size)"
-                    class="Pricing__tier --observe"
+                    class="Tier --observe"
                 >
-                    <span class="Pricing__tiername">
+                    <span class="Tier__title">
                         Per {{ size }}
                     </span>
                     <div>
-                        <span
+                        <span 
                             v-if="isLoadingTiers"
-                            class="Pricing__loading"
                         >
                             Loading...
                         </span>
                         <div
                             v-if="priceTiers.length > 3"
-                            class="Pricing__content"
+                            class="Tier__price"
                         >
                             <span 
-                                :class="['Pricing__ar',`--${size.toLowerCase()}`].join(' ')">
+                                :class="['Ar',`--${size.toLowerCase()}`].join(' ')">
                                 {{ (priceTiers[index].ar).toFixed(7) }} AR
                             </span>
-                            <span class="Pricing__usd">
+                            <span class="Usd">
                                 ~${{ (priceTiers[index].usd).toFixed(index === 0 ? 7 : (index < 2 ? 3 : 2)) }} USD
                             </span>
-                            <span class="Pricing__winston">
+                            <span class="Winston">
                                 {{ priceTiers[index].winston }} winston
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="Pricing__calcualtor">
-                <p class="Pricing__calculator_intro">
-                    Calculate the total cost of creating your collection
+            <div class="Calculator">
+                <p class="Intro">
+                    Calculate the cost of minting your own NFT collection.
                 </p>
-                <div class="Pricing__calculator_content">
-                    <div class="Pricing__rate">
-                        <h4 class="Pricing__rate_title">
+                <div class="Content">
+                    <div class="Rate">
+                        <h4 class="Rate__title">
                             Arweave ${{ rates.arweave?.usd?.toFixed(2) }}
                         </h4>
-                        <p class="Pricing__rate_desc">
+                        <p class="Rate__desc">
                             All cost are depending on the arweave network.
                             Enter the number of NFTs you want to mint and the average size of each NFT and click on calculate.
                         </p>
                     </div>
                     <form
-                        class="Pricing__form"
+                        class="Form"
                         autocomplete="off"
                         @submit.stop.prevent="prevent"
                     >
-                        <h4 class="Pricing__form_title">
+                        <h4 class="Form__title">
                             <span class="Amazing-text">Estimate cost of your NFT collection</span>
                         </h4>
                         <div class="Row">
                             <label>
                                 Enter the number of NFTs you want to mint:
                             </label>
-                            <span class="Pricing__calculate_inputWrapper">
+                            <span class="Container">
                                 <input
-                                    class="Pricing__calculate_input"
+                                    class="Input"
                                     type="number"
                                     name="quantity"
                                     ref="quantity"
@@ -87,9 +86,9 @@
                             <label>
                                 Enter the average size of the NFTs:
                             </label>
-                            <span class="Pricing__calculate_inputWrapper">
+                            <span class="Container">
                                 <input
-                                    class="Pricing__calculate_input"
+                                    class="Input"
                                     type="number"
                                     name="size"
                                     ref="size"
@@ -235,7 +234,7 @@ onMounted(async () => {
         flex: 1 1 0px;
 
     }
-    .Pricing__wrapper {
+    .Wrapper {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -247,7 +246,7 @@ onMounted(async () => {
         padding: 0;
     }
 
-    .Pricing__title {
+    .Title {
         color: rgba(251,250,255,1);
         text-align: center;
         white-space: nowrap;
@@ -258,12 +257,12 @@ onMounted(async () => {
         font-weight: 600;
     }
 
-    .Pricing__desc {
+    .Desc {
         font-size: 14pt;
         margin: 1rem 0;
     }
 
-    .Pricing__tiers {
+    .Tiers {
         position: relative;
         display: flex;
         flex-wrap: wrap;
@@ -277,7 +276,7 @@ onMounted(async () => {
         transform-style: preserve-3d;
     }
 
-    .Pricing__tier {
+    .Tier {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -285,14 +284,14 @@ onMounted(async () => {
         align-items: center;
         width: 286px;
         height: 186px;
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(221, 235, 255, 0.125);
         border-radius: 8px;
         margin: 0 auto 1rem;
         transition: 0.7s ease-out;
         background-color: rgba(0,0,0,1);
     }
 
-    .Pricing__tier:hover {
+    .Tier:hover {
         box-shadow:
             0px 0px 1px rgba(34, 255, 126, 0.2),
             1px 0px 2px rgba(34, 255, 133, 0.25),
@@ -306,7 +305,7 @@ onMounted(async () => {
         ;
     }
 
-    .Pricing__tiername {
+    .Tier__title {
         position: relative;
         display: flex;
         flex-direction: row;
@@ -321,7 +320,7 @@ onMounted(async () => {
         border-radius: 8px 8px 0 0;
     }
 
-    .Pricing__content {
+    .Tier__price {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -331,13 +330,6 @@ onMounted(async () => {
         height: 100%;
         padding: 0 1.5rem;
     }
-
-    .Pricing__ar {
-        position: relative;
-        display: flex;
-        font-size: 1.75rem;
-    }
-
     .--kb {
         background: linear-gradient(144deg, rgba(255, 34, 243, 1), rgba(156, 12, 255, 1));
         -webkit-background-clip: text;
@@ -362,7 +354,13 @@ onMounted(async () => {
         -webkit-text-fill-color: transparent;
     }
 
-    .Pricing__usd {
+    .Ar {
+        position: relative;
+        display: flex;
+        font-size: 1.75rem;
+    }
+
+    .Usd {
         position: relative;
         display: flex;
         font-size: 1.5rem;
@@ -370,7 +368,7 @@ onMounted(async () => {
         color: var(--color-white);
     }
 
-    .Pricing__winston {
+    .Winston {
         position: relative;
         display: flex;
         font-size: .875rem;
@@ -378,7 +376,7 @@ onMounted(async () => {
         color: rgba(103,103,118,1);
     }
 
-    .Pricing__calcualtor {
+    .Calculator {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -391,22 +389,24 @@ onMounted(async () => {
 
     }
 
-    .Pricing__calculator_intro {
+    .Intro {
         margin: 1rem 0;
     }
 
-    .Pricing__calculator_content {
+    .Content {
         position: relative;
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
         max-width: 820px;
         border-radius: 1.5rem;
-        background: rgba(17,23,32,.75)
+        background: rgba(17,23,32,.75);
+
     }
 
-    .Pricing__rate {
+    .Rate {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -419,19 +419,19 @@ onMounted(async () => {
     }
 
     
-    .Pricing__rate_title {
+    .Rate__title {
         margin: 1rem 2rem;
         font-size: 1.5rem;
         font-weight: 600;
         color: var(--color-white);
     }
 
-    .Pricing__rate_desc {
+    .Rate__desc {
         margin: 1rem 2rem;
         box-sizing: border-box;
     }
 
-    .Pricing__form {
+    .Form {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -442,10 +442,10 @@ onMounted(async () => {
         min-height: 168px;
         margin: 2rem 0;
         padding: 0;
-        border-left: 1px solid rgba(255,255,255,1);
+        border-left: 1px solid rgba(255,255,255,0.125);
     }
 
-    .Pricing__form_title {
+    .Form__title {
         margin: 1rem 2rem;
     }
     
@@ -465,22 +465,19 @@ onMounted(async () => {
         flex: 0 0 96px;
     }
 
-    .Row span {
+    .Container {
         position: relative;
         display: flex;
-        flex: 0 0 156px;
+        flex: 0 0 168px;
+        border-radius: 4px;
+        overflow: hidden;
     }
-
-    .Pricing__calculate_input {
+    
+    .Input {
         position: relative;
         display: flex;
         flex: 1 1 0px;
         color: var(--color-white);
         padding: 0 .375rem;
-    }
-
-    .Pricing__calculate_inputWrapper {
-        border-radius: 4px;
-        overflow: hidden;
     }
 </style>

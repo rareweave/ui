@@ -1,29 +1,27 @@
 <template>
-    <div
-        :class="['About','Section'].join(' ')"
-    >
-        <div class="About__wrapper">
-            <h2 class="About__title">
+    <div :class="['Section','About'].join(' ')">
+        <div class="Wrapper">
+            <h2 class="Title">
                 Top collections
             </h2>
-            <div class="About__rarified">
+            <div class="Rarified --observe">
                 <div 
                     v-for="collection in rarified.filter((c, i) => i < 10)"
-                    class="About__collection"
+                    class="Collection"
                 >
-                    <span class="About__collectionname Amazing-text">
+                    <span class="Amazing-text">
                         {{ collection.name }}
                     </span>
-                    <span class="About__collectionstat">
-                        {{ collection.floorprice }} AR
+                    <span>
+                        {{ collection.count }}
                     </span>
-                    <span class="About__collectionstat">
+                    <span>
                         {{ collection.volume }} AR
                     </span>
-                    <span class="About__collectionstat">
+                    <span>
                         {{ collection.percentage_change_24h > 0 ? '+' : '-' }}{{ collection.percentage_change_24h }}%
                     </span>
-                    <span class="About__collectionstat">
+                    <span>
                         {{ collection.percentage_change_7d > 0 ? '+' : '-' }}{{ collection.percentage_change_7d }}%
                     </span>
                 </div>
@@ -53,9 +51,12 @@ onMounted(async () => {
             const limit = 10;
             rarified.value = res.result.filter((c,i) => ![
                 undefined, 'undefined', '', ' ', 'test', 'Test' // excluded collection names
-            ].includes(c.state.name) && i < limit)
+            ].includes(c.state.name))
+                .sort((a, b) => b.state.items.length - a.state.items.length)
+                .filter((c, i) => i < limit)
                 .map(c => ({
                     name: c.state.name,
+                    count: c.state.items.length,
                     floorprice: 0.0,
                     volume: 0.0,
                     percentage_change_24h: 0.0,
@@ -69,7 +70,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-    .About__wrapper {
+    .Wrapper {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -81,7 +82,7 @@ onMounted(async () => {
         padding: 0;
     }
 
-    .About__title {
+    .Title {
         font-size: 24pt;
         font-weight: 600;
         margin-bottom: 60px;
@@ -89,7 +90,7 @@ onMounted(async () => {
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-    .About__rarified {
+    .Rarified {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -100,10 +101,10 @@ onMounted(async () => {
         min-height: 628px;
         padding: 10px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgb(45 47 51 / 50%)
+        /* background: rgba(17, 23, 32, 0.5); */
     }
 
-    .About__collection {
+    .Collection {
         display: grid;
         grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
         grid-template-rows: 1fr;

@@ -1,21 +1,19 @@
 <template>
-    <div
-        :class="['Highlights','Section'].join(' ')"
-    >
-        <div class="Highlights__wrapper">
-            <h2 class="Highlights__title">
+    <div :class="['Section','Highlights'].join(' ')">
+        <div class="Wrapper">
+            <h2 class="Title">
                 Highlighted NFTs
             </h2>
-            <div class="Highlights__showcase --observe">
+            <div class="Showcase --observe">
                 <div
-                    class="Nft__wrapper"
+                    class="NFT"
                     v-for="nft in selectionNfts"
                 >
-                    <div class="Nft__imageWrapper">
+                    <div class="Imagewrapper">
 
                         <img
                             v-if="nft.state?.contentType?.startsWith('image')"
-                            class="NftCard__Image"
+                            class="Image"
                             :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${nft.contractTxId}`"
                             :alt="nft.state.name  || 'NFT'"
                             @load="imgHasBeenLoaded"
@@ -26,7 +24,7 @@
                             muted 
                             controls
                             loop
-                            class="NftCard__Video"
+                            class="Video"
                         >
                             <source
                                 :src="`https://prophet.rareweave.store/${nft.contractTxId}`"
@@ -72,7 +70,7 @@ onMounted(async () => {
         height: 100%;
     }
 
-    .Highlights__wrapper {
+    .Wrapper {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -81,14 +79,14 @@ onMounted(async () => {
         height: 100%;
     }
 
-    .Highlights__title {
+    .Title {
         font-size: 24px;
         font-weight: 600;
         color: var(--text-primary);
         margin-bottom: 24px;
     }
 
-    .Highlights__showcase {
+    .Showcase {
         position: relative;
         display: flex;
         flex-direction: row;
@@ -100,7 +98,7 @@ onMounted(async () => {
         transform-style: preserve-3d;
     }
 
-    .Nft__wrapper {
+    .NFT {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -110,7 +108,7 @@ onMounted(async () => {
         background: var(--bg-secondary);
     }
 
-    .Nft__imageWrapper {
+    .Imagewrapper {
         position: relative;
         display: flex;
         flex-direction: column;

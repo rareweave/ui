@@ -168,9 +168,14 @@ p {
 
 .--observe {
     transition: all 0.4s ease-out;
-    transform: translateY(50%);
+    transform: translateY(226px);
 }
 
 .--observe.inview {
     transform: translateY(0);
+}
+
+.Title, 
+.Desc {
+    max-width: 85vw;
 }

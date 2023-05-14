@@ -1,8 +1,8 @@
 <template>
-  <div class="V1__select">
-    <div class="V1__padding"></div>
-    <div class="V1__topbar">
-      <div class="V1__forsale">
+  <div class="Select">
+    <div class="Spacer"></div>
+    <div class="Topbar">
+      <div class="Forsale">
         <button
           :class="{ active: forSaleOnly === false }"
           @click="forSaleOnly = false; searchType !== '' ? searchNFTs() : getNFTs()"
@@ -24,11 +24,11 @@
         >
           For sale only
         </button>
-        <div class="V1__currentcount">
+        <div class="Current">
           items: {{ nfts.result?.length }}
         </div>
       </div>
-      <!-- <div class="V1__sort">
+      <!-- <div class="Sort">
         <button>
           Sort by
         </button>
@@ -42,20 +42,20 @@
           Price
         </button>
       </div> -->
-      <div class="V1__search">
+      <div class="Search">
         <label>
           Search:
         </label>
-        <span class="V1__searchInputWrapper">
+        <span class="InputWrapper">
           <input 
             type="text" 
             placeholder="Name, description etc" 
             v-model="searchInput"
             @keydown.enter="searchCondition = searchInput; searchNFTs()"
-            class="V1__searchInput"
+            class="Input__Search"
           />
           <span 
-            class="V1__searchIcon"
+            class="SearchIcon"
             @click="searchCondition = searchInput; searchNFTs()"
           >
             <svg
@@ -102,9 +102,9 @@
   </div>
   <div class="V1__border"></div>
   <div class="V1__page">
-    <div class="V1__menu">
-      <div class="V1__menuSection">
-        <div class="V1__menuHeader">
+    <div class="Menu">
+      <div class="MenuSection">
+        <div class="MenuHeader">
           <h2>
             Rarified
           </h2>
@@ -112,10 +112,10 @@
         </div>
         <div 
           v-for="(rarifiedCollection, index) in rarifiedCollections"
-          class="V1__menuOptions"
+          class="MenuOptions"
         >
           <div 
-            class="highlite V1__menuOption"
+            class="highlite MenuOption"
             :style="{
               animationDuration: `${0.12 + (0.12 * index)}s`
             }"
@@ -132,16 +132,16 @@
           </div>
         </div>
       </div>
-      <div class="V1__menuSection">
-        <div class="V1__menuHeader">
+      <div class="MenuSection">
+        <div class="MenuHeader">
           <h2>
             Filter
           </h2>
           <span></span>
         </div>
-        <div class="V1__menuOptions">
-          <div class="V1__menuOption">
-            <div class="V1__menuRow">
+        <div class="MenuOptions">
+          <div class="MenuOption">
+            <div class="Row">
               <label>
                 Min:
               </label>
@@ -157,8 +157,8 @@
               </span>
             </div>
           </div>
-          <div class="V1__menuOption">
-            <div class="V1__menuRow">
+          <div class="MenuOption">
+            <div class="Row">
               <label>
                 Max:
               </label>
@@ -174,10 +174,10 @@
               </span>
             </div>
           </div>
-          <div class="V1__menuOption">
-            <span class="V1__menuFilterbuttons">
+          <div class="MenuOption">
+            <span class="FilterButton">
               <button 
-                class="V1__menuButton"
+                class="MenuButton"
                 @click="forSaleOnly = true; nfts = nfts.result.reduce((acc, cur) => {
                   if (cur.state.forSale) {
                       acc.result.push(cur);
@@ -192,7 +192,7 @@
                 Apply
               </button>
               <button 
-                class="V1__menuResetbutton"
+                class="Reset"
                 @click="filter = { minPrice: 0, maxPrice: 0 }; forSaleOnly = false; searchNFTs()"
               >
                 Remove filter
@@ -201,16 +201,16 @@
           </div>
         </div>
       </div>
-      <div class="V1__menuSection">
-        <div class="V1__menuHeader">
+      <div class="MenuSection">
+        <div class="MenuHeader">
           <h2>
             Highlights
           </h2>
           <span></span>
         </div>
       </div>
-      <div class="V1__menuSection">
-        <div class="V1__menuHeader">
+      <div class="MenuSection">
+        <div class="MenuHeader">
           <h2>
             Collection detection
           </h2>
@@ -224,12 +224,12 @@
         </div>
         <div 
           v-else-if="collections.result?.length > 0"   
-          class="V1__menuOptions"
+          class="MenuOptions"
           v-for="(collection, index) in [...new Set(collections.result?.filter(collection => collection.state.name !== undefined && collection.state.name !== ''))].filter(collection => ![...rarifiedCollections.map(_ => _.name)].includes(collection.state.name))"
           :key="collection.contractTxId"
         >
           <div 
-            class="V1__menuOption highlite"  
+            class="MenuOption highlite"  
           >
             <div class="V1__button_wrapper">
               <span class="V1__button_decoration"></span>
@@ -243,8 +243,8 @@
           </div>
         </div>
       </div>
-      <div class="V1__menuSection">
-        <div class="V1__menuHeader">
+      <div class="MenuSection">
+        <div class="MenuHeader">
           <h2>
             Made with love
           </h2>
@@ -252,7 +252,7 @@
         </div>
       </div>
     </div>
-    <div class="V1__nfts">
+    <div class="NFTs">
       <div
         v-if="isLoading.nfts"
         class="Blocks__loader"
@@ -261,7 +261,7 @@
       </div>
       <div 
         v-else-if="nfts.result?.length === 0" 
-        class="V1__empty"
+        class="Empty"
       >
         <span class="Empty__nfts"></span>
         <h2>
@@ -270,7 +270,7 @@
       </div>
       <div 
         v-else v-if="view === 'grid'" 
-        class="V1__showcase"
+        class="Showcase"
       >
         <NftCard 
           v-for="nft in nfts.result" 
@@ -280,7 +280,7 @@
       </div>
       <div 
         v-if="view === 'list'" 
-        class="V1__details"
+        class="Details"
       >
         <NftDetail 
           v-for="nft in nfts.result" 
@@ -408,7 +408,7 @@ definePageMeta({
 </script>
 
 <style scoped>
-.V1__select {
+.Select {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -421,18 +421,18 @@ definePageMeta({
   margin: 0 auto;
 }
 
-.V1__padding {
+.Spacer {
   flex: 1 1 0px;
 }
 
-.V1__topbar {
+.Topbar {
   position: relative;
   display: flex;
   width: 1226px;
 }
 
-.V1__forsale,
-.V1__sort {
+.Forsale,
+.Sort {
   flex: 1 1 0px;
   display: flex;
   flex-direction: row;
@@ -440,13 +440,13 @@ definePageMeta({
   align-items: center;
 }
 
-.V1__currentcount {
+.Current {
   margin: 2px 4px;
   padding: .375rem .75rem;
   color: rgba(146, 158, 161, .75);
 }
 
-.V1__search {
+.Search {
   position: relative;
   flex: 1 1 0px;
   display: flex;
@@ -455,12 +455,13 @@ definePageMeta({
   align-items: center;
 }
 
-.V1__search label {
+.Search label,
+.Label {
   margin: 2px 4px;
   padding: .375rem .75rem;
 }
 
-.V1__searchInputWrapper {
+.InputWrapper {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -470,7 +471,7 @@ definePageMeta({
   padding: 0;
 }
 
-.V1__searchInput {
+.Input__Search {
   position: relative;
   margin: 2px 4px;
   padding: .1875rem .375rem;
@@ -480,12 +481,12 @@ definePageMeta({
   width: 228px;
 }
 
-.V1__searchInput:focus {
+.Input__Search:focus {
   outline: none;
-  border: 1px solid rgba(219,174,98,1);
+  border: 1px solid rgba(27, 224, 116, 0.438);
 }
 
-.V1__searchIcon {
+.SearchIcon {
   position: absolute;
   top: 0;
   right: 0;
@@ -528,7 +529,7 @@ definePageMeta({
   align-items: center;
 }
 
-.V1__select div button {
+.Select div button {
   margin: 2px 4px;
   padding: .375rem .75rem;
 }
@@ -553,7 +554,7 @@ definePageMeta({
   margin: 1rem auto;
 }
 
-.V1__menu {
+.Menu {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -570,7 +571,7 @@ definePageMeta({
   height: var(--page-height);
 }
 
-.V1__menuSection {
+.MenuSection {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -583,7 +584,7 @@ definePageMeta({
   padding: 0.5rem 1rem;
 }
 
-.V1__menuHeader {
+.MenuHeader {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -598,7 +599,7 @@ definePageMeta({
   font-weight: 900;
   font-size: 15pt;
 }
-.V1__menuOptions {
+.MenuOptions {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -608,7 +609,8 @@ definePageMeta({
   margin: 0;
   padding: 0;
 }
-.V1__menuOption {
+
+.MenuOption {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -676,7 +678,7 @@ definePageMeta({
 
 
   
-.V1__menuRow {
+.Row {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -686,13 +688,17 @@ definePageMeta({
   margin: 0;
   padding: 0;
 }
-.V1__menuRow input[type="number"] {
+
+.Row input[type="number"] {
   width: 68px;
   border: none !important;
   outline: none !important;
-  margin: 0 4px;
+  margin: 0 8px;
+  padding: 0 0.375rem;
+  border-radius: 4px;
 }
-.V1__menuFilterbuttons {
+
+.FilterButton {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -703,7 +709,7 @@ definePageMeta({
   padding: 0;
 }
 
-.V1__menuButton {
+.MenuButton {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -718,13 +724,13 @@ definePageMeta({
   border: var(--border-primary) !important;
 }
 
-.V1__menuResetbutton {
+.ResetButton {
   color: rgba(218, 21, 218, 0.911) !important;
   text-decoration: 1px underline currentcolor;
   padding: .375rem .75rem !important
 }
 
-/* .V1__menuOption.highlite:hover {
+/* .MenuOption.highlite:hover {
   background: linear-gradient(217deg, rgba(253, 175, 8, 0.938), rgba(206, 8, 156, 0.938));
   background-size: 150% 1%;
   background-position: 0% 0%;
@@ -750,7 +756,7 @@ definePageMeta({
   cursor: pointer;
 }
 
-.V1__nfts {
+.NFTs {
   position: relative;
   display: flex;
   justify-items: flex-start;
@@ -763,7 +769,7 @@ definePageMeta({
   overflow-y: scroll;
   margin: 0.375rem auto;
 }
-.V1__empty {
+.Empty {
   position: relative;
   display: flex;
   width: 100%;
@@ -774,7 +780,7 @@ definePageMeta({
   justify-content: center;
   align-items: center;
 }
-.V1__showcase {
+.Showcase {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(288px, 300px));
   grid-template-rows: repeat(auto-fill, 420px);
@@ -784,7 +790,7 @@ definePageMeta({
   height: 100%;
   margin: 0;
 }
-.V1__details {
+.Details {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -797,11 +803,11 @@ definePageMeta({
 }
 
 
-.V1__menu {
+.Menu {
   animation: fold-out .63s forwards linear 1;
 }
-.V1__menuHeader,
-.V1__menuOption {
+.MenuHeader,
+.MenuOption {
     animation: slide-in .63s forwards linear 1;
     white-space: nowrap;
   }
@@ -857,24 +863,24 @@ definePageMeta({
   }
 
 @media screen and (max-width: 1776px) {
-  .V1__nfts {
+  .NFTs {
     flex: 0 0 928px;
     margin-right: 0;
   }
 }
 
 @media screen and (max-width: 1380px) {
-  .V1__menu {
+  .Menu {
     animation: fold-in .63s forwards linear 1;
     overflow-y: hidden;
   }
-  .V1__select {
+  .Select {
     flex-wrap: wrap;
   }
-  .V1__padding {
+  .Spacer {
     display: none;
   }
-  .V1__menuFoldOverlay {
+  .MenuFoldOverlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -888,36 +894,36 @@ definePageMeta({
     justify-content: center;
     align-items: flex-start;
   }
-  .V1__menuSection {
+  .MenuSection {
     overflow: hidden;
   }  
-  .V1__menuHeader,
-  .V1__menuOption {
+  .MenuHeader,
+  .MenuOption {
     animation: slide-out .63s forwards linear 1;
   }
 }
 
 @media screen and (max-width: 1128px) {
-  .V1__nfts {
+  .NFTs {
     flex: 0 0 628px;
     margin-right: 0;
   }
 }
 
 @media screen and (max-width: 724px) {
-  .V1__nfts {
+  .NFTs {
     flex: 0 0 328px;
     margin-right: 0;
   }
 }
 
 @media screen and (max-width: 460px) {
-  .V1__menu {
+  .Menu {
     display: none;
     visibility: collapse;
   }
 
-  .V1__showcase {
+  .Showcase {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(auto-fill, 420px);
   }

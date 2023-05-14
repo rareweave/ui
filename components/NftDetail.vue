@@ -1,13 +1,13 @@
 <template>
-  <div class="detail-Detail__Wrapper">
+  <div class="Wrapper">
     <NuxtLink 
       :to="'/nft/' + nft.contractTxId"
-      class="detail-line"
+      class="Link"
     >
-      <span class="wrapper image">
+      <span class="Imagewrapper">
         <img
           v-if="nft.state?.contentType?.startsWith('image')"
-          class="NftDetail__Image"
+          class="Image"
           :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${nft.contractTxId}`"
           :alt="nft.state.name  || 'NFT'"
           @load="imgHasBeenLoaded"
@@ -18,7 +18,7 @@
           muted 
           controls
           loop
-          class="NftDetail__Video"
+          class="Video"
         >
           <source
             :src="`https://prophet.rareweave.store/${nft.contractTxId}`"
@@ -26,54 +26,54 @@
           />
           Your browser does not support the video tag.
         </video>
-      </span>  
-      <div class="details-info">
-        <span class="title-label">
+      </span>
+      <div class="Info">
+        <span class="Label title">
           Name:
         </span>
-        <span class="title-value">
+        <span class="Value title">
           {{ nft.state.name }}
         </span>
-        <span class="description-label">
+        <span class="Label description">
           Description:
         </span>
-        <span class="description-value">
+        <span class="Value description">
           {{ nft.state.description }}
         </span>
-        <span class="owner-label">
+        <span class="Label owner">
           Owner:
         </span>
-        <span class="owner-value">
+        <span class="Value owner">
           {{ nft.owner.ansName || nft.owner.address }}
         </span>
-        <span class="minter-label">
+        <span class="Label minter">
           Minter:
         </span>
-        <span class="minter-value">
+        <span class="Value minter">
           {{ nft.state.minter }}
         </span>
-        <span class="forsale-label">
+        <span class="Label forsale">
           For Sale:
         </span>
-        <span class="forsale-value">
+        <span class="Value forsale">
           {{ nft.state.forSale ? "Yes" : "No" }}
         </span>
-        <span class="price-label">
+        <span class="Label price">
           {{ nft.state.listingDenom || "AR" }}
         </span>
-        <span class="price-value">
+        <span class="Value price">
           {{ nft.state.price > 0 ? (parseFloat(parseFloat(arweave.ar.winstonToAr(nft.state.price)).toFixed(3))).toFixed(2)+" ("+(nft.state.price)+" winston)" : "free" }}
         </span>
-        <span class="royalty-label">
+        <span class="Label royalty">
           Royalty:
         </span>
-        <span class="royalty-value">
+        <span class="Value royalty">
           {{ nft.state.royalty }} %
         </span>
-        <span class="reservationBlockheight-label">
+        <span class="Label reservationBlockheight">
           Reservation bh:
         </span>
-        <span class="reservationBlockheight-value">
+        <span class="Value reservationBlockheight">
           {{ nft.state.reservationBlockheight }}
         </span>
       </div>
@@ -96,17 +96,17 @@
   const arweave = arweaveState.value;
 </script>
 
-<style>
-.detail-Detail__Wrapper {
+<style scoped>
+.Wrapper {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  background: rgb(24 15 56 / 60%);
+  background: rgba(17,23,32,.5);
   width: 100%;
 }
 
-.detail-line {
+.Link {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -119,7 +119,7 @@
   padding: 1rem;
 }
 
-.img {
+.Imagewrapper {
   width: 216px;
   aspect-ratio: 1;
   background-size: 100%;
@@ -128,11 +128,11 @@
   transition: 100ms ease-in-out;
   transition: .36s ease-in-out;
 }
-.img:hover {
+.Imagewrapper:hover {
   background-size: 117%;
 }
 
-.details-info {
+.Info {
   display: grid;
   grid-template-columns: 186px 1fr;
   width: 100%;
@@ -141,8 +141,8 @@
   padding: 0 1rem;
 }
 
-.NftDetail__Image,
-.NftDetail__Video {
+.Image,
+.Video {
   width: 286px;
   height: 100%;
   object-fit: contain;
