@@ -68,7 +68,12 @@
           </div>
           <div v-else class="m-2">
             ANS Name:
-            <a href="https://ans.gg" class="btn btn-sm amazing-button">Get one</a>
+            <a 
+              href="https://ans.gg" 
+              class="btn btn-sm Amazing--button"
+            >
+              Get one
+            </a>
           </div>
           <textarea
             class="textarea textarea-bordered p-1 m-2 max-w-[16rem] w-full min-h-[6rem] font-mono text-sm font-light text-gray-200 bg-black bg-opacity-70 text-center whitespace-pre-wrap"
@@ -94,27 +99,37 @@
               v-model="user.profile.links.instagram" />
           </label>
         </div>
-        <button :class="[
-          'btn',
-          'amazing-button2',
-          'rounded-md',
-          'w-full',
-          'my-2',
-          ,
-          changed ? '' : 'btn-disabled',
-        ]" :disabled="!changed" @click="saveChangesToProfile">
+        <button 
+          class="btn amazing-button2 rounded-md w-full my-2"
+          :class="changed ? '' : 'btn-disabled'" 
+          :disabled="!changed" 
+          @click="saveChangesToProfile"
+        >
           Save changes
         </button>
       </div>
-      <h2 class="text-center text-2xl font-mono">Owned NFTs:</h2>
-      <div class="w-full flex flex-wrap justify-center flex-row mt-4 self-end">
-        <NftCard v-for="nft in ownedNfts" :key="nft.contractTxId" :nft="nft"></NftCard>
+      <h2 class="text-center text-2xl font-mono">
+        Owned NFTs:
+      </h2>
+      <div
+        class="Showcase"
+      >
+        <NftCard 
+          v-for="nft in ownedNfts" 
+          :key="nft.contractTxId" 
+          :nft="nft"
+        />
       </div>
 
-      <h2 class="text-center text-2xl mt-2 font-mono">Owned Collections:</h2>
+      <h2 class="text-center text-2xl mt-2 font-mono">
+        Owned Collections:
+      </h2>
       <div class="flex flex-wrap justify-center flex-col">
-        <CollectionCard v-for="collection in ownedCollections" :key="collection.contractTxId" :collection="collection">
-        </CollectionCard>
+        <CollectionCard 
+          v-for="collection in ownedCollections" 
+          :key="collection.contractTxId" 
+          :collection="collection"
+        />
       </div>
     </template>
     <template v-else>
@@ -161,15 +176,26 @@
           </span>
         </label>
       </div>
-      <h2 class="text-center text-2xl font-mono">Owned NFTs:</h2>
-      <div class="w-full flex flex-wrap justify-center flex-row mt-4 self-end">
-        <NftCard v-for="nft in ownedNfts" :key="nft.contractTxId" :nft="nft"></NftCard>
+      <h2 class="text-center text-2xl font-mono">
+        Owned NFTs:
+      </h2>
+      <div class="Showcase">
+        <NftCard 
+          v-for="nft in ownedNfts" 
+          :key="nft.contractTxId" 
+          :nft="nft"
+        />
       </div>
 
-      <h2 class="text-center text-2xl mt-2 font-mono">Owned Collections:</h2>
+      <h2 class="text-center text-2xl mt-2 font-mono">
+        Owned Collections:
+      </h2>
       <div class="flex flex-wrap justify-center flex-col">
-        <CollectionCard v-for="collection in ownedCollections" :key="collection.contractTxId" :collection="collection">
-        </CollectionCard>
+        <CollectionCard 
+          v-for="collection in ownedCollections" 
+          :key="collection.contractTxId" 
+          :collection="collection"
+        />
       </div>
     </template>
   </div>
@@ -295,3 +321,18 @@ definePageMeta({
   layout: "without-auth",
 });
 </script>
+<style scoped>
+  .Showcase {
+    position: relative; 
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: 1fr;
+    width: 100%;
+    max-width: 90vw;
+    min-width: 286px;
+    height: 420px;
+    
+    overflow-x: auto;
+
+  }
+</style>

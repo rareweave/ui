@@ -9,6 +9,7 @@
             :alt="nft.state.name || 'Nft'" 
             class="Image"
             @load="imgHasBeenLoaded" 
+            @error="imgNotLoaded"
         />
         <video 
             v-else-if="nft.state?.contentType?.startsWith('video')" 
@@ -33,6 +34,11 @@ const { nft } = defineProps([
 function imgHasBeenLoaded(e) {
     e.target.parentNode.querySelector(".load").style.display = "none";
 };
+function imgNotLoaded(e) {
+    e.target.parentNode.querySelector(".load").style.display = "none";
+    e.target.parentNode.querySelector(".Image").src = `/transparent-rw.png`;
+    e.target.parentNode.querySelector(".Image").classList.add("--error");
+};
 </script>
 <style scoped>
 .Imagewrapper {
@@ -44,6 +50,7 @@ function imgHasBeenLoaded(e) {
     justify-content: center;
     align-items: center;
 }
+
 .load {
     position: absolute;
     width: 100%;
@@ -52,6 +59,13 @@ function imgHasBeenLoaded(e) {
     justify-content: center;
     align-items: center;
 }
+
+.--error {
+    mix-blend-mode: luminosity;
+    opacity: .5;
+    transform: scale(.5) !important;
+}
+
 .Image,
 .Video {
     position: relative;
@@ -63,7 +77,9 @@ function imgHasBeenLoaded(e) {
     object-fit: cover;
     transition: transform 0.36s ease-in-out;
 }
+
 .Image:hover {
     transform: scale(1.08);
+
 }
 </style>

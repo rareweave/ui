@@ -36,13 +36,7 @@
                     :replace="false" 
                     :to="'/profile/' + account.addr"
                 >
-                    <span
-                        :style="{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }"
-                    >
+                    <span class="Accountname Amazing--red">
                         <img 
                             class="Pfp" 
                             :src="account.profile.avatarURL"
@@ -99,13 +93,7 @@
                             :replace="false" 
                             :to="'/profile/' + account.addr"
                         >
-                            <span
-                                :style="{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
-                                }"
-                            >
+                            <span class="Accountname--m">
                                 <img 
                                     class="Pfp" 
                                     :src="account.profile.avatarURL"
@@ -199,6 +187,7 @@ const spendable = useSpendable();
 const collections = useCollections();
 const nfts = useNfts();
 const isLoading = useIsLoading();
+
 </script>
 
 <style>
@@ -403,10 +392,12 @@ const isLoading = useIsLoading();
     overflow: hidden;
 }
 
-.Account {
-    background: rgba(219, 174, 89, .5);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.Accountname {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .Nav__border {

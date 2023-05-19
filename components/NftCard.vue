@@ -3,14 +3,7 @@
     <NuxtLink 
       :to="'/nft/' + nft.contractTxId"
       class="Card"
-      :style="{
-        backgroundColor: nft.state.background || '',
-        color: nft.state.textColor || '#ffffff'
-      }"
     >
-      <span class="AR">
-        {{ nft.state.listingDenom || "a" }}
-      </span>
       <Graphic 
         :nft="nft"
       />
@@ -26,29 +19,62 @@
       <div class="Info">
         <div class="Row">
           <h4 class="Nft Name Detail">
-            {{ nft.state.name || "Unknown" }}
+            {{ nft.state.name || "-no title-" }}
           </h4>
-          <span 
-            class="Nft PriceInAr Detail" 
-            v-if="nft.state.forSale"
-          >
-            {{ (nft.state.price / 1e12).toFixed(3) }} {{ nft.state.listingDenom || "AR" }}
+          <span class="Nft Rarity">
+            <!-- <span>
+              0
+            </span>
+            <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEUElEQVR4nO1ZS4hcVRC9MQpqYqILUYKfhdGoKMZMXPgBV+LGD6JBsxEXookfXCXjQomiglslfkmCMQE3JrrTZKLLIEpQEYxkYf4zXfU6PTPdVW9G0RypN3VnGrs7/Z3OG+gDD6an7jv31a2q+zk3hAEGGGCAAfKMZBKrSDDMigOkOMwCYcE0KUZZMcKC15Iybm6Vr1jGLSx43d7NOATTxplx2/8Em3kaN/XOAcVaUnzHCjR7SHCWFd+SYHUjPhbc6W3OtsLJigOJYqhjBwBcxIKtsUNSnCHFtkTxiEVnDFhyFLj4TIprE8XDLPiIFCV36B9SvAlgcRXfYlK8bbbIx4IPWfCQcRjXGLDEuAuKR0mxPWsTB0jwPoAL23JiYgJXkOL7bEQESoq3ikUsa/ZekuAyUryRpcnMaH5uDrgTu53PUmiLtW3GVyximTnPgjRGZ3wcl7cciegECU5YKoQ2YalFguM+8rurnDhGgjva5UsUQyQ4GZ1pKTKWTtGJRLEidIjRFNdnAzFXP8dLKa7rlC9RrIjOkOC9Zo3Xej5qJ5GowzfkqWTPmm75WLDG0owE/56TL85OVhPddjrLKdhsT8/4FO94lEfqNrDZIs4mrRR2q4jF3iu+UgnL4+zI07ixpgEJXnVHtoWcgxU7vFY21TOOmNHm8JBzFBSPeXrtrzGS4Ejm5RRWhpwjmSuDP2qMLKhkRmBpyDkIWOrrUqXGGFdP2yqEnOM0cGncddQYSXDajN0sgv1CUXGNF/vJGiMrfnVHOt9p9gmJ4i4v9l9qjKzY5bPWhpBzkOJFd+SzesaX3Lgz5Bzsg06KF+qf2GaM43ku+BPAJaSYzMpgEqvqNiLFoSwqKdaFnIJTPOWF/mPDRqR42aNyCMCikDMAWMSKn/0bNzYL26g3fDzkDKR4wqNxqmn6x6K3Odp2miEnKNmuV3CqYZH/H3aMJMFPPoPtCDkBK3b6av5Dy8eCQgW3RwEhUTwfzjNIsdGdmCqWcWtbL7PgWU+xvwoVPBDOE0jwoH2Df8szHZFEISJTAFPcE/oMSnFfph+0IjicC5keJfgiOtPPyHCK+0lR9r6/7Pq47Irj1zFHOcX6MM/gFOuzvmb63GPf0BNiVwq3z2pUik/ali9b7IcV71bpwrt63o+tqiaHZprSTCffmLTaK37jYsU+rwfTrbbM6+7CBGtSTHjY/yykuLtbTkpxLwuOxk2rCdu9+dpmHU9hJSt+i8q7pUMneeyL7zAJ/nYnDtsuPPRbACDFp7P3GIKDNIUb2hoMwcF4bUCCj+1aYX6/uvmClZ33XZcdBnBBo/aW94niuajasILsziXkAaNlXMmCvVW3TPtMIGggGuyviuIeezfkDZxiHSsSz/cJTvFktJmCyYpiLGiLSsgzSHA1C76qGvWtLPig6vfeQgVXhYUCEjyd3fzOOWAr9SthIWKsgttI8bs99ndYyCiVsDxPJ80BQp/wH2RN1davrsprAAAAAElFTkSuQmCC"
+              alt="RareWeave"
+              width="20"
+              height="20"
+            /> -->
           </span>
         </div>
         <div class="Row">
-        <span 
-          class="Nft Owner Detail" 
-          v-if="nft.owner"
-        >
-          Owned:&nbsp; 
-          <NuxtLink 
-            :to="'/profile/' + nft.owner.address"
-            class="Nft Link" 
+          <span 
+            class="Nft Owner Detail" 
+            v-if="nft.owner"
           >
-            {{ nft.owner.ansName || nft.owner.account?.handle }}  
-          </NuxtLink>
-        </span>
-      </div>
+            Owned:&nbsp; 
+            <NuxtLink 
+              :to="'/profile/' + nft.owner.address"
+              class="Nft Link" 
+            >
+              {{ nft.owner.ansName || nft.owner.account?.handle }}  
+            </NuxtLink>
+          </span>
+        </div>
+        <div
+          :class="{
+            'Row --forSale': nft.state.forSale,
+            'Row': !nft.state.forSale
+          }"  
+        >
+          <div class="Nft Price">
+            <span class="Nft Split">
+              <span class="Icon">
+                <span class="AR">
+                  {{ nft.state.listingDenom || "a" }}
+                </span>
+              </span>
+              <span 
+                class="Nft PriceInAr" 
+                v-if="nft.state.forSale"
+              >
+                {{ (nft.state.price / 1e12).toFixed(2) }} {{ nft.state.listingDenom || "AR" }}
+              </span>
+            </span>
+          </div>
+          <span
+            class="Nft Buy Btn"
+            v-if="nft.state.forSale"
+          >
+            Buy now
+          </span>
+        </div>
       </div>
     </NuxtLink>
   </div>
@@ -80,13 +106,13 @@
   justify-content: flex-start;
   align-items: center;
   width: 286px;
-  height: 382px;
+  height: 398px;
   background-color: rgba(17,23,32,1);
   margin: 6px 9px 18px;
   padding: 0;
   box-sizing: content-box;
   border: 1px solid rgba(43, 56, 68, .33);
-  border-radius: 6px;
+  border-radius: 8px;
   box-shadow:
     0px 1px 1px rgba(0,0,0,0.17),
     1px 2px 2px rgba(0,0,0,0.17),
@@ -121,9 +147,18 @@
 }
 
 .Card:hover {
-  border: 1px solid rgba(255, 255, 255, 0);
+  /* border: 1px solid rgba(255, 255, 255, 0); */
+  box-shadow:
+    0px 1px 1px rgba(0,0,0,0.17),
+    1px 2px 2px rgba(0,0,0,0.17),
+    2px 4px 4px rgba(0,0,0,0.17),
+    4px 8px 8px rgba(0,0,0,0.17),
+    8px 16px 16px rgba(0,0,0,0.17),
+    16px 32px 32px rgba(0,0,0,0.17)
+  ;
+  background-color: rgba(17,23,32,1);
 }
-
+/* 
 .Component:hover .Card::after {
   background: conic-gradient(
     rgba(236, 236, 236, 0.333),
@@ -134,10 +169,15 @@
     rgba(236, 236, 236, 0.666),
     rgba(252, 252, 252, 0.333)
   ) !important;
+} */
+
+.--forSale:hover {
+  background: linear-gradient(93deg, rgba(129,234,174,1), rgb(9, 192, 238));
 }
 
 .Imagewrapper {
   max-height: 286px;
+  border-radius: 8px 8px 0 0;
 }
 
 .Buttons {
@@ -165,8 +205,14 @@
 .Row {
   display: flex;
   margin: 0;
-  padding: .375em;
-  height: 56px;
+  padding: .25em;
+  height: 40px;
+}
+
+.Row:nth-last-child(1) {
+  margin-top: -12px;
+  justify-content: space-between;
+  border-radius: 0 0 8px 8px;
 }
 
 .Nft {
@@ -190,16 +236,18 @@
   text-overflow: ellipsis;
 }
 
+.Nft.Rarity {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  padding: 0 8px;
+}
+
 .Nft.Name {
   justify-content: flex-start;
   flex: 1 1 0px;
   text-align: left;
-}
-
-.Nft.PriceInAr {
-  justify-content: flex-end;
-  flex: 0 0 max-content;  
-  text-align: right;
 }
 
 .Nft.Owner {
@@ -221,5 +269,37 @@
 .Link:hover {
   color: rgba(251,250,255,.5);
   text-decoration: 1px underline !important;
+}
+
+.Nft.Price {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1 1 0px;
+  padding: 0 14px 0 10px;
+}
+
+.Split {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1 1 0px;
+  padding: 0;
+}
+
+.Icon {
+  flex: 0 0 32px;
+  height: 32px;
+  margin-right: 8px;
+}
+
+.Buy {
+  flex: 0 0 max-content;
+  padding: 0 12px;
 }
 </style>

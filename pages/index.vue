@@ -4,9 +4,10 @@
       <Centerfold />
       <Pricing />
       <Collections />
-      <Highlites />
+      <!-- <Highlights /> -->
       <Howto />
-      <Qa />
+      <!-- <Qa /> -->
+      <Footer></Footer>
     </div>
   </div>
 </template>
@@ -14,12 +15,12 @@
 <script setup>
 import Centerfold from '../components/home/Centerfold.vue';
 import Collections from '../components/home/Collections.vue';
-import Highlites from '../components/home/Highlights.vue';
+import Highlights from '../components/home/Highlights.vue';
 import Howto from '../components/home/Howto.vue';
 import Pricing from '../components/home/Pricing.vue';
 import Qa from '../components/home/Qa.vue';
-
-onMounted(() => {  
+import Footer from '../components/Footer.vue';
+onMounted(() => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {

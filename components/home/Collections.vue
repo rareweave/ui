@@ -17,56 +17,66 @@
                         Collection
                     </span>
                     <span>
-                        Total / For sale
+                        Quantity / For sale
                     </span>
                     <span>
-                        Price volume
+                        Volume
                     </span>
                     <span>
-                        Marketcap
+                        Sweep price
                     </span>
                     <span>
                         FP
                     </span>
                     <span>
-                        ~avg price
+                        Average
                     </span>
                     <span>
                         
                     </span>
                 </div>
-                <NuxtLink 
-                    v-for="collection in rarified.filter((c, i) => i < 10 && c.cap > 0)"
+                <NuxtLink
+                    v-if="!isLoading.collections"
+                    v-for="collection in rare.sort((a,b) => b.volume - a.volume)"
                     :key="collection.contractTxId"
                     class="Collection"
                     :to="`/collection/${collection.contractTxId}`"
                 >
-                    <span class="Amazing-text">
-                        {{ collection.state.name }}
+                    <span class="Amazing-text"> <!-- Collection -->
+                        {{ collection.state.name }} 
                     </span>
-                    <span>
-                        {{ collection.count }} / {{ collection.forSaleCount > 0 ? collection.forSaleCount : 0 }}
+                    <span> <!-- Total / For sale -->
+                        {{ collection.count }} / {{ collection.forSaleCount }}
                     </span>
-                    <span>
-                        {{ collection.volume > 1 ? collection.volume.toFixed(3)+` AR` : ( collection.volume <= 0 ? `--` : collection.volume.toFixed(7)+` AR`) }}
+                    <span> <!-- Volume -->
+                        {{ arweave.ar.winstonToAr(collection.volume, { decimals: 2 }) }} AR
                     </span>
-                    <span>
-                        {{ collection.cap > 0 ? collection.cap.toFixed(2)+`%` : `--` }}
+                    <span> <!-- Price -->
+                        {{ collection.totalprice !== 0 ? arweave.ar.winstonToAr(collection.totalprice, { decimals: 2 }) + ` AR` : `-` }}   
                     </span>
-                    <span>
-                        {{ collection.volume > 0 ? collection.floorprice > 1 ? collection.floorprice.toFixed(3)+` AR` : ( collection.floorprice <= 0 ? `--` : collection.floorprice.toFixed(3)+` AR`) : `--` }}
+                    <span> <!-- FP -->
+                        {{ collection.forSaleCount > 0 ? arweave.ar.winstonToAr(collection.floorprice, { decimals: 2 }) + ` AR` : `-` }}
                     </span>
-                    <span>
-                        {{ collection.avarage > 0 ? collection.avarage.toFixed(3)+` AR` : `--` }}
+                    <span> <!-- ~avg price -->
+                        {{ collection.totalprice > 0 && collection.forSaleCount > 0 ? arweave.ar.winstonToAr(collection.totalprice / collection.forSaleCount, { decimals: 2 }) + ` AR` : `-` }}
                     </span>
-                    <span>
-                        {{ new Date(collection.timestamp).toLocaleDateString("en-GB") }}
+                    <span> <!-- Collection -->
+                        {{ new Date(collection.timestamp).toLocaleDateString(`en-GB`) }}
                     </span>
-                    <span>
-
+                    <span class="Winston"> <!-- Total / For sale -->
+                        {{ `` }}
                     </span>
-                    <span>
-                        {{ collection.cap > 0 ? `$`+(collection.cap * totalRequestPricings.usd / 100).toFixed(2) : `` }}
+                    <span class="Winston"> <!-- Volume -->
+                        {{ collection.volume > 0 ? collection.volume : 0 }}
+                    </span>
+                    <span class="Winston"> <!-- Marketcap -->
+                        {{ `` }}
+                    </span>
+                    <span class="Winston"> <!-- FP -->
+                        <!-- {{ collection.forSaleCount > 0 ? collection.floorprice : `` }} -->
+                    </span>
+                    <span class="Winston"> <!-- ~avg price -->
+                        <!-- {{ collection.totalprice > 0 && collection.forSaleCount > 0 ? collection.totalprice / collection.forSaleCount : `` }} -->
                     </span>
                 </NuxtLink>
                 <div class="Notification">
@@ -81,69 +91,76 @@
 
 <script setup>
 import Api from '../../plugins/prophet';
-import { useNfts, useRates } from '../../composables/useState';
+import initArweave from '../../plugins/arweave';
+import { useNfts, useIsLoading, useArweave } from '../../composables/useState';
 
 const nfts = useNfts(),
-rates = useRates();
+isLoading = useIsLoading(),
+arweave = useArweave();
 
-const rarified = ref([]),
-children = ref([]), // any nft that is a child of a collection
-totalRequestPricings = ref({
-    ar: 0,
-    usd: 0
-});
+const children = ref([]), // any nft that is a child of a collection
+rare = ref([]);
 
 onMounted(async () => {
-setTimeout(() => {
-    Api(`collections`)
-        .then(res => {
-            const limit = 10;
-            const nftIds = nfts.value.result.map(nft => nft.contractTxId);
-            rarified.value = res.result.filter((c,i) => ![
-                undefined, 'undefined', '', ' ', 'test', 'Test' // excluded collection names
-            ].includes(c.state.name))
-                .filter((c, i) => c.state.name.length > 0) // filter out empty names
-                .filter((c, i) => i < limit)
-                .map(c => {
-                    let volume = [];
-                    c.state.items.forEach(id => {
-                        if (nftIds.includes(id))
-                        volume.push(nfts.value.result.find(nft => nft.contractTxId === id).state.price / 1e12);
-                        children.value.push(nfts.value.result.filter(nft => nft.contractTxId === id));
+    if (!arweave.value) 
+        initArweave();
+
+    const f = () => {
+        Api(`collections`)
+            .then(res => {
+                const limit = 10;
+                const nftIds = nfts.value.result.map(nft => nft.contractTxId);
+                    
+                res.result
+                    .filter((c, i) => c.state.name.length > 0 && c.state.name !== undefined && c.state.name !== ' ')
+                    .filter((c, i) => i < limit)
+                    .forEach(async c => {
+                        c.state.items.forEach(id => {
+                            if (nftIds.includes(id))
+                            children.value.push(nfts.value.result.filter(nft => nft.contractTxId === id));
+                        });
+                        c.nfts = c.state.items.filter(id => nftIds.includes(id));
+                        c.count = c.nfts.length;
+                        c.forSaleCount = c.state.items.filter(id => nftIds.includes(id)).filter(id => nfts.value.result.find(nft => nft.contractTxId === id).state.forSale === true).length;
+                        c.volume = 0;
+                        c.nfts = await Promise.all(c.nfts
+                            .map(id => nfts.value.result.find(nft => nft.contractTxId === id))
+                            .map(async nft => {
+                                const res = await Api(`contract-interactions`, {
+                                    action: `finalize-buy`, 
+                                    contract: nft.contractTxId 
+                                });
+                                const result = await res.result;
+                                const n = result.length > 0 ? Number(res.result.reduce((a, b) => a.block.height > b.block.height ? a : b).quantity.winston) : 0;
+                                nft.salesHistory = result;
+                                nft.lastSalePrice = n;
+                                c.volume += n;
+                                return nft;
+                            }));
+                        c.totalprice = c.count > 0 && c.nfts.filter(nft => nft.state.price != 0).length > 0 ? Number(c.nfts.filter(nft => nft.state.price != 0).reduce((a, b) => Number(a) + Number(b.state.price), 0)) : 0;
+                        c.floorprice = c.count > 0 && c.nfts.filter(nft => nft.state.price != 0).length > 0 ? Number(c.nfts.filter(nft => nft.state.price != 0).reduce((a, b) => Number(a.state.price) < Number(b.state.price) ? a : b).state.price) : 0;
+                        c.percentage_change_24h = 0.0; // todo
+                        c.percentage_change_7d = 0.0; // todo
+                        // console.log(c);
+                        if (c.count > 0)
+                            rare.value.push(c);
                     });
-                    c.volume = volume.reduce((a, b) => a + b, 0);
-                    c.count = c.state.items.filter(id => nftIds.includes(id)).length;
-                    c.forSaleCount = c.state.items.filter(id => nftIds.includes(id)).filter(id => nfts.value.result.find(nft => nft.contractTxId === id).state.forSale === true).length;
-                    c.floorprice = Math.min(...volume.filter(v => v > 0));
-                    volume.forEach((val, i) => {
-                        const min = Math.min(...volume);
-                        console.log(val, min, val === min);
-                    });
-                    c.avarage = c.volume / c.forSaleCount;
-                    c.percentage_change_24h = 0.0; // todo
-                    c.percentage_change_7d = 0.0; // todo
-                    return c;
-                })
-                .filter(c => c.count > 0)
-                .sort((a, b) => b.volume - a.volume); // sort by volume
-                // .sort((a, b) => b.state.items.length - a.state.items.length); // sort by nft count
-        })
-        .then(() => {
-            const ar = children.value.map(c => c[0]).filter(c => c !== undefined).reduce((a, b) => a + b.state.price / 1e12, 0);
-            const usd = parseInt(ar * rates.value.arweave.usd * 1e2) / 1e2;
-            totalRequestPricings.value = {
-                usd,
-                ar
-            };
-            rarified.value.forEach((c, i) => {
-                c.cap = (c.volume / totalRequestPricings.value.ar) * 100;
+            })
+            .catch(err => {
+                console.log(err);
             });
-        })
-        .catch(err => {
-            console.log(err);
-        });
-     
-}, 3_000);   
+    };
+
+    const checkIfAvailable = () => {
+        if (nfts.value?.result?.length > 0)
+            f();
+        else
+            setTimeout(() => {
+                checkIfAvailable();
+            }, 300);
+    };
+
+    checkIfAvailable();
 });
 </script>
 
@@ -187,7 +204,7 @@ setTimeout(() => {
         grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
         grid-template-rows: 1fr;
         grid-template-areas: 
-            "name floorprice volume percentage_change_24h percentage_change_7d";
+            "name floorprice sweep percentage_change_24h percentage_change_7d";
         justify-content: space-evenly;
         align-items: center;
         width: 100%;
@@ -209,6 +226,12 @@ setTimeout(() => {
 
     .Collection.Headers span:nth-child(1) {
         font-weight: 900;
+    }
+
+    .Winston {
+        font-size: 11pt;
+        font-weight: 400;
+        color: rgba(221,232,255,0.25);
     }
 
     .Notification {

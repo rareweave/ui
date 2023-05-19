@@ -20,7 +20,7 @@
                             />
                         </span>
                     </div>
-                    <h4 class="Step__title">
+                    <h4 class="Step__title  Amazing--green">
                         {{ step.no }}. {{ step.title }}
                     </h4>
                     <p class="Setp__desc">
@@ -76,10 +76,7 @@ const steps = [
     }
 
     .Title {
-        /* font-size: 24px;
-        font-weight: 600;
-        color: var(--text-primary); */
-        margin-bottom: 24px;
+        margin: 0 0 5   rem;
     }
 
     .Steps {
@@ -88,13 +85,15 @@ const steps = [
         flex-wrap: wrap;
         flex-direction: row;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+        margin: 5rem auto 0;
         width: 100%;
         height: 100%;
         transform-style: preserve-3d;
     }
 
     .Step {
+        position: relative;
         flex: 1 1 0px;
         min-width: 286px;
         text-align: center;
@@ -102,6 +101,8 @@ const steps = [
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        padding: 1rem 2rem;
+        margin: 0 auto 1rem;
     }
 
     .Step__no {

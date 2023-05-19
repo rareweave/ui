@@ -48,18 +48,6 @@ p {
     font-family: var(--font-secondary) !important;
 }
 
-@media screen and (max-width: 1024px) {
-    :root {
-        --page-spacing: 1.25rem;
-    }
-}
-
-@media screen and (max-width: 1394px) {
-    .Section {
-        padding: 5rem var(--page-spacing);
-    }
-}
-
 .Button {
     display: inline-flex;
     align-items: center;
@@ -96,8 +84,13 @@ p {
     left: -1%;
     width: 102%;
     height: 105%;
-    background: radial-gradient(rgba(34, 255, 200, 0.952), rgb(12, 255, 141), rgb(42, 255, 124), rgba(34, 255, 200, 0.952));
-    border-radius: 0.375rem;
+    background: radial-gradient(
+        rgba(34, 255, 200, 0.952), 
+        rgba(12, 255, 141, 1), 
+        rgba(42, 255, 124, 1), 
+        rgba(34, 255, 200, 0.952)
+    );
+    border-radius: 0.5rem;
     transition: all 0.01s ease-in-out;
     z-index: -1;
 }
@@ -113,7 +106,7 @@ p {
         -2px 0px 4px rgba(34, 255, 200, 0.2),
         -4px 0px 8px rgba(34, 255, 200, 0.2),
         -8px 0px 16px rgba(34, 255, 200, 0.2);
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.99);
 }
 
 .Amazing-text,
@@ -154,6 +147,14 @@ p {
 
 .--observe.inview {
     transform: translateY(0);
+}
+
+.Page {
+    position: relative;
+}
+
+.Main {
+    position: relative;
 }
 
 .Section {
@@ -204,8 +205,11 @@ h2.Title {
 
 
 
+
+
 .rareweave-font,
-.Rareweave__font {
+.Rareweave__font,
+.Rareweave--text, {
     background: rgb(63, 94, 251);
     background: radial-gradient(circle, #3f5efb 0%, #fc466b 100%);
     -webkit-background-clip: text;
@@ -275,14 +279,28 @@ h2.Title {
 
 
 
+@media screen and (max-width: 1024px) {
+    :root {
+        --page-spacing: 1.25rem;
+    }
+}
+
+@media screen and (max-width: 1394px) {
+    .Section {
+        padding: 5rem var(--page-spacing);
+    }
+}
+
+
+
+
 
 
 
 
 .AR {
     position: absolute;
-    bottom: 18px;
-    right: 18px;
+    inset: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -298,7 +316,11 @@ h2.Title {
     font-family: 'Arimo', sans-serif;
     border-radius: 50%;
     z-index: 99;
-    /* display: none; */
+    box-shadow: 
+        0px 1px 1px rgba(0,0,0,0.2), 
+        1px 2px 2px rgba(0,0,0,0.2), 
+        2px 4px 4px rgba(0,0,0,0.2)
+    ;
 }
 
 .AR::before {
