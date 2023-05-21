@@ -330,7 +330,7 @@ definePageMeta({
     width: 100%;
     max-width: 90vw;
     min-width: 286px;
-    height: 420px;
+    /* height: 420px; */
     
     overflow-x: auto;
 
