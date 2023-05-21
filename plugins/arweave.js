@@ -1,15 +1,13 @@
 import Arweave from "arweave";
 import { useArweave } from "../composables/useState";
 
-const config = {
-    host: "prophet.rareweave.store",
-    port: 443,
-    protocol: "https",
-    timeout: 60_000,
-    logging: false,
-};
-
-export default async function initArweave() {
+export default async function setArweave() {
     const arweave = useArweave();
-    arweave.value = Arweave.init(config);
+    arweave.value = Arweave.init({
+        host: "prophet.rareweave.store",
+        port: 443,
+        protocol: "https",
+        timeout: 60_000,
+        logging: false,
+    });
 };

@@ -172,7 +172,13 @@
 } */
 
 .--forSale:hover {
-  background: linear-gradient(93deg, rgba(129,234,174,1), rgb(9, 192, 238));
+  /* background: linear-gradient(93deg, rgba(129,234,174,1), rgb(9, 192, 238)); */
+  background: linear-gradient(
+    93deg,
+    rgb(158 19 131),
+    rgb(238 129 9)
+  );
+  /* background: rgb(214 116 8); */
 }
 
 .Imagewrapper {
@@ -295,7 +301,8 @@
 .Icon {
   flex: 0 0 32px;
   height: 32px;
-  margin-right: 8px;
+  margin-left: -2px;
+  margin-right: 6px;
 }
 
 .Buy {

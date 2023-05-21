@@ -15,12 +15,6 @@
             >
                 <NuxtLink 
                     class="Nav__link"
-                    to="/v1"
-                >
-                    Explore
-                </NuxtLink>
-                <NuxtLink 
-                    class="Nav__link"
                     to="/create"
                 >
                     Mint NFT
@@ -30,6 +24,12 @@
                     to="/collection/create"
                 >
                     Create collection
+                </NuxtLink>
+                <NuxtLink 
+                    class="Nav__link"
+                    to="/v1"
+                >
+                    Explore
                 </NuxtLink>
                 <NuxtLink
                     class="Nav__button"
@@ -72,12 +72,6 @@
                     >
                         <NuxtLink 
                             class="Amazing--red Nav__dropdown__item" 
-                            to="/v1"
-                        >
-                            Explore
-                        </NuxtLink>
-                        <NuxtLink 
-                            class="Amazing--red Nav__dropdown__item" 
                             to="/create"
                         >
                             Mint NFT
@@ -87,6 +81,12 @@
                             to="/collection/create"
                         >
                             Create collection
+                        </NuxtLink>
+                        <NuxtLink 
+                            class="Amazing--red Nav__dropdown__item" 
+                            to="/v1"
+                        >
+                            Explore
                         </NuxtLink>
                         <NuxtLink
                             class="Nav__dropdown__item Account"
@@ -170,9 +170,7 @@
                 </div>
             </div>
         </div>
-        <div
-            class="Nav__border"
-        ></div>
+        <!-- <div class="Nav__border"></div> -->
     </div>
 </template>
 <script setup>
@@ -204,7 +202,11 @@ const isLoading = useIsLoading();
 }
 
 .Nav {
-    position: relative;
+    position: sticky !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -215,8 +217,9 @@ const isLoading = useIsLoading();
     height: auto;
     min-height: 48px;
     color: var(--color-primary);
-    border-radius: 0;
-    z-index: 999;
+    
+    backdrop-filter: blur(20px);
+    z-index: 9;
 }
 
 .Nav__view {
@@ -319,7 +322,6 @@ const isLoading = useIsLoading();
     display: flex;
     margin: .25rem 0 .25rem 2.5vw;
     padding: 4px 8px;
-    border-radius: 2px;
     margin: 0 0 0 32px;
     padding: 0.25rem calc((0.5rem) + 6px);
     border-radius: 18px;
@@ -400,14 +402,14 @@ const isLoading = useIsLoading();
     align-items: center;
 }
 
-.Nav__border {
+/* .Nav__border {
     position: relative;
     width: calc((100% - var(--page-spacing) * 2));
     max-width: var(--page-max-width);
     margin: 0 calc(var(--page-spacing));
     height: 1px;
     background: rgba(17,23,32,1);
-}
+} */
 @media screen and (max-width: 1080px) {
     .Nav__right.--mobile {
         display: flex !important;

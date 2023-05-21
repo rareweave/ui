@@ -102,7 +102,7 @@
               <span class="V1__button_decoration"></span>
               <button
                 class="V1__button"
-                @click="searchCondition = 'all'; searchType = 'all'; searchNFTs(); activate($event)"
+                @click="searchCondition = ''; searchType = ''; forSaleOnly = false; filter = { minPrice: 0, maxPrice: 0 }; getNFTs();"
               >
                 All
               </button>
@@ -601,6 +601,7 @@ definePageMeta({
   align-items: stretch;
   width: calc((100%) - (var(--page-spacing) * 2));
   height: 100%;
+  height: var(--page-height);
   color: var(--text-primary);
   /* flex-wrap: wrap; */
   max-width: var(--page-max-width);
@@ -622,6 +623,7 @@ definePageMeta({
   overflow-y: scroll;
   min-width: 306px;
   height: var(--page-height);
+  height: 100%;
 }
 
 .MenuSection {
@@ -647,6 +649,7 @@ definePageMeta({
   margin: 0;
   padding: .375rem .75rem;
   background: linear-gradient(93deg, rgba(216,221,232,1), rgb(187, 183, 176));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 900;
@@ -816,6 +819,7 @@ definePageMeta({
   align-items: flex-start;
   flex: 0 0 1226px;
   height: var(--page-height);
+  height: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden;

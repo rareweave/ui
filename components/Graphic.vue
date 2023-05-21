@@ -36,7 +36,7 @@ function imgHasBeenLoaded(e) {
 };
 function imgNotLoaded(e) {
     e.target.parentNode.querySelector(".load").style.display = "none";
-    e.target.parentNode.querySelector(".Image").src = `/transparent-rw.png`;
+    e.target.parentNode.querySelector(".Image").src = `/placeholder.svg`;
     e.target.parentNode.querySelector(".Image").classList.add("--error");
 };
 </script>
@@ -49,6 +49,7 @@ function imgNotLoaded(e) {
     display: flex;
     justify-content: center;
     align-items: center;
+    transform-style: preserve-3d;
 }
 
 .load {
@@ -62,8 +63,7 @@ function imgNotLoaded(e) {
 
 .--error {
     mix-blend-mode: luminosity;
-    opacity: .5;
-    transform: scale(.5) !important;
+    height: 100% !important;
 }
 
 .Image,
@@ -73,13 +73,17 @@ function imgNotLoaded(e) {
     justify-content: center;
     align-items: center;
     width: 100%;
+    min-width: 100%;
     height: 100%;
+    min-height: 100%;
     object-fit: cover;
-    transition: transform 0.36s ease-in-out;
+    transition: 0.23s ease-in-out;
 }
 
 .Image:hover {
-    transform: scale(1.08);
-
+    width: 108%;
+    min-width: 108%;
+    height: 108%;
+    min-height: 108%;
 }
 </style>

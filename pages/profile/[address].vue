@@ -1,42 +1,53 @@
 <template>
-  <div class="h-full-navbared w-full flex flex-col items-center justify-center" :style="{
-    backgroundImage: ` linear-gradient(-200deg,rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)),radial-gradient(#000000a0, #000000ff), url('${(user?.profile?.banner && user?.profile?.banner !=
-      'ar://a0ieiziq2JkYhWamlrUCHxrGYnHWUAMcONxRmfkWt-k')
-      ? user?.profile?.bannerURL
-      : '/profile-default-bg.jpg'
-      }')`,
-    backgroundAttachment: 'fixed',
-    backgroundRepeat: 'repeat',
-    backgroundClip: 'border-box',
-    backgroundPosition: '0% 0%',
-    backgroundSize: 'cover',
-  }">
-    <template v-if="!user?.profile">
-      <div class="flex-col lg:flex-row justify-center items-center content-center w-full  ">
-        <div class="text-center">
-          <h1 class="text-6xl font-bold rareweave-font font-mono">Invalid profile</h1>
-          <div class="flex flex-col items-center justify-center">
-            <p class="font-mono mt-2 p-2 text-center max-w-[50rem]">
-              <span>Uh oh</span>
-              <br />
-              <span>Looks like you've stumbled upon a profile that doesn't exist...</span>
-              <br />
-            </p>
-            <div class="flex flex-row w-full flex-wrap justify-center ">
-              <NuxtLink to="/"
-                class="btn btn-xl text-lg amazing-button2 rounded-md hover:rounded-lg transition-all font-mono m-1 w-48">
-                Go Home
-              </NuxtLink>
-            </div>
-            <div id="gap" class="pt-4">
-            </div>
-          </div>
+  <template 
+    v-if="!user?.profile"
+    class="Compontent 404"
+  >
+    <div class="Main">
+      <div class="Col Header">
+        <h1 class="Title">
+          404
+        </h1>
+        <p class="Desc">
+          This profile does not exist
+        </p>
+        <div class="Routes">
+          <span 
+            @click="historyBack"
+            class="Button --primary"
+          >
+            Go back
+          </span>
         </div>
-
       </div>
-
-    </template>
-    <template v-else-if="selfProfile">
+      <div class="Col Illustration">
+        <img 
+          src="/404.svg"
+          class="Svg"  
+        />
+      </div>
+    </div>
+  </template>
+  <template 
+    v-else-if="selfProfile"
+  >
+    <!-- <div
+      class="h-full-navbared w-full flex flex-col items-center justify-center"
+      :style="{
+        backgroundImage: ` linear-gradient(-200deg,rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)),radial-gradient(#000000a0, #000000ff), url('${(user?.profile?.banner && user?.profile?.banner !=
+          'ar://a0ieiziq2JkYhWamlrUCHxrGYnHWUAMcONxRmfkWt-k')
+          ? user?.profile?.bannerURL
+          : '/profile-default-bg.jpg'
+          }')`,
+        backgroundAttachment: 'fixed',
+        backgroundRepeat: 'repeat',
+        backgroundClip: 'border-box',
+        backgroundPosition: '0% 0%',
+        backgroundSize: 'cover',
+      }"
+    > -->
+    <div class="Main">
+      
       <div class="flex flex-col items-center justify-center w-full md:w-96 m-4 pt-4 px-4">
         <label for="dropzone-file"
           class="flex flex-col items-center justify-center w-full md:w-64 min-h-64 border-2 border-dashed rounded-lg cursor-pointer bg-base-300 hover:bg-base-200 border-zinc-800">
@@ -48,7 +59,7 @@
               <span class="font-semibold">Click to upload new avatar </span>
             </p>
             <p class="text-xs text-gray-500 dark:text-gray-400">
-              SVG, PNG, JPG, GIF
+              Svg, PNG, JPG, GIF
             </p>
           </div>
           <input id="dropzone-file" type="file" class="hidden" required @change="uploadNewPfp" />
@@ -131,8 +142,140 @@
           :collection="collection"
         />
       </div>
-    </template>
-    <template v-else>
+    </div>
+  </template>
+  <template
+    v-else
+  >
+    <div class="Main">
+      <div class="Profile">
+        <div class="Banner">
+          <span class="Imagewrapper">
+            <img 
+              :src="user?.profile?.bannerURL"
+              class="Image"
+            />
+          </span>
+        </div>
+        <div class="Avatar">
+          <div class="Pfp">
+            <span class="Imagewrapper">
+              <img
+                :src="user?.profile?.avatarURL"
+                class="Image"
+              />
+            </span>
+          </div>
+        </div>
+        <div class="Info">
+          <div class="About">
+            <div class="Handle">
+              <h2>
+                {{ user?.profile?.handleName || `No data available` }}
+              </h2>
+              <span>
+                {{ user?.handle }}
+              </span>
+            </div>
+            <div class="Address">
+              <div class="Ans">
+                <div
+                  v-if="userAnsName"
+                >
+                  {{ userAnsName }}
+                </div>
+                <div
+                  v-else
+                >
+                  <a 
+                    href="https://ans.gg" 
+                    class="btn btn-sm Amazing--button"
+                  >
+                    Get an Ans name
+                  </a>
+                </div>
+              </div>
+              <div class="Addr">
+                <span class="Icon">
+                  <span class="AR">
+                    a
+                  </span>
+                </span>
+                {{ user?.addr }}
+              </div>
+            </div>
+            <div class="Links">
+              <h4>
+                Links
+              </h4>
+              <div 
+                v-if="user?.profile?.links?.github"
+                class="Option"
+              >
+                <span>
+                  Github: 
+                </span>
+                <a
+                  :href="`https://github.com/${user.profile.links.github}`"
+                  target="_blank"
+                  class="Link"
+                >
+                  {{ user?.profile?.links?.github }}
+                </a>
+              </div>
+              <div 
+                v-if="user?.profile?.links?.twitter"
+                class="Option"
+              >
+                <span>
+                  Twitter: 
+                </span>
+                <a
+                  :href="`https://twitter.com/${user.profile.links.twitter}`"
+                  target="_blank"
+                  class="Link"
+                >
+                  {{ user?.profile?.links?.twitter }}
+                </a>
+              </div>
+              <div 
+                v-if="user?.profile?.links?.discord"
+                class="Option"
+              >
+                <span>
+                  Discord: 
+                </span>
+                <a
+                  :href="`https://discord.com/users/${user.profile.links.discord}`"
+                  target="_blank"
+                  class="Link"
+                >
+                  {{ user?.profile?.links?.discord }}
+                </a>
+              </div>
+              <div 
+                v-else
+                class="Option"
+              >
+                <span>
+                  No data available
+                </span>
+              </div>
+            </div>
+            <div class="Bio">
+              <h4>
+                Bio
+              </h4>
+              <div class="Content">
+                {{ user?.profile?.bio || `No data available` }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- legacy -->
+      <div style="visibility: collapse; display: none;">
       <img :src="user?.profile?.avatarURL" class="w-64 rounded-xl mx-4 backdrop-blur-sm mt-8" />
       <h1 class="text-xl font-mono text-white">{{ user?.handle }}</h1>
       <span class="text-xs text-gray-500">{{ user?.addr }}</span>
@@ -197,76 +340,55 @@
           :collection="collection"
         />
       </div>
-    </template>
-  </div>
+      </div>
+    </div>
+  </template>
+  <Footer />
 </template>
 
 <script setup>
-import Arweave from "arweave";
-import Account from "arweave-account";
 import { Buffer } from "buffer";
+import { useArweave, useAccount, useAccountTools, useWallet } from "../../composables/useState";
+import setArweave from "../../plugins/arweave";
+import Footer from "../../components/Footer.vue";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
-let profileAddress = computed(
-  () => useRoute().params.address || useRoute().hash.slice(1)
-).value;
-let account = useState("account", () => null);
-let ansAddr = useState("ansAddr", () => null);
 
-let accountToolsState = useState(
-  "accountTools",
-  () =>
-    new Account({
-      cacheIsActivated: true,
-      cacheSize: 100,
-      cacheTime: 60,
-    })
-);
-let walletState = useState("wallet", () => null);
-let wallet = walletState.value;
-const arweave = Arweave.init({
-  host: "prophet.rareweave.store",
-  port: 443,
-  protocol: "https",
-  timeout: 60_000,
-  logging: false,
-});
+let profileAddress = computed(() => useRoute().params.address || useRoute().hash.slice(1)).value;
+
+const account = useAccount().value,
+accountTools = useAccountTools().value,
+wallet = useWallet().value,
+arweave = useArweave().value;
+
+if (!arweave) 
+  setArweave();
+
 let avatarObjectUrl = ref(null);
-let height = ref((await $fetch("https://prophet.rareweave.store/info")).height);
-const accountTools = accountToolsState.value;
-const warp = WarpFactory.forMainnet(
-  {
-    inMemory: true,
-  },
-  false,
-  arweave
-);
+
 let userProfileOrig = ref(await accountTools.get(profileAddress).catch(e => null));
 let user = ref(JSON.parse(JSON.stringify(userProfileOrig.value)));
-let userAnsName = (
-  await $fetch(`https://ans-resolver.herokuapp.com/resolve/${user.value?.addr}`)
-)?.domain;
-let ownedNfts = (
-  await $fetch(
-    `https://prophet.rareweave.store/nfts?ownedBy=` + user.value?.addr
-  )
-)?.result;
-let ownedCollections = (
-  await $fetch(
-    `https://prophet.rareweave.store/collections?ownedBy=${user.value?.addr}`
-  )
-)?.result;
+console.log(user);
 
+let userAnsName = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${user.value?.addr}`))?.domain;
+let ownedNfts = (await $fetch(`https://prophet.rareweave.store/nfts?ownedBy=${user.value?.addr}`))?.result;
+
+let ownedCollections = (await $fetch(`https://prophet.rareweave.store/collections?ownedBy=${user.value?.addr}`))?.result;
 console.log(ownedCollections);
+
 let changed = computed(() => {
   let ch = JSON.stringify(user.value) != JSON.stringify(userProfileOrig.value);
   return ch;
 });
-let selfProfile = profileAddress == account?.value?.addr;
+
+let selfProfile = profileAddress == account?.addr;
 console.log(selfProfile);
+
 function encodeTags(tags) {
   return tags.map((tag) => ({ name: btoa(tag.name), value: btoa(tag.value) }));
-}
-let pfpMeta = ref(null);
+};
+
+const pfpMeta = ref(null);
+
 async function uploadNewPfp(e) {
   if (e.target.files && e.target.files[0]) {
     if (avatarObjectUrl.value) {
@@ -274,15 +396,15 @@ async function uploadNewPfp(e) {
     }
     avatarObjectUrl.value = URL.createObjectURL(e.target.files[0]);
     pfpMeta.value = e.target.files[0];
-    let pfpContent = await readAsArrayBuffer(e.target.files[0]);
+    let pfpMain = await readAsArrayBuffer(e.target.files[0]);
     let tx = await arweave.createTransaction({
-      data: Buffer.from(new Uint8Array(pfpContent)),
+      data: Buffer.from(new Uint8Array(pfpMain)),
       tags: encodeTags([
         { name: "App-Name", value: "RareWeave" },
         { name: "App-Version", value: "0.3.0" },
       ]),
     });
-    if (pfpContent.byteLength > 100000) {
+    if (pfpMain.byteLength > 100000) {
       await arweave.transactions.sign(tx);
       let uploader = await arweave.transactions.getUploader(tx);
 
@@ -317,22 +439,165 @@ async function saveChangesToProfile() {
   await accountTools.updateProfile(user.value.profile);
   userProfileOrig.value = JSON.parse(JSON.stringify(user.value));
 }
+
+function historyBack() {
+  useRouter().go(-1);
+}
+
 definePageMeta({
   layout: "without-auth",
 });
 </script>
 <style scoped>
-  .Showcase {
-    position: relative; 
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-auto-rows: 1fr;
-    width: 100%;
-    max-width: 90vw;
-    min-width: 286px;
-    height: 420px;
-    
-    overflow-x: auto;
+.Main {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  max-width: var(--page-max-width);
+  min-width: 286px;
+  margin: 0 auto;
+  padding: 0;
+}
 
-  }
+/* 404 */
+.Col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1 1 0px;
+  height: 100%;
+  aspect-ratio: 1/1;
+}
+
+.Col:first-child {
+  align-items: flex-end;
+  flex: .66 .66 0px;
+  max-width: 580px;
+}
+
+.Col:last-child {
+  align-items: flex-start;
+}
+
+.Title {
+  font-size: 78px;
+}
+
+.Svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Profile */
+.Profile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  overflow: hidden;
+  margin: 2.5rem auto;
+  border-radius: 1.25rem;
+  background: linear-gradient(
+    0deg,
+    rgba(129,234,174,1),
+    rgba(2,3,4,1)
+  );
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 420px;
+}
+
+.Banner,
+.Avatar,
+.Info,
+.About,
+.Handle,
+.Address,
+.Links {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+}
+.Banner {
+  background-color: rgba(17,23,32,1);
+}
+
+.Pfp {
+  position: absolute;
+  top: -68px;
+  left: 7.5%;
+  width: 96px;
+  height: 96px;
+  border-radius: 1rem;
+  border: 8px solid rgba(2,3,4,0.99);
+  background-color: rgba(234,245,255,1);
+}
+
+.Info {
+  margin: 3.75rem auto;
+  width: 90%;
+  background: rgba(46,64,78,1);
+  border-radius: 1.25rem;
+}
+
+.About {
+  margin: 2.5rem;
+  width: calc((100%) - 2 * 2.5rem);
+  background: rgba(46,64,78,1);
+}
+
+.About > div {
+  margin: .5rem 1rem;
+  width: calc(100% - 2 * 1rem);
+}
+
+.About > div > div {
+  margin: .5rem 0;
+  width: 100%;
+}
+
+.Handle,
+.Address,
+.Links {
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+}
+
+
+.Addr {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.Icon {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  margin-right: 0.5rem;
+}
+
 </style>

@@ -70,10 +70,11 @@
         <span class="label-text">For sale</span>
         <input type="checkbox" class="toggle toggle-accent" checked v-model="forSale" />
       </label>
-      <button type="submit" class="btn btn-lg py-3 amazing-button rounded-lg min-h-0 h-auto">
-        <span class="relative w-full inline-flex items-center justify-center h-full bg-[rgb(12,12,12)] rounded-md ">
-          Mint!
-        </span>
+      <button 
+        type="submit" 
+        class="Button Amazing--button"
+      >
+        Mint!
       </button>
     </div>
   </form>
@@ -309,7 +310,10 @@ function encodeTags(tags) {
   }));
 }
 </script>
-<style>
+<style scoped>
+.Button {
+  margin: 0;
+}
 @keyframes amazing-bg {
   from {
     background-position-x: 0%;

@@ -1,14 +1,12 @@
 <template>
-  <div class="Page">
-    <div class="Main">
-      <Centerfold />
-      <Pricing />
-      <Collections />
-      <!-- <Highlights /> -->
-      <Howto />
-      <!-- <Qa /> -->
-      <Footer></Footer>
-    </div>
+  <div class="Main">
+    <Centerfold />
+    <Pricing />
+    <Collections />
+    <!-- <Highlights /> -->
+    <Howto />
+    <!-- <Qa /> -->
+    <Footer></Footer>
   </div>
 </template>
 
@@ -46,25 +44,14 @@ definePageMeta({
 </script>
 
 <style scoped>
-.Page {
-  position: relative;
+.Main {
+  width: 90vw;
+  max-width: var(--page-max-width);
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: stretch;
-  width: 100%;
-  height: calc(var(--page-height) + var(--filter-height) + var(--filter-padding) + var(--footer-height));
-  overflow-x: clip;
-  overflow-y: auto;
-  padding: 0 var(--page-padding);
-}
-.Main {
-  position: relative;
-  width: 100%;
-  max-width: var(--page-max-width);
-  height: 100%;
+  align-items: center;
   margin: 0 auto;
-  /* padding: 0 0 0 12px; */
-  text-align: left;
 }
 </style>
