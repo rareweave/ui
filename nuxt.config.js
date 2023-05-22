@@ -11,15 +11,11 @@ export default defineNuxtConfig({
     mode: "spa",
     typescript: false,
     ssr: false,
-<<<<<<< HEAD
-    css: ["~/assets/fonts.css", "~/assets/main.css"],
-=======
     css: [
         "~/assets/styles/theme.css",
         "~/assets/styles/main.css",
         "~/assets/styles/loader.css"
     ],
->>>>>>> d395a6036db41f78bb8f0891fea656eba41b7064
     colorMode: {
         dataValue: "luxury"
     },
@@ -31,14 +27,6 @@ export default defineNuxtConfig({
     },
     app: {
         head: {
-<<<<<<< HEAD
-            title: 'Rareweave',
-            link: [
-                { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-            ],
-            htmlAttrs: { "data-theme": "business", }
-
-=======
             link: [
                 {
                     rel: "icon",
@@ -47,7 +35,6 @@ export default defineNuxtConfig({
                 }
             ],
             title: "RareWeave | Nft Marketplace"
->>>>>>> d395a6036db41f78bb8f0891fea656eba41b7064
         }
     },
     builder: "vite",
