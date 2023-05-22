@@ -2,45 +2,23 @@
     <div class="Nav">
         <div class="Nav__view">
             <div class="Nav__left">
-                <NuxtLink 
-                    class="Logo"
-                    to="/"
-                    >
+                <NuxtLink class="Logo" to="/">
                     RareWeave
                 </NuxtLink>
             </div>
-            <div
-                class="Nav__right --desktop"
-                v-if="account"
-            >
-                <NuxtLink 
-                    class="Nav__link"
-                    to="/create"
-                >
+            <div class="Nav__right --desktop" v-if="account">
+                <NuxtLink class="Nav__link" to="/create">
                     Mint NFT
                 </NuxtLink>
-                <NuxtLink 
-                    class="Nav__link"
-                    to="/collection/create"
-                >
+                <NuxtLink class="Nav__link" to="/collection/create">
                     Create collection
                 </NuxtLink>
-                <NuxtLink 
-                    class="Nav__link"
-                    to="/v1"
-                >
+                <NuxtLink class="Nav__link" to="/v1">
                     Explore
                 </NuxtLink>
-                <NuxtLink
-                    class="Nav__button"
-                    :replace="false" 
-                    :to="'/profile/' + account.addr"
-                >
+                <NuxtLink class="Nav__button" :replace="false" :to="'/profile/' + account.addr">
                     <span class="Accountname Amazing--red">
-                        <img 
-                            class="Pfp" 
-                            :src="account.profile.avatarURL"
-                        />
+                        <img class="Pfp" :src="account.profile.avatarURL" />
                         {{ ansAddr || account.handle }}
                     </span>
                 </NuxtLink>
@@ -53,117 +31,58 @@
                     </span>
                 </div>
             </div>
-            <div 
-                class="Nav__right --mobile"
-                v-if="account"
-            >   
+            <div class="Nav__right --mobile" v-if="account">
                 <div class="Nav__menu__mobile">
-                    <button 
-                        class="Amazing--button Nav__button"
-                        @click="showMenu = !showMenu"
-                    >
+                    <button class="Amazing--button Nav__button" @click="showMenu = !showMenu">
                         Menu
                     </button>
-                    <div 
-                        v-if="showMenu" 
-                        @mouseleave="showMenu = false"
-                        @focusout="showMenu = false"
-                        class="Nav__menu__dropdown"
-                    >
-                        <NuxtLink 
-                            class="Amazing--red Nav__dropdown__item" 
-                            to="/create"
-                        >
+                    <div v-if="showMenu" @mouseleave="showMenu = false" @focusout="showMenu = false"
+                        class="Nav__menu__dropdown">
+                        <NuxtLink class="Amazing--red Nav__dropdown__item" to="/create">
                             Mint NFT
                         </NuxtLink>
-                        <NuxtLink 
-                            class="Amazing--red Nav__dropdown__item" 
-                            to="/collection/create"
-                        >
+                        <NuxtLink class="Amazing--red Nav__dropdown__item" to="/collection/create">
                             Create collection
                         </NuxtLink>
-                        <NuxtLink 
-                            class="Amazing--red Nav__dropdown__item" 
-                            to="/v1"
-                        >
+                        <NuxtLink class="Amazing--red Nav__dropdown__item" to="/v1">
                             Explore
                         </NuxtLink>
-                        <NuxtLink
-                            class="Nav__dropdown__item Account"
-                            :replace="false" 
-                            :to="'/profile/' + account.addr"
-                        >
+                        <NuxtLink class="Nav__dropdown__item Account" :replace="false" :to="'/profile/' + account.addr">
                             <span class="Accountname--m">
-                                <img 
-                                    class="Pfp" 
-                                    :src="account.profile.avatarURL"
-                                />
+                                <img class="Pfp" :src="account.profile.avatarURL" />
                                 {{ ansAddr || account.handle }}
                             </span>
-                            <span
-                                v-if="true"
-                            >
+                            <span v-if="true">
                                 {{ Math.floor(spendable * 100) / 100 + " AR" }}
                             </span>
                         </NuxtLink>
                     </div>
                 </div>
             </div>
-            <div 
-                v-if="!account" 
-                class="Nav__right --desktop"
-            >
-                <NuxtLink 
-                    class="Nav__link"
-                    to="/"
-                >
+            <div v-if="!account" class="Nav__right --desktop">
+                <NuxtLink class="Nav__link" to="/">
                     Home
                 </NuxtLink>
-                <NuxtLink 
-                    class="Nav__link"
-                    to="/v1"
-                >
+                <NuxtLink class="Nav__link" to="/v1">
                     Explore
                 </NuxtLink>
-                <NuxtLink 
-                    class="Amazing--button Nav__button"
-                    to="/login"
-                >
+                <NuxtLink class="Amazing--button Nav__button" to="/login">
                     Login
                 </NuxtLink>
             </div>
-            <div 
-                v-if="!account" 
-                class="Nav__right --mobile"
-            >
+            <div v-if="!account" class="Nav__right --mobile">
                 <div class="Nav__menu__mobile">
-                    <button 
-                        class="Amazing--button Nav__button" 
-                        @click="showMenu = !showMenu"
-                    >
+                    <button class="Amazing--button Nav__button" @click="showMenu = !showMenu">
                         Menu
                     </button>
-                    <div 
-                        v-if="showMenu" 
-                        @mouseleave="showMenu = false"
-                        class="Nav__menu__dropdown"
-                    >
-                        <NuxtLink 
-                            class="Nav__dropdown__item" 
-                            to="/"
-                        >
+                    <div v-if="showMenu" @mouseleave="showMenu = false" class="Nav__menu__dropdown">
+                        <NuxtLink class="Nav__dropdown__item" to="/">
                             Home
                         </NuxtLink>
-                        <NuxtLink 
-                            class="Nav__dropdown__item" 
-                            to="/v1"
-                        >
+                        <NuxtLink class="Nav__dropdown__item" to="/v1">
                             Explore
                         </NuxtLink>
-                        <NuxtLink 
-                            class="Amazing--button Nav__dropdown__item" 
-                            to="/login"
-                        >
+                        <NuxtLink class="Amazing--button Nav__dropdown__item" to="/login">
                             Login
                         </NuxtLink>
                     </div>
@@ -193,9 +112,11 @@ const isLoading = useIsLoading();
     from {
         background-position-x: 0%;
     }
+
     50% {
         background-position-x: 200%;
     }
+
     to {
         background-position-x: 0%;
     }
@@ -217,7 +138,7 @@ const isLoading = useIsLoading();
     height: auto;
     min-height: 48px;
     color: var(--color-primary);
-    
+    background-color: #000010;
     backdrop-filter: blur(20px);
     z-index: 9;
 }
@@ -244,8 +165,8 @@ const isLoading = useIsLoading();
     font-size: 18pt;
     font-weight: 600;
     margin: .25rem;
-    background: rgba(137,255,183,1);
-    background: linear-gradient(175deg, rgba(137,255,183,1), rgba(137,255,183,1), rgb(12 176 255));
+    background: rgba(137, 255, 183, 1);
+    background: linear-gradient(175deg, rgba(137, 255, 183, 1), rgba(137, 255, 183, 1), rgb(12 176 255));
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
 }
@@ -255,9 +176,11 @@ const isLoading = useIsLoading();
     align-items: center;
     justify-content: flex-end;
 }
+
 .Nav__right.--desktop {
     display: flex;
 }
+
 .Nav__right.--mobile {
     display: none;
 }
@@ -291,7 +214,7 @@ const isLoading = useIsLoading();
     font-weight: 700;
     border-radius: 50%;
     background-color: aliceblue;
-    color: rgba(17,23,32,1);
+    color: rgba(17, 23, 32, 1);
 }
 
 .Nav__balance .icon::after {
@@ -302,8 +225,8 @@ const isLoading = useIsLoading();
     width: calc((100% - (2px * 2)));
     height: calc((100% - (2px * 2)));
     border-radius: 50%;
-    background-color: rgba(0,0,0,0);
-    border: 1px solid rgba(17,23,32,1);
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid rgba(17, 23, 32, 1);
 }
 
 .Nav__menu__mobile {
@@ -325,15 +248,15 @@ const isLoading = useIsLoading();
     margin: 0 0 0 32px;
     padding: 0.25rem calc((0.5rem) + 6px);
     border-radius: 18px;
-    color: rgba(17,23,32,1);
+    color: rgba(17, 23, 32, 1);
 }
 
 .Nav__button span img {
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: rgba(0,0,0,1);
-    color: rgba(255,255,255,1);
+    background: rgba(0, 0, 0, 1);
+    color: rgba(255, 255, 255, 1);
     margin: 3px;
 }
 
@@ -352,8 +275,7 @@ const isLoading = useIsLoading();
         -1px 2px 2px rgba(0, 0, 0, .12),
         -2px 4px 4px rgba(0, 0, 0, .12),
         -4px 8px 8px rgba(0, 0, 0, .12),
-        -8px 16px 16px rgba(0, 0, 0, .12)
-    ;
+        -8px 16px 16px rgba(0, 0, 0, .12);
     border-radius: 4px;
     width: 100%;
     min-width: 232px;
@@ -414,6 +336,7 @@ const isLoading = useIsLoading();
     .Nav__right.--mobile {
         display: flex !important;
     }
+
     .Nav__right.--desktop {
         display: none !important;
     }
