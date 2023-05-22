@@ -238,8 +238,20 @@ h2.Title {
     opacity: 0.5;
 }
 
+
+.amazing-button:hover,
 .Amazing--button:hover {
-    background-position: 100% 0%;
+    animation: bgposchange 10s linear infinite;
+}
+
+@keyframes bgposchange {
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 700% 0%;
+    }
 }
 
 .amazing-button2 {
