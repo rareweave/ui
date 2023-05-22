@@ -11,9 +11,9 @@
                     </h1>
                     <p class="Desc">
                         Welcome to RareWeave! You have come to a magical land!
-                        Here you can find the most amazing NFTs on the Arweave blockchain and easily trade them for a few
-                        ounces of gold.
-                        With our amazing technology, you can now easily create your own NFTs and sell them on the market.
+                        Here you can find the most amazing NFTs on the Arweave blockchain and easily trade them with a price
+                        of just few gold ounces.
+                        With our technology, you can now easily create your own NFTs and sell them on the market.
                     </p>
                     <div class="CTAs">
                         <button :onClick="() => { }" class="Button --primary">
