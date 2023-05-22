@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div
     class="bg-black bg-opacity-50 p-4 rounded-none backdrop-blur-sm hero h-full-navbared
                                                                                                                                                                                                                  min-h-screen"
@@ -47,20 +48,61 @@
           class="max-w-sm rounded-md shadow-2xl " />
       </NuxtLink>
     </div>
+=======
+  <div class="Main">
+    <Centerfold />
+    <Pricing />
+    <Collections />
+    <!-- <Highlights /> -->
+    <Howto />
+    <!-- <Qa /> -->
+    <Footer></Footer>
+>>>>>>> d395a6036db41f78bb8f0891fea656eba41b7064
   </div>
 </template>
 
 <script setup>
-let nfts = await fetch('https://prophet.rareweave.store/nfts').then(res => res.json())
-let randomNft = nfts.result[Math.round(Math.random() * nfts.result.length)];
-
+import Centerfold from '../components/home/Centerfold.vue';
+import Collections from '../components/home/Collections.vue';
+import Highlights from '../components/home/Highlights.vue';
+import Howto from '../components/home/Howto.vue';
+import Pricing from '../components/home/Pricing.vue';
+import Qa from '../components/home/Qa.vue';
+import Footer from '../components/Footer.vue';
+onMounted(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('inview');
+        observer.unobserve(entry.target);
+      // }
+      // else {
+      //   entry.target.classList.remove('inview');
+      };
+    });
+  },
+  { 
+    threshold: 0.1
+  });
+  const observables = document.querySelectorAll(`.--observe`);
+  observables.forEach(observable => {
+    observer.observe(observable);
+  });
+});
 definePageMeta({
   layout: "without-auth"
-})
-</script> 
-<style>
-.randomNFT {
-  border-radius: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+});
+</script>
+
+<style scoped>
+.Main {
+  width: 90vw;
+  max-width: var(--page-max-width);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 auto;
 }
 </style>

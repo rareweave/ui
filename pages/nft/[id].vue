@@ -203,8 +203,12 @@
 <script setup>
 import Arweave from "arweave";
 import Account from "arweave-account";
+import { useAccount, useWallet } from "../../composables/useState";
+
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
-let account = useState("account", () => null);
+
+const account = useAccount();
+
 let accountToolsState = useState(
   "accountTools",
   () =>
@@ -214,8 +218,8 @@ let accountToolsState = useState(
       cacheTime: 60,
     })
 );
-let walletState = useState("wallet", () => null);
-let wallet = walletState.value;
+
+const wallet = useWallet();
 const arweave = useState("arweave", () =>
   Arweave.init({
     host: "prophet.rareweave.store",
@@ -225,8 +229,11 @@ const arweave = useState("arweave", () =>
     logging: false,
   })
 ).value;
+
 let height = ref((await $fetch("https://prophet.rareweave.store/info")).height);
+
 const accountTools = accountToolsState.value;
+
 const warp = WarpFactory.forMainnet(
   {
     inMemory: true,
@@ -253,7 +260,9 @@ let nftContract = account.value
   });
 warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`;
 warp.interactionsLoader.delegate.baseUrl = `https://prophet.rareweave.store`;
+
 fetch(`https://prophet.rareweave.store/index?id=` + nftId);
+
 let nftStateOrig = ref((await nftContract.readState()).cachedValue.state);
 let transferModalOpened = ref(false);
 let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig.value)));
@@ -414,24 +423,38 @@ async function payRoyalty() {
       value: "0.3.0",
     },
   ];
+  
+  let feeEstimate = await fetch(`https://prophet.rareweave.store/price/1000000/${nftState.value.minter}`)
+    .then((res) => res.text())
+    .catch(err => {
+      alert("Failed to get the fee estimate");
+      payRoyalty.value = false;
+    })
+
+  let tx = await arweave.createTransaction({
+    tags: encodeTags(tags),
+    target: nftState.value.minter,
+    quantity: (
+      parseInt(arweave.ar.arToWinston(nftPrice.value)) *
+      nftState.value.royalty
+    ).toString(),
+    reward: feeEstimate,
+  });
+
   try {
-    let feeEstimate = await fetch(
-      `https://prophet.rareweave.store/price/1000000/${nftState.value.minter}`
-    ).then((res) => res.text());
-    let tx = await arweave.createTransaction({
-      tags: encodeTags(tags),
-      target: nftState.value.minter,
-      quantity: (
-        parseInt(arweave.ar.arToWinston(nftPrice.value)) *
-        nftState.value.royalty
-      ).toString(),
-      reward: feeEstimate,
-    });
     await arweave.transactions.sign(tx);
-    await arweave.transactions.post(tx);
-  } catch (e) {
-    payRoyalty.value = false;
   }
+  catch (e) {
+    alert("You need to sign the transaction to pay the royalty");
+    payRoyalty.value = false;
+  };
+  try {
+    await arweave.transactions.post(tx);
+  }
+  catch (e) {
+    alert("Failed to post the transaction to pay the royalty");
+    payRoyalty.value = false;
+  };
 }
 async function finalizeBuy() {
   buyStatus.value = 2;
@@ -466,6 +489,7 @@ async function finalizeBuy() {
       value: "0.3.0",
     },
   ];
+
   let royaltyAnchor = (
     await fetch(`https://prophet.rareweave.store/graphql`, {
       method: "POST",
@@ -482,11 +506,13 @@ async function finalizeBuy() {
            }
         }`,
       }),
-    }).then((tx) => tx.json())
+    })
+      .then((tx) => tx.json())
   ).data.transaction.block.id;
-  let feeEstimate = await fetch(
-    `https://prophet.rareweave.store/price/1000000/${nftState.value.owner}`
-  ).then((res) => res.text());
+
+  let feeEstimate = await fetch(`https://prophet.rareweave.store/price/1000000/${nftState.value.owner}`)
+    .then((res) => res.text());
+
   let tx = await arweave.createTransaction({
     tags: encodeTags(tags),
     target: nftState.value.owner,
@@ -494,8 +520,20 @@ async function finalizeBuy() {
     reward: feeEstimate,
     last_tx: royaltyAnchor,
   });
-  await arweave.transactions.sign(tx);
-  await arweave.transactions.post(tx);
+
+  try {
+    await arweave.transactions.sign(tx);
+  } 
+  catch (e) {
+    alert("Transaction was not signed. Please try again.");
+  };
+  try {
+    await arweave.transactions.post(tx);
+  }
+  catch (e) {
+    alert("Transaction post failed. Please try again.");
+  };
+
   let finalizationCheckInterval = setInterval(() => {
     if (nftState.value.owner == account.value.addr) {
       buyStatus.value = 3;
@@ -503,21 +541,21 @@ async function finalizeBuy() {
     }
   });
 }
+
 async function transfer() {
   await nftContract.writeInteraction({
     function: "transfer",
     target: transferRecipient.value,
   });
+
   nftState.value.owner = transferRecipient.value;
   nftStateOrig.value = JSON.parse(JSON.stringify(nftState.value));
   nftOwner.value = await accountTools.get(nftState.value.owner);
-  nftOwnerANS.value = (
-    await $fetch(
-      `https://ans-resolver.herokuapp.com/resolve/${nftState.value.owner}`
-    )
-  )?.domain;
+
+  nftOwnerANS.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${nftState.value.owner}`))?.domain;
   transferModalOpened.value = false;
-}
+};
+
 definePageMeta({
   layout: "without-auth",
 });

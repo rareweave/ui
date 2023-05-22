@@ -1,0 +1,359 @@
+@import url('https://fonts.googleapis.com/css2?family=ABeeZee&family=Aclonica&family=Arimo&family=Bowlby+One+SC&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Merriweather+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Noto+Sans+Mono:wght@100;200;300;400;500;600;700;800;900&family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Sedgwick+Ave+Display&family=Tilt+Prism&family=Wallpoet&display=swap');
+
+:root {
+    --bg-primary: rgba(17, 23, 38, .5);
+
+    --bg-dropdown: rgba(17, 23, 38, 1);
+
+    --color-primary: rgb(216, 221, 231);
+    --text-primary: rgba(216, 221, 231, 1);
+
+    --text-contrast-primary: rgba(17, 23, 38, 1);
+
+    --font-primary: 'Merriweather Sans', sans-serif;
+    --font-secondary: 'Noto Sans Mono', monospace;
+
+    --card-primary: rgba(255, 255, 255, 0.1);
+
+    --form-bg-primary: rgba(48, 56, 63, 0.5);
+
+    --border-primary: 1px solid rgba(143, 156, 172, .5);
+
+    --page-spacing: 6vw;
+
+    --page-max-width: 1740px;
+
+    --nav-height: 48px;
+    --filter-height: 48px + 1px;
+    --filter-padding: 1.375rem;
+    --footer-height: 1.375rem;
+    --page-height: calc((100vh) - var(--nav-height) - var(--filter-height) - var(--filter-padding) - var(--footer-height));
+
+    --content-width: calc((100%) - var(--page-spacing) * 2);
+
+    --title-weight: 900;
+}
+
+/* Structural components */
+#__nuxt {
+    background: linear-gradient(
+        12deg,
+        rgba(0, 1, 3, 1.00),
+        rgba(0, 1, 3, 0.75),
+        rgba(0, 2, 5, 0.96)
+    );
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+input,
+textarea,
+select,
+button {
+    background: rgba(48, 56, 63, 0.5)
+}
+
+p {
+    font-family: var(--font-secondary) !important;
+}
+
+.Page {
+    position: relative;
+}
+
+.Main {
+    position: relative;
+}
+
+.Section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex: 1 1 0px;
+    margin: 0 auto;
+    padding: 2.5rem 0;
+}
+
+.Layout {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: calc((100%) - var(--page-spacing) * 2);
+    height: 100%;
+    margin: 12rem auto 0;
+    padding: 0;
+}
+
+.Title,
+.Desc {
+    max-width: 85vw;
+}
+
+.Title {
+    color: rgba(251, 250, 255, 1);
+    text-align: center;
+    white-space: nowrap;
+    width: min-content;
+}
+
+h1.Title {
+    font-size: 28pt;
+    font-weight: 600;
+}
+
+h2.Title {
+    font-size: 24pt;
+    font-weight: 600;
+}
+
+.Button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    background: var(--bg-dropdown);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    margin-right: 1rem;
+    margin-top: .5rem;
+}
+
+.Button:hover {
+    background: var(--bg-primary);
+    color: var(--color-primary);
+}
+
+.Button.--primary {
+    background: var(--bg-dropdown);
+    color: var(--text-primary);
+    position: relative;
+    border: 1px solid rgb(129, 249, 179);
+}
+
+.Button.--primary::before {
+    content: '';
+    position: absolute;
+    top: -3%;
+    left: -1%;
+    width: 102%;
+    height: 105%;
+    background: radial-gradient(
+        rgba(34, 255, 200, 0.952), 
+        rgba(12, 255, 141, 1), 
+        rgba(42, 255, 124, 1), 
+        rgba(34, 255, 200, 0.952)
+    );
+    border-radius: 0.5rem;
+    transition: all 0.01s ease-in-out;
+    z-index: -1;
+}
+
+.Button.--primary:hover {
+    box-shadow:
+        0px 0px 1px rgba(34, 255, 126, 0.2),
+        1px 0px 2px rgba(34, 255, 133, 0.25),
+        2px 0px 4px rgba(34, 255, 200, 0.2),
+        4px 0px 8px rgba(34, 255, 200, 0.2),
+        8px 0px 16px rgba(34, 255, 200, 0.2),
+        -1px 0px 2px rgba(34, 255, 200, 0.2),
+        -2px 0px 4px rgba(34, 255, 200, 0.2),
+        -4px 0px 8px rgba(34, 255, 200, 0.2),
+        -8px 0px 16px rgba(34, 255, 200, 0.2);
+    background: rgba(0, 0, 0, 0.99);
+}
+
+
+
+/* Amazing Section */
+.Amazing-text,
+.Amazing--green {
+    background: linear-gradient(115deg, rgba(137, 255, 183, 1), rgb(30 203 220 / 99%));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: var(--title-weight);
+}
+
+.Amazing--red {
+    background: linear-gradient(117deg, rgba(255, 8, 132, 0.932), rgba(245, 119, 2, 0.932));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: var(--title-weight);
+}
+
+/* Legacy and new Amazing classes mixed */
+
+.rareweave-font,
+.Rareweave__font,
+.Rareweave--text, {
+    background: rgb(63, 94, 251);
+    background: radial-gradient(circle, #3f5efb 0%, #fc466b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 150% 150%;
+    animation: rareweave-amazing-font 3s infinite;
+    display: inline;
+}
+
+@keyframes rareweave-amazing-font {
+    from {
+        background-size: 150% 150%;
+        background-position-x: 0%;
+    }
+
+    50% {
+        background-size: 350% 350%;
+        background-position-x: 100%;
+    }
+
+    to {
+        background-size: 150% 150%;
+        background-position-x: 0%;
+    }
+}
+
+.amazing-button,
+.Amazing--button {
+    background: rgba(106, 234, 156, 1);
+    background: radial-gradient(circle,
+            rgba(23, 122, 255, 1),
+            rgba(106, 234, 156, 1));
+    background-size: 300% 300%;
+    transition: all 0.23s ease-in-out;
+    color: var(--text-contrast-primary)
+}
+
+.amazing-button:disabled,
+.Amazing--button:disabled {
+    opacity: 0.5;
+}
+
+.Amazing--button:hover {
+    background-position: 100% 0%;
+}
+
+.amazing-button2 {
+    background: rgb(238, 174, 202);
+    color: black;
+    border: 2px solid black;
+    background: linear-gradient(45deg, rgba(107, 99, 194, 1) 0%, rgba(216, 140, 211, 1) 100%);
+}
+
+.amazing-button2:disabled {
+    border: none;
+    color: black;
+    cursor: not-allowed;
+    opacity: 0.5;
+    background: #292929;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Observer translations */
+.--observe {
+    transition: all 0.4s ease-out;
+    transform: translateY(226px);
+}
+
+.--observe.inview {
+    transform: translateY(0);
+}
+
+
+
+
+/* shortcut debuggin css Login page */
+.card {
+    overflow: hidden;
+}
+
+
+
+
+
+/* Resize variables and components (mixed for now) */
+@media screen and (max-width: 1024px) {
+    :root {
+        --page-spacing: 1.25rem;
+    }
+}
+
+@media screen and (max-width: 1394px) {
+    .Section {
+        padding: 5rem var(--page-spacing);
+    }
+}
+
+
+
+
+
+
+
+/* Ar logo should be moved to own file in future */
+.AR {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: rgba(251, 250, 255, .875);
+    color: rgba(17, 23, 32, 1);
+    font-size: 16pt;
+    font-weight: 600;
+    font-family: 'Arimo', sans-serif;
+    border-radius: 50%;
+    z-index: 99;
+    box-shadow: 
+        0px 1px 1px rgba(0,0,0,0.2), 
+        1px 2px 2px rgba(0,0,0,0.2), 
+        2px 4px 4px rgba(0,0,0,0.2)
+    ;
+}
+
+.AR::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 26px;
+    height: 26px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 50%;
+    z-index: -1;
+    border: 1px solid rgba(17, 23, 32, 1);
+}

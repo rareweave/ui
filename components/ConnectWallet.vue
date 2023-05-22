@@ -30,10 +30,10 @@
 </template>
 <script setup>
 import { ArweaveWebWallet } from "arweave-wallet-connector";
-
 import Arweave from 'arweave';
-import ArDB from 'ardb';
+// import ArDB from 'ardb';
 import Account from "arweave-account";
+
 let accountToolsState = useState("accountTools", () => new Account({
     cacheIsActivated: true,
     cacheSize: 100,
@@ -41,8 +41,11 @@ let accountToolsState = useState("accountTools", () => new Account({
 }))
 
 const accountTools = accountToolsState.value
+
 let account = useState("account", () => null);
-let ansAddr = useState("ansAddr", () => null)
+let ansAddr = useState("ansAddr", () => null);
+let spendable = useState("spendable", () => null);
+
 const props = defineProps(["show"]);
 
 const show = ref(props.show || false);
@@ -56,30 +59,30 @@ const arweave = useState("arweave", () => Arweave.init({
     logging: false,
 }));
 
-
-const ardbState = useState("ardb", () => new ArDB(arweave.value));
-let ardb = ardbState.value
+// const ardbState = useState("ardb", () => new ArDB(arweave.value));
+// let ardb = ardbState.value
 
 async function connectArweaveApp() {
-    let webwallet = new ArweaveWebWallet(
-        {
-            name: "RareWeave",
-            logo: "https://uww52thwbamkjai5oi7pi6hfiqigwn5skuaklgmebscumieurkta.arweave.net/pa3dTPYIGKSBHXI-9HjlRBBrN7JVAKWZhAyFRiCUiqY",
-        },
-        { state: { url: "arweave.app" } }
-    );
+    let webwallet = new ArweaveWebWallet({
+        name: "RareWeave",
+        logo: "https://uww52thwbamkjai5oi7pi6hfiqigwn5skuaklgmebscumieurkta.arweave.net/pa3dTPYIGKSBHXI-9HjlRBBrN7JVAKWZhAyFRiCUiqY",
+    },
+    { 
+        state: { 
+            url: "arweave.app"
+        }
+    });
     webwallet.setUrl("arweave.app")
     await webwallet.connect();
+    
+    let address = webwallet.namespaces.arweaveWallet.getActiveAddress();
 
-    let address = await webwallet.namespaces.arweaveWallet.getActiveAddress()
     account.value = await accountTools.get(address);
     ansAddr.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${address}`))?.domain
     wallet.value = webwallet.namespaces.arweaveWallet;
 
-
-    // window.arweaveWallet = webwallet.namespaces.arweaveWallet
-    // router.push("/app/lobby");
-
+    let winston = await arweave.value.wallets.getBalance(address);
+    spendable.value = arweave.value.ar.winstonToAr(winston);
 }
 async function connectArconnect() {
     if(!('arweaveWallet' in window && 'connect' in window.arweaveWallet)) {
@@ -98,7 +101,8 @@ async function connectArconnect() {
     ansAddr.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${address}`))?.domain
     wallet.value = window.arweaveWallet;
 
-    // router.push("/app/lobby");
+    let winston = await arweave.value.wallets.getBalance(address);
+    spendable.value = arweave.value.ar.winstonToAr(winston);
 }
 
 
