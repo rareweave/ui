@@ -130,7 +130,7 @@ const isLoading = useIsLoading();
     right: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     margin: 0;
     padding: 0;
@@ -138,7 +138,7 @@ const isLoading = useIsLoading();
     height: auto;
     min-height: 48px;
     color: var(--color-primary);
-    background-color: #000010;
+    background-color: #00000030;
     backdrop-filter: blur(20px);
     z-index: 9;
 }
