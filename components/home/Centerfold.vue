@@ -16,12 +16,12 @@
                         With our technology, you can now easily create your own NFTs and sell them on the market.
                     </p>
                     <div class="CTAs">
-                        <button :onClick="() => { }" class="Button --primary">
+                        <NuxtLink to="/discover" class="Button --primary">
                             Explore
-                        </button>
-                        <button :onClick="() => { }" class="Button">
+                        </NuxtLink>
+                        <NuxtLink to="/create" class="Button">
                             &gt; Learn about creating NFTs
-                        </button>
+                        </NuxtLink>
                     </div>
                 </div>
             </div>
