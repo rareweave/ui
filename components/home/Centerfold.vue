@@ -1,6 +1,6 @@
 <template>
-    <div :class="['Section', 'Centerfold'].join(' ')">
-        <div :class="['Layout', 'Hero'].join(' ')">
+    <div class="Section Centerfold">
+        <div class="Layout Hero">
             <div class="Column">
                 <div class="Header">
                     <span class="Editionlabel">
@@ -16,12 +16,12 @@
                         With our technology, you can now easily create your own NFTs and sell them on the market.
                     </p>
                     <div class="CTAs">
-                        <NuxtLink to="/discover" class="Button --primary">
+                        <NuxtLink to="/v1" class="Button --primary">
                             Explore
                         </NuxtLink>
-                        <NuxtLink to="/create" class="Button">
+                        <a href="#howto" class="Button">
                             &gt; Learn about creating NFTs
-                        </NuxtLink>
+                        </a>
                     </div>
                 </div>
             </div>

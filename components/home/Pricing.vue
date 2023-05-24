@@ -1,7 +1,5 @@
 <template>
-    <div 
-        :class="['Section','Pricing'].join(' ')"
-    >
+    <div class="Section Pricing">
         <div class="Layout">
             <div class="Header">
                 <h2 class="Title">
@@ -10,37 +8,28 @@
                 <p class="Desc">
                     The cost of minting NFTs on RareWeave depend on the storage rates of the Arweave network.
                     Pay once, store forever. Currently the RareWeave market does not charge any additional fees.
-                    <span>Please note that this policy is most likely to change in the near future, to discourage spamming of both network and marketplace.</span>
+                    <span>Please note that this policy is most likely to change in the near future, to discourage spamming
+                    of both network and marketplace.</span>
                 </p>
             </div>
             <div class="Tiers">
-                <div 
-                    v-for="(size, index) in Object.keys(Size)"
-                    class="Tier --observe"
-                >
+                <div v-for="(size, index) in Object.keys(Size)" class="Tier --observe">
                     <span class="Tier__title">
                         Per {{ size }}
                     </span>
                     <div>
-                        <span 
-                            v-if="isLoadingTiers"
-                        >
+                        <span v-if="isLoadingTiers">
                             Loading...
                         </span>
-                        <div
-                            v-if="priceTiers.length > 3"
-                            class="Tier__price"
-                        >
-                            <span 
-                                :class="['Ar',`--${size.toLowerCase()}`].join(' ')">
+                        <div v-if="priceTiers.length > 3" class="Tier__price">
+                            <span :class="['Ar', `--${size.toLowerCase()}`].join(' ')">
                                 {{ (priceTiers[index].ar).toFixed(7) }} AR
                             </span>
                             <span class="Usd">
-                                ~${{ (priceTiers[index].usd).toFixed(index === 0 ? 7 : (index < 2 ? 3 : 2)) }} USD
-                            </span>
-                            <span class="Winston">
-                                {{ priceTiers[index].winston }} winston
-                            </span>
+                                ~${{ (priceTiers[index].usd).toFixed(index === 0 ? 7 : (index < 2 ? 3 : 2)) }} USD </span>
+                                    <span class="Winston">
+                                        {{ priceTiers[index].winston }} winston
+                                    </span>
                         </div>
                     </div>
                 </div>
@@ -56,14 +45,11 @@
                         </h4>
                         <p class="Rate__desc">
                             All cost are depending on the arweave network.
-                            Enter the number of NFTs you want to mint and the average size of each NFT and click on calculate.
+                            Enter the number of NFTs you want to mint and the average size of each NFT and click on
+                            calculate.
                         </p>
                     </div>
-                    <form
-                        class="Form"
-                        autocomplete="off"
-                        @submit.stop.prevent="prevent"
-                    >
+                    <form class="Form" autocomplete="off" @submit.stop.prevent="prevent">
                         <h4 class="Form__title">
                             <span class="Amazing-text">Estimate cost of your NFT collection</span>
                         </h4>
@@ -72,16 +58,8 @@
                                 Enter the number of NFTs you want to mint:
                             </label>
                             <span class="Container">
-                                <input
-                                    class="Input"
-                                    type="number"
-                                    name="quantity"
-                                    ref="quantity"
-                                    placeholder="0"
-                                    min="0"
-                                    max="10000"
-                                    required
-                                />
+                                <input class="Input" type="number" name="quantity" ref="quantity" placeholder="0" min="0"
+                                    max="10000" required />
                             </span>
                         </div>
                         <div class="Row">
@@ -89,21 +67,9 @@
                                 Enter the average size of the NFTs:
                             </label>
                             <span class="Container">
-                                <input
-                                    class="Input"
-                                    type="number"
-                                    name="size"
-                                    ref="size"
-                                    placeholder="0"
-                                    min="0.01"
-                                    max="10000"
-                                    step="0.01"
-                                    required
-                                />
-                                <select
-                                    name="sizeUnit"
-                                    ref="sizeUnit"
-                                >
+                                <input class="Input" type="number" name="size" ref="size" placeholder="0" min="0.01"
+                                    max="10000" step="0.01" required />
+                                <select name="sizeUnit" ref="sizeUnit">
                                     <option value="KB">KB</option>
                                     <option value="MB">MB</option>
                                     <option value="GB">GB</option>
@@ -112,14 +78,11 @@
                             </span>
                         </div>
                         <div class="Row">
-                            <button
-                                type="submit"
-                                class="Button --primary"
-                                @click="handleSubmit"
-                            >
+                            <button type="submit" class="Button --primary" @click="handleSubmit">
                                 Calculate
                             </button>
-                            Estimate: {{ collectionSizeInBytes.value  }} ${{ collectionPrice > 0.01 ? collectionPrice.toFixed(2) : collectionPrice.toFixed(7) }}
+                            Estimate: {{ collectionSizeInBytes.value }} ${{ collectionPrice > 0.01 ?
+                                collectionPrice.toFixed(2) : collectionPrice.toFixed(7) }}
                         </div>
                     </form>
                 </div>
@@ -284,6 +247,7 @@ onMounted(async () => {
         margin: 0 auto 1rem;
         transition: 0.7s ease-out;
         background-color: rgba(0,0,0,1);
+        cursor: default;
     }
 
     .Tier:hover {
@@ -327,24 +291,28 @@ onMounted(async () => {
     }
     .--kb {
         background: linear-gradient(144deg, rgba(255, 34, 243, 1), rgba(156, 12, 255, 1));
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
     .--mb {
         background: linear-gradient(87deg, rgba(51, 235, 96, 1), rgba(32, 248, 197, 1));
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
     .--gb {
         background: linear-gradient(143deg, rgba(34, 199, 255, 1), rgba(12, 159, 255, 1));
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
     .--tb {
         background: linear-gradient(139deg, rgba(255, 168, 34, 1), rgba(255, 89, 12, 1));
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
@@ -448,15 +416,16 @@ onMounted(async () => {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         flex: 1 1 0px;
         height: auto;
         margin: 0 2rem;
         padding: 0;
     }
 
-    .Row:nth-child(4) {
+    .Row:last-child {
         flex: 0 0 96px;
+        align-items: center;
     }
 
     .Container {

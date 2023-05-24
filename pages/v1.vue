@@ -379,9 +379,8 @@ function getCollections() {
 }
 
 function filterIfNeeded(nfts) {
-  const winston = 1000000000000;
-  const _min = filter.value.minPrice * winston;
-  const _max = filter.value.maxPrice * winston;
+  const _min = filter.value.minPrice * 1e12;
+  const _max = filter.value.maxPrice * 1e12;
   const res = nfts.filter(nft => {
     if (_min > 0 && nft.state.price < _min)
       return false;
@@ -389,7 +388,12 @@ function filterIfNeeded(nfts) {
       return false;
     return true;
   });
-  return { ...nfts, result: res };
+  let unique = [];
+  res.forEach(nft => {
+    if (!unique.find(u => u.contractTxId === nft.contractTxId))
+      unique.push(nft);
+  });
+  return ({ result: unique });
 };
 
 function activate(e) {
