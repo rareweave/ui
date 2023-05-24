@@ -56,9 +56,9 @@
         For sale:
         <template v-if="isNftOwner">
           <input type="checkbox" :class="[
-              'toggle',
-              nftState.forSale ? 'toggle-success' : 'toggle-error',
-            ]" v-model="nftState.forSale" />
+            'toggle',
+            nftState.forSale ? 'toggle-success' : 'toggle-error',
+          ]" v-model="nftState.forSale" />
         </template>
         <template v-else>
           <div v-if="nftState.forSale" class="p-2 bg-green-600 text-sm">
@@ -88,34 +88,34 @@
         </div>
       </template>
       <button v-if="isNftOwner" :class="[
-          'btn',
-          'amazing-button2',
-          'rounded-md',
-          'w-full',
-          'my-2',
-          ,
-          changed ? '' : 'btn-disabled',
-        ]" :disabled="!changed" @click="saveChangesToNft">
+        'btn',
+        'amazing-button2',
+        'rounded-md',
+        'w-full',
+        'my-2',
+        ,
+        changed ? '' : 'btn-disabled',
+      ]" :disabled="!changed" @click="saveChangesToNft">
         Save changes
       </button>
       <label v-if="isNftOwner" for="transfer-modal" :class="{
-          btn: true,
-          'btn-primary': true,
-          'rounded-md': true,
-          'w-full': true,
-          'my-2': true,
-          'text-md': true,
-          'btn-disabled': isSomeoneElseBuying,
-        }">Transfer</label>
+        btn: true,
+        'btn-primary': true,
+        'rounded-md': true,
+        'w-full': true,
+        'my-2': true,
+        'text-md': true,
+        'btn-disabled': isSomeoneElseBuying,
+      }">Transfer</label>
       <label v-else-if="account && account.addr && nftState.forSale" for="buy-modal" :class="{
-          btn: true,
-          'amazing-button': true,
-          'rounded-md': true,
-          'w-full': true,
-          'my-2': true,
-          'text-lg': true,
-          'btn-disabled': isSomeoneElseBuying,
-        }">
+        btn: true,
+        'amazing-button': true,
+        'rounded-md': true,
+        'w-full': true,
+        'my-2': true,
+        'text-lg': true,
+        'btn-disabled': isSomeoneElseBuying,
+      }">
         <span>
           Buy
         </span>
@@ -213,6 +213,13 @@ let accountToolsState = useState(
   "accountTools",
   () =>
     new Account({
+      gateway: {
+        host: "prophet.rareweave.store",
+        port: 443,
+        protocol: "https",
+        timeout: 60_000,
+        logging: false,
+      },
       cacheIsActivated: true,
       cacheSize: 100,
       cacheTime: 60,
@@ -244,6 +251,7 @@ const warp = WarpFactory.forMainnet(
 let nftId = useRoute().params.id || useRoute().hash.slice(1);
 let nftContract = account.value
   ? warp
+    .useGwUrl("https://prophet.rareweave.store/")
     .contract(nftId)
     .setEvaluationOptions({
       remoteStateSyncSource: "https://prophet.rareweave.store/contract",
@@ -252,7 +260,7 @@ let nftContract = account.value
       waitForConfirmation: false, //we are using anchoring
     })
     .connect("use_wallet")
-  : warp.contract(nftId).setEvaluationOptions({
+  : warp.useGwUrl("https://prophet.rareweave.store/").contract(nftId).setEvaluationOptions({
     remoteStateSyncSource: "https://prophet.rareweave.store/contract",
     remoteStateSyncEnabled: true,
     unsafeClient: "allow",
@@ -423,7 +431,7 @@ async function payRoyalty() {
       value: "0.3.0",
     },
   ];
-  
+
   let feeEstimate = await fetch(`https://prophet.rareweave.store/price/1000000/${nftState.value.minter}`)
     .then((res) => res.text())
     .catch(err => {
@@ -523,7 +531,7 @@ async function finalizeBuy() {
 
   try {
     await arweave.transactions.sign(tx);
-  } 
+  }
   catch (e) {
     alert("Transaction was not signed. Please try again.");
   };
