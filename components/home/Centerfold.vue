@@ -20,7 +20,7 @@
                             Explore
                         </NuxtLink>
                         <NuxtLink to="/create" class="Button">
-                            &gt; Learn about creating NFTs
+                            Upload NFT
                         </NuxtLink>
                     </div>
                 </div>
