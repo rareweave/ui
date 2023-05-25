@@ -178,7 +178,7 @@
 
 <script setup>
 import Arweave from "arweave";
-import Account from "arweave-account";
+import Account from "arweave-account/src/index";
 import { Buffer } from "buffer";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 let profileAddress = computed(

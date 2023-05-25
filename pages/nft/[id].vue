@@ -202,7 +202,7 @@
 </template>
 <script setup>
 import Arweave from "arweave";
-import Account from "arweave-account";
+import Account from "arweave-account/src/index";
 import { useAccount, useWallet } from "../../composables/useState";
 
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
