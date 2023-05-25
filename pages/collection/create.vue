@@ -50,7 +50,7 @@ import Arweave from "arweave";
 import ArDB from "ardb";
 import { DeployPlugin } from "warp-contracts-plugin-deploy";
 import { Buffer } from "buffer";
-import Account from "arweave-account";
+import Account from "arweave-account/src/index";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 
 let accountToolsState = useState(

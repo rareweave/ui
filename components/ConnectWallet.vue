@@ -32,7 +32,7 @@
 import { ArweaveWebWallet } from "arweave-wallet-connector";
 import Arweave from 'arweave';
 // import ArDB from 'ardb';
-import Account from "arweave-account";
+import Account from "arweave-account/src/index";
 
 let accountToolsState = useState("accountTools", () => new Account({
     cacheIsActivated: true,
@@ -67,14 +67,14 @@ async function connectArweaveApp() {
         name: "RareWeave",
         logo: "https://uww52thwbamkjai5oi7pi6hfiqigwn5skuaklgmebscumieurkta.arweave.net/pa3dTPYIGKSBHXI-9HjlRBBrN7JVAKWZhAyFRiCUiqY",
     },
-    { 
-        state: { 
-            url: "arweave.app"
-        }
-    });
+        {
+            state: {
+                url: "arweave.app"
+            }
+        });
     webwallet.setUrl("arweave.app")
     await webwallet.connect();
-    
+
     let address = webwallet.namespaces.arweaveWallet.getActiveAddress();
 
     account.value = await accountTools.get(address);
@@ -85,7 +85,7 @@ async function connectArweaveApp() {
     spendable.value = arweave.value.ar.winstonToAr(winston);
 }
 async function connectArconnect() {
-    if(!('arweaveWallet' in window && 'connect' in window.arweaveWallet)) {
+    if (!('arweaveWallet' in window && 'connect' in window.arweaveWallet)) {
         return
     }
     await window.arweaveWallet.connect([

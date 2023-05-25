@@ -70,10 +70,7 @@
         <span class="label-text">For sale</span>
         <input type="checkbox" class="toggle toggle-accent" checked v-model="forSale" />
       </label>
-      <button 
-        type="submit" 
-        class="Button Amazing--button"
-      >
+      <button type="submit" class="Button Amazing--button">
         Mint!
       </button>
     </div>
@@ -95,7 +92,7 @@ import Arweave from "arweave";
 import ArDB from "ardb";
 import { DeployPlugin } from "warp-contracts-plugin-deploy";
 import { Buffer } from "buffer";
-import Account from "arweave-account";
+import Account from "arweave-account/src/index";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 let accountToolsState = useState(
   "accountTools",
@@ -314,6 +311,7 @@ function encodeTags(tags) {
 .Button {
   margin: 0;
 }
+
 @keyframes amazing-bg {
   from {
     background-position-x: 0%;
