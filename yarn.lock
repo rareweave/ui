@@ -2593,7 +2593,7 @@ articles@~0.2.1:
 
 "arweave-account@https://github.com/rareweave/arweave-account":
   version "1.3.6"
-  resolved "https://github.com/rareweave/arweave-account#d6a1d02c7619065a7a12e69422a0cdc03b17cbf3"
+  resolved "https://github.com/rareweave/arweave-account#61b1052923b1750b0b949ff901376cbc24c47f93"
   dependencies:
     ardb "^1.1.10"
     arweave "^1.12.4"
