@@ -2,12 +2,12 @@
     <div class="Footer">
         <div class="Top">
             <h2 class="Title">
-                RareWeave
+                <!-- RareWeave -->
             </h2>
         </div>
-        <div class="SocialMedia">
-            <a 
-                href="https://twitter.com/rareweave" 
+        <div class="Links">
+            <NuxtLink
+                to="https://twitter.com/rareweave" 
                 target="_blank"
                 class="Link"
             >
@@ -20,9 +20,9 @@
                         </g>
                     </svg>
                 </span>
-            </a>
-            <a 
-                href="https://discord.gg/9q5VXpZ" 
+            </NuxtLink>
+            <NuxtLink
+                to="https://discord.gg/9q5VXpZ" 
                 target="_blank"
                 class="Link"
             >
@@ -35,9 +35,9 @@
                         </g>
                     </svg>
                 </span>
-            </a>
-            <a 
-                href="https://github.com/rareweave/" 
+            </NuxtLink>
+            <NuxtLink
+                to="https://github.com/rareweave/" 
                 target="_blank"
                 class="Link"
             >
@@ -50,36 +50,20 @@
                         </g>
                     </svg>
                 </span>
-            </a>
+            </NuxtLink>
         </div>
         <div class="Whitepaper">
-            <a 
-                href="https://arweave.net/oIrgzZt3UBW9ct_WzIVTxO6XO1w1AJKJEsrncJJ2IAI" 
+            <NuxtLink
+                to="https://arweave.net/oIrgzZt3UBW9ct_WzIVTxO6XO1w1AJKJEsrncJJ2IAI" 
                 target="_blank"
                 class="--link"
             >
                 Whitepaper by Nik Rykov & JF
-            </a>
-        </div>
-        <div class="Repo">
-            <span class="Line">
-                RareWeave is open source under the MIT licence.
-            </span>
-            <span>
-                Visit our Github page&nbsp;
-                <a 
-                    href="https://github.com/rareweave/" 
-                    target="_blank"
-                    class="--link"
-                >
-                    here
-                </a>
-            </span>
+            </NuxtLink>
         </div>
     </div>
 </template>
 <script setup>
-
 </script>
 <style scoped>
     .Footer {
@@ -89,8 +73,8 @@
         justify-content: flex-start;
         align-items: center;
         width: 100%;
-        min-height: 420px;
-        margin-top: 5rem;
+        height: 100%;
+        margin: 5rem 0;
     }
 
     .Top {
@@ -102,20 +86,22 @@
         width: 680px;
         max-width: 90vw;
         min-width: 316px;
-        height: 256px;
+        height: auto;
+        min-height: 196px;
         border-bottom: 1px solid rgba(172, 172, 172, 0.5);
     }
 
-    .SocialMedia {
+    .Links {
         position: relative;
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
         width: 100%;
-        margin: 2rem 0;
+        margin: 1rem 0 2rem;
         flex-wrap: wrap;
     }
+    
     .Link {
         position: relative;
         display: flex;
@@ -138,28 +124,20 @@
             1px -2px 2px #4a7a9631,
             2px -4px 4px #4a7a9631,
             4px -8px 8px #4a7a9631,
-            12px 6px 12px #4a7a9631;
+            12px 6px 12px #4a7a9631,
+            -4px -4px 12px #4a7a9631;
         ;
     }
-    .--link {
-        text-decoration: 1px underline currentcolor;
-    }
-
-    .Repo .--link {
-        color: #4a7a96;
-    }
-
-    .Repo {
-        margin-bottom: 2.5rem;
-        text-align: center;
-        display: inline-flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        margin: 1rem 2rem;
-    }
-
+    
     .Whitepaper {
-        text-align: center;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 2.5rem;
+    }
+    .Whitepaper:hover {
+        text-decoration: underline;
     }
 </style>

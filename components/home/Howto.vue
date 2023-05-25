@@ -1,5 +1,5 @@
 <template>
-    <div :class="['Section', 'Howto'].join(' ')">
+    <div class="Section Howto" id="howto">
         <div class="Layout">
             <h2 class="Title">
                 Create and Sell
