@@ -30,37 +30,21 @@
 </template>
 <script setup>
 import { ArweaveWebWallet } from "arweave-wallet-connector";
-import Arweave from 'arweave';
-// import ArDB from 'ardb';
-import Account from "arweave-account/src/index";
+import { useWallet, useAccount, useSpendable, useAnsaddr, useArweave, useAccountTools } from "../composables/useState";
+import setArweave from "../plugins/arweave";
 
-let accountToolsState = useState("accountTools", () => new Account({
-    cacheIsActivated: true,
-    cacheSize: 100,
-    cacheTime: 60,
-}))
+const arweave = useArweave().value;
+if (!arweave)
+    setArweave();
 
-const accountTools = accountToolsState.value
-
-let account = useState("account", () => null);
-let ansAddr = useState("ansAddr", () => null);
-let spendable = useState("spendable", () => null);
+const account = useAccount();
+const accountTools = useAccountTools().value;
+const ansAddr = useAnsaddr();
+const spendable = useSpendable();
+const wallet = useWallet();
 
 const props = defineProps(["show"]);
-
 const show = ref(props.show || false);
-const wallet = useState("wallet", () => null);
-
-const arweave = useState("arweave", () => Arweave.init({
-    host: 'prophet.rareweave.store',
-    port: 443,
-    protocol: 'https',
-    timeout: 60000,
-    logging: false,
-}));
-
-// const ardbState = useState("ardb", () => new ArDB(arweave.value));
-// let ardb = ardbState.value
 
 async function connectArweaveApp() {
     let webwallet = new ArweaveWebWallet({
@@ -72,22 +56,23 @@ async function connectArweaveApp() {
                 url: "arweave.app"
             }
         });
-    webwallet.setUrl("arweave.app")
+
+    webwallet.setUrl("arweave.app");
+
     await webwallet.connect();
 
-    let address = webwallet.namespaces.arweaveWallet.getActiveAddress();
+    const address = webwallet.namespaces.arweaveWallet.getActiveAddress();
 
     account.value = await accountTools.get(address);
     ansAddr.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${address}`))?.domain
     wallet.value = webwallet.namespaces.arweaveWallet;
 
-    let winston = await arweave.value.wallets.getBalance(address);
-    spendable.value = arweave.value.ar.winstonToAr(winston);
-}
+    setSpendable(address);
+};
 async function connectArconnect() {
-    if (!('arweaveWallet' in window && 'connect' in window.arweaveWallet)) {
-        return
-    }
+    if (!('arweaveWallet' in window && 'connect' in window.arweaveWallet))
+        return;
+
     await window.arweaveWallet.connect([
         "ACCESS_ADDRESS",
         "ACCESS_ALL_ADDRESSES",
@@ -96,15 +81,17 @@ async function connectArconnect() {
         "SIGN_TRANSACTION",
         "ACCESS_ARWEAVE_CONFIG"
     ]);
-    let address = await window.arweaveWallet.getActiveAddress()
+
+    const address = await window.arweaveWallet.getActiveAddress()
+
     account.value = await accountTools.get(address);
     ansAddr.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${address}`))?.domain
     wallet.value = window.arweaveWallet;
 
-    let winston = await arweave.value.wallets.getBalance(address);
+    setSpendable(address);
+};
+async function setSpendable(address) {
+    const winston = await arweave.value.wallets.getBalance(address);
     spendable.value = arweave.value.ar.winstonToAr(winston);
-}
-
-
-
+};
 </script>

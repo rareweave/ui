@@ -45,30 +45,16 @@
   </div>
 </template>
 <script setup>
-import Arweave from "arweave";
-import Account from "arweave-account/src/index";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
-let account = useState("account", () => null);
-let accountToolsState = useState(
-  "accountTools",
-  () =>
-    new Account({
-      cacheIsActivated: true,
-      cacheSize: 100,
-      cacheTime: 60,
-    })
-);
-let walletState = useState("wallet", () => null);
-let wallet = walletState.value;
-const arweave = useState("arweave", () =>
-  Arweave.init({
-    host: "prophet.rareweave.store",
-    port: 443,
-    protocol: "https",
-    timeout: 60_000,
-    logging: false,
-  })
-).value;
+import { useAccount, useArweave } from "../../composables/useState";
+import setArweave from "../../plugins/arweave";
+
+const arweave = useArweave().value;
+if (!arweave)
+    setArweave();
+
+const account = useAccount();
+
 let collectionId = useRoute().params.id || useRoute().hash.slice(1);
 let nfts = ref(
   await $fetch(

@@ -177,44 +177,25 @@
 </template>
 
 <script setup>
-import Arweave from "arweave";
-import Account from "arweave-account/src/index";
 import { Buffer } from "buffer";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
-let profileAddress = computed(
-  () => useRoute().params.address || useRoute().hash.slice(1)
-).value;
-let account = useState("account", () => null);
-let ansAddr = useState("ansAddr", () => null);
+import { useWallet, useAccount, useSpendable, useAnsaddr, useArweave, useAccountTools } from "../../composables/useState";
+import setArweave from "../../plugins/arweave";
 
-let accountToolsState = useState(
-  "accountTools",
-  () =>
-    new Account({
-      cacheIsActivated: true,
-      cacheSize: 100,
-      cacheTime: 60,
-    })
-);
-let walletState = useState("wallet", () => null);
-let wallet = walletState.value;
-const arweave = Arweave.init({
-  host: "prophet.rareweave.store",
-  port: 443,
-  protocol: "https",
-  timeout: 60_000,
-  logging: false,
-});
-let avatarObjectUrl = ref(null);
-let height = ref((await $fetch("https://prophet.rareweave.store/info")).height);
-const accountTools = accountToolsState.value;
-const warp = WarpFactory.forMainnet(
-  {
-    inMemory: true,
-  },
-  false,
-  arweave
-);
+const arweave = useArweave().value;
+if (!arweave)
+  setArweave();
+
+const account = useAccount();
+const accountTools = useAccountTools().value;
+const wallet = useWallet();
+
+let profileAddress = computed(() => (
+  useRoute().params.address || useRoute().hash.slice(1)
+)).value;
+
+const avatarObjectUrl = ref(null);
+
 let userProfileOrig = ref(await accountTools.get(profileAddress).catch(e => null));
 let user = ref(JSON.parse(JSON.stringify(userProfileOrig.value)));
 let userAnsName = (
@@ -305,9 +286,6 @@ definePageMeta({
   width: 100%;
   max-width: 90vw;
   min-width: 286px;
-  /* height: 420px; */
-
   overflow-x: auto;
-
 }
 </style>

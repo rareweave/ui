@@ -1,18 +1,10 @@
-import Account from "arweave-account/src/index";
+import Account from "arweave-account";
 // Rareweave state
 export const useCollections = () => useState("collections", () => []);
 export const useNfts = () => useState("nfts", () => []);
 export const useContractInteractions = () => useState("contract-interactions", () => []);
-export const useIsLoading = () => useState("isLoading", () => ({
-    "collections": false,
-    "nfts": false,
-    "contract-interactions": false
-}));
-export const useIsError = () => useState("isError", () => ({
-    "collections": false,
-    "nfts": false,
-    "contract-interactions": false
-}));
+export const useIsLoading = () => useState("isLoading", () => ({}));
+export const useIsError = () => useState("isError", () => ({}));
 
 // User
 export const useWallet = () => useState("wallet", () => null);
