@@ -13,7 +13,7 @@
                 <NuxtLink  class="Route" to="/collection/create">
                     Create collection
                 </NuxtLink>
-                <NuxtLink  class="Route" to="/v1">
+                <NuxtLink  class="Route" to="/explore">
                     Explore
                 </NuxtLink>
                 <NuxtLink class="Navbutton"
@@ -43,14 +43,14 @@
                 <div class="Menu">
                     <button 
                         class="Amazing--button Navbutton"
-                        @click="showMenu = !showMenu"
+                        @click="setShow(`menu`, !show.menu)"
                     >
                         Menu
                     </button>
                     <div 
-                        v-if="showMenu" 
-                        @mouseleave="showMenu = false"
-                        @focusout="showMenu = false" 
+                        v-if="show.menu" 
+                        @mouseleave="setShow(`menu`, false)"
+                        @focusout="setShow(`menu`, false)" 
                         class="Dropdown--mobile"
                     >
                         <NuxtLink  class="Amazing--red Item" to="/create">
@@ -59,7 +59,7 @@
                         <NuxtLink  class="Amazing--red Item" to="/collection/create">
                             Create collection
                         </NuxtLink>
-                        <NuxtLink  class="Amazing--red Item" to="/v1">
+                        <NuxtLink  class="Amazing--red Item" to="/explore">
                             Explore
                         </NuxtLink>
                         <NuxtLink class="Item Account"
@@ -89,7 +89,7 @@
                 <NuxtLink  class="Route" to="/">
                     Home
                 </NuxtLink>
-                <NuxtLink  class="Route" to="/v1">
+                <NuxtLink  class="Route" to="/explore">
                     Explore
                 </NuxtLink>
                 <NuxtLink  class="Amazing--button Navbutton" to="/login">
@@ -101,16 +101,16 @@
                 class="Rightside --mobile">
                 <div class="Menu">
                     <button  class="Amazing--button Navbutton" 
-                        @click="showMenu = !showMenu">
+                        @click="setShow(`menu`, !show.menu)">
                         Menu
                     </button>
                     <div 
-                        v-if="showMenu" 
-                        @mouseleave="showMenu = false" class="Dropdown--mobile">
+                        v-if="show.menu" 
+                        @mouseleave="setShow(`menu`, false)" class="Dropdown--mobile">
                         <NuxtLink  class="Item" to="/">
                             Home
                         </NuxtLink>
-                        <NuxtLink  class="Item" to="/v1">
+                        <NuxtLink  class="Item" to="/explore">
                             Explore
                         </NuxtLink>
                         <NuxtLink  class="Item Amazing--red" to="/login">
@@ -129,7 +129,13 @@ const account = useAccount();
 const spendable = useSpendable();
 const ansaddr = useAnsaddr();
 // state
-const showMenu = useState("showMenu", () => false);
+const show = ref({
+    menu: false,
+});
+
+const setShow = (k, v) => {
+    show.value[k] = v;
+};
 </script>
 
 <style scoped>
