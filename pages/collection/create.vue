@@ -46,26 +46,19 @@
 </template>
 
 <script setup>
-import Arweave from "arweave";
-import ArDB from "ardb";
 import { DeployPlugin } from "warp-contracts-plugin-deploy";
 import { Buffer } from "buffer";
-import Account from "arweave-account/src/index";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
+import { useWallet, useAccount, useArweave } from "../../composables/useState";
+import setArweave from "../../plugins/arweave";
 
-let accountToolsState = useState(
-  "accountTools",
-  () =>
-    new Account({
-      cacheIsActivated: true,
-      cacheSize: 100,
-      cacheTime: 60,
-    })
-);
-const accountTools = accountToolsState.value;
-let account = useState("account", () => null);
-let walletState = useState("wallet", () => null);
-let wallet = walletState.value;
+const arweave = useArweave().value;
+if (!arweave)
+    setArweave();
+
+const account = useAccount();
+const wallet = useWallet();
+
 let uploading = ref(false);
 let title = ref("");
 let description = ref("");
@@ -81,7 +74,6 @@ const arweaveState = useState("arweave", () => {
   });
 });
 
-const arweave = arweaveState.value;
 const warp = WarpFactory.forMainnet(
   {
     remoteStateSyncSource: "https://prophet.rareweave.store/contract",
@@ -92,10 +84,6 @@ const warp = WarpFactory.forMainnet(
 ).use(new DeployPlugin());
 warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`;
 warp.interactionsLoader.delegate.baseUrl = `https://prophet.rareweave.store`;
-// console.log(warp.deploy())
-const ardbState = useState("ardb", () => new ArDB(arweave.value));
-
-let ardb = ardbState.value;
 
 async function Create() {
   let tagArray = tags.value.split(" ");

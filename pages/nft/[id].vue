@@ -201,45 +201,18 @@
   </div>
 </template>
 <script setup>
-import Arweave from "arweave";
-import Account from "arweave-account/src/index";
-import { useAccount, useWallet } from "../../composables/useState";
-
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
+import { useAccount, useArweave, useAccountTools } from "../../composables/useState";
+import setArweave from "../../plugins/arweave";
+
+const arweave = useArweave().value;
+if (!arweave)
+    setArweave();
 
 const account = useAccount();
-
-let accountToolsState = useState(
-  "accountTools",
-  () =>
-    new Account({
-      gateway: {
-        host: "prophet.rareweave.store",
-        port: 443,
-        protocol: "https",
-        timeout: 60_000,
-        logging: false,
-      },
-      cacheIsActivated: true,
-      cacheSize: 100,
-      cacheTime: 60,
-    })
-);
-
-const wallet = useWallet();
-const arweave = useState("arweave", () =>
-  Arweave.init({
-    host: "prophet.rareweave.store",
-    port: 443,
-    protocol: "https",
-    timeout: 60_000,
-    logging: false,
-  })
-).value;
+const accountTools = useAccountTools().value;
 
 let height = ref((await $fetch("https://prophet.rareweave.store/info")).height);
-
-const accountTools = accountToolsState.value;
 
 const warp = WarpFactory.forMainnet(
   {
