@@ -4,8 +4,8 @@
             <h2 class="Title">
                 Create and Sell
             </h2>
-            <div class="Steps">
-                <div v-for="step in steps" class="Step --observe">
+            <div class="Steps h-full flex flex-col justify-start">
+                <div v-for="step in steps" class="Step --observe flex flex-col justify-start h-full">
                     <div :class="['Step__no', `--${step.color}`].join(' ')">
                         <span>
                             <img :src="step.icon" :alt="['no-', step.no].join('')" width="48" height="48" class="Image" />
@@ -17,6 +17,10 @@
                     <p class="Setp__desc">
                         {{ step.description }}
                     </p>
+                    <NuxtLink class="Amazing--button btn btn-sm mt-auto" v-if="step.button" :to="step.button.link">
+                        {{
+                            step.button.title }}
+                    </NuxtLink>
                 </div>
             </div>
         </div>
@@ -37,6 +41,7 @@ const steps = [
         title: "Make Your Collection",
         description: "After you connected you can click on 'Create collection' to create a new collection on RareWeave",
         color: "green",
+        button: { title: "Create collection", link: "/collection/create" },
         icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFb0lEQVR4nO1bSY8bRRSuyUKQAAWYruqAkIDgE/sAJ3JGbFdAWbiBxAUSZUBCSKCO4vdsorBoCBwmHIBRBIMRP2DClQs5kHBjyQGFyYRh0divHCEYRKPX3Z4pt5d47Kpue+Qnlbx0q6req1dfva2E6IfCcMKrwwNKFw8ojYclwasuGvfNY/BYPKbIm5RGXxK+qwguKo1hpo1wURK84+tAZc95GE7IevEVpVFnznhLA1K6OJ2ZRtwaBldLwk/TE5EEv0rCeV4VpfFNF437jsfA5dbx8VQhnNnhfuUpxTzBt7JeekyEwRa3g5vzCLZ4dXhcEZ5NC8GpJshY7c19OCPCYJvIi8JgmyI80awNxWknY/k6UPF+M5gfElIE7xtCYFzyrQ8iGe0Nte935WW1VGBNajnm+L9qqdC/JsA5A4/e6qufjhSGE+ZRF+35PklpPN8F1X/st1+vXnrCWKBfrGLB5GV4yET7QQBPafjJhQBEWNlqng6RsWSLlMb9BtLOD9IXq7kieKPlmCN8XVaLdww4z0pjnr7GvYP01Rn9CY6LISVJ+LahTS/b61jjkTUN0HhEDCk5m6ccCwDHGqDGWwDHGKDGIIjjU0COj0Ec2wHCMXX0GK/Y8KuRN4RkHe6XGv4YNFY4kgLw6uUpG8wnkaEDIyUAL8W81Pin0nCszwDqfqvxAOlYAG3UfoVjEGJYSDoUwNAz71IAI8G8KwGMDPODCICzSHGwsjjtaTioND7CsbsY8Bjk1gHPagyvJQSHL0TJVYLnVbW8OxMB+Br3KsKlNimsn7NgPsljfKkI/ktlsvh35eZaadKZAJTGQz0aK06Y30UoOcLcfXz4oWchyA0IQGm8VxH8uy5xXJIaZ7mlNUJqeNoW081zgC9Sq74QJW0JFlLaOG9fAARzxrvf7FwJrm8821kt3yAJzhjPP7TAb/P41fLuZrVvtgiTIo617eCvFG+3LABcXHu3Vny4pS/CPcYqnO8IXN0zSL01goW2/ROcbrzjEz5nVQCS8O/Gu5O/H7su/Zz/M1Twr3Z9cEzfhj/QKUfI/xvvvJabBkjCC501oGsKrVcBnM5cAxThJ8YEzvC+74QBSuNHIncMKN9m+RQ4ek/zKQCXpIaT3Pi7cTqs+vroXRZ47pojbGhCXF6zvvLJ/585sQOkxpdaDJCUMSI1vCgc0U0UeHzOX2GLfH9LNbjRmSXoaXzGxANj5Rcl4VPCMSXGUKWdJcgr3zPzg/gCXLXFxRRxgSMelnV49M4wuEpkSJxyZx+AfQEGvJ72fF4hscSKnIs0h3A1/oQ5WS/fJ/IkmYEAIv/BBM/mbbPKz8VmFYDPnmMP5zrjithsAiiEMztMJ4n9Bzag/EvHr+FP/m0A2MWsMcS5AKKKz3VVXzINJyb+nfIiP+ihqvzZkYkKK8PuZ5e5/fhwctPmBZQjAYxMZsjb6BaIfY0OCRH4euQEUIhA0KhCZRAk3COXg2ujT9N5IlzsBoIjWyXmRWZzF9+hxxCas3kqc59aL0RucqA6GELwDz/fWKGkxbJ5pYv7bJXKdiNf492K4GMOlDDTXPTMv9nFzrVU1rtcftBWsbQz4mJpDb+tWY318pTlcnlcc20ZucWQkVeDJw0tvWD96oyML0M10Phsrldl0hTObpcE3znFqV1xgKFmANN7YkiIzeN18Iuu9fiOBipOp9zUE/lemprd3sx81A65vjZ3KnVEneMMMIOQu4HT86hs5T1vqn0ylznnYxc4zJUWQgw8y4rg8yT66uTucIJDFRPtTebdX5w0T4Uozmdco8uv1XKLFvk6UJH1xQZLxozzUcdoz+AscqeQr8+XpxKLkSPATu4OJ9fn93F5jasrsv8DhKYLHp3ees0AAAAASUVORK5CYII="
     },
     {
@@ -44,6 +49,7 @@ const steps = [
         title: "Upload your NFTs",
         description: "Click on Mint NFTs to upload and create your NFTs, add it to your collection",
         color: "blue",
+        button: { title: "Upload NFT", link: "/create" },
         icon: "data:image/png;base64,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"
     },
     {
@@ -88,9 +94,8 @@ const steps = [
     flex: 1 1 0px;
     min-width: 286px;
     text-align: center;
-    display: flex;
     flex-direction: column;
-    justify-content: center;
+
     align-items: center;
     padding: 1rem 2rem;
     margin: 0 auto 1rem;
