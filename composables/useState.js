@@ -1,4 +1,4 @@
-import Account from "arweave-account";
+import Account from "arweave-account/src/index";
 // Rareweave state
 export const useCollections = () => useState("collections", () => []);
 export const useNfts = () => useState("nfts", () => []);
