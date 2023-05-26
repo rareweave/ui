@@ -4,8 +4,8 @@
             <h2 class="Title">
                 Create and Sell
             </h2>
-            <div class="Steps h-full flex flex-col justify-start">
-                <div v-for="step in steps" class="Step --observe flex flex-col justify-start h-full">
+            <div class="Steps h-full flex flex-col justify-start flex-wrap">
+                <div v-for="step in steps" class="Step --observe flex flex-col justify-start ">
                     <div :class="['Step__no', `--${step.color}`].join(' ')">
                         <span>
                             <img :src="step.icon" :alt="['no-', step.no].join('')" width="48" height="48" class="Image" />
@@ -82,7 +82,7 @@ const steps = [
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch;
     margin: 5rem auto 0;
     width: 100%;
     height: 100%;
