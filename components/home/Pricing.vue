@@ -54,16 +54,16 @@
                             <span class="Amazing-text">Estimate cost of your NFT collection</span>
                         </h4>
                         <div class="Row">
-                            <label>
+                            <label class="Q">
                                 Enter the number of NFTs you want to mint:
                             </label>
                             <span class="Container">
                                 <input class="Input" type="number" name="quantity" ref="quantity" placeholder="0" min="0"
-                                    max="10000" required />
+                                    max="10000" required style="width:0px"/>
                             </span>
                         </div>
                         <div class="Row">
-                            <label>
+                            <label class="Q">
                                 Enter the average size of the NFTs:
                             </label>
                             <span class="Container">
@@ -81,8 +81,8 @@
                             <button type="submit" class="Button --primary" @click="handleSubmit">
                                 Calculate
                             </button>
-                            Estimate: {{ collectionSizeInBytes.value }} ${{ collectionPrice > 0.01 ?
-                                collectionPrice.toFixed(2) : collectionPrice.toFixed(7) }}
+                            Estimate: {{ collectionSizeInBytes.value }}
+                            ${{ collectionPrice.toFixed(collectionPrice > 0.01 ? 2 : 7) }}
                         </div>
                     </form>
                 </div>
@@ -414,6 +414,7 @@ onMounted(async () => {
     .Row {
         position: relative;
         display: flex;
+        flex-wrap: wrap;
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
@@ -428,10 +429,17 @@ onMounted(async () => {
         align-items: center;
     }
 
+    .Q {
+        position: relative;
+        flex: 1 1 0px;
+        display: flex;
+
+    }
+
     .Container {
         position: relative;
         display: flex;
-        flex: 0 0 168px;
+        flex: 0 0 128px;
         border-radius: 4px;
         overflow: hidden;
     }

@@ -11,16 +11,7 @@
         </button>
         <button
           :class="{ active: forSaleOnly === true }"
-          @click="nfts = nfts.result.reduce((acc, cur) => {
-            if (cur.state.forSale) {
-                acc.result.push(cur);
-                acc.total++;
-            }
-            return acc;
-          }, {
-            result: [],
-            total: 0}
-          );"
+          @click="filterForSale(nfts)"
         >
           For sale only
         </button>
@@ -185,16 +176,7 @@
             <span class="FilterButton">
               <button 
                 class="MenuButton"
-                @click="forSaleOnly = true; nfts = nfts.result.reduce((acc, cur) => {
-                  if (cur.state.forSale) {
-                      acc.result.push(cur);
-                      acc.total++;
-                  }
-                  return acc;
-                }, {
-                  result: [],
-                  total: 0}
-                ); searchNFTs()"
+                @click="forSaleOnly = true; searchNFTs()"
               >
                 Apply
               </button>
@@ -208,14 +190,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="MenuSection">
-        <div class="MenuHeader">
-          <h2>
-            Highlights
-          </h2>
-          <span></span>
-        </div>
-      </div> -->
       <div class="MenuSection">
         <div class="MenuHeader">
           <h2>
@@ -232,8 +206,7 @@
         <div 
           v-else-if="collections.result?.length > 0"   
           class="MenuOptions"
-          v-for="(collection, index) in [...new Set(collections.result?.filter(collection => collection.state.name !== undefined && collection.state.name !== ''))]
-            .filter(collection => ![...rarifiedCollections.map(_ => _.name)].includes(collection.state.name))"
+          v-for="(collection, index) in [...new Set(collections.result?.filter(collection => collection.state.name !== undefined && collection.state.name !== ''))]"
           :key="collection.contractTxId"
         >
           <div 
@@ -371,12 +344,25 @@ const filter = ref({
   maxPrice: 0
 });
 
+function filterForSale() {
+  nfts.value = nfts.value.result.reduce((acc, cur) => {
+    if (cur.state.forSale) {
+      acc.result.push(cur);
+      acc.total++;
+    };
+    return acc;
+  }, {
+    result: [],
+    total: 0
+  });
+};
+
 function getCollections() {
   Api('collections')
     .then(res => {
       collections.value = res;
     });
-}
+};
 
 function filterIfNeeded(nfts) {
   const _min = filter.value.minPrice * 1e12;

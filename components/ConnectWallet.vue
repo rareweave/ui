@@ -91,7 +91,7 @@ async function connectArconnect() {
     setSpendable(address);
 };
 async function setSpendable(address) {
-    const winston = await arweave.value.wallets.getBalance(address);
-    spendable.value = arweave.value.ar.winstonToAr(winston);
+    const winston = await arweave.wallets.getBalance(address);
+    spendable.value = arweave.ar.winstonToAr(winston);
 };
 </script>
