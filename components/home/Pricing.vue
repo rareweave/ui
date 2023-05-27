@@ -59,7 +59,7 @@
                             </label>
                             <span class="Container">
                                 <input class="Input" type="number" name="quantity" ref="quantity" placeholder="0" min="0"
-                                    max="10000" required style="width:0px"/>
+                                    max="10000" required />
                             </span>
                         </div>
                         <div class="Row">
@@ -68,7 +68,7 @@
                             </label>
                             <span class="Container">
                                 <input class="Input" type="number" name="size" ref="size" placeholder="0" min="0.01"
-                                    max="10000" step="0.01" required />
+                                    max="10000" step="0.01" required style="width:0px" />
                                 <select name="sizeUnit" ref="sizeUnit">
                                     <option value="KB">KB</option>
                                     <option value="MB">MB</option>
