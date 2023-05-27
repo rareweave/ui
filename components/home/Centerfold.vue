@@ -27,16 +27,11 @@
             </div>
             <div class="Column">
                 <div class="Hero">
-                    <div class="Imagewrapper" v-for="nft in NFTs.filter((nft, i) => i < 1)">
-                        <img v-if="nft.state?.contentType?.startsWith('image')" class="Image"
-                            :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${nft.contractTxId}`"
-                            :alt="nft.state.name || 'NFT'" @load="imgHasBeenLoaded" />
-                        <video v-else-if="nft.state?.contentType?.startsWith('video')" autoplay muted controls loop
-                            class="Video">
-                            <source :src="`https://prophet.rareweave.store/${nft.contractTxId}`"
-                                :type="nft.state?.contentType" />
-                            Your browser does not support the video tag.
-                        </video>
+                    <div class="Imagewrapper">
+                        <NuxtLink class="randomNFT" :to="'/nft/' + randomNft?.contractTxId">
+        <img :src="'https://prophet.rareweave.store/_ipx/width_384,f_webp/https://arweave.net/' + randomNft?.contractTxId"
+          class="max-w-sm rounded-md shadow-2xl " />
+      </NuxtLink>
                     </div>
                 </div>
             </div>
@@ -62,7 +57,7 @@
                         &gt;
                     </div>
                 </div>
-                <div v-if="NFTs.length === 0" class="Placeholders">
+                <div v-if="nfts.result.length === 0" class="Placeholders">
                     <div v-for="i in 4" class="Placeholder">
                         <div class="Detailholder">
                             <h4 class="Titleholder"></h4>
@@ -70,7 +65,7 @@
                     </div>
                 </div>
                 <div class="Figure">
-                    <div v-for="nft in NFTs" :key="nft.contractTxId" class="NFT">
+                    <div v-for="nft in displayedNFTs " :key="nft.contractTxId" class="NFT">
                         <NuxtLink :to="`nft/${nft.contractTxId}`" class="Link">
                             <div class="NFT__imagewrapper">
                                 <img v-if="nft.state?.contentType?.startsWith('image')" class="NFT__image"
@@ -96,51 +91,52 @@
     </div>
 </template>
 <script setup>
-import { useNfts, useIsLoading } from '../../composables/useState';
-import Api from '../../plugins/prophet';
+let index = ref(0); 
+const displayNfts = 1 + 4 + 1; 
 
-const nfts = useNfts();
-const NFTs = ref([]);
-const index = ref(0);
+const nfts = await fetch('https://prophet.rareweave.store/nfts').then(res => res.json())
+const randomNft = nfts.result[Math.round(Math.random() * nfts.result.length)];
 
-const displayNfts = 1 + 4 + 1; // first and last are invisible for animation
-
-function randomIndex() {
-    if (!nfts.value.result)
-        return 100;
-
-    return Math.floor(Math.random() * nfts.value.result.length - displayNfts - 3);
-};
+let displayedNFTs = computed(() => {
+  return nfts.result.slice(index.value, index.value + displayNfts);
+});
 
 function incrementIndex() {
-    if (index.value + displayNfts >= nfts.value.result.length) {
-        // index.value = 0;
-    } else {
-        index.value += 1;
-    }
-    NFTs.value = nfts.value.result.filter((nft, i) => i >= index.value && i <= index.value + (displayNfts - 1));
-};
+  if (index.value < nfts.result.length - displayNfts) {
+    index.value++;
+  }
+}
 
 function decrementIndex() {
-    if (index.value <= 0) {
-        // index.value = nfts.value.result.length - 3;
-    } else {
-        index.value -= 1;
-    }
-    NFTs.value = nfts.value.result.filter((nft, i) => i >= index.value && i <= index.value + (displayNfts - 1));
-};
+  if (index.value > 0) {
+    index.value--;
+  }
+}
 
-onMounted(async () => {
-    Api('nfts')
-        .then(res => {
-            nfts.value = res;
-            index.value = randomIndex();
-            NFTs.value = res.result.filter((nft, i) => i >= index.value && i <= index.value + (displayNfts - 1));
-        })
-        .catch(err => {
-            console.log(err);
-        });
-});
+
+
+// onMounted(async () => {
+//     nfts.value = await fetch('https://prophet.rareweave.store/nfts').then(res => res.json())
+//     randomNft.value = nfts.value.result[Math.round(Math.random() * nfts.value.result.length)];
+
+//     Api('nfts')
+//         .then(async res => {
+//             // nfts.value = res;
+//             // let nftss = await fetch('https://prophet.rareweave.store/nfts').then(res => res.json())
+//             // let randomNft = nfts.result[Math.round(Math.random() * nfts.result.length)];
+
+//             // console.log(nfts)
+
+//             // console.log(randomNft)
+//             // index.value = randomIndex();
+//             NFTs.value = res.result.filter((nft, i) => i >= index.value && i <= index.value + (displayNfts - 1));
+
+//             console.log(NFTs.value)
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         });
+// });
 </script>
 
 <style scoped>
