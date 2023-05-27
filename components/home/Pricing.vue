@@ -1,11 +1,11 @@
 <template>
-    <div class="Section Pricing">
-        <div class="Layout">
+    <div class="_Section Pricing flex flex-col items-center justify-center w-full flex-1 mx-auto py-10">
+        <div class="Layout flex flex-col justify-center items-center h-full mx-auto mt-32">
             <div class="Header">
-                <h2 class="Title">
-                    Low costs for minting your own <span class="Amazing-text">NFT collection</span>
+                <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
+                    Low costs for minting your own <span class="Amazing--green">NFT collection</span>
                 </h2>
-                <p class="Desc">
+                <p class="max-w-[85vw] text-1xl my-4">
                     The cost of minting NFTs on RareWeave depend on the storage rates of the Arweave network.
                     Pay once, store forever. Currently the RareWeave market does not charge any additional fees.
                     <span>Please note that this policy is most likely to change in the near future, to discourage spamming
@@ -207,6 +207,8 @@ onMounted(async () => {
     .Desc {
         font-size: 14pt;
         margin: 1rem 0;
+
+        @apply my-4;
     }
 
     .Tiers {

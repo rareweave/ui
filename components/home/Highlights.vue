@@ -1,7 +1,7 @@
 <template>
-    <div :class="['Section','Highlights'].join(' ')">
-        <div class="Layout">
-            <h2 class="Title">
+    <div class="_Section Highlights flex flex-col items-center justify-center w-full flex-1 mx-auto py-10">
+        <div class="Layout flex flex-col justify-center items-center h-full mx-auto mt-32">
+            <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
                 Highlighted
             </h2>
             <div class="Showcase">

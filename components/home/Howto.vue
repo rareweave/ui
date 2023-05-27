@@ -1,20 +1,20 @@
 <template>
-    <div class="Section Howto" id="howto">
-        <div class="Layout">
-            <h2 class="Title">
+    <div class="_Section Howto flex flex-col items-center justify-center w-full flex-1 mx-auto py-10" id="howto">
+        <div class="Layout flex flex-col justify-center items-center h-full mx-auto mt-32">
+            <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
                 Create and Sell
             </h2>
-            <div class="Steps h-full flex flex-col justify-start flex-wrap">
-                <div v-for="step in steps" class="Step --observe flex flex-col justify-start ">
-                    <div :class="['Step__no', `--${step.color}`].join(' ')">
+            <div class="flex flex-wrap justify-between items-stretch mt-20 w-full h-full preserve-3d">
+                <div v-for="step in steps" class="flex-1 flex flex-col items-center justify-center p-6 m-6 text-center min-width-[-286px] --observe">
+                    <div :class="['relative p-[16px] aspect-w-[64px] w-[64px] flex justify-center items-center rounded-full before:absolute before:inset-[-16px] before:border-1 before:border-black before:opacity-50 before:p-[16px] before:z-[-1] before:rounded-full', `--${step.color}`].join(' ')">
                         <span>
                             <img :src="step.icon" :alt="['no-', step.no].join('')" width="48" height="48" class="Image" />
                         </span>
                     </div>
-                    <h4 class="Step__title">
+                    <h4 class="mt-8 mx-0 mb-4 text-2xl font-bold text-white">
                         {{ step.no }}. {{ step.title }}
                     </h4>
-                    <p class="Step__desc">
+                    <p class="mb-4">
                         {{ step.description }}
                     </p>
                     <NuxtLink class="Amazing--button btn btn-sm mt-auto" v-if="step.button" :to="step.button.link">
@@ -30,7 +30,7 @@
 const steps = [
     {
         no: 1,
-        title: "Create Wallet",
+        title: "Set up a wallet",
         description: "If you do not have an Arweave wallet yet, use arweave.app or ArConnect to create it",
         color: "purple",
         button: {
@@ -41,7 +41,7 @@ const steps = [
     },
     {
         no: 2,
-        title: "Make Your Collection",
+        title: "Create a collection",
         description: "After you connected your wallet, click on 'Create collection' to make your collection.",
         color: "green",
         button: { title: "Create collection", link: "/collection/create" },
@@ -57,7 +57,7 @@ const steps = [
     },
     {
         no: 4,
-        title: "Offer on chain",
+        title: "Sell on chain",
         description: "Promote your collection and sell your NFTs through the RareWeave market",
         color: "red",
         button: { title: "Explore NFTs", link: "/explore" },
@@ -66,97 +66,31 @@ const steps = [
 
 ];
 </script>
-
 <style scoped>
-.Howto {
-    position: relative;
-}
-
-.Layout {
-    justify-content: center;
-}
-
-.Title {
-    margin: 0 0 5 rem;
-}
-
-.Steps {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: stretch;
-    margin: 5rem auto 0;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-}
-
-.Step {
-    position: relative;
-    flex: 1 1 0px;
-    min-width: 286px;
-    text-align: center;
-    flex-direction: column;
-    align-items: center;
-    padding: .75rem 1.5rem;
-    margin: .75rem 1.5rem;
-}
-
-.Step__no {
-    position: relative;
-    padding: 1rem;
-    border-radius: 50%;
-    background: rgba(234, 201, 189, 1);
-    aspect-ratio: 1/1;
-    width: 64px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.Step__no::before {
-    content: '';
-    position: absolute;
-    inset: -16px;
-    border-radius: 50%;
-    background: inherit;
-    opacity: 0.5;
-    z-index: -1;
-    padding: 16px;
-    filter: brightness(0.5);
-    border: 1px solid black;
-}
-
-.Step__title {
-    font-size: 18px;
-    font-weight: 800;
-    color: white;
-    margin: 2rem 0 1rem;
-}
-
-.Step__desc {
-    margin: 0 0 1rem;
-}
-
 .--purple {
-    background: rgba(207, 130, 235, 0.918);
+    background: rgba(248, 35, 248, 0.966);
     background: linear-gradient(203deg, rgba(248, 35, 248, 0.966), rgba(97, 4, 97, 0.952));
 }
 
 .--green {
-    background: rgba(138, 245, 165, 0.719);
+    background: rgba(30, 231, 214, 0.966);
     background: linear-gradient(203deg, rgba(30, 231, 214, 0.966), rgba(5, 165, 45, 0.938));
 }
 
 .--blue {
-    background: rgba(128, 194, 238, 0.877);
+    background: rgba(9, 230, 119, 0.966);
     background: linear-gradient(203deg, rgba(9, 230, 119, 0.966), rgba(8, 102, 243, 0.932));
 }
 
 .--red {
-    background: rgba(241, 127, 127, 0.918);
+    background: rgba(236, 167, 18, 0.966);
     background: linear-gradient(203deg, rgba(236, 167, 18, 0.966), rgba(226, 56, 4, 0.932));
+}
+
+.--purple::before,
+.--green::before,
+.--blue::before,
+.--red::before {
+    background: inherit;
 }
 </style>
