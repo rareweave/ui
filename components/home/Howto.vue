@@ -57,7 +57,7 @@ const steps = [
     },
     {
         no: 4,
-        title: "Offer on blockchain",
+        title: "Offer on chain",
         description: "Promote your collection and sell your NFTs through the RareWeave market",
         color: "red",
         button: { title: "Explore NFTs", link: "/explore" },

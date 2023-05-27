@@ -3,16 +3,11 @@
     <div class="Spacer"></div>
     <div class="Topbar">
       <div class="Forsale">
-        <button
-          :class="{ active: forSaleOnly === false }"
-          @click="forSaleOnly = false; searchType !== '' ? searchNFTs() : getNFTs()"
-        >
+        <button :class="{ active: forSaleOnly === false }"
+          @click="forSaleOnly = false; searchType !== '' ? searchNFTs() : getNFTs()">
           Show all
         </button>
-        <button
-          :class="{ active: forSaleOnly === true }"
-          @click="filterForSale(nfts)"
-        >
+        <button :class=" { active: forSaleOnly === true } " @click=" filterForSale(nfts) ">
           For sale only
         </button>
         <div class="Current">
@@ -24,54 +19,30 @@
           Search:
         </label>
         <span class="InputWrapper">
-          <input 
-            type="text" 
-            placeholder="Name, description etc" 
-            v-model="searchInput"
-            @keydown.enter="searchCondition = searchInput; searchNFTs()"
-            class="Input__Search"
-          />
-          <span 
-            class="SearchIcon"
-            @click="searchCondition = searchInput; searchNFTs()"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="feather feather-search"
-            >
+          <input type="text" placeholder="Name, description etc" v-model=" searchInput "
+            @keydown.enter=" searchCondition = searchInput; searchNFTs() " class="Input__Search" />
+          <span class="SearchIcon" @click=" searchCondition = searchInput; searchNFTs() ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-search">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </span>
         </span>
         <span
-          @click="searchInput = ''; searchCondition = ''; searchType = ''; forSaleOnly = false; filter = { minPrice: 0, maxPrice: 0 }; getNFTs()"
-          class="V1__reset"
-        >
+          @click=" searchInput = ''; searchCondition = ''; searchType = ''; forSaleOnly = false; filter = { minPrice: 0, maxPrice: 0 }; getNFTs() "
+          class="V1__reset">
           Reset
         </span>
-        
+
 
       </div>
       <div class="V1__views">
-        <button
-          :class="{ active: view === 'grid' }"
-          @click="view = 'grid'"
-        >
+        <button :class=" { active: view === 'grid' } " @click=" view = 'grid' ">
           grid
         </button>
-        <button
-          :class="{ active: view === 'list' }"
-          @click="view = 'list'"
-        >
+        <button :class=" { active: view === 'list' } " @click=" view = 'list' ">
           list
         </button>
       </div>
@@ -91,10 +62,8 @@
           <div class="MenuOption">
             <div class="V1__button_wrapper">
               <span class="V1__button_decoration"></span>
-              <button
-                class="V1__button"
-                @click="searchCondition = ''; searchType = ''; forSaleOnly = false; filter = { minPrice: 0, maxPrice: 0 }; getNFTs();"
-              >
+              <button class="V1__button"
+                @click=" searchCondition = ''; searchType = ''; forSaleOnly = false; filter = { minPrice: 0, maxPrice: 0 }; getNFTs(); ">
                 All
               </button>
             </div>
@@ -108,22 +77,16 @@
           </h2>
           <span></span>
         </div>
-        <div 
-          v-for="(rarifiedCollection, index) in rarifiedCollections"
-          class="MenuOptions"
-        >
-          <div 
-            class="highlite MenuOption"
-            :style="{
+        <div v-for="(  rarifiedCollection, index  ) in   rarifiedCollections  " class="MenuOptions">
+          <div class="highlite MenuOption" :style="
+            {
               animationDuration: `${0.12 + (0.12 * index)}s`
-            }"
-          >
+            }
+          ">
             <div class="V1__button_wrapper">
               <span class="V1__button_decoration"></span>
-              <button
-                class="V1__button"
-                @click="searchCondition = rarifiedCollection.contractTxId; searchType = 'collection'; searchNFTs(); activate($event)"
-              >
+              <button class="V1__button"
+                @click=" searchCondition = rarifiedCollection.contractTxId; searchType = 'collection'; searchNFTs(); activate($event) ">
                 {{ rarifiedCollection.name }}...[{{ rarifiedCollection.count }}]
               </button>
             </div>
@@ -143,13 +106,7 @@
               <label>
                 Min:
               </label>
-              <input
-                type="number"
-                v-model="filter.minPrice"
-                min="0"
-                max="1000000000"
-                step="0.1"
-              >
+              <input type="number" v-model=" filter.minPrice " min="0" max="1000000000" step="0.1">
               <span>
                 AR
               </span>
@@ -160,13 +117,7 @@
               <label>
                 Max:
               </label>
-              <input
-                type="number"
-                v-model="filter.maxPrice"
-                min="0"
-                max="1000000000"
-                step="0.1"
-              >
+              <input type="number" v-model=" filter.maxPrice " min="0" max="1000000000" step="0.1">
               <span>
                 AR
               </span>
@@ -174,16 +125,10 @@
           </div>
           <div class="MenuOption">
             <span class="FilterButton">
-              <button 
-                class="MenuButton"
-                @click="forSaleOnly = true; searchNFTs()"
-              >
+              <button class="MenuButton" @click=" forSaleOnly = true; searchNFTs() ">
                 Apply
               </button>
-              <button 
-                class="Reset"
-                @click="filter = { minPrice: 0, maxPrice: 0 }; forSaleOnly = false; searchNFTs()"
-              >
+              <button class="Reset" @click=" filter = { minPrice: 0, maxPrice: 0 }; forSaleOnly = false; searchNFTs() ">
                 Remove filter
               </button>
             </span>
@@ -197,27 +142,17 @@
           </h2>
           <span></span>
         </div>
-        <div 
-          v-if="isLoading.collections"
-          class="Blocks__loader"
-        >
+        <div v-if=" isLoading.collections " class="Blocks__loader">
           <span></span>
         </div>
-        <div 
-          v-else-if="collections.result?.length > 0"   
-          class="MenuOptions"
-          v-for="(collection, index) in [...new Set(collections.result?.filter(collection => collection.state.name !== undefined && collection.state.name !== ''))]"
-          :key="collection.contractTxId"
-        >
-          <div 
-            class="MenuOption highlite"  
-          >
+        <div v-else-if=" collections.result?.length > 0 " class="MenuOptions"
+          v-for="(  collection, index  ) in   [...new Set(collections.result?.filter(collection => collection.state.name !== undefined && collection.state.name !== ''))]  "
+          :key=" collection.contractTxId ">
+          <div class="MenuOption highlite">
             <div class="V1__button_wrapper">
               <span class="V1__button_decoration"></span>
-              <button
-                class="V1__button"
-                @click="searchCondition = collection.contractTxId; searchType = 'collection'; searchNFTs(); activate($event)"
-              >
+              <button class="V1__button"
+                @click=" searchCondition = collection.contractTxId; searchType = 'collection'; searchNFTs(); activate($event) ">
                 {{ collection.state.name }}
               </button>
             </div>
@@ -234,40 +169,20 @@
       </div>
     </div>
     <div class="NFTs">
-      <div
-        v-if="isLoading.nfts"
-        class="Blocks__loader"
-      >
+      <div v-if=" isLoading.nfts " class="Blocks__loader">
         <span></span>
       </div>
-      <div 
-        v-else-if="nfts.result?.length === 0" 
-        class="Empty"
-      >
+      <div v-else-if=" nfts.result?.length === 0 " class="Empty">
         <span class="Empty__nfts"></span>
         <h2>
           No NFTs found
         </h2>
       </div>
-      <div 
-        v-else v-if="view === 'grid'" 
-        class="Showcase"
-      >
-        <NftCard 
-          v-for="nft in nfts.result" 
-          :key="nft.contractTxId" 
-          :nft="nft"
-        />
+      <div v-else v-if=" view === 'grid' " class="Showcase">
+        <NftCard v-for="  nft   in   nfts.result  " :key=" nft.contractTxId " :nft=" nft " />
       </div>
-      <div 
-        v-if="!isLoading.nfts && view === 'list'" 
-        class="Details"
-      >
-        <NftRow 
-          v-for="nft in nfts.result" 
-          :key="nft.contractTxId" 
-          :nft="nft"
-        />
+      <div v-if=" !isLoading.nfts && view === 'list' " class="Details">
+        <NftRow v-for="  nft   in   nfts.result  " :key=" nft.contractTxId " :nft=" nft " />
       </div>
     </div>
   </div>
@@ -285,51 +200,51 @@ const collections = useCollections();
 const isLoading = useIsLoading();
 
 const rarifiedCollections = ref([
-    {
-        contractTxId: `2CDW9_X9fjJEHiC4ibvtKOrRot-eIQp2F3TyrHwxNtA`,
-        name: `ARnimals`,
-        count: 3
-    },
-    {
-        contractTxId: `EGmI9FpXY0DzWpALdYLjr939OPbc_H_lPyM6FSdWXGw`,
-        name: `ARgonauts`,
-        count: 1
-    },
-    {
-        contractTxId: `TOAaqhPr81gXQCF1Q8pZE7xHlwpfVoRyjLjGy6dO9Ds`,
-        name: `Ducks Collection`,
-        count: 14
-    },
-    {
-        contractTxId: `chpEFSGrE7p5vWvldOh5q76DgRCMdYUAe1hPdrSdj1Y`,
-        name: `Pure Mattness`,
-        count: 6
-    },
-    {
-        contractTxId: `sW_SvVlY0j7T6K4jOEkLdAzF2q4_6KB5zz1HE8QHfGY`,
-        name: `Perceptions`,
-        count: 1
-    },
-    {
-        contractTxId: `RmK6mqHGU_3YG3LBE55_cJRhBxOsZWu8B3hOhDaKNno`,
-        name: `Kaleidoscopic Flower`,
-        count: 4
-    },
-    {
-        contractTxId: `l6yYypr2dzNo8AaVZVw8Uve7UpLHQvYodO_ldliCgCw`,
-        name: `Awesome Sauce`,
-        count: 3
-    },
-    {
-        contractTxId: `jBf_ykTzUYZOlI7xf_JFLj77uS9hT77XMXXFa2P7-ks`,
-        name: `Tom`,
-        count: 3
-    },
-    {
-        contractTxId: `nCYNTGdvj_kSRtkhl7M_zQvND38fufqv4OZNdShXwD4`,
-        name: `Ducks`,
-        count: 2
-    }
+  {
+    contractTxId: `2CDW9_X9fjJEHiC4ibvtKOrRot-eIQp2F3TyrHwxNtA`,
+    name: `ARnimals`,
+    count: 3
+  },
+  {
+    contractTxId: `EGmI9FpXY0DzWpALdYLjr939OPbc_H_lPyM6FSdWXGw`,
+    name: `ARgonauts`,
+    count: 1
+  },
+  {
+    contractTxId: `TOAaqhPr81gXQCF1Q8pZE7xHlwpfVoRyjLjGy6dO9Ds`,
+    name: `Ducks Collection`,
+    count: 14
+  },
+  {
+    contractTxId: `chpEFSGrE7p5vWvldOh5q76DgRCMdYUAe1hPdrSdj1Y`,
+    name: `Pure Mattness`,
+    count: 6
+  },
+  {
+    contractTxId: `sW_SvVlY0j7T6K4jOEkLdAzF2q4_6KB5zz1HE8QHfGY`,
+    name: `Perceptions`,
+    count: 1
+  },
+  {
+    contractTxId: `RmK6mqHGU_3YG3LBE55_cJRhBxOsZWu8B3hOhDaKNno`,
+    name: `Kaleidoscopic Flower`,
+    count: 4
+  },
+  {
+    contractTxId: `l6yYypr2dzNo8AaVZVw8Uve7UpLHQvYodO_ldliCgCw`,
+    name: `Awesome Sauce`,
+    count: 3
+  },
+  {
+    contractTxId: `jBf_ykTzUYZOlI7xf_JFLj77uS9hT77XMXXFa2P7-ks`,
+    name: `Tom`,
+    count: 3
+  },
+  {
+    contractTxId: `nCYNTGdvj_kSRtkhl7M_zQvND38fufqv4OZNdShXwD4`,
+    name: `Ducks`,
+    count: 2
+  }
 ]);
 
 const view = ref('grid');
@@ -392,7 +307,7 @@ function activate(e) {
 function searchNFTs() {
   if (!searchCondition.value)
     return getNFTs();
-    
+
   const options = {};
   if (searchType.value === "collection")
     options.collection = searchCondition.value;
@@ -405,18 +320,23 @@ function searchNFTs() {
 };
 
 function getNFTs(options = {}) {
-  const ThousandandamillionNfts = new Array(options.pages||2)
-    .fill(0)
-    .map((_, i) => Api('nfts', {
-      ...options, 
-      startFrom: i * 100
-    }));
+  nfts.value = [];
 
-  Promise.all(ThousandandamillionNfts)
-    .then(res => {
-      const flattend = res.map(r => r.result).flat();
-      nfts.value = filterIfNeeded(flattend);
-    });
+  const get100 = async startFrom => await Api('nfts', {
+    ...options,
+    startFrom
+  });
+
+  const fetchNfts = async () => {
+    while (true) {
+      const res = await get100(nfts.value.length||0);
+      nfts.value = filterIfNeeded([...nfts.value, ...res.result]);
+      if (res.result.length % 100 !== 0)
+        break;
+    }
+  };
+  
+  fetchNfts();
 };
 
 onMounted(async () => {
@@ -433,10 +353,10 @@ onMounted(async () => {
         observer.unobserve(entry.target);
       }
     });
-  }, 
-  { 
-    threshold: 0.5
-  });
+  },
+    {
+      threshold: 0.5
+    });
 
   const nftCards = document.querySelectorAll('.NftCard');
 
@@ -581,7 +501,7 @@ definePageMeta({
   width: calc((100vw) - var(--page-spacing) * 2);
   height: 1px;
   max-width: var(--page-max-width);
-  background: rgba(17,23,32,1);
+  background: rgba(17, 23, 32, 1);
   margin: 0 auto;
 }
 
@@ -638,13 +558,14 @@ definePageMeta({
   height: auto;
   margin: 0;
   padding: .375rem .75rem;
-  background: linear-gradient(93deg, rgba(216,221,232,1), rgb(187, 183, 176));
+  background: linear-gradient(93deg, rgba(216, 221, 232, 1), rgb(187, 183, 176));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 900;
   font-size: 15pt;
 }
+
 .MenuOptions {
   display: flex;
   flex-direction: column;
@@ -667,63 +588,63 @@ definePageMeta({
   padding: .375rem .75rem;
 }
 
-  .V1__button_wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    width: max-content;
-    height: 100%;
-    margin: 0 0 0 2px;
-    padding: 0;
-  }
+.V1__button_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: max-content;
+  height: 100%;
+  margin: 0 0 0 2px;
+  padding: 0;
+}
 
-  .V1__button_decoration {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    flex: 0 0 24px;
-    height: 100%;
-    margin-left: 2px;
-    border-left: 1px solid rgba(146, 158, 161, .33);
-    transform: scaleY(1.6183);
-  }
+.V1__button_decoration {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 0 0 24px;
+  height: 100%;
+  margin-left: 2px;
+  border-left: 1px solid rgba(146, 158, 161, .33);
+  transform: scaleY(1.6183);
+}
 
-  .V1__button_decoration::after {
-    content: '';
-    position: absolute;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    width: 5px;
-    height: 4px;
-    margin-top: 1px;
-    margin-left: -3px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.5);
-    opacity: 0;
-    transition: opacity 0.07s ease-in-out;
-  }
+.V1__button_decoration::after {
+  content: '';
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 5px;
+  height: 4px;
+  margin-top: 1px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  transition: opacity 0.07s ease-in-out;
+}
 
-  .V1__button_wrapper:hover .V1__button_decoration::after {
-    opacity: 1;
-  }
-  .V1__button_wrapper:hover .V1__button {
-    color: rgba(216, 221, 232, 0.99);
-  }
+.V1__button_wrapper:hover .V1__button_decoration::after {
+  opacity: 1;
+}
 
-  .V1__button_wrapper.--active .V1__button_decoration::after {
-    opacity: 1;
-    background: rgba(110, 205, 147, 0.945);
-  }
-  .V1__button_wrapper.--active .V1__button {
-    color: rgba(110, 205, 147, 0.945);
-  }
+.V1__button_wrapper:hover .V1__button {
+  color: rgba(216, 221, 232, 0.99);
+}
 
+.V1__button_wrapper.--active .V1__button_decoration::after {
+  opacity: 1;
+  background: rgba(110, 205, 147, 0.945);
+}
 
-  
+.V1__button_wrapper.--active .V1__button {
+  color: rgba(110, 205, 147, 0.945);
+}
+
 .Row {
   display: flex;
   flex-direction: row;
@@ -776,15 +697,6 @@ definePageMeta({
   padding: .375rem .75rem !important
 }
 
-/* .MenuOption.highlite:hover {
-  background: linear-gradient(217deg, rgba(253, 175, 8, 0.938), rgba(206, 8, 156, 0.938));
-  background-size: 150% 1%;
-  background-position: 0% 0%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-} */
-
-
 .V1__button {
   display: flex;
   flex-direction: row;
@@ -816,6 +728,7 @@ definePageMeta({
   overflow-y: scroll;
   margin: 0.375rem auto;
 }
+
 .Empty {
   position: relative;
   display: flex;
@@ -827,6 +740,7 @@ definePageMeta({
   justify-content: center;
   align-items: center;
 }
+
 .Showcase {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(288px, 300px));
@@ -837,6 +751,7 @@ definePageMeta({
   height: 100%;
   margin: 0;
 }
+
 .Details {
   position: relative;
   display: flex;
@@ -853,61 +768,68 @@ definePageMeta({
 .Menu {
   animation: fold-out .63s forwards linear 1;
 }
+
 .MenuHeader,
 .MenuOption {
-    animation: slide-in .63s forwards linear 1;
-    white-space: nowrap;
-  }
-  @keyframes slide-in {
-    0% {
-      opacity: 0;
-      transform: translateX(-100%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0%);
-    }
+  animation: slide-in .63s forwards linear 1;
+  white-space: nowrap;
+}
+
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
   }
 
-  @keyframes slide-out {
-    0% {
-      opacity: 1;
-      transform: translateX(0%);
-    }
-    100% {
-      opacity: 0;
-      transform: translateX(-100%);
-    }
+  100% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    opacity: 1;
+    transform: translateX(0%);
   }
 
-  @keyframes fold-in {
-    from {
-      min-width: 306px;
-    }
-    to {
-      min-width: 32px;
-      max-width: 32px;
-    }
+  100% {
+    opacity: 0;
+    transform: translateX(-100%);
   }
-  
-  @keyframes fold-out {
-    from {
-      min-width: 32px;
-    }
-    to {
-      min-width: 306px;
+}
 
-    }
+@keyframes fold-in {
+  from {
+    min-width: 306px;
   }
 
-  @keyframes darken {
-    0% {
-      background: rgba(17,23,32, 0);
-    }
-    100% {
-      background: rgba(17,23,32, 0.999);
-    }
+  to {
+    min-width: 32px;
+    max-width: 32px;
   }
+}
+
+@keyframes fold-out {
+  from {
+    min-width: 32px;
+  }
+
+  to {
+    min-width: 306px;
+
+  }
+}
+
+@keyframes darken {
+  0% {
+    background: rgba(17, 23, 32, 0);
+  }
+
+  100% {
+    background: rgba(17, 23, 32, 0.999);
+  }
+}
 
 @media screen and (max-width: 1776px) {
   .NFTs {
@@ -921,19 +843,22 @@ definePageMeta({
     animation: fold-in .63s forwards linear 1;
     overflow-y: hidden;
   }
+
   .Select {
     flex-wrap: wrap;
   }
+
   .Spacer {
     display: none;
   }
+
   .MenuFoldOverlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: var(--page-height);
-    background: rgba(17,23,32, 0);
+    background: rgba(17, 23, 32, 0);
     animation: darken .63s forwards linear 1;
     z-index: 1;
     display: flex;
@@ -941,9 +866,11 @@ definePageMeta({
     justify-content: center;
     align-items: flex-start;
   }
+
   .MenuSection {
     overflow: hidden;
-  }  
+  }
+
   .MenuHeader,
   .MenuOption {
     animation: slide-out .63s forwards linear 1;

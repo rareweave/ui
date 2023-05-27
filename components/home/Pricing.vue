@@ -204,17 +204,6 @@ onMounted(async () => {
         justify-content: flex-start;
     }
 
-    /* .Title {
-        color: rgba(251,250,255,1);
-        text-align: center;
-        white-space: nowrap;
-        width: min-content;
-        height: auto;
-        margin: 0;
-        padding: 0;font-size: 24pt;
-        font-weight: 600;
-    } */
-
     .Desc {
         font-size: 14pt;
         margin: 1rem 0;
