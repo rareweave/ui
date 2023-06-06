@@ -1,12 +1,12 @@
 <template>
-    <div class="Section Centerfold">
-        <div class="Layout Hero">
+    <div class="_Section Centerfold flex flex-col items-center justify-center w-full flex-1 mx-auto py-10">
+        <div class="Layout Hero flex flex-col justify-center items-center h-full mx-auto mt-32">
             <div class="Column">
                 <div class="Header">
                     <span class="Editionlabel">
                         Alpha Edition
                     </span>
-                    <h1 class="Title">
+                    <h1 class="Title text-white text-left whitespace-nowrap max-w-[85vw] text-6xl font-semibold">
                         RareWeave
                     </h1>
                     <p class="Desc">
@@ -16,11 +16,11 @@
                         With our technology, you can now easily create your own NFTs and sell them on the market.
                     </p>
                     <div class="CTAs">
-                        <NuxtLink to="/v1" class="Button --primary">
+                        <NuxtLink to="/explore" class="Button --primary">
                             Explore
                         </NuxtLink>
-                        <a href="#howto" class="Button">
-                            &gt; Learn about creating NFTs
+                        <a href="#howto" class="Button ml-5">
+                            &gt; learn more
                         </a>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
         </div>
         <div :class="['Layout', 'Features'].join(' ')">
             <div>
-                <h2 class="Title">
+                <h2 class="Title text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
                     Explore the arweave market for <span class="Amazing-text">liquid NFTs</span>
                 </h2>
                 <p class="Desc">

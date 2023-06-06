@@ -1,8 +1,8 @@
 <template>
-    <div :class="['Section','Collections'].join(' ')">
-        <div class="Layout">
+    <div class="_Section Collections flex flex-col items-center justify-center w-full flex-1 mx-auto py-10">
+        <div class="Layout flex flex-col justify-center items-center h-full mx-auto mt-32">
             <div class="Header">
-                <h2 class="Title Amazing--red">
+                <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold Amazing--red">
                     Top collections
                 </h2>
                 <p class="Desc">

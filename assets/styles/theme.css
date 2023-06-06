@@ -57,58 +57,38 @@ p {
     font-family: var(--font-secondary) !important;
 }
 
-.Page {
-    position: relative;
-}
-
-.Main {
-    position: relative;
-}
-
-.Section {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    flex: 1 1 0px;
-    margin: 0 auto;
-    padding: 2.5rem 0;
-}
-
 .Layout {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
     width: calc((100%) - var(--page-spacing) * 2);
-    height: 100%;
-    margin: 12rem auto 0;
-    padding: 0;
 }
 
 .Title,
 .Desc {
-    max-width: 85vw;
+    /* max-width: 85vw; */
+
+    @apply max-w-[85vw];
 }
 
 .Title {
-    color: rgba(251, 250, 255, 1);
+    /* color: rgba(251, 250, 255, 1);
     text-align: center;
     white-space: nowrap;
-    width: max-content;
+    width: max-content; */
+
+    @apply text-white text-left whitespace-nowrap max-w-[85vw];
 }
 
 h1.Title {
-    font-size: 28pt;
-    font-weight: 600;
+    /* font-size: 28pt;
+    font-weight: 600; */
+
+    @apply text-4xl font-semibold;
 }
 
 h2.Title {
-    font-size: 24pt;
-    font-weight: 600;
+    /* font-size: 24pt;
+    font-weight: 600; */
+
+    @apply text-3xl font-semibold;
 }
 
 .Button {

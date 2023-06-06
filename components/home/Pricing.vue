@@ -1,11 +1,11 @@
 <template>
-    <div class="Section Pricing">
-        <div class="Layout">
+    <div class="_Section Pricing flex flex-col items-center justify-center w-full flex-1 mx-auto py-10">
+        <div class="Layout flex flex-col justify-center items-center h-full mx-auto mt-32">
             <div class="Header">
-                <h2 class="Title">
-                    Low costs for minting your own <span class="Amazing-text">NFT collection</span>
+                <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
+                    Low costs for minting your own <span class="Amazing--green">NFT collection</span>
                 </h2>
-                <p class="Desc">
+                <p class="max-w-[85vw] text-1xl my-4">
                     The cost of minting NFTs on RareWeave depend on the storage rates of the Arweave network.
                     Pay once, store forever. Currently the RareWeave market does not charge any additional fees.
                     <span>Please note that this policy is most likely to change in the near future, to discourage spamming
@@ -54,7 +54,7 @@
                             <span class="Amazing-text">Estimate cost of your NFT collection</span>
                         </h4>
                         <div class="Row">
-                            <label>
+                            <label class="Q">
                                 Enter the number of NFTs you want to mint:
                             </label>
                             <span class="Container">
@@ -63,12 +63,12 @@
                             </span>
                         </div>
                         <div class="Row">
-                            <label>
+                            <label class="Q">
                                 Enter the average size of the NFTs:
                             </label>
                             <span class="Container">
                                 <input class="Input" type="number" name="size" ref="size" placeholder="0" min="0.01"
-                                    max="10000" step="0.01" required />
+                                    max="10000" step="0.01" required style="width:0px" />
                                 <select name="sizeUnit" ref="sizeUnit">
                                     <option value="KB">KB</option>
                                     <option value="MB">MB</option>
@@ -81,8 +81,8 @@
                             <button type="submit" class="Button --primary" @click="handleSubmit">
                                 Calculate
                             </button>
-                            Estimate: {{ collectionSizeInBytes.value }} ${{ collectionPrice > 0.01 ?
-                                collectionPrice.toFixed(2) : collectionPrice.toFixed(7) }}
+                            Estimate: {{ collectionSizeInBytes.value }}
+                            ${{ collectionPrice.toFixed(collectionPrice > 0.01 ? 2 : 7) }}
                         </div>
                     </form>
                 </div>
@@ -204,20 +204,11 @@ onMounted(async () => {
         justify-content: flex-start;
     }
 
-    /* .Title {
-        color: rgba(251,250,255,1);
-        text-align: center;
-        white-space: nowrap;
-        width: min-content;
-        height: auto;
-        margin: 0;
-        padding: 0;font-size: 24pt;
-        font-weight: 600;
-    } */
-
     .Desc {
         font-size: 14pt;
         margin: 1rem 0;
+
+        @apply my-4;
     }
 
     .Tiers {
@@ -414,6 +405,7 @@ onMounted(async () => {
     .Row {
         position: relative;
         display: flex;
+        flex-wrap: wrap;
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
@@ -428,10 +420,17 @@ onMounted(async () => {
         align-items: center;
     }
 
+    .Q {
+        position: relative;
+        flex: 1 1 0px;
+        display: flex;
+
+    }
+
     .Container {
         position: relative;
         display: flex;
-        flex: 0 0 168px;
+        flex: 0 0 128px;
         border-radius: 4px;
         overflow: hidden;
     }

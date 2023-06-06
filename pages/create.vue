@@ -88,42 +88,27 @@
   </div>
 </template>
 <script setup>
-import Arweave from "arweave";
-import ArDB from "ardb";
 import { DeployPlugin } from "warp-contracts-plugin-deploy";
 import { Buffer } from "buffer";
-import Account from "arweave-account/src/index";
-const { Warp, Contract, WarpFactory } = await import("warp-contracts");
-let accountToolsState = useState(
-  "accountTools",
-  () =>
-    new Account({
-      cacheIsActivated: true,
-      cacheSize: 100,
-      cacheTime: 60,
-    })
-);
-const accountTools = accountToolsState.value;
-let account = useState("account", () => null);
-let walletState = useState("wallet", () => null);
-let wallet = walletState.value;
-let title = ref("");
-let uploading = ref(false);
-let description = ref("");
-let price = ref(0.5);
-let royalty = ref(3);
-let forSale = ref(true);
-let collectionId = ref("");
-const arweaveState = useState("arweave", () => {
-  Arweave.init({
-    host: "prophet.rareweave.store",
-    port: 443,
-    protocol: "https",
-    timeout: 60_000,
-    logging: false,
-  });
-});
-const arweave = arweaveState.value;
+const { WarpFactory } = await import("warp-contracts");
+import { useWallet, useAccount, useArweave } from "../composables/useState";
+import setArweave from "../plugins/arweave";
+
+const arweave = useArweave().value;
+if (!arweave)
+    setArweave();
+
+const account = useAccount();
+const wallet = useWallet();
+
+const title = ref("");
+const uploading = ref(false);
+const description = ref("");
+const price = ref(0.5);
+const royalty = ref(3);
+const forSale = ref(true);
+const collectionId = ref("");
+
 const warp = WarpFactory.forMainnet(
   {
     inMemory: true,
@@ -133,14 +118,16 @@ const warp = WarpFactory.forMainnet(
   false,
   arweave
 ).use(new DeployPlugin());
+
 warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`;
 warp.interactionsLoader.delegate.baseUrl = `https://prophet.rareweave.store`;
 // console.log(warp.deploy())
-const ardbState = useState("ardb", () => new ArDB(arweave.value));
-let ardb = ardbState.value;
-let imageObjectUrl = ref(null);
-let fileMeta = ref({});
+
+const imageObjectUrl = ref(null);
+const fileMeta = ref({});
+
 let nftContent = new ArrayBuffer(0);
+
 async function uploadNftContent(e) {
   if (e.target.files && e.target.files[0]) {
     if (imageObjectUrl.value) {
