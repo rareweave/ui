@@ -29,7 +29,7 @@
                 <div class="Hero">
                     <div class="Imagewrapper">
                         <NuxtLink class="randomNFT" :to="'/nft/' + randomNft?.contractTxId">
-        <img :src="'https://prophet.rareweave.store/_ipx/width_384,f_webp/https://arweave.net/' + randomNft?.contractTxId"
+        <img :src="'https://prophet.rareweave.store/_ipx/width_384,f_webp/https://prophet.rareweave.store/' + randomNft?.contractTxId"
           class="max-w-sm rounded-md shadow-2xl " />
       </NuxtLink>
                     </div>
@@ -69,7 +69,7 @@
                         <NuxtLink :to="`nft/${nft.contractTxId}`" class="Link">
                             <div class="NFT__imagewrapper">
                                 <img v-if="nft.state?.contentType?.startsWith('image')" class="NFT__image"
-                                    :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${nft.contractTxId}`"
+                                    :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://prophet.rareweave.store/${nft.contractTxId}`"
                                     :alt="nft.state.name || 'NFT'" @load="imgHasBeenLoaded" />
                                 <video v-else-if="nft.state?.contentType?.startsWith('video')" autoplay muted controls loop
                                     class="NFT__video">
