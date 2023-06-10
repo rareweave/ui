@@ -1,7 +1,7 @@
 <template>
     <div class="_Section Qa flex flex-col items-start justify-center w-full flex-1 mx-auto py-10">
-        <div class="Layout flex flex-col justify-center items-center h-full mx-auto mt-32">
-            <div class="Header">
+        <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
+            <div>
                 <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
                     Frequently Asked <span class="Amazing-text">Questions</span>
                 </h2>
@@ -11,10 +11,10 @@
             </div>
             <div class="flex flex-col items-center justify-center w-full flex-1 mx-auto mt-20">
                 <div v-for="question in questions" :key="question.q" class="flex flex-col bg-[#111720] rounded-lg py-4 px-8 mt-4">
-                    <h4 class="Question-title">
+                    <h4>
                         {{ question.q }}
                     </h4>
-                    <p class="Question-desc">
+                    <p>
                         {{ question.a }}
                     </p>
                 </div>
@@ -43,18 +43,5 @@ const questions = [
 ];
 </script>
 <style scoped>
-.Layout {
-    /* align-items: flex-start; */
-}
-
-.Question {
-    display: flex;
-    flex-direction: column;
-    background: rgba(17, 23, 32, 1);
-    border-radius: 1rem;
-    margin: 1rem 0 0;
-    padding: 1rem 2rem;
-
-}
 
 </style>

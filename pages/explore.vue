@@ -1,5 +1,5 @@
 <template>
-  <div class="Select">
+  <div class="Select flex justify-start items-center max-w-[1740px] min-h-12 mx-auto overflow-hidden">
     <div class="Spacer"></div>
     <div class="Topbar">
       <div class="Forsale">
@@ -331,7 +331,7 @@ function getNFTs(options = {}) {
     while (true) {
       const res = await get100(nfts.value.length||0);
       nfts.value = filterIfNeeded([...nfts.value, ...res.result]);
-      if (res.result.length % 100 !== 0)
+      if (res.result.length !== 100)
         break;
     }
   };
@@ -372,16 +372,8 @@ definePageMeta({
 
 <style scoped>
 .Select {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
   width: calc((100%) - (var(--page-spacing) * 2));
-  height: 48px;
   color: var(--text-primary);
-  overflow: hidden;
-  max-width: var(--page-max-width);
-  margin: 0 auto;
 }
 
 .Spacer {

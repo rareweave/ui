@@ -1,6 +1,6 @@
 <template>
     <div class="_Section Highlights flex flex-col items-center justify-center w-full flex-1 mx-auto py-10">
-        <div class="Layout flex flex-col justify-center items-center h-full mx-auto mt-32">
+        <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
             <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
                 Highlighted
             </h2>
@@ -133,31 +133,5 @@ const isLoading = useIsLoading();
         margin: 0 auto 48px;
         background: var(--bg-secondary);
         overflow: hidden;
-    }
-    
-    .Imagewrapper {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        /* border-radius: 1rem 1rem 0 0; */
-    }
-
-    .Image,
-    .Video {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        max-height: 306px;
-        object-fit: cover;
-        object-position: center;
     }
 </style>

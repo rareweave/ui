@@ -1,7 +1,7 @@
 <template>
     <div class="_Section Pricing flex flex-col items-center justify-center w-full flex-1 mx-auto py-10">
-        <div class="Layout flex flex-col justify-center items-center h-full mx-auto mt-32">
-            <div class="Header">
+        <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
+            <div>
                 <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
                     Low costs for minting your own <span class="Amazing--green">NFT collection</span>
                 </h2>

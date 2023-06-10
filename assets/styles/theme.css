@@ -57,9 +57,9 @@ p {
     font-family: var(--font-secondary) !important;
 }
 
-.Layout {
+/* .Layout {
     width: calc((100%) - var(--page-spacing) * 2);
-}
+} */
 
 .Title,
 .Desc {
@@ -164,6 +164,14 @@ h2.Title {
 
 .Amazing--red {
     background: linear-gradient(117deg, rgba(255, 8, 132, 0.932), rgba(245, 119, 2, 0.932));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: var(--title-weight);
+}
+
+.Amazing--purple {
+    background: linear-gradient(117deg, rgba(122, 5, 158, 0.932), rgba(3, 126, 241, 0.932));
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

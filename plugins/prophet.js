@@ -1,13 +1,13 @@
-import { useIsLoading  } from "../composables/useState";
+import { useIsLoading, useIsError } from "../composables/useState";
 
 export default async function Api(route, options = {}) {
     const config = {
         protocol: "https",
         host: "prophet.rareweave.store",
         allowed : {
-            info: "info",
-            nfts: "nfts",
-            collections: "collections",
+            "info": "info",
+            "nfts": "nfts",
+            "collections": "collections",
             "contract-interactions": "contract-interactions/",
         }
     };
@@ -18,6 +18,7 @@ export default async function Api(route, options = {}) {
     const endpoint = config.allowed[route];
 
     const isLoading = useIsLoading();
+    const isError = useIsError();
 
     return new Promise(resolve => {
         isLoading.value[route] = true;
@@ -60,6 +61,7 @@ export default async function Api(route, options = {}) {
             })
             .catch(err => {
                 console.log(err);
+                isError.value[route] = true;
                 resolve({ result: [] });
             })
             .finally(() => {

@@ -1,6 +1,6 @@
 <template>
     <div class="_Section Howto flex flex-col items-center justify-center w-full flex-1 mx-auto py-10" id="howto">
-        <div class="Layout flex flex-col justify-center items-center h-full mx-auto mt-32">
+        <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
             <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
                 Create and Sell
             </h2>
@@ -17,7 +17,7 @@
                     <p class="mb-4">
                         {{ step.description }}
                     </p>
-                    <NuxtLink class="Amazing--button btn btn-sm mt-auto" v-if="step.button" :to="step.button.link">
+                    <NuxtLink class="btn btn-sm mt-auto Amazing--button" v-if="step.button" :to="step.button.link">
                         {{ step.button.title }}
                     </NuxtLink>
                 </div>

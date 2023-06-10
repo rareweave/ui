@@ -1,5 +1,5 @@
 <template>
-  <div class="Main">
+  <div class=" h-100 flex-column justify-start align-center mx-auto">
     <Centerfold />
     <Pricing />
     <Collections />
@@ -18,6 +18,7 @@ import Howto from '../components/home/Howto.vue';
 import Pricing from '../components/home/Pricing.vue';
 import Qa from '../components/home/Qa.vue';
 import Footer from '../components/Footer.vue';
+
 onMounted(() => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -42,16 +43,3 @@ definePageMeta({
   layout: "without-auth"
 });
 </script>
-
-<style scoped>
-.Main {
-  width: 90vw;
-  max-width: var(--page-max-width);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 0 auto;
-}
-</style>
