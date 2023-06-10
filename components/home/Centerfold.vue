@@ -1,5 +1,4 @@
 <template>
-            <div class="Column">
     <div class="flex flex-col items-center justify-start w-full flex-1 mx-auto py-10"
         style="background: radial-gradient(rgba(0,0,0,.75), rgba(0,0,0,.75)), url(/s23-00.jpg); background-position: center;"
     >
