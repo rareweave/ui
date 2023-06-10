@@ -1,7 +1,7 @@
 <template>
   <div class="h-full-navbared w-full flex flex-col items-center justify-center">
     <div class="m-2 rounded mt-6">
-      <img v-if="nftState?.contentType?.startsWith('image')" :src="'https://prophet.rareweave.store/_ipx/width_320,animated,f_webp/https://arweave.net/' +
+      <img v-if="nftState?.contentType?.startsWith('image')" :src="'https://prophet.rareweave.store/_ipx/width_320,animated,f_webp/https://prophet.rareweave.store/' +
         nftId
         " class="inline-flex max-h-[20rem] max-w-20rem" />
       <video v-else-if="nftState?.contentType?.startsWith('video')" autoplay muted loop controls>
@@ -159,7 +159,7 @@
         <h3 class="font-bold text-lg text-center">
           Successfully bought "{{ nftState.name }}"
         </h3>
-        <img v-if="nftState?.contentType?.startsWith('image')" :src="'https://prophet.rareweave.store/_ipx/width_320,animated,f_webp/https://arweave.net/' +
+        <img v-if="nftState?.contentType?.startsWith('image')" :src="'https://prophet.rareweave.store/_ipx/width_320,animated,f_webp/https://prophet.rareweave.store/' +
           nftId
           " class="inline-flex max-h-[20rem] max-w-20rem my-4 purchased" />
         <video v-else-if="nftState?.contentType?.startsWith('video')" autoplay loop muted controls>
@@ -207,7 +207,7 @@ import setArweave from "../../plugins/arweave";
 
 const arweave = useArweave().value;
 if (!arweave)
-    setArweave();
+  setArweave();
 
 const account = useAccount();
 const accountTools = useAccountTools().value;

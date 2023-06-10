@@ -9,5 +9,8 @@ module.exports = {
             'display': ['Oswald'],
             'body': ['"Open Sans"'],
         }
+    },
+    daisyui: {
+        themes: ['dark']
     }
 };
