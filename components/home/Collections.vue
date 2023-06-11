@@ -171,7 +171,6 @@ onMounted(async () => {
         width: 100%;
         height: 100%;
         margin: 0 auto;
-        padding: 1rem 2rem 10rem;
         background: rgba(17, 23, 32, 0.5);
         border-radius: 1.5rem;
         padding-bottom: 2rem;

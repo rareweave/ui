@@ -138,7 +138,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-bottom: 2.5rem;
 }
 
 .Whitepaper:hover {

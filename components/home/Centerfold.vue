@@ -3,8 +3,8 @@
         style="background: radial-gradient(rgba(0,0,0,.75), rgba(0,0,0,.75)), url(/s23-00.jpg); background-position: center; background-size: cover; background-repeat: no-repeat;"
     >
         <div class="relative flex flex-wrap justify-start items-start h-full mt-32">
-            <div class="Column flex-row justify-start align-center w-100">
-                <div class="Header max-w-[600px]">
+            <div class="Column flex-row justify-start align-center w-100 max-w-[600px]">
+                <div class="Header max-w-[85vw]">
                     <h1 class="text-white text-left text-2xl lg:text-5xl font-semibold justify-center text-center">
                         A liquid market on <br />Arweave
                     </h1>
