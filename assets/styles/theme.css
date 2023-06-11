@@ -97,20 +97,32 @@ h2.Title {
     justify-content: center;
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
-    background: var(--bg-dropdown);
-    color: var(--text-primary);
+    background: rgb(129, 249, 179);
+    background: url(./assets/logo-01.png);
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    color: var(--bg-dropdown);
     font-size: 1rem;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
-    margin-right: 1rem;
-    margin-top: .5rem;
+    /* margin-right: 1rem;
+    margin-top: .5rem; */
 }
 
 .Button:hover {
-    background: var(--bg-primary);
-    color: var(--color-primary);
+    background-position: bottom center;
+    /* box-shadow:
+        0px 0px 1px rgba(34, 255, 126, 0.2),
+        1px 0px 2px rgba(34, 255, 133, 0.25),
+        2px 0px 4px rgba(34, 255, 200, 0.2),
+        4px 0px 8px rgba(34, 255, 200, 0.2),
+        8px 0px 16px rgba(34, 255, 200, 0.2),
+        -1px 0px 2px rgba(34, 255, 200, 0.2),
+        -2px 0px 4px rgba(34, 255, 200, 0.2),
+        -4px 0px 8px rgba(34, 255, 200, 0.2),
+        -8px 0px 16px rgba(34, 255, 200, 0.2); */
 }
 
 .Button.--primary {
@@ -177,6 +189,45 @@ h2.Title {
     -webkit-text-fill-color: transparent;
     font-weight: var(--title-weight);
 }
+
+.Amazing--tl {
+    background: url(./assets/logo-01.png);
+    background-repeat: no-repeat;
+    background-position: top left;
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.Amazing--tr {
+    background: url(./assets/logo-01.png);
+    background-repeat: no-repeat;
+    background-position: top right;
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.Amazing--bl {
+    background: url(./assets/logo-01.png);
+    background-repeat: no-repeat;
+    background-position: bottom left;
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.Amazing--br {
+    background: url(./assets/logo-01.png);
+    background-repeat: no-repeat;
+    background-position: bottom right;
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
 
 /* Legacy and new Amazing classes mixed */
 

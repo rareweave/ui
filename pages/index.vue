@@ -1,8 +1,8 @@
 <template>
-  <div class=" h-100 flex-column justify-start align-center mx-auto">
+  <div class="h-100 flex-column justify-start align-center mx-auto">
     <Centerfold />
-    <Pricing />
     <Collections />
+    <Pricing />
     <!-- <Highlights /> -->
     <Howto />
     <!-- <Qa /> -->
@@ -13,10 +13,10 @@
 <script setup>
 import Centerfold from '../components/home/Centerfold.vue';
 import Collections from '../components/home/Collections.vue';
-import Highlights from '../components/home/Highlights.vue';
+// import Highlights from '../components/home/Highlights.vue';
 import Howto from '../components/home/Howto.vue';
 import Pricing from '../components/home/Pricing.vue';
-import Qa from '../components/home/Qa.vue';
+// import Qa from '../components/home/Qa.vue';
 import Footer from '../components/Footer.vue';
 
 onMounted(() => {

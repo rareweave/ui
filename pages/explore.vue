@@ -52,8 +52,8 @@
   <div class="V1__page">
     <div class="Menu">
       <div class="MenuSection">
-        <div class="MenuHeader">
-          <h2>
+        <div class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl">
+          <h2 class=" Amazing--br">
             Exploration
           </h2>
           <span></span>
@@ -71,8 +71,8 @@
         </div>
       </div>
       <div class="MenuSection">
-        <div class="MenuHeader">
-          <h2>
+        <div class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl">
+          <h2 class=" Amazing--br">
             Rarified
           </h2>
           <span></span>
@@ -94,8 +94,8 @@
         </div>
       </div>
       <div class="MenuSection">
-        <div class="MenuHeader">
-          <h2>
+        <div class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl">
+          <h2 class=" Amazing--br">
             Filter
           </h2>
           <span></span>
@@ -136,8 +136,8 @@
         </div>
       </div>
       <div class="MenuSection">
-        <div class="MenuHeader">
-          <h2>
+        <div class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl">
+          <h2 class=" Amazing--br">
             Collection detection
           </h2>
           <span></span>
@@ -160,8 +160,8 @@
         </div>
       </div>
       <div class="MenuSection">
-        <div class="MenuHeader">
-          <h2>
+        <div class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl">
+          <h2 class=" Amazing--br">
             Made with love
           </h2>
           <span></span>
@@ -340,9 +340,12 @@ function getNFTs(options = {}) {
 };
 
 onMounted(async () => {
-  getCollections();
-  getNFTs();
+  if (nfts.value.length === 0)
+    getNFTs();
 
+  if (collections.value.length === 0)
+    getCollections();
+    
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -539,23 +542,6 @@ definePageMeta({
   /* background-color: rgba(17,23,32,1); */
   margin: 0 0 1.375rem;
   padding: 0.5rem 1rem;
-}
-
-.MenuHeader {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: auto;
-  margin: 0;
-  padding: .375rem .75rem;
-  background: linear-gradient(93deg, rgba(216, 221, 232, 1), rgb(187, 183, 176));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 900;
-  font-size: 15pt;
 }
 
 .MenuOptions {

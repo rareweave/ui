@@ -1,11 +1,11 @@
 <template>
-    <div class="_Section Collections flex flex-col items-center justify-center w-full flex-1 mx-auto py-10">
-        <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
-            <div class="Header">
-                <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold Amazing--red">
+    <div class="flex flex-col align-start justify-start w-full flex-1 mx-auto py-10 w-[85vw] max-w-[1740px]">
+        <div class="flex flex-col justify-center items-center h-full mx-0 mt-32">
+            <div class="relative flex flex-col justify-evenly items-start w-full h-full my-16 mx-auto">
+                <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold Amazing--red">
                     Top collections
                 </h2>
-                <p class="Desc">
+                <p class="text-1xl text-start my-4">
                     Explore the most popular collections on the RareWeave market.
                 </p>
             </div>
@@ -92,98 +92,76 @@
 <script setup>
 import Api from '../../plugins/prophet';
 import initArweave from '../../plugins/arweave';
-import { useNfts, useIsLoading, useArweave } from '../../composables/useState';
+import { useNfts, useIsLoading,  useIsError, useArweave } from '../../composables/useState';
 
 const nfts = useNfts(),
 isLoading = useIsLoading(),
-arweave = useArweave();
+isError = useIsError(),
+arweave = useArweave().value;
 
 const children = ref([]), // any nft that is a child of a collection
 rare = ref([]);
 
 onMounted(async () => {
-    if (!arweave.value) 
-        initArweave();
+    if (!arweave) initArweave();
 
     const f = () => {
-        Api(`collections`)
+        Api(`nfts`)
             .then(res => {
-                const limit = 10;
-                const nftIds = nfts.value.result.map(nft => nft.contractTxId);
-                    
-                res.result
-                    .filter((c, i) => c.state.name.length > 0 && c.state.name !== undefined && c.state.name !== ' ')
-                    .filter((c, i) => i < limit)
-                    .forEach(async c => {
-                        c.state.items.forEach(id => {
-                            if (nftIds.includes(id))
-                            children.value.push(nfts.value.result.filter(nft => nft.contractTxId === id));
-                        });
-                        c.nfts = c.state.items.filter(id => nftIds.includes(id));
-                        c.count = c.nfts.length;
-                        c.forSaleCount = c.state.items.filter(id => nftIds.includes(id)).filter(id => nfts.value.result.find(nft => nft.contractTxId === id).state.forSale === true).length;
-                        c.volume = 0;
-                        c.nfts = await Promise.all(c.nfts
-                            .map(id => nfts.value.result.find(nft => nft.contractTxId === id))
-                            .map(async nft => {
-                                const res = await Api(`contract-interactions`, {
-                                    action: `finalize-buy`, 
-                                    contract: nft.contractTxId 
-                                });
-                                const result = await res.result;
-                                const n = result.length > 0 ? Number(res.result.reduce((a, b) => a.block.height > b.block.height ? a : b).quantity.winston) : 0;
-                                nft.salesHistory = result;
-                                nft.lastSalePrice = n;
-                                c.volume += n;
-                                return nft;
-                            }));
-                        c.totalprice = c.count > 0 && c.nfts.filter(nft => nft.state.price != 0).length > 0 ? Number(c.nfts.filter(nft => nft.state.price != 0).reduce((a, b) => Number(a) + Number(b.state.price), 0)) : 0;
-                        c.floorprice = c.count > 0 && c.nfts.filter(nft => nft.state.price != 0).length > 0 ? Number(c.nfts.filter(nft => nft.state.price != 0).reduce((a, b) => Number(a.state.price) < Number(b.state.price) ? a : b).state.price) : 0;
-                        c.percentage_change_24h = 0.0; // todo
-                        c.percentage_change_7d = 0.0; // todo
-                        // console.log(c);
-                        if (c.count > 0)
-                            rare.value.push(c);
-                    });
+                nfts.value = res;
             })
-            .catch(err => {
-                console.log(err);
-            });
-    };
-
-    const checkIfAvailable = () => {
-        if (nfts.value?.result?.length > 0)
-            f();
-        else
-            setTimeout(() => {
-                checkIfAvailable();
-            }, 300);
-    };
-
-    checkIfAvailable();
+            .then(() => {
+                Api(`collections`)
+                    .then(res => {
+                        const limit = 10;
+                        const nftIds = nfts.value.result.map(nft => nft.contractTxId);
+                            
+                        res.result
+                            .filter((c, i) => c.state.name.length > 0 && c.state.name !== undefined && c.state.name !== ' ')
+                            .filter((c, i) => i < limit)
+                            .forEach(async c => {
+                                c.state.items.forEach(id => {
+                                    if (nftIds.includes(id))
+                                    children.value.push(nfts.value.result.filter(nft => nft.contractTxId === id));
+                                });
+                                c.nfts = c.state.items.filter(id => nftIds.includes(id));
+                                c.count = c.nfts.length;
+                                c.forSaleCount = c.state.items.filter(id => nftIds.includes(id)).filter(id => nfts.value.result.find(nft => nft.contractTxId === id).state.forSale === true).length;
+                                c.volume = 0;
+                                c.nfts = await Promise.all(c.nfts
+                                    .map(id => nfts.value.result.find(nft => nft.contractTxId === id))
+                                    .map(async nft => {
+                                        const res = await Api(`contract-interactions`, {
+                                            action: `finalize-buy`, 
+                                            contract: nft.contractTxId 
+                                        });
+                                        const result = await res.result;
+                                        const n = result.length > 0 ? Number(res.result.reduce((a, b) => a.block.height > b.block.height ? a : b).quantity.winston) : 0;
+                                        nft.salesHistory = result;
+                                        nft.lastSalePrice = n;
+                                        c.volume += n;
+                                        return nft;
+                                    }));
+                                c.totalprice = c.count > 0 && c.nfts.filter(nft => nft.state.price != 0).length > 0 ? Number(c.nfts.filter(nft => nft.state.price != 0).reduce((a, b) => Number(a) + Number(b.state.price), 0)) : 0;
+                                c.floorprice = c.count > 0 && c.nfts.filter(nft => nft.state.price != 0).length > 0 ? Number(c.nfts.filter(nft => nft.state.price != 0).reduce((a, b) => Number(a.state.price) < Number(b.state.price) ? a : b).state.price) : 0;
+                                c.percentage_change_24h = 0.0; // todo
+                                c.percentage_change_7d = 0.0; // todo
+                                // console.log(c);
+                                if (c.count > 0)
+                                    rare.value.push(c);
+                            });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+                })    
+            };
+    
+    f();
 });
 </script>
 
-<style scoped>
-    .Header {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        margin: 0 auto 48px;
-        padding: 0;
-    }
-
-    .Desc {
-        font-size: 12pt;
-        font-weight: 400;
-        text-align: center;
-        margin: .5rem 0;
-    }
-    
+<style scoped>    
     .Rarified {
         position: relative;
         display: flex;
@@ -195,7 +173,7 @@ onMounted(async () => {
         margin: 0 auto;
         padding: 1rem 2rem 10rem;
         background: rgba(17, 23, 32, 0.5);
-        border-radius: 3.75rem;
+        border-radius: 1.5rem;
         padding-bottom: 2rem;
     }
 
@@ -213,6 +191,42 @@ onMounted(async () => {
         padding: 12px 38px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
+
+@media only screen and (max-width: 1440px) {
+    .Collection {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: repeat(auto-fill, 1fr);
+        grid-template-areas: 
+            "name floorprice sweep"
+            "percentage_change_24h percentage_change_7d percentage_change_7d";
+    }        
+}
+
+@media only screen and (max-width: 768px) {
+    .Collection {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(auto-fill, 1fr);
+        grid-template-areas: 
+            "name floorprice"
+            "sweep percentage_change_24h"
+            "percentage_change_7d percentage_change_7d";
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .Collection {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(auto-fill, 1fr);
+        grid-template-areas: 
+            "name"
+            "floorprice"
+            "sweep"
+            "percentage_change_24h"
+            "percentage_change_7d";
+    }
+}
+
+
 
     .Collection:hover {
         background: rgba(17, 23, 32, 0.5);

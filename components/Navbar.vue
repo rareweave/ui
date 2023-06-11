@@ -2,7 +2,7 @@
     <div class="Nav">
         <div class="View">
             <div class="Leftside">
-                <NuxtLink  class="Logo Amazing--purple" to="/">
+                <NuxtLink  class="Logo Amazing--purpl" to="/">
                     RareWeave
                 </NuxtLink>
             </div>
@@ -183,6 +183,9 @@ const setShow = (k, v) => {
     margin: .25rem .5rem;
     /* background: rgba(137,255,183,1);
     background: linear-gradient(175deg, rgba(137,255,183,1), rgba(137,255,183,1), rgb(12 176 255)); */
+    background: url('./assets/logo-01.png');
+    background-size: 100%;
+    background-position: bottom right;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     -webkit-background-clip: text;
