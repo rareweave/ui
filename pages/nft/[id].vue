@@ -107,41 +107,38 @@
         'text-md': true,
         'btn-disabled': isSomeoneElseBuying,
       }">Transfer</label>
-      <label v-else-if="account && account.addr && nftState.forSale" for="buy-modal" :class="{
-        btn: true,
-        'amazing-button': true,
-        'rounded-md': true,
-        'w-full': true,
-        'my-2': true,
-        'text-lg': true,
-        'btn-disabled': isSomeoneElseBuying,
-      }">
-        <span>
-          Buy
-        </span>
+
+      <label v-else-if="account && account.addr && nftState.forSale" for="buy-modal">
+        <amazing-button non-btn="true" :class="{
+          'btn': true,
+          'btn-lg': true,
+          'w-full': true,
+          'btn-disabled': isSomeoneElseBuying
+        }">Buy</amazing-button>
       </label>
+
       <!-- Put this part before </body> tag -->
     </div>
     <input type="checkbox" id="buy-modal" class="modal-toggle" :checked="false" />
     <div class="modal">
-      <div class="modal-box relative flex flex-col" v-if="buyStatus != 3">
+      <div class="modal-box relative flex flex-col bg-[rgba(12,12,12,0.8)] backdrop-blur-sm " v-if="buyStatus != 3">
         <label for="buy-modal" class="btn btn-sm absolute right-2 top-2" v-if="buyStatus == 0 || buyStatus == 3">✕</label>
         <h3 class="font-bold text-lg text-center">Buy "{{ nftState.name }}"</h3>
         <ul class="steps steps-vertical mt-4 ml-4">
           <li class="step step-primary">
-            <button @click="payRoyalty" v-if="!payingRoyalty && !isBuying" class="btn amazing-button2 rounded-lg btn-sm">
+            <awesome-button @click="payRoyalty" v-if="!payingRoyalty && !isBuying">
               Pay royalty ({{ nftPrice * (nftRoyalty / 100) }} AR)
-            </button>
+            </awesome-button>
             <span class="text-lg" v-else-if="isBuying">Paid royalty</span>
             <span class="text-lg" v-else>Paying royalty... Don't close this tab</span>
           </li>
           <li :class="{ step: true, 'step-primary': isBuying }">
 
-            <button :disabled="!isBuying" v-if="!isSomeoneElseBuying && buyStatus != 2"
-              class="btn btn-lg py-3 amazing-button rounded-lg min-h-0 h-auto" @click="finalizeBuy">
-              <span class="relative w-full inline-flex items-center justify-center h-full bg-[rgb(12,12,12)] rounded-md ">
-                Finalize buy ({{ nftPrice }} AR)</span>
-            </button>
+            <amazing-button class="text-sm" :disabled="!isBuying" v-if="!isSomeoneElseBuying && buyStatus != 2"
+              @click="finalizeBuy">
+
+              Finalize buy ({{ nftPrice }} AR)
+            </amazing-button>
             <span v-else-if="buyStatus == 2" class="text-lg">Finalizing buy...
             </span>
             <button v-else class="btn btn-error btn-outline rounded-lg btn-sm">
@@ -211,7 +208,6 @@ if (!arweave)
 
 const account = useAccount();
 const accountTools = useAccountTools().value;
-
 let height = ref((await $fetch("https://prophet.rareweave.store/info")).height);
 
 const warp = WarpFactory.forMainnet(
@@ -247,10 +243,11 @@ fetch(`https://prophet.rareweave.store/index?id=` + nftId);
 let nftStateOrig = ref((await nftContract.readState()).cachedValue.state);
 let transferModalOpened = ref(false);
 let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig.value)));
+
 let isBuying = computed(
   () =>
     nftState.value.reservationTxId &&
-    height.value - nftState.value.reservationBlockHeight < 12 &&
+    height.value - nftState.value.reservationBlockHeight < 13 &&
     nftState.value.reserver == account.value?.addr
 );
 let isSomeoneElseBuying = computed(
