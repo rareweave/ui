@@ -2,78 +2,78 @@ export const Rows = [
     [
         [
             {
-                title: 'some title',
-                desc: 'A description of the NFT here..',
-                price: 0,
+                title: 'ARGONAUT#0001',
+                minter: 'Elon#HP05Uk',
+                price: 2,
                 img: '/img/examples/4.webp',
-                link: ''
+                link: '/nft/HIufcajDbKEbQIbvORswimsuwAhz4_QaG5-a-JwuSBo'
             },
             {
-                title: 'some title',
-                desc: 'A description of the NFT here..',
-                price: 0,
+                title: 'ARnimals#001',
+                minter: 'Elon#HP05Uk',
+                price: 1.5,
                 img: '/img/examples/1.webp',
-                link: ''
+                link: '/nft/DY_F0LXz26wJaW7_fQhxzw2XlRreCpFy8o3gydoSoZQ'
             },
             {
-                title: 'some title',
-                desc: 'A description of the NFT here..',
-                price: 0,
+                title: 'ARnimals#002',
+                minter: 'Elon#HP05Uk',
+                price: 1,
                 img: '/img/examples/5.webp',
-                link: ''
+                link: '/nft/2Ej7Gyl-GZQjTqvyeAidoP9QSrMqlSjQRLf92qEUkJw'
             },
             {
-                title: 'some title',
-                desc: 'A description of the NFT here..',
+                title: 'ARGONAUT#0002',
+                minter: 'Elon#HP05Uk',
                 price: 0,
                 img: '/img/examples/3.webp',
-                link: ''
+                link: '/nft/FmVjO95GIzdjozBuT491pQVz9S8PK79xE5BQ7vgc4mA'
             },
             {
-                title: 'some title',
-                desc: 'A description of the NFT here..',
+                title: 'ARnimals#004',
+                minter: 'Elon#HP05Uk',
                 price: 0,
                 img: '/img/examples/0.webp',
-                link: ''
+                link: '/nft/ZpCmO0X9Gn0SeXlbG1RZ5eIuZ17kUQGPb_DvsAOFnsc'
             }
         ]
     ],
     [
         [
             {
-                title: 'some title',
-                desc: 'A description of the NFT here..',
-                price: 0,
+                title: 'The Seige of Waterdeep - Part 2',
+                minter: 'puremattness#VdiybQ',
+                price: 13,
                 img: '/img/examples/8.webp',
-                link: ''
+                link: '/nft/fahRhiZBiYS2RKNqBUanLEKU4ecGCJZJ3hTW6LmKArc'
             },
             {
-                title: 'some title',
-                desc: 'A description of the NFT here..',
+                title: 'chief nik',
+                minter: 'aE2VV...5EA0g',
                 price: 0,
                 img: '/img/examples/9.webp',
-                link: ''
+                link: '/nft/LHDOwCPnPkgjOlRHXxUQbN9ULE-PkDsK6gPIvyWNhe4'
             },
             {
-                title: 'some title',
-                desc: 'A description of the NFT here..',
-                price: 0,
+                title: 'arweavechixin',
+                minter: 'W7FS9...VxXX0',
+                price: 5,
                 img: '/img/examples/10.webp',
-                link: ''
+                link: '/nft/fBYk0PmqPsTG3iWYPlqwIlIxW9J16kRZlr7p0mB6__c'
             },
             {
-                title: 'some title',
-                desc: 'A description of the NFT here..',
-                price: 0,
+                title: 'Incantation',
+                minter: 'puremattness#VdiybQ',
+                price: 33,
                 img: '/img/examples/11.webp',
-                link: ''
+                link: '/nft/W7masiK6q9CX1f-UYpW0cpPG9A8u1bzjnKJdd6i9bLU'
             },
             {
-                title: 'some title',
-                desc: 'A description of the NFT here..',
+                title: 'Kaleidoscopic flower',
+                minter: 'Elon#HP05Uk',
                 price: 0,
                 img: '/img/examples/12.webp',
-                link: ''
+                link: '/nft/EW9abOUd6O8c_feB4fVY1_LSuiBQOc_12bslngStVrw'
             }
         ]
     ]

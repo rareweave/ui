@@ -53,7 +53,7 @@
                                     {{item.title}}
                                 </h4>
                                 <p>
-                                    {{item.desc}}
+                                    {{item.minter}}
                                 </p>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                                     {{item.title}}
                                 </h4>
                                 <p>
-                                    {{item.desc}}
+                                    {{item.minter}}
                                 </p>
                             </div>
                         </div>
