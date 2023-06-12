@@ -17,7 +17,7 @@
                     <p class="mb-4">
                         {{ step.description }}
                     </p>
-                    <NuxtLink class="Amazing--button btn btn-md mt-auto" v-if="step.button" :to="step.button.link">
+                    <NuxtLink class="btn btn-sm mt-auto Amazing--button" v-if="step.button" :to="step.button.link">
                         {{ step.button.title }}
                     </NuxtLink>
                 </div>
