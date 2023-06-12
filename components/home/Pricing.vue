@@ -1,8 +1,8 @@
 <template>
-    <div class="_Section Pricing flex flex-col items-center justify-center w-full flex-1 mx-auto py-10">
-        <div class="Layout flex flex-col justify-center items-center h-full mx-auto mt-32">
-            <div class="Header">
-                <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
+    <div class="relative flex flex-col justify-center items-center w-full max-w-[var(--page-max-width)] mx-auto py-10">
+        <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
+            <div class="relative w-full h-full mt-16 max-w-[85vw] mx-auto">
+                <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold">
                     Low costs for minting your own <span class="Amazing--green">NFT collection</span>
                 </h2>
                 <p class="max-w-[85vw] text-1xl my-4">
@@ -34,40 +34,40 @@
                     </div>
                 </div>
             </div>
-            <div class="Calculator --observe">
-                <p class="Intro">
+            <div class="relative flex flex-col justify-center items-center w-[calc(100% - var(--page-spacing) * 2)] h-full my-16 mx-auto max-w-[85vw] --observe">
+                <p class="my-4">
                     Calculate the cost of minting your own NFT collection.
                 </p>
-                <div class="Content">
-                    <div class="Rate">
-                        <h4 class="Rate__title">
+                <div class="relative flex flex-row flex-wrap justify-between items-center max-w-[820px] rounded-3xl bg-[rgba(17,23,32,1)]">
+                    <div class="relative flex flex-col justify-center items-start flex-[0.75_0.75_0px] h-auto m-4 min-w-[286px]">
+                        <h4 class="m-8 text-3xl font-semibold text-white">
                             Arweave ${{ rates.arweave?.usd?.toFixed(2) }}
                         </h4>
-                        <p class="Rate__desc">
+                        <p class="m-8 mt-2">
                             All cost are depending on the arweave network.
                             Enter the number of NFTs you want to mint and the average size of each NFT and click on
                             calculate.
                         </p>
                     </div>
-                    <form class="Form" autocomplete="off" @submit.stop.prevent="prevent">
-                        <h4 class="Form__title">
-                            <span class="Amazing-text">Estimate cost of your NFT collection</span>
+                    <form class="relative flex flex-col justify-evenly items-stretch flex-1 h-auto min-h-[168px] my-8 border-l-2 border-solid border-[rgba(255,255,255,0.125)]" autocomplete="off" @submit.stop.prevent="prevent">
+                        <h4 class="m-8 text-2xl">
+                            <span class="Amazing-text">Estimate collection cost</span>
                         </h4>
                         <div class="Row">
-                            <label class="Q">
-                                Enter the number of NFTs you want to mint:
+                            <label class="relative flex-1 flex">
+                                The number of NFTs in the collection:
                             </label>
-                            <span class="Container">
-                                <input class="Input" type="number" name="quantity" ref="quantity" placeholder="0" min="0"
+                            <span class="relative flex flex-[0_0_128px] rounded overflow-hidden">
+                                <input class="relative flex flex-1 text-white px-1" type="number" name="quantity" ref="quantity" placeholder="0" min="0"
                                     max="10000" required />
                             </span>
                         </div>
                         <div class="Row">
-                            <label class="Q">
-                                Enter the average size of the NFTs:
+                            <label class="relative flex-1 flex">
+                                The average size of a NFT:
                             </label>
-                            <span class="Container">
-                                <input class="Input" type="number" name="size" ref="size" placeholder="0" min="0.01"
+                            <span class="relative flex flex-[0_0_128px] rounded overflow-hidden">
+                                <input class="relative flex flex-1 text-white px-1" type="number" name="size" ref="size" placeholder="0" min="0.01"
                                     max="10000" step="0.01" required style="width:0px" />
                                 <select name="sizeUnit" ref="sizeUnit">
                                     <option value="KB">KB</option>
@@ -187,30 +187,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-    .Pricing {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        max-width: var(--page-max-width);
-        height: auto;
-        margin: 0 auto;
-        padding: 0;
-    }
-
-    .Layout {
-        justify-content: flex-start;
-    }
-
-    .Desc {
-        font-size: 14pt;
-        margin: 1rem 0;
-
-        @apply my-4;
-    }
-
     .Tiers {
         position: relative;
         display: flex;
@@ -329,78 +305,6 @@ onMounted(async () => {
         font-weight: 400;
         color: rgba(103,103,118,1);
     }
-
-    .Calculator {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: calc(100% - var(--page-spacing) * 2);
-        height: 100%;
-        margin: 5rem auto 0;
-        padding: 0;
-    }
-
-    .Intro {
-        margin: 1rem 0;
-    }
-
-    .Content {
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 820px;
-        border-radius: 1.5rem;
-        background: rgba(17,23,32,.75);
-
-    }
-
-    .Rate {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        flex: .75 .75 0px;
-        height: auto;
-        margin: 1rem 0;
-        padding: 0;
-    }
-
-    
-    .Rate__title {
-        margin: 1rem 2rem;
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--color-white);
-    }
-
-    .Rate__desc {
-        margin: 1rem 2rem;
-        box-sizing: border-box;
-    }
-
-    .Form {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: stretch;
-        flex: 1 1 0px;
-        height: auto;
-        min-height: 168px;
-        margin: 2rem 0;
-        padding: 0;
-        border-left: 1px solid rgba(255,255,255,0.125);
-    }
-
-    .Form__title {
-        margin: 1rem 2rem;
-    }
     
     .Row {
         position: relative;
@@ -418,28 +322,5 @@ onMounted(async () => {
     .Row:last-child {
         flex: 0 0 96px;
         align-items: center;
-    }
-
-    .Q {
-        position: relative;
-        flex: 1 1 0px;
-        display: flex;
-
-    }
-
-    .Container {
-        position: relative;
-        display: flex;
-        flex: 0 0 128px;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-    
-    .Input {
-        position: relative;
-        display: flex;
-        flex: 1 1 0px;
-        color: var(--color-white);
-        padding: 0 .375rem;
     }
 </style>
