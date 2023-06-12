@@ -1,7 +1,6 @@
 <template>
     <div class="flex flex-col items-center justify-start w-full flex-1 mx-auto py-10"
-        style="background: radial-gradient(rgba(0,0,0,.75), rgba(0,0,0,.75)), url(/s23-00.jpg); background-position: center; background-size: cover; background-repeat: no-repeat;"
-    >
+        style="background: radial-gradient(rgba(0,0,0,.75), rgba(0,0,0,.75)), url(/s23-00.jpg); background-position: center; background-size: cover; background-repeat: no-repeat;">
         <div class="relative flex flex-wrap justify-start items-start h-full mt-32">
             <div class="Column flex-row justify-start align-center w-100 max-w-[600px]">
                 <div class="Header max-w-[85vw]">
@@ -17,7 +16,7 @@
                             Explore NFTs
                         </NuxtLink>
                         <a href="#howto" class="Button">
-                            &gt; learn more
+                            How to mint
                         </a>
                     </div>
                 </div>
@@ -26,80 +25,75 @@
     </div>
     <div class="flex flex-col justify-center items-center h-full mx-auto mt-16 max-w-[85vw]">
         <div class="flex flex-col justify-start align-stretch max-w-[1740px] w-full">
-            <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold mt-16">
+            <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold mt-16 p-2">
                 Explore the <span class="Amazing--br">marketplace</span>
             </h2>
-            <p class="max-w-[85vw] text-1xl my-4">
+            <p class="max-w-[85vw] text-1xl my-4 p-2">
                 In the market you will find our curated collections and the different NFTs that are available for sale.
-                Our powerful filters and sorting methods will help you find the perfect NFT for your collection. 
-                As the marketplace keeps growing, our algorithms will be updated to bring you the best experience possible, while keeping our cost and carbon footprint as low as possible.
+                Our powerful filters and sorting methods will help you find the perfect NFT for your collection.
+                As the marketplace keeps growing, our algorithms will be updated to bring you the best experience possible,
+                while keeping our cost and carbon footprint as low as possible.
             </p>
-            <h4 class="text-white text-2xl mt-16 max-w-[85vw]">
+            <h4 class="text-white text-2xl mt-16 max-w-[85vw] p-2">
                 Pixelated
             </h4>
             <div class="relative w-full h-full">
-                <div class="Row relative mt-8 max-w-[85vw]">
+                <div class="relative flex justify-between h-min transform-style-[preserve-3d] mt-8 max-w-[85vw]">
                     <template v-for="(item, index) in Rows[0][0].slice(0, w)">
-                        <div class="Card mx-2 --observe">
-                            <span class="Picture"
-                                :style="`background-image: radial-gradient(rgba(0,0,0,0), rgba(0,0,0,.25)), url(${item.img}); background-size: cover; background-position: center;`"
-                            >
-                                
-                            </span>
+                        <NuxtLink :to="item.link" class="Card mx-2 --observe">
+                            <span class="relative block w-full h-[82%] bg-cover bg-center bg-no-repeat"
+                                :style="`background-image: radial-gradient(rgba(0,0,0,0), rgba(0,0,0,.25)), url(${item.img}); background-size: cover; background-position: center;`"></span>
                             <div class="absolute right-0 w-full h-min flex flex-col justify-end align-stretch text-start bg-[rgba(17,23,32,1)] p-2"
-                                style="bottom: 0;"
-                            >
+                                style="bottom: 0;">
                                 <h4>
-                                    {{item.title}}
+                                    {{ item.title }}
                                 </h4>
                                 <p>
-                                    {{item.minter}}
+                                    {{ item.minter }}
                                 </p>
                             </div>
-                        </div>
+                        </NuxtLink>
                     </template>
                 </div>
                 <div class="absolute w-full h-min flex justify-between align-center z-1 inset-y-[50%]">
-                    <span class="rounded-full bg-white w-[24px] h-[24px] flex justify-center align-center z-99 Button --primary">
+                    <span
+                        class="rounded-full bg-white w-[24px] h-[24px] flex justify-center align-center z-99 Button --primary">
                         &lt;
                     </span>
-                    <span class="rounded-full bg-white w-[24px] h-[24px] flex justify-center align-cente z-99 Button --primary">
+                    <span
+                        class="rounded-full bg-white w-[24px] h-[24px] flex justify-center align-cente z-99 Button --primary">
                         &gt;
                     </span>
                 </div>
             </div>
-            <h4 class="text-white text-2xl mt-16 max-w-[85vw]">
+            <h4 class="text-white text-2xl mt-16 max-w-[85vw] p-2">
                 Rarified
             </h4>
             <div class="relative w-full h-full">
-                <div class="Row relative mt-8">
+                <div class="relative flex justify-between h-min transform-style-[preserve-3d] mt-8 max-w-[85vw]">
                     <template v-for="(item, index) in Rows[1][0].slice(0, w)">
-                        <div 
-                            class="Card mx-2 --observe"
-                        >
-                            <span class="Picture"
-                                :style="`background-image: radial-gradient(rgba(0,0,0,0), rgba(0,0,0,.25)), url(${item.img}); background-size: cover; background-position: center;`"
-                            >
-                                
-                            </span>
+                        <div class="Card mx-2 --observe">
+                            <span class="relative block w-full h-[82%] bg-cover bg-center bg-no-repeat"
+                                :style="`background-image: radial-gradient(rgba(0,0,0,0), rgba(0,0,0,.25)), url(${item.img}); background-size: cover; background-position: center;`"></span>
                             <div class="absolute right-0 w-full h-min flex flex-col justify-end align-stretch text-start bg-[rgba(17,23,32,1)] p-2"
-                                style="bottom: 0;"
-                            >
+                                style="bottom: 0;">
                                 <h4>
-                                    {{item.title}}
+                                    {{ item.title }}
                                 </h4>
                                 <p>
-                                    {{item.minter}}
+                                    {{ item.minter }}
                                 </p>
                             </div>
                         </div>
                     </template>
                 </div>
                 <div class="absolute w-full h-min flex justify-between align-center z-1 inset-y-[50%]">
-                    <span class="rounded-full bg-white w-[24px] h-[24px] flex justify-center align-center z-99 Button --primary">
+                    <span
+                        class="rounded-full bg-white w-[24px] h-[24px] flex justify-center align-center z-99 Button --primary">
                         &lt;
                     </span>
-                    <span class="rounded-full bg-white w-[24px] h-[24px] flex justify-center align-cente z-99 Button --primary">
+                    <span
+                        class="rounded-full bg-white w-[24px] h-[24px] flex justify-center align-cente z-99 Button --primary">
                         &gt;
                     </span>
                 </div>
@@ -118,15 +112,6 @@ window.addEventListener('resize', () => {
 });
 </script>
 <style scoped>
-.Row {
-    position: relative;     
-    display: flex;
-    justify-content: space-between;
-    height: min-content;
-    max-height: 316px;
-    transform-style: preserve-3d;
-}
-
 .Card {
     position: relative;
     flex: 1 1 0px;
@@ -141,15 +126,5 @@ window.addEventListener('resize', () => {
 .Card:hover {
     transform: translateY(-10px);
     transition: transform .25s ease-in-out;
-}
-
-.Picture {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 82%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 }
 </style>
