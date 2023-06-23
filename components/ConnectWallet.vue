@@ -42,6 +42,7 @@ const accountTools = useAccountTools().value;
 const ansAddr = useAnsaddr();
 const spendable = useSpendable();
 const wallet = useWallet();
+const walletState = useState("wallet", () => null)
 
 const props = defineProps(["show"]);
 const show = ref(props.show || false);
@@ -65,7 +66,7 @@ async function connectArweaveApp() {
 
     account.value = await accountTools.get(address);
     ansAddr.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${address}`))?.domain
-    wallet.value = webwallet.namespaces.arweaveWallet;
+    walletState.value = webwallet.namespaces.arweaveWallet;
 
     setSpendable(address);
 };
@@ -86,7 +87,7 @@ async function connectArconnect() {
 
     account.value = await accountTools.get(address);
     ansAddr.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${address}`))?.domain
-    wallet.value = window.arweaveWallet;
+    walletState.value = window.arweaveWallet;
 
     setSpendable(address);
 };

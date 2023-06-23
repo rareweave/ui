@@ -7,7 +7,7 @@ export const useIsLoading = () => useState("isLoading", () => ({}));
 export const useIsError = () => useState("isError", () => ({}));
 
 // User
-export const useWallet = () => useState("wallet", () => null).value;
+export const useWallet = () => useState("wallet", () => null)?.value;
 export const useAccount = () => useState("account", () => null);
 export const useSpendable = () => useState("spendable", () => 0);
 export const useAnsaddr = () => useState("ansaddr", () => null);
