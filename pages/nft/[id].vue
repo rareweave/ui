@@ -107,38 +107,41 @@
         'text-md': true,
         'btn-disabled': isSomeoneElseBuying,
       }">Transfer</label>
-
-      <label v-else-if="account && account.addr && nftState.forSale" for="buy-modal">
-        <amazing-button non-btn="true" :class="{
-          'btn': true,
-          'btn-lg': true,
-          'w-full': true,
-          'btn-disabled': isSomeoneElseBuying
-        }">Buy</amazing-button>
+      <label v-else-if="account && account.addr && nftState.forSale" for="buy-modal" :class="{
+        btn: true,
+        'amazing-button': true,
+        'rounded-md': true,
+        'w-full': true,
+        'my-2': true,
+        'text-lg': true,
+        'btn-disabled': isSomeoneElseBuying,
+      }">
+        <span>
+          Buy
+        </span>
       </label>
-
       <!-- Put this part before </body> tag -->
     </div>
     <input type="checkbox" id="buy-modal" class="modal-toggle" :checked="false" />
     <div class="modal">
-      <div class="modal-box relative flex flex-col bg-[rgba(12,12,12,0.8)] backdrop-blur-sm " v-if="buyStatus != 3">
+      <div class="modal-box relative flex flex-col" v-if="buyStatus != 3">
         <label for="buy-modal" class="btn btn-sm absolute right-2 top-2" v-if="buyStatus == 0 || buyStatus == 3">✕</label>
         <h3 class="font-bold text-lg text-center">Buy "{{ nftState.name }}"</h3>
         <ul class="steps steps-vertical mt-4 ml-4">
           <li class="step step-primary">
-            <awesome-button @click="payRoyalty" v-if="!payingRoyalty && !isBuying">
+            <button @click="payRoyalty" v-if="!payingRoyalty && !isBuying" class="btn amazing-button2 rounded-lg btn-sm">
               Pay royalty ({{ nftPrice * (nftRoyalty / 100) }} AR)
-            </awesome-button>
+            </button>
             <span class="text-lg" v-else-if="isBuying">Paid royalty</span>
             <span class="text-lg" v-else>Paying royalty... Don't close this tab</span>
           </li>
           <li :class="{ step: true, 'step-primary': isBuying }">
 
-            <amazing-button class="text-sm" :disabled="!isBuying" v-if="!isSomeoneElseBuying && buyStatus != 2"
-              @click="finalizeBuy">
-
-              Finalize buy ({{ nftPrice }} AR)
-            </amazing-button>
+            <button :disabled="!isBuying" v-if="!isSomeoneElseBuying && buyStatus != 2"
+              class="btn btn-lg py-3 amazing-button rounded-lg min-h-0 h-auto" @click="finalizeBuy">
+              <span class="relative w-full inline-flex items-center justify-center h-full bg-[rgb(12,12,12)] rounded-md ">
+                Finalize buy ({{ nftPrice }} AR)</span>
+            </button>
             <span v-else-if="buyStatus == 2" class="text-lg">Finalizing buy...
             </span>
             <button v-else class="btn btn-error btn-outline rounded-lg btn-sm">
@@ -198,56 +201,30 @@
   </div>
 </template>
 <script setup>
-const { Warp, Contract, WarpFactory } = await import("warp-contracts");
-import { useAccount, useArweave, useAccountTools } from "../../composables/useState";
+import { useAccount, useArweave, useAccountTools, useWallet } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
 
 const arweave = useArweave().value;
 if (!arweave)
   setArweave();
 
+let wallet = useWallet()
+
 const account = useAccount();
 const accountTools = useAccountTools().value;
+
 let height = ref((await $fetch("https://prophet.rareweave.store/info")).height);
 
-const warp = WarpFactory.forMainnet(
-  {
-    inMemory: true,
-  },
-  false,
-  arweave
-);
 let nftId = useRoute().params.id || useRoute().hash.slice(1);
-let nftContract = account.value
-  ? warp
-    .useGwUrl("https://prophet.rareweave.store/")
-    .contract(nftId)
-    .setEvaluationOptions({
-      remoteStateSyncSource: "https://prophet.rareweave.store/contract",
-      remoteStateSyncEnabled: true,
-      unsafeClient: "allow",
-      waitForConfirmation: false, //we are using anchoring
-    })
-    .connect("use_wallet")
-  : warp.useGwUrl("https://prophet.rareweave.store/").contract(nftId).setEvaluationOptions({
-    remoteStateSyncSource: "https://prophet.rareweave.store/contract",
-    remoteStateSyncEnabled: true,
-    unsafeClient: "allow",
-    waitForConfirmation: false, //we are using anchoring
-  });
-warp.definitionLoader.baseUrl = `https://prophet.rareweave.store`;
-warp.interactionsLoader.delegate.baseUrl = `https://prophet.rareweave.store`;
 
-fetch(`https://prophet.rareweave.store/index?id=` + nftId);
+let nftStateOrig = await fetch(`https://glome.rareweave.store/state/` + nftId).then(res => res.json())
 
-let nftStateOrig = ref((await nftContract.readState()).cachedValue.state);
 let transferModalOpened = ref(false);
-let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig.value)));
-
+let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig)));
 let isBuying = computed(
   () =>
     nftState.value.reservationTxId &&
-    height.value - nftState.value.reservationBlockHeight < 13 &&
+    height.value - nftState.value.reservationBlockHeight < 12 &&
     nftState.value.reserver == account.value?.addr
 );
 let isSomeoneElseBuying = computed(
@@ -287,16 +264,16 @@ let changed = computed(() => {
   let ch =
     nftPrice.value !=
     parseFloat(
-      parseFloat(arweave.ar.winstonToAr(nftStateOrig.value.price)).toFixed(3)
+      parseFloat(arweave.ar.winstonToAr(nftStateOrig.price)).toFixed(3)
     ) ||
-    nftStateOrig.value.description != nftState.value.description ||
-    nftStateOrig.value.forSale != nftState.value.forSale;
+    nftStateOrig.description != nftState.description ||
+    nftStateOrig.forSale != nftState.forSale;
   return ch;
 });
 let updaterInterval = setInterval(async () => {
   height.value = (await $fetch("https://prophet.rareweave.store/info")).height;
   if (!changed.value) {
-    nftStateOrig.value = (await nftContract.readState()).cachedValue.state;
+    nftStateOrig.value = await fetch(`https://glome.rareweave.store/state/` + nftId).then(res => res.json())
     if (
       !nftStateOrig.value.reservationTxId &&
       height.value - nftStateOrig.value.reservationBlockHeight < 12 &&
@@ -321,30 +298,51 @@ let updaterInterval = setInterval(async () => {
 onBeforeUnmount(() => clearInterval(updaterInterval));
 
 async function saveChangesToNft() {
-  // let tags = [
-  //     { name: "Contract", value: nftId },
-  //     {
-  //         name: "Input", value: JSON.stringify({
-  //             function: "edit-nft",
-  //             description: nftState.value.description,
-  //             forSale: nftState.value.forSale,
-  //             price: parseInt(arweave.ar.arToWinston(nftPrice)),
+  let tags = [
+    {
+      name: "Contract",
+      value: nftId,
+    },
+    {
+      name: "Input",
+      value: JSON.stringify({
+        function: "edit-nft",
+        description: nftState.value.description,
+        forSale: nftState.value.forSale,
+        price: parseInt(arweave.ar.arToWinston(nftPrice.value)),
+      }),
+    },
+    {
+      name: "App-Name",
+      value: "SmartWeaveAction",
+    },
+    {
+      name: "App-Version",
+      value: "0.3.0",
+    },
+    {
+      name: "Nonce",
+      value: Date.now().toString(),
+    },
+    {
+      name: "SDK",
+      value: "0.3.0",
+    },
+  ];
 
-  //         })
-  //     },
-  //     { name: "App-Name", value: "SmartWeaveAction" },
-  //     { name: "App-Version", value: "0.3.0" },
-  //     { name: "Nonce", value: Date.now().toString() },
-  //     { name: "SDK", value: "0.3.0" }
-  // ]
-  // await wallet.dispatch(await arweave.createTransaction({ tags: encodeTags(tags), data: "Use RareWeave!" }))
-
-  await nftContract.writeInteraction({
-    function: "edit-nft",
-    description: nftState.value.description,
-    forSale: nftState.value.forSale,
-    price: parseInt(arweave.ar.arToWinston(nftPrice.value)),
+  let tx = await arweave.createTransaction({
+    data: "Glome Contract Call",
+    tags: encodeTags(tags),
   });
+
+  try {
+   await wallet.dispatch(tx)
+  }
+  catch (e) {
+    console.log(e)
+    alert("Failed to post the transaction to update your NFT");
+  };
+
   nftStateOrig.value = JSON.parse(
     JSON.stringify({
       ...nftState.value,
@@ -361,17 +359,12 @@ async function saveChangesToNft() {
   );
 }
 
-function encodeTags(tags) {
-  return tags.map((tag) => ({
-    name: btoa(tag.name),
-    value: btoa(tag.value),
-  }));
-}
-
 function buy() { }
 async function payRoyalty() {
+  
   buyStatus.value = 1;
   payingRoyalty.value = true;
+
   let tags = [
     {
       name: "Contract",
@@ -426,6 +419,7 @@ async function payRoyalty() {
     alert("You need to sign the transaction to pay the royalty");
     payRoyalty.value = false;
   };
+  
   try {
     await arweave.transactions.post(tx);
   }
@@ -521,10 +515,48 @@ async function finalizeBuy() {
 }
 
 async function transfer() {
-  await nftContract.writeInteraction({
-    function: "transfer",
-    target: transferRecipient.value,
+  let tags = [
+    {
+      name: "Contract",
+      value: nftId,
+    },
+    {
+      name: "Input",
+      value: JSON.stringify({
+        function: "transfer",
+        target: transferRecipient.value,
+      }),
+    },
+    {
+      name: "App-Name",
+      value: "SmartWeaveAction",
+    },
+    {
+      name: "App-Version",
+      value: "0.3.0",
+    },
+    {
+      name: "Nonce",
+      value: Date.now().toString(),
+    },
+    {
+      name: "SDK",
+      value: "0.3.0",
+    },
+  ];
+
+  let tx = await arweave.createTransaction({
+    data: "Glome Contract Call",
+    tags: encodeTags(tags),
   });
+
+  try {
+   await wallet.dispatch(tx)
+  }
+  catch (e) {
+    alert("Failed to post the transaction to transfer your nft");
+  };
+  
 
   nftState.value.owner = transferRecipient.value;
   nftStateOrig.value = JSON.parse(JSON.stringify(nftState.value));
@@ -534,6 +566,13 @@ async function transfer() {
   transferModalOpened.value = false;
 };
 
+
+function encodeTags(tags) {
+  return tags.map((tag) => ({
+    name: btoa(tag.name),
+    value: btoa(tag.value),
+  }));
+}
 definePageMeta({
   layout: "without-auth",
 });
