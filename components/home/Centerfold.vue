@@ -104,12 +104,14 @@
 <script setup>
 import { Rows } from '~/contents/june23.js';
 const NFTwidth = 316;
+const centerfoldImage = useState(`/centerfold-images/${1 + Math.round(Math.random() * 7)}.jpg`)
 const setN = () => window.innerWidth / NFTwidth > 5 ? 5 : Math.floor(window.innerWidth / NFTwidth);
 const initialN = setN();
 const w = ref(initialN);
 window.addEventListener('resize', () => {
     w.value = setN();
 });
+
 </script>
 <style scoped>
 .Card {
