@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center justify-start w-full flex-1 mx-auto py-10"
-        style="background: radial-gradient(rgba(0,0,0,.75), rgba(0,0,0,.75)), url(/s23-00.jpg); background-position: center; background-size: cover; background-repeat: no-repeat;">
+        style="background: radial-gradient(rgba(0,0,0,.75), rgba(0,0,0,.75)), url(/duck.jpg); background-position: center; background-size: cover; background-repeat: no-repeat;">
         <div class="relative flex flex-wrap justify-start items-start h-full mt-32">
             <div class="Column flex-row justify-start align-center w-100 max-w-[600px]">
                 <div class="Header max-w-[85vw]">
