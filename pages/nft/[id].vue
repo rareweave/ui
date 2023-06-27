@@ -213,7 +213,7 @@ let wallet = useWallet()
 const account = useAccount();
 const accountTools = useAccountTools().value;
 
-let height = ref((await $fetch("https://prophet.rareweave.store/info")).height);
+let height = ref((await $fetch("https://glome.rareweave.store/info")).height);
 
 let nftId = useRoute().params.id || useRoute().hash.slice(1);
 
