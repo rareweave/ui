@@ -271,7 +271,7 @@ let changed = computed(() => {
   return ch;
 });
 let updaterInterval = setInterval(async () => {
-  height.value = (await $fetch("https://prophet.rareweave.store/info")).height;
+  height.value = (await $fetch("https://glome.rareweave.store/info")).height;
   if (!changed.value) {
     nftStateOrig.value = await fetch(`https://glome.rareweave.store/state/` + nftId).then(res => res.json())
     if (
@@ -336,7 +336,7 @@ async function saveChangesToNft() {
   });
 
   try {
-   await wallet.dispatch(tx)
+    await wallet.dispatch(tx)
   }
   catch (e) {
     console.log(e)
@@ -361,7 +361,7 @@ async function saveChangesToNft() {
 
 function buy() { }
 async function payRoyalty() {
-  
+
   buyStatus.value = 1;
   payingRoyalty.value = true;
 
@@ -419,7 +419,7 @@ async function payRoyalty() {
     alert("You need to sign the transaction to pay the royalty");
     payRoyalty.value = false;
   };
-  
+
   try {
     await arweave.transactions.post(tx);
   }
@@ -551,12 +551,12 @@ async function transfer() {
   });
 
   try {
-   await wallet.dispatch(tx)
+    await wallet.dispatch(tx)
   }
   catch (e) {
     alert("Failed to post the transaction to transfer your nft");
   };
-  
+
 
   nftState.value.owner = transferRecipient.value;
   nftStateOrig.value = JSON.parse(JSON.stringify(nftState.value));
