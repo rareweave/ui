@@ -2,30 +2,25 @@
     <div class="Nav">
         <div class="View">
             <div class="Leftside">
-                <NuxtLink  class="Logo Amazing--purpl" to="/">
+                <NuxtLink class="Logo Amazing--purpl" to="/">
                     RareWeave
                 </NuxtLink>
             </div>
             <div v-if="account" class="Rightside --desktop">
-                <NuxtLink  class="Route" to="/create">
+                <NuxtLink class="Route" to="/create">
                     Mint NFT
                 </NuxtLink>
-                <NuxtLink  class="Route" to="/collection/create">
+                <NuxtLink class="Route" to="/collection/create">
                     Create collection
                 </NuxtLink>
-                <NuxtLink  class="Route" to="/explore">
+                <NuxtLink class="Route" to="/explore">
                     Explore
                 </NuxtLink>
-                <NuxtLink class="Navbutton"
-                    :replace="false" 
-                    :to="'/profile/' + account.addr">
-                    <span class="Accountname Amazing--red">
-                        <img  
-                            class="Pfp"
-                            alt="Pfp"
-                            :src="account.profile.avatarURL"
-                        />
-                        {{ ansaddr || account.handle }}
+                <NuxtLink class="Navbutton" :replace="false" :to="'/profile/' + account.addr">
+                    <span class="flex flex-row bg-[rgba(255,255,255,0.1)] rounded-md p-1">
+                        <img class="rounded-md max-w-[38px] max-h-[38px]" alt="Pfp" :src="account.profile.avatarURL" />
+                        <span class="Accountname Amazing--red ml-2 font-sans font-thin">{{ ansaddr || account.handle
+                        }}</span>
                     </span>
                 </NuxtLink>
                 <div class="Balance">
@@ -39,42 +34,29 @@
                     </span>
                 </div>
             </div>
-            <div v-if="account" class="Rightside --mobile">   
+            <div v-if="account" class="Rightside --mobile">
                 <div class="Menu">
-                    <button 
-                        class="Amazing--button Navbutton"
-                        @click="setShow(`menu`, !show.menu)"
-                    >
+                    <button class="Amazing--button Navbutton" @click="setShow(`menu`, !show.menu)">
                         Menu
                     </button>
-                    <div 
-                        v-if="show.menu" 
-                        @mouseleave="setShow(`menu`, false)"
-                        @focusout="setShow(`menu`, false)" 
-                        class="Dropdown--mobile"
-                    >
-                        <NuxtLink  class="Amazing--red Item" to="/create">
+                    <div v-if="show.menu" @mouseleave="setShow(`menu`, false)" @focusout="setShow(`menu`, false)"
+                        class="Dropdown--mobile">
+                        <NuxtLink class="Amazing--red Item" to="/create">
                             Mint NFT
                         </NuxtLink>
-                        <NuxtLink  class="Amazing--red Item" to="/collection/create">
+                        <NuxtLink class="Amazing--red Item" to="/collection/create">
                             Create collection
                         </NuxtLink>
-                        <NuxtLink  class="Amazing--red Item" to="/explore">
+                        <NuxtLink class="Amazing--red Item" to="/explore">
                             Explore
                         </NuxtLink>
-                        <NuxtLink class="Item Account"
-                            :replace="false" 
-                            :to="'/profile/' + account.addr">
+                        <NuxtLink class="Item Account" :replace="false" :to="'/profile/' + account.addr">
                             <span class="Accountname">
-                                <img 
-                                    class="Pfp" 
-                                    :src="account.profile.avatarURL"
-                                />
+                                <img class="Pfp" :src="account.profile.avatarURL" />
                             </span>
                             <span class="Account--connected">
                                 {{ ansaddr || account.handle }}
-                                <span
-                                    v-if="true">
+                                <span v-if="true">
                                     {{ Math.floor(spendable * 100) / 100 + " AR" }}
                                 </span>
                             </span>
@@ -82,38 +64,30 @@
                     </div>
                 </div>
             </div>
-            <div 
-                v-if="!account" 
-                class="Rightside --desktop"
-            >
-                <NuxtLink  class="Route" to="/">
+            <div v-if="!account" class="Rightside --desktop">
+                <NuxtLink class="Route" to="/">
                     Home
                 </NuxtLink>
-                <NuxtLink  class="Route" to="/explore">
+                <NuxtLink class="Route" to="/explore">
                     Explore
                 </NuxtLink>
-                <NuxtLink  class="Amazing--button Navbutton" to="/login">
+                <NuxtLink class="Amazing--button Navbutton" to="/login">
                     Login
                 </NuxtLink>
             </div>
-            <div 
-                v-if="!account" 
-                class="Rightside --mobile">
+            <div v-if="!account" class="Rightside --mobile">
                 <div class="Menu">
-                    <button  class="Amazing--button Navbutton" 
-                        @click="setShow(`menu`, !show.menu)">
+                    <button class="Amazing--button Navbutton" @click="setShow(`menu`, !show.menu)">
                         Menu
                     </button>
-                    <div 
-                        v-if="show.menu" 
-                        @mouseleave="setShow(`menu`, false)" class="Dropdown--mobile">
-                        <NuxtLink  class="Item" to="/">
+                    <div v-if="show.menu" @mouseleave="setShow(`menu`, false)" class="Dropdown--mobile">
+                        <NuxtLink class="Item" to="/">
                             Home
                         </NuxtLink>
-                        <NuxtLink  class="Item" to="/explore">
+                        <NuxtLink class="Item" to="/explore">
                             Explore
                         </NuxtLink>
-                        <NuxtLink  class="Item Amazing--red" to="/login">
+                        <NuxtLink class="Item Amazing--red" to="/login">
                             Login
                         </NuxtLink>
                     </div>
@@ -142,7 +116,7 @@ const setShow = (k, v) => {
 .Nav {
     position: sticky !important;
     position: fixed;
-   top: 0;
+    top: 0;
     left: 0;
     display: flex;
     flex-direction: column;
@@ -153,7 +127,7 @@ const setShow = (k, v) => {
     width: 100%;
     height: var(--nav-height);
     color: var(--color-primary);
-    background-color: rgba(2,3,4,0.375);
+    background-color: rgba(2, 3, 4, 0.375);
     backdrop-filter: blur(20px);
     font-size: 13pt;
     z-index: 9;
@@ -196,9 +170,11 @@ const setShow = (k, v) => {
     align-items: center;
     justify-content: flex-end;
 }
+
 .Rightside.--desktop {
     display: flex;
 }
+
 .Rightside.--mobile {
     display: none;
 }
@@ -230,6 +206,7 @@ const setShow = (k, v) => {
     width: 32px;
     height: 32px;
 }
+
 .--mobile .Menu {
     position: relative;
     display: flex;
@@ -249,12 +226,12 @@ const setShow = (k, v) => {
     margin: 0 .25rem 0 32px;
     padding: 0.25rem calc((0.5rem) + 6px);
     border-radius: 18px;
-    color: rgba(17,23,32,1);
+    color: rgba(17, 23, 32, 1);
 }
 
 .Dropdown--mobile {
     position: absolute;
-   top: calc((100%) + .5rem);
+    top: calc((100%) + .5rem);
     right: 0;
     display: grid;
     grid-template-columns: 1fr;
@@ -267,8 +244,7 @@ const setShow = (k, v) => {
         -1px 2px 2px rgba(0, 0, 0, .12),
         -2px 4px 4px rgba(0, 0, 0, .12),
         -4px 8px 8px rgba(0, 0, 0, .12),
-        -8px 16px 16px rgba(0, 0, 0, .12)
-    ;
+        -8px 16px 16px rgba(0, 0, 0, .12);
     border-radius: 4px;
     width: 100%;
     min-width: 232px;
@@ -283,7 +259,7 @@ const setShow = (k, v) => {
     align-items: center;
     margin: 0;
     padding: .375rem .75rem;
-    background: rgba(129,234,174,1);
+    background: rgba(129, 234, 174, 1);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -306,7 +282,7 @@ const setShow = (k, v) => {
     height: 48px;
     border-radius: 5%;
     background-color: var(--bg-secondary);
-    color: rgba(255,255,255,1);
+    color: rgba(255, 255, 255, 1);
     overflow: hidden;
 }
 
@@ -328,6 +304,7 @@ const setShow = (k, v) => {
     .Rightside.--mobile {
         display: flex !important;
     }
+
     .Rightside.--desktop {
         display: none !important;
     }

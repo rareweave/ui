@@ -1,13 +1,13 @@
 <template>
     <div v-if="nonBtn"
-        class="btn flex btn-lg rounded-lg min-h-0 font-bold font-mono h-auto p-[1.3px] px-[1.5px] hover:shadow-lg hover:drop-shadow-sm hover:shadow-orange-700">
+        class="btn flex btn-lg rounded-lg min-h-0 font-bold font-mono h-auto p-[1.25px] px-[1.5px] hover:shadow-lg hover:drop-shadow-sm hover:shadow-orange-700">
         <span
             class="relative w-full p-2 inline-flex flex-row items-center justify-center h-full bg-[rgba(12,12,12,0.95)] rounded-md min-h-full up">
             <slot />
         </span>
     </div>
     <button v-else
-        class="btn flex btn-lg font-bold font-mono rounded-lg min-h-0 h-auto hover:shadow-lg hover:drop-shadow-sm hover:shadow-orange-700 p-[1.3px] px-[1.5px]">
+        class="btn flex btn-lg font-bold font-mono rounded-lg min-h-0 h-auto hover:shadow-lg hover:drop-shadow-sm hover:shadow-orange-700 p-[1.25px] appearance-none px-[1.5px]">
         <span
             class="relative w-full p-2 inline-flex flex-row items-center justify-center h-full bg-[rgba(12,12,12,0.95)] rounded-md min-h-full ">
             <slot />
