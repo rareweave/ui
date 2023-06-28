@@ -3,26 +3,12 @@
         <div class="Fetching__data load">
             <span class=""></span>
         </div>
-        <img 
-            v-if="nft.state?.contentType?.startsWith('image')"
-            :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${nft.contractTxId}`"
-            :alt="nft.state.name || 'Nft'" 
-            class="Image"
-            @load="imgHasBeenLoaded" 
-            @error="imgNotLoaded"
-        />
-        <video 
-            v-else-if="nft.state?.contentType?.startsWith('video')" 
-            autoplay
-            muted
-            controls
-            loop
-            class="Video"
-        >
-            <source 
-                :src="`https://prophet.rareweave.store/${nft.contractTxId}`" 
-                :type="nft.state?.contentType" 
-            />
+        <img v-if="nft.state?.contentType?.startsWith('image')"
+            :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${(nft.contractTxId || nft.id)}`"
+            :alt="nft.state.name || 'Nft'" class="Image" @load="imgHasBeenLoaded" @error="imgNotLoaded" />
+        <video v-else-if="nft.state?.contentType?.startsWith('video')" autoplay muted controls loop class="Video">
+            <source :src="`https://prophet.rareweave.store/${(nft.contractTxId || nft.id)}`"
+                :type="nft.state?.contentType" />
             Your browser does not support the video tag.
         </video>
     </div>

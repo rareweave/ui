@@ -1,9 +1,11 @@
 <template>
   <div class="Component">
+
     <NuxtLink :to="'/nft/' + (nft.contractTxId || nft.id)" class="Card">
       <Graphic :nft="nft" />
       <div class="Buttons">
-        <button v-if="disposable" @click.prevent.stop="$emit('remove-item', nft.contractTxId)" class="nft-button">
+        <button v-if="disposable" @click.prevent.stop="$emit('remove-item', (nft.contractTxId || nft.id))"
+          class="nft-button">
           ✕
         </button>
       </div>
