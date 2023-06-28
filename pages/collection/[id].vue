@@ -51,7 +51,7 @@ import setArweave from "../../plugins/arweave";
 
 const arweave = useArweave().value;
 if (!arweave)
-    setArweave();
+  setArweave();
 
 const account = useAccount();
 
@@ -66,8 +66,7 @@ let forSaleOnly = ref(false);
 let addModalOpened = ref(false);
 let nftBeingAdded = ref("");
 let state = ref(
-  (await $fetch("https://prophet.rareweave.store/contract?id=" + collectionId))
-    .state
+  (await $fetch("https://glome.rareweave.store/state/" + collectionId))
 );
 const warp = WarpFactory.forMainnet(
   {
