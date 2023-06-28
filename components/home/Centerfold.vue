@@ -12,11 +12,15 @@
                         of just few gold ounces.
                     </p>
                     <div class="relative flex justify-around mt-8 mb-8">
-                        <NuxtLink to="/explore" class="Button --primary">
-                            Explore NFTs
+                        <NuxtLink to="/explore">
+                            <awesome-button :nonBtn="true">
+                                Explore NFTs
+                            </awesome-button>
                         </NuxtLink>
-                        <a href="#howto" class="Button">
-                            How to mint
+                        <a href="#howto">
+                            <amazing-button :nonBtn="true">
+                                How to create NFT
+                            </amazing-button>
                         </a>
                     </div>
                 </div>

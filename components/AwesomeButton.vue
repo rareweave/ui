@@ -1,32 +1,17 @@
 <template>
-    <div v-if="nonBtn" class="btn flex btn-lg  rounded-lg min-h-0 h-auto p-0">
-        <span
-            class="relative w-full p-2 inline-flex flex-row items-center justify-center h-full bg-[rgba(12,12,12,0.95)] rounded-md min-h-full ">
-            <slot />
-        </span>
+    <div v-if="nonBtn"
+        class="flex px-3 items-center border-[1px] font-bold font-mono border-solid hover:border-[rgba(240,246,252,0.3)] transition-colors border-[rgba(240,246,252,0.1)] rounded-lg min-h-0 h-[37.92px] bg-[rgb(20,20,20)]">
+
+        <slot />
+
     </div>
-    <button v-else class="btn flex btn-lg  rounded-lg min-h-0 h-auto p-0">
-        <span
-            class="relative w-full p-2 inline-flex flex-row items-center justify-center h-full bg-[#E23E57] rounded-md min-h-full text-black">
-            <slot />
-        </span>
+    <button v-else
+        class="flex px-3 items-center border-[1px] font-bold font-mono border-solid hover:border-[rgba(240,246,252,0.3)] transition-colors border-[rgba(240,246,252,0.1)] rounded-lg min-h-0 h-[37.92px] bg-[rgb(20,20,20)]">
+
+        <slot />
+
     </button>
 </template>
 <script setup>
 let { nonBtn } = defineProps(['non-btn'])
 </script>
-<style scoped>
-@keyframes amazing-transform {
-    0% {
-        background-position: 0 150%;
-    }
-
-    50% {
-        background-position: 250% 0%;
-    }
-
-    100% {
-        background-position: 0 150%;
-    }
-}
-</style>
