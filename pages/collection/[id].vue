@@ -48,8 +48,7 @@
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 import { useAccount, useArweave } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
-import base64url from 'base64url'
-
+import base64url from 'base64-url'
 
 const arweave = useArweave().value;
 if (!arweave)
