@@ -1,18 +1,9 @@
 <template>
   <div class="Component">
-    <NuxtLink 
-      :to="'/nft/' + nft.contractTxId"
-      class="Card"
-    >
-      <Graphic 
-        :nft="nft"
-      />
+    <NuxtLink :to="'/nft/' + (nft.contractTxId || nft.id)" class="Card">
+      <Graphic :nft="nft" />
       <div class="Buttons">
-        <button 
-          v-if="disposable" 
-          @click.prevent.stop="$emit('remove-item', nft.contractTxId)"
-          class="nft-button"
-        >
+        <button v-if="disposable" @click.prevent.stop="$emit('remove-item', nft.contractTxId)" class="nft-button">
           ✕
         </button>
       </div>
@@ -34,25 +25,17 @@
           </span>
         </div>
         <div class="Row">
-          <span 
-            class="Nft Owner Detail" 
-            v-if="nft.owner"
-          >
-            Owned:&nbsp; 
-            <NuxtLink 
-              :to="'/profile/' + nft.owner.address"
-              class="Nft Link" 
-            >
-              {{ nft.owner.ansName || nft.owner.account?.handle }}  
+          <span class="Nft Owner Detail" v-if="nft.owner">
+            Owned:&nbsp;
+            <NuxtLink :to="'/profile/' + nft.owner.address" class="Nft Link">
+              {{ nft.owner.ansName || nft.owner.account?.handle }}
             </NuxtLink>
           </span>
         </div>
-        <div
-          :class="{
-            'Row --forSale': nft.state.forSale,
-            'Row': !nft.state.forSale
-          }"  
-        >
+        <div :class="{
+          'Row --forSale': nft.state.forSale,
+          'Row': !nft.state.forSale
+        }">
           <div class="Nft Price">
             <span class="Nft Split">
               <span class="Icon">
@@ -60,18 +43,12 @@
                   {{ nft.state.listingDenom || "a" }}
                 </span>
               </span>
-              <span 
-                class="Nft PriceInAr" 
-                v-if="nft.state.forSale"
-              >
+              <span class="Nft PriceInAr" v-if="nft.state.forSale">
                 {{ (nft.state.price / 1e12).toFixed(2) }} {{ nft.state.listingDenom || "AR" }}
               </span>
             </span>
           </div>
-          <span
-            class="Nft Buy Btn"
-            v-if="nft.state.forSale"
-          >
+          <span class="Nft Buy Btn" v-if="nft.state.forSale">
             Buy now
           </span>
         </div>
@@ -80,10 +57,10 @@
   </div>
 </template>
 <script setup>
-  const { nft, disposable } = defineProps([
-    "nft", 
-    "disposable"
-  ]);
+const { nft, disposable } = defineProps([
+  "nft",
+  "disposable"
+]);
 </script>
 <style scoped>
 .Component {
@@ -107,27 +84,25 @@
   align-items: center;
   width: 286px;
   height: 398px;
-  background-color: rgba(17,23,32,1);
+  background-color: rgba(17, 23, 32, 1);
   margin: 6px 9px 18px;
   padding: 0;
   box-sizing: content-box;
   border: 1px solid rgba(43, 56, 68, .33);
   border-radius: 8px;
   box-shadow:
-    0px 1px 1px rgba(0,0,0,0.17),
-    1px 2px 2px rgba(0,0,0,0.17),
-    2px 4px 4px rgba(0,0,0,0.17),
-    4px 8px 8px rgba(0,0,0,0.17),
-    8px 16px 16px rgba(0,0,0,0.17),
-    16px 32px 32px rgba(0,0,0,0.17)
-  ;
-  text-shadow: 
-    0px 1px 1px rgba(0,0,0,0.17),
-    1px 2px 2px rgba(0,0,0,0.17),
-    2px 4px 4px rgba(0,0,0,0.17),
-    4px 8px 8px rgba(0,0,0,0.17),
-    8px 16px 16px rgba(0,0,0,0.17)
-  ;
+    0px 1px 1px rgba(0, 0, 0, 0.17),
+    1px 2px 2px rgba(0, 0, 0, 0.17),
+    2px 4px 4px rgba(0, 0, 0, 0.17),
+    4px 8px 8px rgba(0, 0, 0, 0.17),
+    8px 16px 16px rgba(0, 0, 0, 0.17),
+    16px 32px 32px rgba(0, 0, 0, 0.17);
+  text-shadow:
+    0px 1px 1px rgba(0, 0, 0, 0.17),
+    1px 2px 2px rgba(0, 0, 0, 0.17),
+    2px 4px 4px rgba(0, 0, 0, 0.17),
+    4px 8px 8px rgba(0, 0, 0, 0.17),
+    8px 16px 16px rgba(0, 0, 0, 0.17);
 }
 
 .Card::after {
@@ -138,9 +113,8 @@
   width: calc((100%) + (2 * 2px));
   height: calc((100%) + (2 * 2px));
   background: radial-gradient(ellipse at center,
-    rgba(17,23,32,0),
-    rgba(17,23,32,0)
-  ) !important;
+      rgba(17, 23, 32, 0),
+      rgba(17, 23, 32, 0)) !important;
   border-radius: 6px;
   z-index: -1;
   background-size: 200% 200%;
@@ -149,15 +123,15 @@
 .Card:hover {
   /* border: 1px solid rgba(255, 255, 255, 0); */
   box-shadow:
-    0px 1px 1px rgba(0,0,0,0.17),
-    1px 2px 2px rgba(0,0,0,0.17),
-    2px 4px 4px rgba(0,0,0,0.17),
-    4px 8px 8px rgba(0,0,0,0.17),
-    8px 16px 16px rgba(0,0,0,0.17),
-    16px 32px 32px rgba(0,0,0,0.17)
-  ;
-  background-color: rgba(17,23,32,1);
+    0px 1px 1px rgba(0, 0, 0, 0.17),
+    1px 2px 2px rgba(0, 0, 0, 0.17),
+    2px 4px 4px rgba(0, 0, 0, 0.17),
+    4px 8px 8px rgba(0, 0, 0, 0.17),
+    8px 16px 16px rgba(0, 0, 0, 0.17),
+    16px 32px 32px rgba(0, 0, 0, 0.17);
+  background-color: rgba(17, 23, 32, 1);
 }
+
 /* 
 .Component:hover .Card::after {
   background: conic-gradient(
@@ -173,11 +147,9 @@
 
 .--forSale:hover {
   /* background: linear-gradient(93deg, rgba(129,234,174,1), rgb(9, 192, 238)); */
-  background: linear-gradient(
-    93deg,
-    rgb(158 19 131),
-    rgb(238 129 9)
-  );
+  background: linear-gradient(93deg,
+      rgb(158 19 131),
+      rgb(238 129 9));
   /* background: rgb(214 116 8); */
 }
 
@@ -236,7 +208,7 @@
   font-size: 12pt;
   font-weight: 600;
   font-family: 'Arimo', sans-serif;
-  color: rgba(251,250,255,1);
+  color: rgba(251, 250, 255, 1);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -246,7 +218,7 @@
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   padding: 0 8px;
 }
 
@@ -273,7 +245,7 @@
 }
 
 .Link:hover {
-  color: rgba(251,250,255,.5);
+  color: rgba(251, 250, 255, .5);
   text-decoration: 1px underline !important;
 }
 
