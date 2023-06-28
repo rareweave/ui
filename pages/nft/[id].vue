@@ -137,11 +137,9 @@
           </li>
           <li :class="{ step: true, 'step-primary': isBuying }">
 
-            <button :disabled="!isBuying" v-if="!isSomeoneElseBuying && buyStatus != 2"
-              class="btn btn-lg py-3 amazing-button rounded-lg min-h-0 h-auto" @click="finalizeBuy">
-              <span class="relative w-full inline-flex items-center justify-center h-full bg-[rgb(12,12,12)] rounded-md ">
-                Finalize buy ({{ nftPrice }} AR)</span>
-            </button>
+            <amazing-button :disabled="!isBuying" v-if="!isSomeoneElseBuying && buyStatus != 2" @click="finalizeBuy">
+              Finalize buy ({{ nftPrice }} AR)
+            </amazing-button>
             <span v-else-if="buyStatus == 2" class="text-lg">Finalizing buy...
             </span>
             <button v-else class="btn btn-error btn-outline rounded-lg btn-sm">
