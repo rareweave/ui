@@ -215,7 +215,7 @@ let height = ref((await $fetch("https://glome.rareweave.store/info")).height);
 
 let nftId = useRoute().params.id || useRoute().hash.slice(1);
 
-let nftStateOrig = await fetch(`https://glome.rareweave.store/state/` + nftId).then(res => res.json())
+let nftStateOrig = await $fetch(`https://glome.rareweave.store/state/` + nftId)
 
 let transferModalOpened = ref(false);
 let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig)));
@@ -264,12 +264,13 @@ let changed = computed(() => {
     parseFloat(
       parseFloat(arweave.ar.winstonToAr(nftStateOrig.price)).toFixed(3)
     ) ||
-    nftStateOrig.description != nftState.description ||
-    nftStateOrig.forSale != nftState.forSale;
+    nftStateOrig.description != nftState.value.description ||
+    nftStateOrig.forSale != nftState.value.forSale;
   return ch;
 });
 let updaterInterval = setInterval(async () => {
   height.value = (await $fetch("https://glome.rareweave.store/info")).height;
+
   if (!changed.value) {
     nftStateOrig.value = await fetch(`https://glome.rareweave.store/state/` + nftId).then(res => res.json())
     if (
