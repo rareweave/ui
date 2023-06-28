@@ -25,7 +25,7 @@ export const useAccountTools = () => useState("accountTools", () => new Account(
     },
     cacheIsActivated: true,
     cacheSize: 100,
-    cacheTime: 60,
+    cacheTime: 3600000,
 }));
 
 // Exchange rates
