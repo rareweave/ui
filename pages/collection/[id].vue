@@ -48,6 +48,8 @@
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 import { useAccount, useArweave } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
+import base64url from 'base64url'
+
 
 const arweave = useArweave().value;
 if (!arweave)
@@ -56,18 +58,20 @@ if (!arweave)
 const account = useAccount();
 
 let collectionId = useRoute().params.id || useRoute().hash.slice(1);
+let state = ref(
+  (await $fetch("https://glome.rareweave.store/state/" + collectionId))
+);
 let nfts = ref(
   await $fetch(
-    "https://prophet.rareweave.store/nfts?collection=" + collectionId
+    `https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true&filterScript=` +
+    base64url.encode(`id⊂${JSON.stringify(state.items)}`)
   )
 );
 let searchCondition = ref("");
 let forSaleOnly = ref(false);
 let addModalOpened = ref(false);
 let nftBeingAdded = ref("");
-let state = ref(
-  (await $fetch("https://glome.rareweave.store/state/" + collectionId))
-);
+
 const warp = WarpFactory.forMainnet(
   {
     inMemory: true,
@@ -95,9 +99,9 @@ let nftContract = account.value
   });
 async function refreshResults() {
   nfts.value = await $fetch(
-    `https://prophet.rareweave.store/nfts?collection=${collectionId}&${searchCondition.value ? "&search=" + searchCondition.value : ""
-    }${forSaleOnly.value ? "&forSaleOnly=true" : ""}`
-  );
+    `https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true&filterScript=` +
+    base64url.encode(`id⊂${JSON.stringify(state.items)}`)
+  )
 }
 async function add() {
   let newNfts = nftBeingAdded.value.split(" ");
@@ -114,10 +118,8 @@ async function add() {
   });
   addModalOpened.value = false;
   state.value = (
-    await fetch(
-      "https://prophet.rareweave.store/contract?id=" + collectionId
-    ).then((res) => res.json())
-  ).state;
+    (await $fetch("https://glome.rareweave.store/state/" + collectionId))
+  )
   refreshResults();
 }
 async function deleteNFT(contract) {

@@ -17,6 +17,7 @@
     "arweave": "^1.12.4",
     "arweave-account": "https://github.com/rareweave/arweave-account",
     "arweave-wallet-connector": "^1.0.0",
+    "base64url": "^3.0.1",
     "bn.js": "^5.2.1",
     "buffer": "^6.0.3",
     "daisyui": "^2.50.0",
