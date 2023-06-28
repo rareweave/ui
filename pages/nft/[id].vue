@@ -107,18 +107,9 @@
         'text-md': true,
         'btn-disabled': isSomeoneElseBuying,
       }">Transfer</label>
-      <label v-else-if="account && account.addr && nftState.forSale" for="buy-modal" :class="{
-        btn: true,
-        'amazing-button': true,
-        'rounded-md': true,
-        'w-full': true,
-        'my-2': true,
-        'text-lg': true,
-        'btn-disabled': isSomeoneElseBuying,
-      }">
-        <span>
-          Buy
-        </span>
+      <label v-else-if="account && account.addr && nftState.forSale" for="buy-modal">
+        <amazing-button :disabled="isSomeoneElseBuying" :non-btn="true" class="mt-2 w-full"
+          for="buy-modal">Buy</amazing-button>
       </label>
       <!-- Put this part before </body> tag -->
     </div>
@@ -129,9 +120,9 @@
         <h3 class="font-bold text-lg text-center">Buy "{{ nftState.name }}"</h3>
         <ul class="steps steps-vertical mt-4 ml-4">
           <li class="step step-primary">
-            <button @click="payRoyalty" v-if="!payingRoyalty && !isBuying" class="btn amazing-button2 rounded-lg btn-sm">
+            <awesome-button @click="payRoyalty" v-if="!payingRoyalty && !isBuying">
               Pay royalty ({{ nftPrice * (nftRoyalty / 100) }} AR)
-            </button>
+            </awesome-button>
             <span class="text-lg" v-else-if="isBuying">Paid royalty</span>
             <span class="text-lg" v-else>Paying royalty... Don't close this tab</span>
           </li>
