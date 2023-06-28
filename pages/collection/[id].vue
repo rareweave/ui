@@ -48,7 +48,7 @@
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 import { useAccount, useArweave } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
-import base64url from 'base64-url'
+import b64urlEncode from 'base64url-encode'
 
 const arweave = useArweave().value;
 if (!arweave)
@@ -63,7 +63,7 @@ let state = ref(
 let nfts = ref(
   await $fetch(
     `https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true&filterScript=` +
-    base64url.encode(`id⊂${JSON.stringify(state.items)}`)
+    b64urlEncode(`id⊂${JSON.stringify(state.items)}`)
   )
 );
 let searchCondition = ref("");
