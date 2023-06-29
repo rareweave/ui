@@ -72,8 +72,10 @@
                 <NuxtLink class="Route" to="/explore">
                     Explore
                 </NuxtLink>
-                <NuxtLink class="Amazing--button Navbutton" to="/login">
-                    Login
+                <NuxtLink to="/login">
+                    <awesome-button class="ml-4">
+                        Login
+                    </awesome-button>
                 </NuxtLink>
             </div>
             <div v-if="!account" class="Rightside --mobile">
