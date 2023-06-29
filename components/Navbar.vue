@@ -7,13 +7,13 @@
                 </NuxtLink>
             </div>
             <div v-if="account" class="Rightside --desktop">
-                <NuxtLink class="Route" to="/create">
+                <NuxtLink class="bg-transparent mx-4 p-2 font-mono text-lg font-bold" to="/create">
                     Mint NFT
                 </NuxtLink>
-                <NuxtLink class="Route" to="/collection/create">
+                <NuxtLink class="bg-transparent mx-4 p-2 font-mono text-lg font-bold" to="/collection/create">
                     Create collection
                 </NuxtLink>
-                <NuxtLink class="Route" to="/explore">
+                <NuxtLink class="bg-transparent mx-4 p-2 font-mono text-lg font-bold" to="/explore">
                     Explore
                 </NuxtLink>
                 <NuxtLink class="Navbutton" :replace="false" :to="'/profile/' + account.addr">
@@ -66,14 +66,14 @@
                 </div>
             </div>
             <div v-if="!account" class="Rightside --desktop">
-                <NuxtLink class="Route p-2" to="/">
+                <NuxtLink class="bg-transparent mx-4 p-2 font-mono text-lg font-bold" to="/">
                     Home
                 </NuxtLink>
-                <NuxtLink class="Route p-2" to="/explore">
+                <NuxtLink class="bg-transparent mx-4 p-2 font-mono text-lg font-bold" to="/explore">
                     Explore
                 </NuxtLink>
-                <NuxtLink to="/login">
-                    <awesome-button class="ml-8">
+                <NuxtLink to="/login" class="mx-4">
+                    <awesome-button :nonBtn="true">
                         Login
                     </awesome-button>
                 </NuxtLink>
@@ -182,10 +182,7 @@ const setShow = (k, v) => {
     display: none;
 }
 
-.Route {
-    background: rgba(0, 0, 0, 0) !important;
-    margin: .25rem 0 .25rem 2.5vw;
-}
+
 
 .Balance {
     display: flex;

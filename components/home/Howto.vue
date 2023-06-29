@@ -1,12 +1,15 @@
 <template>
-    <div class="_Section Howto flex flex-col items-center justify-center w-full flex-1 mx-auto py-10 max-w-[1740px]" id="howto">
+    <div class="_Section Howto flex flex-col items-center justify-center w-full flex-1 mx-auto py-10 max-w-[1740px]"
+        id="howto">
         <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
             <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold">
                 Create and Sell
             </h2>
             <div class="flex flex-wrap justify-between items-stretch mt-20 w-full h-full preserve-3d">
-                <div v-for="step in steps" class="flex-1 flex flex-col items-center justify-center p-6 m-6 text-center min-width-[-286px] --observe">
-                    <div :class="['relative p-[16px] aspect-w-[64px] w-[64px] flex justify-center items-center rounded-full before:absolute before:inset-[-16px] before:border-1 before:border-black before:opacity-50 before:p-[16px] before:z-[-1] before:rounded-full', `--${step.color}`].join(' ')">
+                <div v-for="step in steps"
+                    class="flex-1 flex flex-col items-center justify-center p-6 m-6 text-center min-width-[-286px] --observe">
+                    <div
+                        :class="['relative p-[16px] aspect-w-[64px] w-[64px] flex justify-center items-center rounded-full before:absolute before:inset-[-16px] before:border-1 before:border-black before:opacity-50 before:p-[16px] before:z-[-1] before:rounded-full', `--${step.color}`].join(' ')">
                         <span>
                             <img :src="step.icon" :alt="['no-', step.no].join('')" width="48" height="48" class="Image" />
                         </span>
@@ -17,8 +20,10 @@
                     <p class="mb-4">
                         {{ step.description }}
                     </p>
-                    <NuxtLink class="btn btn-sm mt-auto Amazing--button" v-if="step.button" :to="step.button.link">
-                        {{ step.button.title }}
+                    <NuxtLink class="mt-auto" v-if="step.button" :to="step.button.link">
+                        <awesome-button :nonBtn="true">
+                            {{ step.button.title }}
+                        </awesome-button>
                     </NuxtLink>
                 </div>
             </div>
