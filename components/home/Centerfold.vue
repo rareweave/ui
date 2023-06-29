@@ -108,7 +108,7 @@
 <script setup>
 import { Rows } from '~/contents/june23.js';
 const NFTwidth = 316;
-const centerfoldImage = ref(`/centerfold-images/${1 + Math.round(Math.random() * 6)}.jpg`)
+const centerfoldImage = ref(`/centerfold-images/${1 + Math.round(Math.random() * 5)}.jpg`)
 const setN = () => window.innerWidth / NFTwidth > 5 ? 5 : Math.floor(window.innerWidth / NFTwidth);
 const initialN = setN();
 const w = ref(initialN);
