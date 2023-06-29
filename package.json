@@ -22,6 +22,7 @@
     "buffer": "^6.0.3",
     "daisyui": "^2.50.0",
     "jsonpath-plus": "^7.2.0",
+    "lodash.debounce": "^4.0.8",
     "nuxi": "^3.3.2",
     "nuxt-lazy-load": "^3.0.4",
     "sass": "^1.62.0",

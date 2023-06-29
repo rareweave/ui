@@ -226,7 +226,7 @@ const setShow = (k, v) => {
     margin: 0 .25rem 0 32px;
     padding: 0.25rem calc((0.5rem) + 6px);
     border-radius: 18px;
-    color: rgba(17, 23, 32, 1);
+    color: rgb(227, 230, 234);
 }
 
 .Dropdown--mobile {

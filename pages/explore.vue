@@ -15,13 +15,9 @@
         </div>
       </div>
       <div class="Search">
-        <label>
-          Search:
-        </label>
         <span class="InputWrapper">
-          <input type="text" placeholder="Name, description etc" v-model=" searchInput "
-            @keydown.enter=" searchCondition = searchInput; searchNFTs() " class="Input__Search" />
-          <span class="SearchIcon" @click=" searchCondition = searchInput; searchNFTs() ">
+          <input type="text" placeholder="Search..." v-on:input="onSearch" v-model=" searchInput " class="Input__Search" />
+          <span class="SearchIcon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
               class="feather feather-search">
@@ -30,12 +26,6 @@
             </svg>
           </span>
         </span>
-        <span
-          @click=" searchInput = ''; searchCondition = ''; searchType = ''; forSaleOnly = false; filter = { minPrice: 0, maxPrice: 0 }; getNFTs() "
-          class="V1__reset">
-          Reset
-        </span>
-
 
       </div>
       <div class="V1__views">
@@ -124,14 +114,14 @@
             </div>
           </div>
           <div class="MenuOption">
-            <span class="FilterButton">
+            <div class="FilterButton">
               <button class="MenuButton" @click=" forSaleOnly = true; searchNFTs() ">
                 Apply
               </button>
               <button class="Reset" @click=" filter = { minPrice: 0, maxPrice: 0 }; forSaleOnly = false; searchNFTs() ">
                 Remove filter
               </button>
-            </span>
+            </div>
           </div>
         </div>
       </div>
@@ -194,6 +184,7 @@ import NftCard from '../components/NftCard.vue';
 import NftRow from '../components/NftRow.vue';
 import { useNfts, useCollections, useIsLoading } from '../composables/useState';
 import Api from '../plugins/prophet';
+import debounce from "lodash.debounce";
 
 const nfts = useNfts();
 const collections = useCollections();
@@ -249,10 +240,17 @@ const rarifiedCollections = ref([
 
 const view = ref('grid');
 
-const searchCondition = ref('');
+let searchCondition = ref('');
 const searchType = ref('');
 const forSaleOnly = ref(false);
 const searchInput = ref('');
+
+const debouncedWatch = debounce(() => {
+  searchCondition = searchInput;
+  searchNFTs()
+}, 500);
+
+watch(searchInput, debouncedWatch)
 
 const filter = ref({
   minPrice: 0,
@@ -389,8 +387,7 @@ definePageMeta({
   width: 1226px;
 }
 
-.Forsale,
-.Sort {
+.Forsale {
   flex: 1 1 0px;
   display: flex;
   flex-direction: row;
@@ -454,7 +451,6 @@ definePageMeta({
   z-index: 1;
   fill: rgba(146, 158, 161, .75);
   transform: scale(0.75);
-  cursor: pointer;
 }
 
 .V1__reset {
@@ -480,7 +476,6 @@ definePageMeta({
 }
 
 .V1__views {
-  flex: .75 .75 0px;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -650,7 +645,8 @@ definePageMeta({
   align-items: center;
   width: max-content;
   height: auto;
-  margin: 0;
+  gap: 5px;
+  margin: 0px;
   padding: 0;
 }
 
@@ -662,17 +658,17 @@ definePageMeta({
   width: max-content;
   height: auto;
   margin: 0 2px 0 -2px !important;
-  padding: .1875rem .375rem !important;
+  padding: .375rem .75rem !important;
   background: rgba(129, 249, 174, 0.938) !important;
   color: rgba(23, 32, 42, 1) !important;
-  border-radius: 2px;
-  border: var(--border-primary) !important;
 }
 
-.ResetButton {
-  color: rgba(218, 21, 218, 0.911) !important;
-  text-decoration: 1px underline currentcolor;
-  padding: .375rem .75rem !important
+.Reset {
+  color: rgb(216, 221, 231) !important;
+  margin-right: 100px !important;
+  padding: .375rem .75rem !important;
+
+
 }
 
 .V1__button {
