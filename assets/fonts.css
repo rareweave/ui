@@ -4,7 +4,8 @@
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
-    src: url('/ttf/iosevka-medium.ttf') format('truetype'), url('/woff2/iosevka-medium.woff2') format('woff2');
+    src: url('/woff2/iosevka-medium.woff2') format('woff2'), url('/ttf/iosevka-medium.ttf') format('truetype'),
+    ;
 }
 
 @font-face {
@@ -13,7 +14,7 @@
     font-weight: 700;
     font-stretch: normal;
     font-style: bold;
-    src: url('/ttf/iosevka-bold.ttf') format('truetype'), url('/woff2/iosevka-bold.woff2') format('woff2');
+    src: url('/woff2/iosevka-bold.woff2') format('woff2'), url('/ttf/iosevka-bold.ttf') format('truetype');
 }
 
 @font-face {
@@ -22,5 +23,41 @@
     font-weight: 300;
     font-stretch: normal;
     font-style: thin;
-    src: url('/ttf/iosevka-thin.ttf') format('truetype'), url('/woff2/iosevka-thin.woff2') format('woff2');
+    src: url('/woff2/iosevka-thin.woff2') format('woff2'), url('/ttf/iosevka-thin.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Aile Web';
+    font-display: swap;
+    font-weight: 200;
+    font-stretch: normal;
+    font-style: normal;
+    src: url('woff2/iosevka-aile-extralight.woff2') format('woff2'), url('ttf/iosevka-aile-extralight.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Aile Web';
+    font-display: swap;
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    src: url('woff2/iosevka-aile-regular.woff2') format('woff2'), url('ttf/iosevka-aile-regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Aile Web';
+    font-display: swap;
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    src: url('woff2/iosevka-aile-bold.woff2') format('woff2'), url('ttf/iosevka-aile-bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Iosevka Aile Web';
+    font-display: swap;
+    font-weight: 100;
+    font-stretch: normal;
+    font-style: normal;
+    src: url('woff2/iosevka-aile-thin.woff2') format('woff2'), url('ttf/iosevka-aile-thin.ttf') format('truetype');
 }

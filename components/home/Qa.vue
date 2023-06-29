@@ -2,15 +2,17 @@
     <div class="_Section Qa flex flex-col items-start justify-center w-full flex-1 mx-auto py-10">
         <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
             <div>
-                <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
+                <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold font-mono">
                     Frequently Asked <span class="Amazing-text">Questions</span>
                 </h2>
                 <p class="Desc">
-                    Here we answer some of the most common questions that are asked, if you have any other questions please contact us at our Discord server.
+                    Here we answer some of the most common questions that are asked, if you have any other questions please
+                    contact us at our Discord server.
                 </p>
             </div>
             <div class="flex flex-col items-center justify-center w-full flex-1 mx-auto mt-20">
-                <div v-for="question in questions" :key="question.q" class="flex flex-col bg-[#111720] rounded-lg py-4 px-8 mt-4">
+                <div v-for="question in questions" :key="question.q"
+                    class="flex flex-col bg-[#111720] rounded-lg py-4 px-8 mt-4">
                     <h4>
                         {{ question.q }}
                     </h4>
@@ -42,6 +44,4 @@ const questions = [
     }
 ];
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

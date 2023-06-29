@@ -2,7 +2,7 @@
     <div class="relative flex flex-col justify-center items-center w-full max-w-[var(--page-max-width)] mx-auto py-10">
         <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
             <div class="relative w-full h-full mt-16 max-w-[85vw] mx-auto">
-                <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold p-2">
+                <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold p-2 font-mono">
                     Low costs for minting your own <span class="Amazing--green">NFT collection</span>
                 </h2>
                 <p class="max-w-[85vw] text-1xl my-4 p-2">
@@ -43,7 +43,7 @@
                     class="relative flex flex-row flex-wrap justify-between items-center max-w-[820px] rounded-3xl bg-[rgba(17,23,32,1)]">
                     <div
                         class="relative flex flex-col justify-center items-start flex-[0.75_0.75_0px] h-auto m-4 min-w-[286px]">
-                        <h4 class="m-8 text-3xl font-semibold text-white">
+                        <h4 class="m-8 text-3xl font-semibold font-mono text-white">
                             Arweave ${{ rates.arweave?.usd?.toFixed(2) }}
                         </h4>
                         <p class="m-8 mt-2">
@@ -56,7 +56,7 @@
                         class="relative flex flex-col justify-evenly items-stretch flex-1 h-auto min-h-[168px] my-8 border-l-2 border-solid border-[rgba(255,255,255,0.125)]"
                         autocomplete="off" @submit.stop.prevent="prevent">
                         <h4 class="m-8 text-2xl">
-                            <span class="Amazing-text">Estimate collection cost</span>
+                            <span class="Amazing-text font-mono">Estimate collection cost</span>
                         </h4>
                         <div class="Row">
                             <label class="relative flex-1 flex">

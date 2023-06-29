@@ -1,18 +1,16 @@
 <template>
-    <div class="flex flex-col align-start justify-start w-full flex-1 mx-auto py-10 w-[85vw] max-w-[1740px]">
-        <div class="flex flex-col justify-center items-center h-full mx-0 mt-32">
-            <div class="relative flex flex-col justify-evenly items-start w-full h-full my-16 mx-auto">
-                <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold p-2 Amazing--red">
+    <div class="flex flex-col align-start justify-start w-full  flex-1 py-10 ">
+        <div class="flex flex-col justify-center items-center h-full mt-32 mx-auto max-w-[85vw]">
+            <div class="relative flex flex-col justify-evenly w-full items-start h-full  mx-auto">
+                <h2 class="text-white text-center w-full text-4xl font-semibold font-mono p-2 Amazing--red">
                     Top collections
                 </h2>
                 <p class="text-1xl text-start my-4 p-2">
                     Explore the most popular collections on the RareWeave market.
                 </p>
             </div>
-            <div class="Rarified --observe">
-                <div 
-                    class="Collection Headers"  
-                >
+            <div class="Rarified --observe mt-0">
+                <div class="Collection Headers">
                     <span>
                         Collection
                     </span>
@@ -32,18 +30,13 @@
                         Average
                     </span>
                     <span>
-                        
+
                     </span>
                 </div>
-                <NuxtLink
-                    v-if="!isLoading.collections"
-                    v-for="collection in rare.sort((a,b) => b.volume - a.volume)"
-                    :key="collection.contractTxId"
-                    class="Collection"
-                    :to="`/collection/${collection.contractTxId}`"
-                >
+                <NuxtLink v-if="!isLoading.collections" v-for="collection in rare.sort((a, b) => b.volume - a.volume)"
+                    :key="collection.contractTxId" class="Collection" :to="`/collection/${collection.contractTxId}`">
                     <span class="Amazing-text"> <!-- Collection -->
-                        {{ collection.state.name }} 
+                        {{ collection.state.name }}
                     </span>
                     <span> <!-- Total / For sale -->
                         {{ collection.count }} / {{ collection.forSaleCount }}
@@ -52,13 +45,17 @@
                         {{ arweave.ar.winstonToAr(collection.volume, { decimals: 2 }) }} AR
                     </span>
                     <span> <!-- Price -->
-                        {{ collection.totalprice !== 0 ? arweave.ar.winstonToAr(collection.totalprice, { decimals: 2 }) + ` AR` : `-` }}   
+                        {{ collection.totalprice !== 0 ? arweave.ar.winstonToAr(collection.totalprice, { decimals: 2 }) + `
+                        AR` : `-` }}
                     </span>
                     <span> <!-- FP -->
-                        {{ collection.forSaleCount > 0 ? arweave.ar.winstonToAr(collection.floorprice, { decimals: 2 }) + ` AR` : `-` }}
+                        {{ collection.forSaleCount > 0 ? arweave.ar.winstonToAr(collection.floorprice, { decimals: 2 }) + `
+                        AR` : `-` }}
                     </span>
                     <span> <!-- ~avg price -->
-                        {{ collection.totalprice > 0 && collection.forSaleCount > 0 ? arweave.ar.winstonToAr(collection.totalprice / collection.forSaleCount, { decimals: 2 }) + ` AR` : `-` }}
+                        {{ collection.totalprice > 0 && collection.forSaleCount > 0 ?
+                            arweave.ar.winstonToAr(collection.totalprice / collection.forSaleCount, { decimals: 2 }) + ` AR` :
+                            `-` }}
                     </span>
                     <span> <!-- Collection -->
                         {{ new Date(collection.timestamp).toLocaleDateString(`en-GB`) }}
@@ -81,7 +78,7 @@
                 </NuxtLink>
                 <div class="Notification">
                     <p>
-                        
+
                     </p>
                 </div>
             </div>
@@ -92,15 +89,15 @@
 <script setup>
 import Api from '../../plugins/prophet';
 import initArweave from '../../plugins/arweave';
-import { useNfts, useIsLoading,  useIsError, useArweave } from '../../composables/useState';
+import { useNfts, useIsLoading, useIsError, useArweave } from '../../composables/useState';
 
 const nfts = useNfts(),
-isLoading = useIsLoading(),
-isError = useIsError(),
-arweave = useArweave().value;
+    isLoading = useIsLoading(),
+    isError = useIsError(),
+    arweave = useArweave().value;
 
 const children = ref([]), // any nft that is a child of a collection
-rare = ref([]);
+    rare = ref([]);
 
 onMounted(async () => {
     if (!arweave) initArweave();
@@ -115,14 +112,14 @@ onMounted(async () => {
                     .then(res => {
                         const limit = 10;
                         const nftIds = nfts.value.result.map(nft => nft.contractTxId);
-                            
+
                         res.result
                             .filter((c, i) => c.state.name.length > 0 && c.state.name !== undefined && c.state.name !== ' ')
                             .filter((c, i) => i < limit)
                             .forEach(async c => {
                                 c.state.items.forEach(id => {
                                     if (nftIds.includes(id))
-                                    children.value.push(nfts.value.result.filter(nft => nft.contractTxId === id));
+                                        children.value.push(nfts.value.result.filter(nft => nft.contractTxId === id));
                                 });
                                 c.nfts = c.state.items.filter(id => nftIds.includes(id));
                                 c.count = c.nfts.length;
@@ -132,8 +129,8 @@ onMounted(async () => {
                                     .map(id => nfts.value.result.find(nft => nft.contractTxId === id))
                                     .map(async nft => {
                                         const res = await Api(`contract-interactions`, {
-                                            action: `finalize-buy`, 
-                                            contract: nft.contractTxId 
+                                            action: `finalize-buy`,
+                                            contract: nft.contractTxId
                                         });
                                         const result = await res.result;
                                         const n = result.length > 0 ? Number(res.result.reduce((a, b) => a.block.height > b.block.height ? a : b).quantity.winston) : 0;
@@ -154,15 +151,14 @@ onMounted(async () => {
                     .catch(err => {
                         console.log(err);
                     });
-                })    
-            };
-    
+            })
+    };
+
     f();
 });
 </script>
 
-<style scoped>    
-    .Rarified {
+<style scoped>    .Rarified {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -173,14 +169,14 @@ onMounted(async () => {
         margin: 0 auto;
         background: rgba(17, 23, 32, 0.5);
         border-radius: 1.5rem;
-        padding-bottom: 2rem;
+
     }
 
     .Collection {
         display: grid;
         grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
         grid-template-rows: 1fr;
-        grid-template-areas: 
+        grid-template-areas:
             "name floorprice sweep percentage_change_24h percentage_change_7d";
         justify-content: space-evenly;
         align-items: center;
@@ -191,39 +187,39 @@ onMounted(async () => {
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-@media only screen and (max-width: 1440px) {
-    .Collection {
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: repeat(auto-fill, 1fr);
-        grid-template-areas: 
-            "name floorprice sweep"
-            "percentage_change_24h percentage_change_7d percentage_change_7d";
-    }        
-}
-
-@media only screen and (max-width: 768px) {
-    .Collection {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: repeat(auto-fill, 1fr);
-        grid-template-areas: 
-            "name floorprice"
-            "sweep percentage_change_24h"
-            "percentage_change_7d percentage_change_7d";
+    @media only screen and (max-width: 1440px) {
+        .Collection {
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: repeat(auto-fill, 1fr);
+            grid-template-areas:
+                "name floorprice sweep"
+                "percentage_change_24h percentage_change_7d percentage_change_7d";
+        }
     }
-}
 
-@media only screen and (max-width: 480px) {
-    .Collection {
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(auto-fill, 1fr);
-        grid-template-areas: 
-            "name"
-            "floorprice"
-            "sweep"
-            "percentage_change_24h"
-            "percentage_change_7d";
+    @media only screen and (max-width: 768px) {
+        .Collection {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(auto-fill, 1fr);
+            grid-template-areas:
+                "name floorprice"
+                "sweep percentage_change_24h"
+                "percentage_change_7d percentage_change_7d";
+        }
     }
-}
+
+    @media only screen and (max-width: 480px) {
+        .Collection {
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(auto-fill, 1fr);
+            grid-template-areas:
+                "name"
+                "floorprice"
+                "sweep"
+                "percentage_change_24h"
+                "percentage_change_7d";
+        }
+    }
 
 
 
@@ -233,8 +229,8 @@ onMounted(async () => {
 
 
     .Collection.Headers {
-        color: rgba(221,232,255,0.33);
-        margin-top: 1.5rem;
+        color: rgba(221, 232, 255, 0.33);
+
     }
 
     .Collection.Headers span:nth-child(1) {
@@ -244,7 +240,7 @@ onMounted(async () => {
     .Winston {
         font-size: 11pt;
         font-weight: 400;
-        color: rgba(221,232,255,0.25);
+        color: rgba(221, 232, 255, 0.25);
     }
 
     .Notification {
@@ -263,5 +259,4 @@ onMounted(async () => {
         margin: .5rem 0;
         padding: 1.125rem 2.25rem;
     }
-
 </style>

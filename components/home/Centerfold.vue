@@ -4,7 +4,7 @@
         <div class="relative flex flex-wrap justify-start items-start h-full mt-32">
             <div class="Column flex-row justify-start align-center w-100 max-w-[600px]">
                 <div class="Header max-w-[85vw]">
-                    <h1 class="text-white text-2xl lg:text-5xl font-semibold justify-center text-center">
+                    <h1 class="text-white text-2xl lg:text-5xl font-bold font-mono justify-center text-center">
                         A liquid market on <br />Arweave
                     </h1>
                     <p class="flex justify-center text-center mt-8">
@@ -30,7 +30,7 @@
     </div>
     <div class="flex flex-col justify-center items-center h-full mx-auto mt-16 max-w-[85vw]">
         <div class="flex flex-col justify-start align-stretch max-w-[1740px] w-full">
-            <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold mt-16 p-2">
+            <h2 class="text-white font-mono text-left max-w-[85vw] text-4xl font-semibold mt-16 p-2">
                 Explore the <span class="Amazing--br">marketplace</span>
             </h2>
             <p class="max-w-[85vw] text-1xl my-4 p-2">
