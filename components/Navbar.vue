@@ -66,10 +66,10 @@
                 </div>
             </div>
             <div v-if="!account" class="Rightside --desktop">
-                <NuxtLink class="Route" to="/">
+                <NuxtLink class="Route p-2" to="/">
                     Home
                 </NuxtLink>
-                <NuxtLink class="Route" to="/explore">
+                <NuxtLink class="Route p-2" to="/explore">
                     Explore
                 </NuxtLink>
                 <NuxtLink to="/login">
