@@ -11,14 +11,15 @@
                         Here you can find the most amazing NFTs on the Arweave blockchain and easily trade them with a price
                         of just few gold ounces.
                     </p>
-                    <div class="relative flex justify-around mt-8 mb-8">
-                        <NuxtLink to="/explore">
+                    <div class="relative flex justify-around mt-8 mb-8 flex-col md:flex-row md:flex-wrap ">
+                        <NuxtLink to="/explore" class="m-2 max-w-[15rem] w-full md:w-auto md:max-w-full mx-auto md:mx-2">
                             <awesome-button :nonBtn="true">
                                 Explore NFTs
                             </awesome-button>
                         </NuxtLink>
                         <a href="#howto">
-                            <amazing-button :nonBtn="true">
+                            <amazing-button :nonBtn="true"
+                                class="m-2 max-w-[15rem] w-[100%] md:w-auto md:max-w-full mx-auto md:mx-2">
                                 How to create NFT
                             </amazing-button>
                         </a>
