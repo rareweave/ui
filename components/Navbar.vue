@@ -73,7 +73,7 @@
                     Explore
                 </NuxtLink>
                 <NuxtLink to="/login">
-                    <awesome-button class="ml-4">
+                    <awesome-button class="ml-8">
                         Login
                     </awesome-button>
                 </NuxtLink>
