@@ -17,7 +17,8 @@
                     Explore
                 </NuxtLink>
                 <NuxtLink class="Navbutton" :replace="false" :to="'/profile/' + account.addr">
-                    <span class="flex flex-row bg-[rgba(255,255,255,0.1)] rounded-md p-1">
+                    <span
+                        class="flex flex-row bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] hover:border-[rgba(240,246,252,0.3)] border-[rgba(240,246,252,0.1)] border border-solid transition-colors rounded-md p-1">
                         <img class="rounded-md max-w-[38px] max-h-[38px]" alt="Pfp" :src="account.profile.avatarURL" />
                         <span class="Accountname Amazing--red ml-2 font-sans font-thin">{{ ansaddr || account.handle
                         }}</span>
