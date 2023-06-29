@@ -5,7 +5,7 @@
                 <h2 class="text-white text-center w-full text-4xl font-semibold font-mono p-2 Amazing--red">
                     Top collections
                 </h2>
-                <p class="text-1xl text-start my-4 p-2">
+                <p class="text-1xl my-4 p-2 text-center w-full">
                     Explore the most popular collections on the RareWeave market.
                 </p>
             </div>
