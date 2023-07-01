@@ -1,5 +1,5 @@
 <template>
-    <div class="relative flex flex-col justify-center items-center w-full max-w-[var(--page-max-width)] mx-auto py-10">
+    <div class="relative flex flex-col justify-center items-center w-full max-w-[1740px] mx-auto py-10">
         <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
             <div class="relative w-full h-full mt-16 max-w-[85vw] mx-auto">
                 <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold p-2">
