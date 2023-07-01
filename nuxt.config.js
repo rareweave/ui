@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     typescript: false,
     ssr: false,
     css: [
+        "~/assets/fonts.css",
         "~/assets/styles/theme.css",
         "~/assets/styles/main.css",
         "~/assets/styles/loader.css"

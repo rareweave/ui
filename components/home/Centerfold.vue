@@ -4,21 +4,22 @@
         <div class="relative flex flex-wrap justify-start items-start h-full mt-32">
             <div class="Column flex-row justify-start align-center w-100 max-w-[600px]">
                 <div class="Header max-w-[85vw]">
-                    <h1 class="text-white text-2xl lg:text-5xl font-semibold justify-center text-center">
+                    <h1 class="text-white text-2xl lg:text-5xl font-bold font-mono justify-center text-center">
                         A liquid market on <br />Arweave
                     </h1>
                     <p class="flex justify-center text-center mt-8">
                         Here you can find the most amazing NFTs on the Arweave blockchain and easily trade them with a price
                         of just few gold ounces.
                     </p>
-                    <div class="relative flex justify-around mt-8 mb-8">
-                        <NuxtLink to="/explore">
+                    <div class="relative flex justify-around mt-8 mb-8 flex-col md:flex-row md:flex-wrap ">
+                        <NuxtLink to="/explore" class="m-2 max-w-[15rem] w-full md:w-auto md:max-w-full mx-auto md:mx-2">
                             <awesome-button :nonBtn="true">
                                 Explore NFTs
                             </awesome-button>
                         </NuxtLink>
                         <a href="#howto">
-                            <amazing-button :nonBtn="true">
+                            <amazing-button :nonBtn="true"
+                                class="m-2 max-w-[15rem] w-[100%] md:w-auto md:max-w-full mx-auto md:mx-2">
                                 How to create NFT
                             </amazing-button>
                         </a>
@@ -29,7 +30,7 @@
     </div>
     <div class="flex flex-col justify-center items-center h-full mx-auto mt-16 max-w-[85vw]">
         <div class="flex flex-col justify-start align-stretch max-w-[1740px] w-full">
-            <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold mt-16 p-2">
+            <h2 class="text-white font-mono text-left max-w-[85vw] text-4xl font-semibold mt-16 p-2">
                 Explore the <span class="Amazing--br">marketplace</span>
             </h2>
             <p class="max-w-[85vw] text-1xl my-4 p-2">
@@ -108,7 +109,7 @@
 <script setup>
 import { Rows } from '~/contents/june23.js';
 const NFTwidth = 316;
-const centerfoldImage = ref(`/centerfold-images/${1 + Math.round(Math.random() * 7)}.jpg`)
+const centerfoldImage = ref(`/centerfold-images/${1 + Math.round(Math.random() * 5)}.jpg`)
 const setN = () => window.innerWidth / NFTwidth > 5 ? 5 : Math.floor(window.innerWidth / NFTwidth);
 const initialN = setN();
 const w = ref(initialN);

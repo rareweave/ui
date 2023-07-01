@@ -3,7 +3,7 @@
 
     <div class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-3xl text-center">Select your arweave wallet</h3>
+            <h3 class="font-bold font-mono text-3xl text-center">Select your arweave wallet</h3>
             <div class="py-4 flex justify-center">
                 <div class="card card-compact m-2 w-1/3 bg-base-200 cursor-pointer" @click="connectArconnect">
                     <figure>
@@ -11,7 +11,7 @@
                             alt="ArConnect" height="200" />
                     </figure>
                     <div class="card-body w-full flex bg-neutral">
-                        <h2 class="card-title w-full block text-center">ArConnect</h2>
+                        <h2 class="card-title w-full block text-center font-mono">ArConnect</h2>
                     </div>
                 </div>
                 <!-- ArConnect uses own encryption method, which is not normal RSA encryption and not compatible with most software -->
@@ -21,7 +21,7 @@
                             alt="Arweave.app" width="900" />
                     </figure>
                     <div class="card-body w-full flex bg-neutral">
-                        <h2 class="card-title w-full block text-center">Arweave.app</h2>
+                        <h2 class="card-title w-full block text-center font-mono">Arweave.app</h2>
                     </div>
                 </div>
             </div>
