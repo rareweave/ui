@@ -14,7 +14,7 @@
                     <div class="relative flex justify-around mt-8 mb-8 flex-col md:flex-row md:flex-wrap ">
                         <NuxtLink to="/explore" class="m-2 max-w-[15rem] w-full md:w-auto md:max-w-full mx-auto md:mx-2">
                             <awesome-button :nonBtn="true">
-                                Explore NFTs
+                                Explore the market
                             </awesome-button>
                         </NuxtLink>
                         <a href="#howto">

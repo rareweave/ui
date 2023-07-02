@@ -1,6 +1,6 @@
 <template>
     <div v-if="nonBtn"
-        class="btn flex btn-lg font-bold font-mono rounded-lg min-h-0 h-auto p-[1px] px-[1px] hover:shadow-lg hover:drop-shadow-sm transform-style-[preserve-3d]"
+        class="btn flex btn-lg font-bold rounded-lg min-h-0 h-auto p-[1px] px-[1px] hover:shadow-lg hover:drop-shadow-sm transform-style-[preserve-3d]"
     >
         <span
             class="relative w-full py-2 px-4 inline-flex flex-row items-center justify-center h-full bg-[rgba(12,12,12,0.95)] rounded-md min-h-full up">
@@ -8,7 +8,7 @@
         </span>
     </div>
     <button v-else
-        class="btn flex btn-lg font-bold font-mono rounded-lg min-h-0 h-auto p-[1px] px-[1px] hover:shadow-lg hover:drop-shadow-sm transform-style-[preserve-3d] appearance-none"
+        class="btn flex btn-lg font-bold rounded-lg min-h-0 h-auto p-[1px] px-[1px] hover:shadow-lg hover:drop-shadow-sm transform-style-[preserve-3d] appearance-none"
     >
         <span
             class="relative w-full py-2 px-4 inline-flex flex-row items-center justify-center h-full bg-[rgba(12,12,12,0.95)] rounded-md min-h-full">
