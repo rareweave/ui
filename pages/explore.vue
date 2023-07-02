@@ -237,8 +237,7 @@
 import { ref, onMounted } from "vue";
 import NftCard from "../components/NftCard.vue";
 import NftRow from "../components/NftRow.vue";
-import { useNfts, useCollections, useIsLoading } from "../composables/useState";
-import Api from "../plugins/prophet";
+import { useIsLoading } from "../composables/useState";
 import debounce from "lodash.debounce";
 
 const nfts = ref(
@@ -250,9 +249,12 @@ const nfts = ref(
   )
 );
 
+console.log(nfts.value[5].state);
+
 const isLoading = useIsLoading();
 
 // Hard coded temp
+
 const rarifiedCollections = ref([
   {
     contractTxId: `2CDW9_X9fjJEHiC4ibvtKOrRot-eIQp2F3TyrHwxNtA`,
@@ -335,10 +337,14 @@ async function refreshResults() {
           searchInput.value
             ? "((state.description~variables.search)|(state.name~variables.search))"
             : "1"
+        }${filter.value ? "&(state.price≥variables.minPrice)" : ""}${
+          filter.value ? "&(state.price≤variables.maxPrice)" : ""
         }`,
         variables: {
           search: searchInput.value,
           forSale: forSaleOnly.value,
+          minPrice: filter.value.minPrice * 1e12,
+          maxPrice: filter.value.maxPrice * 1e12,
         },
       },
     }
