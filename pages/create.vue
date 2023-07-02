@@ -28,7 +28,7 @@
           <span
             v-if="!imageObjectUrl" 
           >
-            <img src="file-image.png" class="w-16 h-16" />
+            <img src="upload.png" class="w-16 h-16" />
           </span>
           <template 
             v-else
