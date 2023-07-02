@@ -7,7 +7,7 @@
                     <h1 class="text-white text-2xl lg:text-5xl font-semibold justify-center text-center">
                         A liquid market on <br />Arweave
                     </h1>
-                    <p class="flex justify-center text-center mt-8">
+                    <p class="flex justify-center text-center mt-8 text-lg">
                         Here you can find the most amazing NFTs on the Arweave blockchain and easily trade them with a price
                         of just few gold ounces.
                     </p>
@@ -33,7 +33,7 @@
             <h2 class="text-white text-left max-w-[85vw] text-3xl font-semibold mt-16 p-2">
                 Explore the <span class="Amazing--br font-bold">marketplace</span>
             </h2>
-            <p class="max-w-[85vw] text-1xl my-4 p-2">
+            <p class="max-w-[85vw] text-lg my-4 p-2">
                 In the market you will find our curated collections and the different NFTs that are available for sale.
                 Our powerful filters and sorting methods will help you find the perfect NFT for your collection.
                 As the marketplace keeps growing, our algorithms will be updated to bring you the best experience possible,

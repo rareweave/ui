@@ -17,10 +17,10 @@
                     <h4 class="mt-8 mx-0 mb-4 text-2xl font-bold text-white whitespace-nowrap">
                         {{ step.title }}
                     </h4>
-                    <p class="mb-4">
+                    <p class="mb-4 text-lg">
                         {{ step.description }}
                     </p>
-                    <NuxtLink class="mt-auto" v-if="step.button" :to="step.button.link">
+                    <NuxtLink class="mt-6" v-if="step.button" :to="step.button.link">
                         <awesome-button :nonBtn="true">
                             {{ step.button.title }}
                         </awesome-button>

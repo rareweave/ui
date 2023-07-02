@@ -5,7 +5,7 @@
                 <h2 class="text-white text-left max-w-[85vw] text-3xl font-semibold p-2">
                     Low costs for minting your own <span class="Amazing--green font-bold">NFT collection</span>
                 </h2>
-                <p class="max-w-[85vw] text-1xl my-4 p-2">
+                <p class="max-w-[85vw] text-1xl my-4 p-2 text-lg">
                     The cost of minting NFTs on RareWeave depend on the storage rates of the Arweave network.
                     Pay once, store forever. Currently the RareWeave market does not charge any additional fees.
                     <span>Please note that this policy is most likely to change in the near future, to discourage spamming
@@ -36,7 +36,7 @@
             </div>
             <div
                 class="relative flex flex-col justify-center items-center w-[calc(100% - var(--page-spacing) * 2)] h-full my-16 mx-auto max-w-[85vw] --observe">
-                <p class="my-4">
+                <p class="my-4 text-lg">
                     Calculate the cost of minting your own NFT collection.
                 </p>
                 <div

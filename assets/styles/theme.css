@@ -24,10 +24,6 @@
     --page-height: calc((100vh) - var(--nav-height) - var(--filter-height) - var(--filter-padding) - var(--footer-height));
 
     --content-width: calc((100%) - var(--page-spacing) * 2);
-    
-    --font-primary: 'Noto Sans', sans-serif;
-    /* --font-secondary: 'Noto Sans Mono', monospace; */
-    --font-secondary: 'Iosevka Aile', monospace;
 }
 
 /* Structural components */
@@ -38,9 +34,9 @@
             rgba(0, 2, 5, 0.96));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: var(--font-secondary);
     overflow-x: hidden !important;
     overflow-y: scroll !important;
+    @apply font-mono;
 }
 
 input,
