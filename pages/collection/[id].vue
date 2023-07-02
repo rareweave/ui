@@ -60,11 +60,17 @@ let collectionId = useRoute().params.id || useRoute().hash.slice(1);
 let state = ref(
   (await $fetch("https://glome.rareweave.store/state/" + collectionId))
 );
-
+console.log(b64urlEncode(`id⊂${JSON.stringify(state.value.items)}`))
 let nfts = ref(
   await $fetch(
-    `https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true&filterScript=` +
-    b64urlEncode(`id⊂${JSON.stringify(state.value.items)}`)
+    `https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true`, {
+    method: "POST", body: {
+      filterScript: `id⊂variables.ids`,
+      variables: {
+        ids: state.value.items
+      }
+    }
+  }
   )
 );
 let searchCondition = ref("");
@@ -98,9 +104,15 @@ let nftContract = account.value
     waitForConfirmation: false,
   });
 async function refreshResults() {
-  nfts.value = await $fetch(
-    `https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true&filterScript=` +
-    b64urlEncode(`id⊂${JSON.stringify(state.value.items)}`)
+  await $fetch(
+    `https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true`, {
+    method: "POST", body: {
+      filterScript: `id⊂variables.ids`,
+      variables: {
+        ids: state.value.items
+      }
+    }
+  }
   )
 }
 async function add() {
