@@ -58,7 +58,7 @@ onMounted(async () => {
     $fetch(`https://glome.rareweave.store/contracts-under-code/mhbnvFZFgAEjiP-islmBgox8_qD70xNcR1CCcNPo3ps?expandStates=true&limit=10`, {
         method: "POST",
         body: {
-            sortScript: `("len"!firstContract.state.items)-("len"!secondContract.state.items)`,
+            sortScript: `secondContract.creationTime-firstContract.creationTime`,
             filterScript: `"type"!state.name="string"&("len"!state.items>3)`
         }
     }
