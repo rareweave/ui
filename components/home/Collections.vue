@@ -4,7 +4,7 @@
 
             <div class="relative flex flex-col justify-evenly w-full items-start h-full  mx-auto">
                 <h2 class="text-white text-center w-full text-4xl font-semibold font-mono p-2 Amazing--red">
-                    Top collections
+                    New collections
                 </h2>
                 <p class="text-1xl my-4 p-2 text-center w-full">
                     Explore recently created collections on the RareWeave market.
