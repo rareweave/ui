@@ -40,10 +40,9 @@
                     Calculate the cost of minting your own NFT collection.
                 </p>
                 <div
-                    class="relative flex flex-row flex-wrap justify-between items-center max-w-[820px] rounded-3xl bg-[rgba(17,23,32,1)]">
-                    <div
-                        class="relative flex flex-col justify-center items-start flex-[0.75_0.75_0px] h-auto m-4 min-w-[286px]">
-                        <h4 class="mx-8 mt-8 mb-4 text-3xl font-semibold text-white">
+                    class="relative flex flex-row flex-wrap justify-start items-center max-w-[820px] rounded-3xl bg-[rgba(17,23,32,1)]">
+                    <div class="relative flex flex-col justify-start items-start flex-[0.75_0.75_0px] h-auto m-4 min-w-[286px]">
+                        <h4 class="m-8 text-3xl font-semibold text-white">
                             Arweave ${{ rates.arweave?.usd?.toFixed(2) }}
                         </h4>
                         <p class="m-8 mt-2">
@@ -53,10 +52,10 @@
                         </p>
                     </div>
                     <form
-                        class="relative flex flex-col justify-evenly items-stretch flex-1 h-auto min-h-[168px] my-8 border-l-2 border-solid border-[rgba(255,255,255,0.125)]"
+                        class="relative flex flex-col justify-start items-stretch flex-1 h-full min-h-[168px] m-4 border-l-2 border-solid border-[rgba(255,255,255,0.125)]"
                         autocomplete="off" @submit.stop.prevent="prevent">
-                        <h4 class="m-8 text-2xl">
-                            <span class="Amazing-text">Estimate collection cost</span>
+                        <h4 class="m-8 text-3xl">
+                            <span class="Amazing-text">Estimate mint cost</span>
                         </h4>
                         <div class="Row">
                             <label class="relative flex-1 flex">
