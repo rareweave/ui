@@ -225,14 +225,6 @@
           </div>
         </div>
       </div>
-      <div class="MenuSection">
-        <div
-          class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
-        >
-          <h2 class="Amazing--br">Made with love</h2>
-          <span></span>
-        </div>
-      </div>
     </div>
     <div class="NFTs">
       <div v-if="isLoading.nfts" class="Blocks__loader">
