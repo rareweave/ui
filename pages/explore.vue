@@ -4,6 +4,7 @@
   >
     <div class="Spacer"></div>
     <div class="Topbar">
+      <div class="Current">items: {{ nfts.length }}</div>
       <div class="Search">
         <span class="InputWrapper">
           <input
