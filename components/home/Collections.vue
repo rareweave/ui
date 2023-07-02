@@ -55,7 +55,7 @@ const children = ref([]), // any nft that is a child of a collection
 onMounted(async () => {
     if (!arweave) initArweave();
 
-    $fetch(`http://glome.rareweave.store/contracts-under-code/mhbnvFZFgAEjiP-islmBgox8_qD70xNcR1CCcNPo3ps?expandStates=true&limit=10`, {
+    $fetch(`https://glome.rareweave.store/contracts-under-code/mhbnvFZFgAEjiP-islmBgox8_qD70xNcR1CCcNPo3ps?expandStates=true&limit=10`, {
         method: "POST",
         body: {
             sortScript: `("len"!firstContract.state.items)-("len"!secondContract.state.items)`,
