@@ -241,6 +241,8 @@ import NftRow from "../components/NftRow.vue";
 import { useIsLoading } from "../composables/useState";
 import debounce from "lodash.debounce";
 
+const isLoading = useIsLoading();
+
 const nfts = ref(
   await $fetch(
     "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
@@ -249,8 +251,6 @@ const nfts = ref(
     }
   )
 );
-
-const isLoading = useIsLoading();
 
 // Hard coded temp
 
@@ -312,15 +312,15 @@ const filter = ref({
   maxPrice: 0,
 });
 
-// Not used just nfts for now
-const searchType = ref("");
-
 const debouncedWatch = debounce(() => {
   searchCondition = searchInput;
   refreshResults();
 }, 500);
 
 watch(searchInput, debouncedWatch);
+
+// Not used just nfts for now
+const searchType = ref("");
 
 async function refreshResults() {
   nfts.value = await $fetch(
