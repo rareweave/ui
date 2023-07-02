@@ -249,8 +249,6 @@ const nfts = ref(
   )
 );
 
-console.log(nfts.value[5].state);
-
 const isLoading = useIsLoading();
 
 // Hard coded temp
