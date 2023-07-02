@@ -336,8 +336,8 @@ async function refreshResults() {
           searchInput.value
             ? "((state.description~variables.search)|(state.name~variables.search))"
             : "1"
-        }${filter.value ? "&(state.price≥variables.minPrice)" : ""}${
-          filter.value ? "&(state.price≤variables.maxPrice)" : ""
+        }${filter.value > 0 ? "&(state.price≥variables.minPrice)" : ""}${
+          filter.value > 0 ? "&(state.price≤variables.maxPrice)" : ""
         }`,
         variables: {
           search: searchInput.value,
