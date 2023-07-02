@@ -37,6 +37,7 @@
             rgba(0, 2, 5, 0.96));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-secondary);
     overflow-x: hidden !important;
     overflow-y: scroll !important;
 }
