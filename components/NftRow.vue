@@ -1,44 +1,29 @@
 <template>
   <div class="Component">
-    <NuxtLink 
-      :to="'/nft/' + nft.contractTxId"
-      class="Link"
-    >
-      <Graphic 
-        :nft="nft"
-      />
+    <NuxtLink :to="'/nft/' + nft.id" class="Link">
+      <Graphic :nft="nft" />
       <div class="Info">
-        <label class="title">
-          Name:
-        </label>
+        <label class="title"> Name: </label>
         <span class="title">
           {{ nft.state.name }}
         </span>
 
-        <label class="description">
-          Description:
-        </label>
+        <label class="description"> Description: </label>
         <span class="description">
           {{ nft.state.description }}
         </span>
 
-        <label class="owner">
-          Owner:
-        </label>
+        <label class="owner"> Owner: </label>
         <span class="owner">
-          {{ nft.owner.ansName || nft.owner.address }}
+          {{ nft.state.owner }}
         </span>
-        
-        <label class="minter">
-          Minter:
-        </label>
+
+        <label class="minter"> Minter: </label>
         <span class="minter">
           {{ nft.state.minter }}
         </span>
 
-        <label class="forsale">
-          For Sale:
-        </label>
+        <label class="forsale"> For Sale: </label>
         <span class="forsale">
           {{ nft.state.forSale ? "Yes" : "No" }}
         </span>
@@ -47,19 +32,20 @@
           {{ nft.state.listingDenom || "AR" }}
         </label>
         <span class="price">
-          {{ nft.state.price > 0 ? (nft.state.price / 1e12).toFixed(2)+" ("+(nft.state.price)+" winston)" : "free" }}
+          {{
+            nft.state.price > 0
+              ? (nft.state.price / 1e12).toFixed(2) +
+                " (" +
+                nft.state.price +
+                " winston)"
+              : "free"
+          }}
         </span>
 
-        <label class="royalty">
-          Royalty:
-        </label>
-        <span class="royalty">
-          {{ nft.state.royalty }} %
-        </span>
-        
-        <label class="reservationBlockheight">
-          Reservation bh:
-        </label>
+        <label class="royalty"> Royalty: </label>
+        <span class="royalty"> {{ nft.state.royalty }} % </span>
+
+        <label class="reservationBlockheight"> Reservation bh: </label>
         <span class="reservationBlockheight">
           {{ nft.state.reservationBlockheight }}
         </span>
@@ -69,9 +55,7 @@
 </template>
 <script setup>
 import Graphic from "./Graphic.vue";
-const { nft } = defineProps([
-  "nft"
-]);
+const { nft } = defineProps(["nft"]);
 </script>
 <style scoped>
 .Component {
@@ -79,7 +63,7 @@ const { nft } = defineProps([
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  background: rgba(17,23,32,.5);
+  background: rgba(17, 23, 32, 0.5);
   width: 100%;
 }
 
@@ -104,7 +88,6 @@ const { nft } = defineProps([
   align-items: center;
   width: 316px;
   aspect-ratio: 1/1;
-  
 }
 
 .Info {

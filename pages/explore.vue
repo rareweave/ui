@@ -4,24 +4,6 @@
   >
     <div class="Spacer"></div>
     <div class="Topbar">
-      <div class="Forsale">
-        <button
-          :class="{ active: forSaleOnly === false }"
-          @click="
-            forSaleOnly = false;
-            searchType !== '' ? searchNFTs() : getNFTs();
-          "
-        >
-          Show all
-        </button>
-        <button
-          :class="{ active: forSaleOnly === true }"
-          @click="filterForSale(nfts)"
-        >
-          For sale only
-        </button>
-        <div class="Current">items: {{ nfts.result?.length }}</div>
-      </div>
       <div class="Search">
         <span class="InputWrapper">
           <input
@@ -77,11 +59,11 @@
               <button
                 class="V1__button"
                 @click="
-                  searchCondition = '';
                   searchType = '';
+                  searchInput = '';
                   forSaleOnly = false;
                   filter = { minPrice: 0, maxPrice: 0 };
-                  getNFTs();
+                  refreshResults();
                 "
               >
                 All
@@ -114,7 +96,6 @@
                 @click="
                   searchCondition = rarifiedCollection.contractTxId;
                   searchType = 'collection';
-                  searchNFTs();
                   activate($event);
                 "
               >
@@ -159,14 +140,20 @@
             </div>
           </div>
           <div class="MenuOption">
+            <div class="Row">
+              <label class="cursor-pointer label">
+                <input
+                  type="checkbox"
+                  v-model="forSaleOnly"
+                  class="checkbox checkbox-warning"
+                />
+                <span class="label-text ml-2">For sale only</span>
+              </label>
+            </div>
+          </div>
+          <div class="MenuOption">
             <div class="FilterButton">
-              <button
-                class="MenuButton"
-                @click="
-                  forSaleOnly = true;
-                  searchNFTs();
-                "
-              >
+              <button class="MenuButton" @click="refreshResults()">
                 Apply
               </button>
               <button
@@ -174,7 +161,8 @@
                 @click="
                   filter = { minPrice: 0, maxPrice: 0 };
                   forSaleOnly = false;
-                  searchNFTs();
+                  forSaleOnly = false;
+                  refreshResults();
                 "
               >
                 Remove filter
@@ -183,66 +171,63 @@
           </div>
         </div>
       </div>
-      <div class="MenuSection">
-        <div
-          class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
-        >
-          <h2 class="Amazing--br">Collection detection</h2>
-          <span></span>
-        </div>
-        <div v-if="isLoading.collections" class="Blocks__loader">
-          <span></span>
-        </div>
-        <div
-          v-else-if="collections.result?.length > 0"
-          class="MenuOptions"
-          v-for="(collection, index) in [
-            ...new Set(
-              collections.result?.filter(
-                (collection) =>
-                  collection.state.name !== undefined &&
-                  collection.state.name !== ''
-              )
-            ),
-          ]"
-          :key="collection.contractTxId"
-        >
-          <div class="MenuOption highlite">
-            <div class="V1__button_wrapper">
-              <span class="V1__button_decoration"></span>
-              <button
-                class="V1__button"
-                @click="
-                  searchCondition = collection.contractTxId;
-                  searchType = 'collection';
-                  searchNFTs();
-                  activate($event);
-                "
-              >
-                {{ collection.state.name }}
-              </button>
+      <!--Bring back later probably, just glome wont support this for now-->
+      <!-- <div class="MenuSection">
+          <div
+            class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
+          >
+            <h2 class="Amazing--br">Collection detection</h2>
+            <span></span>
+          </div>
+          <div v-if="isLoading.collections" class="Blocks__loader">
+            <span></span>
+          </div>
+          <div
+            v-else-if="collections.result?.length > 0"
+            class="MenuOptions"
+            v-for="(collection, index) in [
+              ...new Set(
+                collections.result?.filter(
+                  (collection) =>
+                    collection.state.name !== undefined &&
+                    collection.state.name !== ''
+                )
+              ),
+            ]"
+            :key="collection.contractTxId"
+          >
+            <div class="MenuOption highlite">
+              <div class="V1__button_wrapper">
+                <span class="V1__button_decoration"></span>
+                <button
+                  class="V1__button"
+                  @click="
+                    searchCondition = collection.contractTxId;
+                    searchType = 'collection';
+                    searchNFTs();
+                    activate($event);
+                  "
+                >
+                  {{ collection.state.name }}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div> -->
     </div>
     <div class="NFTs">
       <div v-if="isLoading.nfts" class="Blocks__loader">
         <span></span>
       </div>
-      <div v-else-if="nfts.result?.length === 0" class="Empty">
+      <div v-else-if="nfts.length === 0" class="Empty">
         <span class="Empty__nfts"></span>
         <h2>No NFTs found</h2>
       </div>
       <div v-else v-if="view === 'grid'" class="Showcase">
-        <NftCard
-          v-for="nft in nfts.result"
-          :key="nft.contractTxId"
-          :nft="nft"
-        />
+        <NftCard v-for="nft in nfts" :key="nft.id" :nft="nft" />
       </div>
       <div v-if="!isLoading.nfts && view === 'list'" class="Details">
-        <NftRow v-for="nft in nfts.result" :key="nft.contractTxId" :nft="nft" />
+        <NftRow v-for="nft in nfts" :key="nft.id" :nft="nft" />
       </div>
     </div>
   </div>
@@ -256,7 +241,14 @@ import { useNfts, useCollections, useIsLoading } from "../composables/useState";
 import Api from "../plugins/prophet";
 import debounce from "lodash.debounce";
 
-const nfts = useNfts();
+const nfts = ref(
+  await $fetch(
+    "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
+    {
+      method: "POST",
+    }
+  )
+);
 const collections = useCollections();
 const isLoading = useIsLoading();
 
@@ -311,13 +303,15 @@ const rarifiedCollections = ref([
 
 const view = ref("grid");
 let searchCondition = ref("");
-const searchType = ref("");
 const forSaleOnly = ref(false);
 const searchInput = ref("");
 
+// Not used just nfts for now
+const searchType = ref("");
+
 const debouncedWatch = debounce(() => {
   searchCondition = searchInput;
-  searchNFTs();
+  refreshResults();
 }, 500);
 
 watch(searchInput, debouncedWatch);
@@ -326,6 +320,30 @@ const filter = ref({
   minPrice: 0,
   maxPrice: 0,
 });
+
+async function refreshResults() {
+  console.log();
+  console.log(searchInput.value);
+  nfts.value = await $fetch(
+    "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
+    {
+      method: "POST",
+      body: {
+        filterScript: `${
+          forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
+        }${
+          searchInput.value
+            ? "((state.description~variables.search)|(state.name~variables.search))"
+            : "1"
+        }`,
+        variables: {
+          search: searchInput.value,
+          forSale: forSaleOnly.value,
+        },
+      },
+    }
+  );
+}
 
 // onMounted(async () => {
 //   if (nfts.value.length === 0) getNFTs();
