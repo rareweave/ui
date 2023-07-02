@@ -2,7 +2,7 @@
     <div class="_Section Howto flex flex-col items-center justify-center w-full flex-1 mx-auto py-10 max-w-[1740px]"
         id="howto">
         <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
-            <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold font-mono">
+            <h2 class="text-white text-left max-w-[85vw] text-3xl font-semibold">
                 Create and Sell
             </h2>
             <div class="flex flex-wrap justify-between items-stretch mt-20 w-full h-full preserve-3d">
@@ -14,13 +14,13 @@
                             <img :src="step.icon" :alt="['no-', step.no].join('')" width="48" height="48" class="Image" />
                         </span>
                     </div>
-                    <h4 class="mt-8 mx-0 mb-4 text-2xl font-bold font-mono text-white whitespace-nowrap">
+                    <h4 class="mt-8 mx-0 mb-4 text-2xl font-bold text-white whitespace-nowrap">
                         {{ step.title }}
                     </h4>
-                    <p class="mb-4">
+                    <p class="mb-4 text-lg">
                         {{ step.description }}
                     </p>
-                    <NuxtLink class="mt-auto" v-if="step.button" :to="step.button.link">
+                    <NuxtLink class="mt-6" v-if="step.button" :to="step.button.link">
                         <awesome-button :nonBtn="true">
                             {{ step.button.title }}
                         </awesome-button>

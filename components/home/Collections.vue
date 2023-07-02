@@ -4,10 +4,10 @@
 
             <div class="relative flex flex-col justify-evenly w-full items-start h-full  mx-auto">
                 <h2 class="text-white text-center w-full text-4xl font-semibold font-mono p-2 Amazing--red">
-                    Top collections
+                    New collections
                 </h2>
                 <p class="text-1xl my-4 p-2 text-center w-full">
-                    Explore the most popular collections on the RareWeave market.
+                    Explore recently created collections on the RareWeave market.
                 </p>
             </div>
             <div class="Rarified --observe mt-0 max-w-[85vw]">
@@ -16,7 +16,7 @@
                         Collection
                     </span>
                     <span>
-                        Quantity / For sale
+                        Quantity
                     </span>
 
 
@@ -58,7 +58,7 @@ onMounted(async () => {
     $fetch(`https://glome.rareweave.store/contracts-under-code/mhbnvFZFgAEjiP-islmBgox8_qD70xNcR1CCcNPo3ps?expandStates=true&limit=10`, {
         method: "POST",
         body: {
-            sortScript: `("len"!firstContract.state.items)-("len"!secondContract.state.items)`,
+            sortScript: `secondContract.creationTime-firstContract.creationTime`,
             filterScript: `"type"!state.name="string"&("len"!state.items>3)`
         }
     }

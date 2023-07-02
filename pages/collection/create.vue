@@ -16,7 +16,7 @@
         <span class="label-text">Describe your Collection</span>
       </label>
 
-      <textarea placeholder="Super Awesome NFT's!" v-model="description"
+      <textarea placeholder="Super Awesome NFTs!" v-model="description"
         class="textarea textarea-bordered textarea-xs w-full max-w-xs"></textarea>
 
       <label class="label">
@@ -54,7 +54,7 @@ import setArweave from "../../plugins/arweave";
 
 const arweave = useArweave().value;
 if (!arweave)
-    setArweave();
+  setArweave();
 
 const account = useAccount();
 const wallet = useWallet();
