@@ -1,10 +1,10 @@
 <template>
   <div class="Component">
 
-    <NuxtLink :to="'/nft/' + (nft.contractTxId || nft.id)" class="Card">
+    <NuxtLink :to="'/nft/' + (nft.id)" class="Card">
       <Graphic :nft="nft" />
       <div class="Buttons">
-        <button v-if="disposable" @click.prevent.stop="$emit('remove-item', (nft.contractTxId || nft.id))"
+        <button v-if="disposable" @click.prevent.stop="$emit('remove-item', (nft.id))"
           class="nft-button">
           ✕
         </button>
@@ -27,10 +27,10 @@
           </span>
         </div>
         <div class="Row">
-          <span class="Nft Owner Detail" v-if="nft.owner">
+          <span class="Nft Owner Detail" v-if="nft.state.owner">
             Owned:&nbsp;
-            <NuxtLink :to="'/profile/' + nft.owner.address" class="Nft Link">
-              {{ nft.owner.ansName || nft.owner.account?.handle }}
+            <NuxtLink :to="'/profile/' + nft.state.owner" class="Nft Link">
+              {{ nft.state.owner }}
             </NuxtLink>
           </span>
         </div>
