@@ -307,6 +307,11 @@ let searchCondition = ref("");
 const forSaleOnly = ref(false);
 const searchInput = ref("");
 
+const filter = ref({
+  minPrice: 0,
+  maxPrice: 0,
+});
+
 // Not used just nfts for now
 const searchType = ref("");
 
@@ -317,14 +322,7 @@ const debouncedWatch = debounce(() => {
 
 watch(searchInput, debouncedWatch);
 
-const filter = ref({
-  minPrice: 0,
-  maxPrice: 0,
-});
-
 async function refreshResults() {
-  console.log();
-  console.log(searchInput.value);
   nfts.value = await $fetch(
     "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
     {
