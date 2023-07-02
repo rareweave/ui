@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center justify-start w-full flex-1 mx-auto py-10"
-        :style="{ background: `radial-gradient(rgba(0,0,0,.75), rgba(0,0,0,.75)), url('${centerfoldImage}')`, 'backgroundPosition': 'center', 'backgroundSize': 'cover', 'backgroundRepeat': 'no-repeat' }">
+        :style="{ background: `radial-gradient(rgba(0,0,0,.75), rgba(0,0,0,.75)), url('/centerfold-images/1.jpg')`, 'backgroundPosition': 'center', 'backgroundSize': 'cover', 'backgroundRepeat': 'no-repeat' }">
         <div class="relative flex flex-wrap justify-start items-start h-full mt-32">
             <div class="Column flex-row justify-start align-center w-100 max-w-[600px]">
                 <div class="Header max-w-[85vw]">
