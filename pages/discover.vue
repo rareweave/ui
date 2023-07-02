@@ -42,12 +42,24 @@ let searchCondition = ref("");
 let forSaleOnly = ref(false);
 
 async function refreshResults() {
+  console.log();
+  console.log(searchInput.value);
   nfts.value = await $fetch(
     "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
     {
       method: "POST",
       body: {
-        filterScript: `state.forSale=${forSaleOnly.value}`,
+        filterScript: `${
+          forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
+        }${
+          searchInput.value
+            ? "((state.description~variables.search)|(state.name~variables.search))"
+            : "1"
+        }`,
+        variables: {
+          search: searchCondition.value,
+          forSale: forSaleOnly.value,
+        },
       },
     }
   );
