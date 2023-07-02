@@ -252,6 +252,8 @@ const nfts = ref(
   )
 );
 
+console.log(nfts.value[3])
+
 // Hard coded temp
 
 const rarifiedCollections = ref([
