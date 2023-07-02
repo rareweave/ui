@@ -24,6 +24,9 @@
     --page-height: calc((100vh) - var(--nav-height) - var(--filter-height) - var(--filter-padding) - var(--footer-height));
 
     --content-width: calc((100%) - var(--page-spacing) * 2);
+    
+    --font-primary: 'Noto Sans', sans-serif;
+    --font-secondary: 'Iosevka Aile Web', monospace;
 }
 
 /* Structural components */
@@ -36,7 +39,6 @@
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden !important;
     overflow-y: scroll !important;
-    @apply font-mono;
 }
 
 input,
