@@ -2,12 +2,12 @@
   <div class="relative flex flex-col justify-start items-center h-auto w-max mx-auto text-left">
   <form 
     v-if="!uploading" 
-    class="h-full-navbared flex-1 flex flex-col items-start justify-center bg-[rgba(17,23,32,.2)] rounded-[2.5rem] overflow-hidden mt-16 mb-32 pb-24 "
+    class="h-full-navbared flex-1 flex flex-col items-start justify-center bg-[rgba(17,23,32,.2)] rounded-[2.5rem] overflow-hidden mt-8 mb-32 pb-24 "
     style="box-shadow: 0px 1px 2px rgba(0,0,0,.12), 1px 2px 4px rgba(0,0,0,.1), 2px 4px 8px rgba(0,0,0,.09), 3px 6px 12px rgba(0,0,0,.09), -1px -2px 8px rgba(0,0,0,.07);"
     @submit.prevent="mint"
   >
-    <h1 class="text-4xl font-bold flex-1 mt-16 px-16">
-      Create a new <span class="Amazing--green">RareWeave</span> NFT
+    <h1 class="text-3xl font-bold flex-1 mt-16 px-16">
+      Create a new <span class="rareweave-font">RareWeave</span> NFT
     </h1>
 
     <div class="flex flex-col items-start justify-center mt-16 px-16">

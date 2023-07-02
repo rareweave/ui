@@ -26,8 +26,8 @@
     --content-width: calc((100%) - var(--page-spacing) * 2);
     
     --font-primary: 'Noto Sans', sans-serif;
-    --font-secondary: 'Noto Sans Mono', monospace;
-    --font-secondary: 'Losevka Aile', monospace;
+    /* --font-secondary: 'Noto Sans Mono', monospace; */
+    --font-secondary: 'Iosevka Aile', monospace;
 }
 
 /* Structural components */
