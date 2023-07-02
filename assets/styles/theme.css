@@ -1,20 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=ABeeZee&family=Aclonica&family=Arimo&family=Bowlby+One+SC&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Merriweather+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Noto+Sans+Mono:wght@100;200;300;400;500;600;700;800;900&family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Sedgwick+Ave+Display&family=Tilt+Prism&family=Wallpoet&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=ABeeZee&family=Aclonica&family=Arimo&family=Bowlby+One+SC&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Merriweather+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Noto+Sans+Mono:wght@100;200;300;400;500;600;700;800;900&family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Sedgwick+Ave+Display&family=Sigmar&family=Sora:wght@100;200;300;400;500;600;700;800&family=Tilt+Prism&family=Wallpoet&display=swap');
 :root {
     --bg-primary: rgba(17, 23, 38, .5);
-
     --bg-dropdown: rgba(17, 23, 38, 1);
-
     --color-primary: rgb(216, 221, 231);
     --text-primary: rgba(216, 221, 231, 1);
-
     --text-contrast-primary: rgba(17, 23, 38, 1);
 
-    --font-primary: 'Merriweather Sans', sans-serif;
-    --font-secondary: 'Noto Sans Mono', monospace;
-
+    
     --card-primary: rgba(255, 255, 255, 0.1);
-
+    
     --form-bg-primary: rgba(48, 56, 63, 0.5);
 
     --border-primary: 1px solid rgba(143, 156, 172, .5);
@@ -30,8 +24,9 @@
     --page-height: calc((100vh) - var(--nav-height) - var(--filter-height) - var(--filter-padding) - var(--footer-height));
 
     --content-width: calc((100%) - var(--page-spacing) * 2);
-
-    --title-weight: 900;
+    
+    --font-primary: 'Noto Sans', sans-serif;
+    --font-secondary: 'Noto Sans Mono', monospace;
 }
 
 /* Structural components */
@@ -43,125 +38,23 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden !important;
-    overflow-y: auto !important;
+    overflow-y: scroll !important;
 }
 
 input,
 textarea,
 select,
 button {
-    background: rgba(48, 56, 63, 0.5)
+    @apply bg-[rgba(48,56,63,0.5)];
 }
 
-p {
+h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-secondary) !important;
 }
 
-/* .Layout {
-    width: calc((100%) - var(--page-spacing) * 2);
-} */
-
-.Title,
-.Desc {
-    /* max-width: 85vw; */
-
-    @apply max-w-[85vw];
+p {
+    font-family: var(--font-secondary);
 }
-
-.Title {
-    /* color: rgba(251, 250, 255, 1);
-    text-align: center;
-    white-space: nowrap;
-    width: max-content; */
-
-    @apply text-white text-left whitespace-nowrap max-w-[85vw];
-}
-
-h1.Title {
-    /* font-size: 28pt;
-    font-weight: 600; */
-
-    @apply text-4xl font-semibold;
-}
-
-h2.Title {
-    /* font-size: 24pt;
-    font-weight: 600; */
-
-    @apply text-3xl font-semibold;
-}
-
-.Button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
-    background: rgb(129, 249, 179);
-    background: url(./assets/logo-01.png);
-    background-repeat: no-repeat;
-    background-position: bottom right;
-    color: var(--bg-dropdown);
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-    /* margin-right: 1rem;
-    margin-top: .5rem; */
-}
-
-.Button:hover {
-    background-position: bottom center;
-    /* box-shadow:
-        0px 0px 1px rgba(34, 255, 126, 0.2),
-        1px 0px 2px rgba(34, 255, 133, 0.25),
-        2px 0px 4px rgba(34, 255, 200, 0.2),
-        4px 0px 8px rgba(34, 255, 200, 0.2),
-        8px 0px 16px rgba(34, 255, 200, 0.2),
-        -1px 0px 2px rgba(34, 255, 200, 0.2),
-        -2px 0px 4px rgba(34, 255, 200, 0.2),
-        -4px 0px 8px rgba(34, 255, 200, 0.2),
-        -8px 0px 16px rgba(34, 255, 200, 0.2); */
-}
-
-.Button.--primary {
-    background: var(--bg-dropdown);
-    color: var(--text-primary);
-    position: relative;
-    border: 1px solid rgb(129, 249, 179);
-}
-
-.Button.--primary::before {
-    content: '';
-    position: absolute;
-    top: -3%;
-    left: -1%;
-    width: 102%;
-    height: 105%;
-    background: radial-gradient(rgba(34, 255, 200, 0.952),
-            rgba(12, 255, 141, 1),
-            rgba(42, 255, 124, 1),
-            rgba(34, 255, 200, 0.952));
-    border-radius: 0.5rem;
-    transition: all 0.01s ease-in-out;
-    z-index: -1;
-}
-
-.Button.--primary:hover {
-    box-shadow:
-        0px 0px 1px rgba(34, 255, 126, 0.2),
-        1px 0px 2px rgba(34, 255, 133, 0.25),
-        2px 0px 4px rgba(34, 255, 200, 0.2),
-        4px 0px 8px rgba(34, 255, 200, 0.2),
-        8px 0px 16px rgba(34, 255, 200, 0.2),
-        -1px 0px 2px rgba(34, 255, 200, 0.2),
-        -2px 0px 4px rgba(34, 255, 200, 0.2),
-        -4px 0px 8px rgba(34, 255, 200, 0.2),
-        -8px 0px 16px rgba(34, 255, 200, 0.2);
-    background: rgba(0, 0, 0, 0.99);
-}
-
 
 
 /* Amazing Section */
@@ -171,7 +64,6 @@ h2.Title {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-weight: var(--title-weight);
 }
 
 .Amazing--red {
@@ -179,7 +71,6 @@ h2.Title {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-weight: var(--title-weight);
 }
 
 .Amazing--purple {
@@ -187,7 +78,6 @@ h2.Title {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-weight: var(--title-weight);
 }
 
 .Amazing--tl {
@@ -367,14 +257,14 @@ h2.Title {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30px;
-    height: 30px;
-    margin: 0;
+    width: 24px;
+    height: 24px;
+    margin: auto;
     padding: 0;
     box-sizing: border-box;
     background-color: rgba(251, 250, 255, .875);
     color: rgba(17, 23, 32, 1);
-    font-size: 16pt;
+    font-size: 13pt;
     font-weight: 600;
     font-family: 'Arimo', sans-serif;
     border-radius: 50%;
@@ -388,13 +278,13 @@ h2.Title {
 .AR::before {
     content: "";
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 1px;
+    right: 1px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     margin: 0;
     padding: 0;
     box-sizing: border-box;

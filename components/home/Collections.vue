@@ -2,7 +2,7 @@
     <div class="flex flex-col align-start justify-start w-full flex-1 mx-auto py-10 max-w-[1740px]">
         <div class="flex flex-col justify-center items-center h-full mx-0 mt-32">
             <div class="relative flex flex-col justify-evenly items-start w-full max-w-[85vw] h-full my-16 mx-auto">
-                <h2 class="text-white text-left text-4xl font-semibold p-2 Amazing--red">
+                <h2 class="text-center w-full text-3xl text-bold p-2 Amazing--red">
                     Top collections
                 </h2>
                 <p class="text-1xl my-4 p-2 text-center w-full">
@@ -17,7 +17,7 @@
                         Collection
                     </span>
                     <span>
-                        Quantity / For sale
+                        For sale / Total
                     </span>
                     <span>
                         Volume
@@ -41,7 +41,7 @@
                         {{ collection.state.name }}
                     </span>
                     <span> <!-- Total / For sale -->
-                        {{ collection.count }} / {{ collection.forSaleCount }}
+                        {{ collection.forSaleCount }} / {{ collection.count }}
                     </span>
                     <span> <!-- Volume -->
                         {{ arweave.ar.winstonToAr(collection.volume, { decimals: 2 }) }} AR
@@ -160,7 +160,8 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>    .Rarified {
+<style scoped>    
+    .Rarified {
         position: relative;
         display: flex;
         flex-direction: column;

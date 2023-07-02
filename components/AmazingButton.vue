@@ -1,16 +1,18 @@
 <template>
     <div v-if="nonBtn"
-        class="btn flex btn-lg rounded-lg min-h-0 font-bold font-mono h-auto p-[1.25px] px-[1.5px] hover:shadow-lg hover:drop-shadow-sm hover:shadow-orange-700">
+        class="btn flex btn-lg font-bold font-mono rounded-lg min-h-0 h-auto p-[1px] px-[1px] hover:shadow-lg hover:drop-shadow-sm transform-style-[preserve-3d]"
+    >
         <span
-            class="relative w-full p-2 inline-flex flex-row items-center justify-center h-full bg-[rgba(12,12,12,0.95)] rounded-md min-h-full up">
-            <slot />
+            class="relative w-full py-2 px-4 inline-flex flex-row items-center justify-center h-full bg-[rgba(12,12,12,0.95)] rounded-md min-h-full up">
+            <slot></slot>
         </span>
     </div>
     <button v-else
-        class="btn flex btn-lg font-bold font-mono rounded-lg min-h-0 h-auto hover:shadow-lg hover:drop-shadow-sm hover:shadow-orange-700 p-[1.25px] appearance-none px-[1.5px]">
+        class="btn flex btn-lg font-bold font-mono rounded-lg min-h-0 h-auto p-[1px] px-[1px] hover:shadow-lg hover:drop-shadow-sm transform-style-[preserve-3d] appearance-none"
+    >
         <span
-            class="relative w-full p-2 inline-flex flex-row items-center justify-center h-full bg-[rgba(12,12,12,0.95)] rounded-md min-h-full ">
-            <slot />
+            class="relative w-full py-2 px-4 inline-flex flex-row items-center justify-center h-full bg-[rgba(12,12,12,0.95)] rounded-md min-h-full">
+            <slot></slot>
         </span>
     </button>
 </template>
@@ -27,6 +29,26 @@ console.log(nonBtn)
     background-size: 300% 300%;
     animation: amazing-transform 20s ease-in-out infinite;
     text-transform: none;
+}
+
+.btn:hover {
+    box-shadow:
+        0px 0px 1px rgba(0, 0, 0, 0.9),
+        1px 1px 2px rgba(240, 146, 6, 0.175),
+        2px 2px 4px rgba(240, 146, 6, 0.175),
+        4px 4px 12px rgba(240, 146, 6, 0.175),
+        8px 8px 16px rgba(240, 146, 6, 0.175),
+        0px -1px 1px rgba(0, 0, 0, 0.9),
+        -1px -1px 2px rgba(240, 146, 6, 0.175),
+        -2px -2px 4px rgba(240, 146, 6, 0.175),
+        -4px -4px 12px rgba(240, 146, 6, 0.175),
+        -8px -8px 16px rgba(240, 146, 6, 0.175),
+        -8px -8px 24px rgba(240, 146, 6, 0.175),
+        0px 8px 16px rgba(240, 146, 6, 0.175),
+        -8px 0px 16px rgba(240, 146, 6, 0.175),
+        8px -8px 16px rgba(240, 146, 6, 0.175)
+    ;
+    filter: drop-shadow(0px 0px 2px rgba(240, 146, 6, 0.09)) !important;
 }
 
 @keyframes amazing-transform {
