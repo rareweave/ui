@@ -7,7 +7,7 @@
                     Top collections
                 </h2>
                 <p class="text-1xl my-4 p-2 text-center w-full">
-                    Explore the most popular collections on the RareWeave market.
+                    Explore recently created collections on the RareWeave market.
                 </p>
             </div>
             <div class="Rarified --observe mt-0 max-w-[85vw]">
@@ -16,7 +16,7 @@
                         Collection
                     </span>
                     <span>
-                        Quantity / For sale
+                        Quantity
                     </span>
 
 
