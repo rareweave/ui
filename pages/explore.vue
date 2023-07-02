@@ -72,14 +72,14 @@
           </div>
         </div>
       </div>
-      <div class="MenuSection">
+      <!-- <div class="MenuSection">
         <div
           class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
         >
           <h2 class="Amazing--br">Rarified</h2>
           <span></span>
         </div>
-        <div
+         <div
           v-for="(rarifiedCollection, index) in rarifiedCollections"
           class="MenuOptions"
         >
@@ -102,9 +102,9 @@
                 {{ rarifiedCollection.name }}...[{{ rarifiedCollection.count }}]
               </button>
             </div>
-          </div>
+          </div> 
         </div>
-      </div>
+      </div> -->
       <div class="MenuSection">
         <div
           class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
@@ -249,7 +249,7 @@ const nfts = ref(
     }
   )
 );
-const collections = useCollections();
+
 const isLoading = useIsLoading();
 
 // Hard coded temp
