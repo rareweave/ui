@@ -1,11 +1,11 @@
 <template>
-    <div class="relative flex flex-col justify-center items-center w-full max-w-[var(--page-max-width)] mx-auto py-10">
+    <div class="relative flex flex-col justify-center items-center w-full max-w-[1740px] mx-auto py-10">
         <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
             <div class="relative w-full h-full mt-16 max-w-[85vw] mx-auto">
-                <h2 class="text-white text-left max-w-[85vw] text-4xl font-semibold p-2 font-mono">
-                    Low costs for minting your own <span class="Amazing--green">NFT collection</span>
+                <h2 class="text-white text-left max-w-[85vw] text-3xl font-semibold p-2">
+                    Low costs for minting your own <span class="Amazing--green font-bold">NFT collection</span>
                 </h2>
-                <p class="max-w-[85vw] text-1xl my-4 p-2">
+                <p class="max-w-[85vw] text-1xl my-4 p-2 text-lg">
                     The cost of minting NFTs on RareWeave depend on the storage rates of the Arweave network.
                     Pay once, store forever. Currently the RareWeave market does not charge any additional fees.
                     <span>Please note that this policy is most likely to change in the near future, to discourage spamming
@@ -36,14 +36,13 @@
             </div>
             <div
                 class="relative flex flex-col justify-center items-center w-[calc(100% - var(--page-spacing) * 2)] h-full my-16 mx-auto max-w-[85vw] --observe">
-                <p class="my-4">
+                <p class="my-4 text-lg">
                     Calculate the cost of minting your own NFT collection.
                 </p>
                 <div
-                    class="relative flex flex-row flex-wrap justify-between items-center max-w-[820px] rounded-3xl bg-[rgba(17,23,32,1)]">
-                    <div
-                        class="relative flex flex-col justify-center items-start flex-[0.75_0.75_0px] h-auto m-4 min-w-[286px]">
-                        <h4 class="m-8 text-3xl font-semibold font-mono text-white">
+                    class="relative flex flex-row flex-wrap justify-start items-center max-w-[820px] rounded-3xl bg-[rgba(17,23,32,1)]">
+                    <div class="relative flex flex-col justify-start items-start flex-[0.75_0.75_0px] h-auto m-4 min-w-[286px]">
+                        <h4 class="m-8 text-3xl font-semibold text-white">
                             Arweave ${{ rates.arweave?.usd?.toFixed(2) }}
                         </h4>
                         <p class="m-8 mt-2">
@@ -53,10 +52,10 @@
                         </p>
                     </div>
                     <form
-                        class="relative flex flex-col justify-evenly items-stretch flex-1 h-auto min-h-[168px] my-8 border-l-2 border-solid border-[rgba(255,255,255,0.125)]"
+                        class="relative flex flex-col justify-start items-stretch flex-1 h-full min-h-[168px] m-4 border-l-2 border-solid border-[rgba(255,255,255,0.125)]"
                         autocomplete="off" @submit.stop.prevent="prevent">
-                        <h4 class="m-8 text-2xl">
-                            <span class="Amazing-text font-mono">Estimate collection cost</span>
+                        <h4 class="m-8 text-3xl">
+                            <span class="Amazing-text">Estimate mint cost</span>
                         </h4>
                         <div class="Row">
                             <label class="relative flex-1 flex">

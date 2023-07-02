@@ -2,7 +2,7 @@
     <div class="_Section Qa flex flex-col items-start justify-center w-full flex-1 mx-auto py-10">
         <div class="flex flex-col justify-center items-center h-full mx-auto mt-32">
             <div>
-                <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold font-mono">
+                <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-4xl font-semibold">
                     Frequently Asked <span class="Amazing-text">Questions</span>
                 </h2>
                 <p class="Desc">

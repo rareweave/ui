@@ -2,29 +2,27 @@
     <div class="Nav">
         <div class="View">
             <div class="Leftside">
-                <NuxtLink class="Logo Amazing--purpl" to="/">
+                <NuxtLink class="Logo--bar text-3xl font-semibold px-1" to="/">
                     RareWeave
                 </NuxtLink>
             </div>
             <div v-if="account" class="Rightside --desktop">
-                <NuxtLink class="bg-transparent mx-4 p-2 font-mono text-lg font-bold" to="/create">
-                    Mint NFT
+                <NuxtLink class="bg-transparent ml-4 mr-1 p-2 text-lg font-bold" to="/create">
+                    Create
                 </NuxtLink>
-                <NuxtLink class="bg-transparent mx-4 p-2 font-mono text-lg font-bold" to="/collection/create">
-                    Create collection
+                <NuxtLink class="bg-transparent ml-4 mr-1 p-2 text-lg font-bold" to="/collection/create">
+                    New collection
                 </NuxtLink>
-                <NuxtLink class="bg-transparent mx-4 p-2 font-mono text-lg font-bold" to="/explore">
+                <NuxtLink class="bg-transparent ml-4 mr-1 p-2 text-lg font-bold" to="/explore">
                     Explore
                 </NuxtLink>
-                <NuxtLink class="Navbutton" :replace="false" :to="'/profile/' + account.addr">
-                    <span
-                        class="flex flex-row bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] hover:border-[rgba(240,246,252,0.3)] border-[rgba(240,246,252,0.1)] border border-solid transition-colors rounded-md p-1">
-                        <img class="rounded-md max-w-[38px] max-h-[38px]" alt="Pfp" :src="account.profile.avatarURL" />
-                        <span class="Accountname Amazing--red ml-2 font-sans font-thin">{{ ansaddr || account.handle
-                        }}</span>
+                <NuxtLink class="flex flex-row justify-between items-center bg-[rgba(255,255,255,0.06)] hover:border-[rgba(240,246,252,0.3)] border-[rgba(240,246,252,0.1)] border border-solid transition-colors ml-4 mr-1 rounded-lg pr-2" :replace="false" :to="'/profile/' + account.addr">
+                    <span class="flex flex-row px-1 py-0 my-1 border-r-[1px] border-dashed border-gray-600">
+                        <img class="rounded-md max-w-[32px] max-h-[32px]" alt="Pfp" :src="account.profile.avatarURL" />
+                        <span class="Accountname Amazing--red mx-2">
+                            {{ ansaddr || account.handle }}
+                        </span>
                     </span>
-                </NuxtLink>
-                <div class="Balance">
                     <div class="Icon">
                         <span class="AR">
                             a
@@ -33,20 +31,20 @@
                     <span class="amount">
                         {{ (Math.floor(spendable * 10_000) / 10_000).toFixed(3) }}
                     </span>
-                </div>
+                </NuxtLink>
             </div>
             <div v-if="account" class="Rightside --mobile">
                 <div class="Menu">
-                    <button class="Amazing--button Navbutton" @click="setShow(`menu`, !show.menu)">
+                    <button class="Amazing--button py-1 px-2 text-lg font-semibold rounded-md" @click="setShow(`menu`, !show.menu)">
                         Menu
                     </button>
                     <div v-if="show.menu" @mouseleave="setShow(`menu`, false)" @focusout="setShow(`menu`, false)"
                         class="Dropdown--mobile">
                         <NuxtLink class="Amazing--red Item" to="/create">
-                            Mint NFT
+                            Create
                         </NuxtLink>
                         <NuxtLink class="Amazing--red Item" to="/collection/create">
-                            Create collection
+                            New collection
                         </NuxtLink>
                         <NuxtLink class="Amazing--red Item" to="/explore">
                             Explore
@@ -66,13 +64,13 @@
                 </div>
             </div>
             <div v-if="!account" class="Rightside --desktop">
-                <NuxtLink class="bg-transparent mx-4 p-2 font-mono text-lg font-bold" to="/">
+                <NuxtLink class="bg-transparent ml-4 mr-1 p-2 text-lg font-bold" to="/">
                     Home
                 </NuxtLink>
-                <NuxtLink class="bg-transparent mx-4 p-2 font-mono text-lg font-bold" to="/explore">
+                <NuxtLink class="bg-transparent ml-4 mr-1 p-2 text-lg font-bold" to="/explore">
                     Explore
                 </NuxtLink>
-                <NuxtLink to="/login" class="mx-4">
+                <NuxtLink to="/login" class="ml-4 mr-1 p-1 pr-0 text-lg font-bold">
                     <awesome-button :nonBtn="true">
                         Login
                     </awesome-button>
@@ -80,7 +78,7 @@
             </div>
             <div v-if="!account" class="Rightside --mobile">
                 <div class="Menu">
-                    <button class="Amazing--button Navbutton" @click="setShow(`menu`, !show.menu)">
+                    <button class="Amazing--button py-1 px-2 text-lg font-semibold rounded-md" @click="setShow(`menu`, !show.menu)">
                         Menu
                     </button>
                     <div v-if="show.menu" @mouseleave="setShow(`menu`, false)" class="Dropdown--mobile">
@@ -125,14 +123,11 @@ const setShow = (k, v) => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 0;
-    padding: 0;
-    width: 100%;
     height: var(--nav-height);
     color: var(--color-primary);
     background-color: rgba(2, 3, 4, 0.375);
     backdrop-filter: blur(20px);
-    font-size: 13pt;
+    font-family: var(--font-secondary) !important;
     z-index: 9;
 }
 
@@ -154,12 +149,7 @@ const setShow = (k, v) => {
     justify-content: flex-start;
 }
 
-.Logo {
-    font-size: 20pt;
-    font-weight: 600;
-    margin: .25rem .5rem;
-    /* background: rgba(137,255,183,1);
-    background: linear-gradient(175deg, rgba(137,255,183,1), rgba(137,255,183,1), rgb(12 176 255)); */
+.Logo--bar {
     background: url('./assets/logo-01.png');
     background-size: 100%;
     background-position: bottom right;
@@ -216,17 +206,6 @@ const setShow = (k, v) => {
     padding: 0;
     width: 100%;
     height: auto;
-}
-
-.Navbutton {
-    position: relative;
-    display: flex;
-    margin: .25rem 0 .25rem 2.5vw;
-    padding: 4px 8px;
-    margin: 0 .25rem 0 32px;
-    padding: 0.25rem calc((0.5rem) + 6px);
-    border-radius: 18px;
-    color: rgb(227, 230, 234);
 }
 
 .Dropdown--mobile {
