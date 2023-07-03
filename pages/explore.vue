@@ -240,12 +240,13 @@ import NftCard from "../components/NftCard.vue";
 import NftRow from "../components/NftRow.vue";
 import { useIsLoading } from "../composables/useState";
 import debounce from "lodash.debounce";
+import { nftContractId } from "../config/contracts.json"
 
 const isLoading = useIsLoading();
 
 const nfts = ref(
   await $fetch(
-    "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
     }
@@ -326,7 +327,7 @@ const searchType = ref("");
 
 async function refreshResults() {
   nfts.value = await $fetch(
-    "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
       body: {

@@ -136,6 +136,7 @@ import { Buffer } from "buffer";
 const { WarpFactory } = await import("warp-contracts");
 import { useWallet, useAccount, useArweave } from "../composables/useState";
 import setArweave from "../plugins/arweave";
+import { nftContractId } from "../config/contracts.json"
 
 const arweave = useArweave().value;
 if (!arweave)
@@ -225,7 +226,7 @@ async function mint() {
       },
       {
         name: "Contract-Src",
-        value: "hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg",
+        value: nftContractId,
       },
       {
         name: "SDK",

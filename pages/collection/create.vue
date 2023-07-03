@@ -51,6 +51,7 @@ import { Buffer } from "buffer";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 import { useWallet, useAccount, useArweave } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
+import { collectionContractId } from "../../config/contracts.json"
 
 const arweave = useArweave().value;
 if (!arweave)
@@ -108,7 +109,7 @@ async function Create() {
       { name: 'Content-Type', value: 'application/json' },
       {
         name: "Contract-Src",
-        value: "mhbnvFZFgAEjiP-islmBgox8_qD70xNcR1CCcNPo3ps",
+        value: collectionContractId,
       },
       { name: "SDK", value: "Warp" },
       { name: "Init-State", value: JSON.stringify(init_state) },

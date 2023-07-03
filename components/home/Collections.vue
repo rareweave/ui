@@ -43,6 +43,8 @@
 import initArweave from '../../plugins/arweave';
 import { useNfts, useIsLoading, useIsError, useArweave } from '../../composables/useState';
 import base64urlencode from 'base64url-encode';
+import { collectionContractId } from "../../config/contracts.json"
+
 let collections = ref([])
 const
     isLoading = useIsLoading(),
@@ -55,7 +57,7 @@ const children = ref([]), // any nft that is a child of a collection
 onMounted(async () => {
     if (!arweave) initArweave();
 
-    $fetch(`https://glome.rareweave.store/contracts-under-code/mhbnvFZFgAEjiP-islmBgox8_qD70xNcR1CCcNPo3ps?expandStates=true&limit=10`, {
+    $fetch(`https://glome.rareweave.store/contracts-under-code/${collectionContractId}?expandStates=true&limit=10`, {
         method: "POST",
         body: {
             sortScript: `secondContract.creationTime-firstContract.creationTime`,
