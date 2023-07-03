@@ -203,9 +203,20 @@ let userAnsName = (
 )?.domain;
 let ownedNfts = (
   await $fetch(
-    `https://prophet.rareweave.store/nfts?ownedBy=` + user.value?.addr
+    "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
+    {
+      method: "POST",
+      body: {
+        filterScript: `state.owner=variables.address`,
+        variables: {
+          address: user.value?.addr
+        },
+      },
+    }
   )
-)?.result;
+)
+
+console.log(ownedNfts)
 let ownedCollections = (
   await $fetch(
     `https://prophet.rareweave.store/collections?ownedBy=${user.value?.addr}`
