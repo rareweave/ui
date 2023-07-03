@@ -29,9 +29,11 @@
 </template>
 
 <script setup>
+import { nftContractId } from "../config/contracts.json"
+
 let nfts = ref(
   await $fetch(
-    "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
     }
@@ -45,7 +47,7 @@ async function refreshResults() {
   console.log();
   console.log(searchInput.value);
   nfts.value = await $fetch(
-    "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
       body: {
