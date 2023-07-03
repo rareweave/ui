@@ -85,6 +85,7 @@ p {
     background: url(./assets/logo-01.png);
     background-repeat: no-repeat;
     background-position: top left;
+    background-size: 300% 300%;
 
     background-clip: text;
     -webkit-background-clip: text;
@@ -94,6 +95,7 @@ p {
     background: url(./assets/logo-01.png);
     background-repeat: no-repeat;
     background-position: top right;
+    background-size: 300% 300%;
 
     background-clip: text;
     -webkit-background-clip: text;
@@ -103,6 +105,7 @@ p {
     background: url(./assets/logo-01.png);
     background-repeat: no-repeat;
     background-position: bottom left;
+    background-size: 300% 300%;
 
     background-clip: text;
     -webkit-background-clip: text;
@@ -112,6 +115,7 @@ p {
     background: url(./assets/logo-01.png);
     background-repeat: no-repeat;
     background-position: bottom right;
+    background-size: 300% 300%;
 
     background-clip: text;
     -webkit-background-clip: text;
