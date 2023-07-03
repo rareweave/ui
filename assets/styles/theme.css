@@ -46,7 +46,7 @@ textarea,
 select,
 button {
     font-family: var(--font-secondary);
-    @apply bg-[rgba(48,56,63,0.5)] rounded-lg;
+    @apply bg-[rgba(48,56,63,0.5)] rounded-md;
 }
 
 h1, h2, h3, h4, h5, h6 {
