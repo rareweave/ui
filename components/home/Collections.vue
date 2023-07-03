@@ -39,9 +39,9 @@
 </template>
 
 <script setup>
-import initArweave from '../../plugins/arweave';
+import setArweave from '../../plugins/arweave';
 import { useIsLoading, useArweave, useCollections } from '../../composables/useState';
-import { collectionContractId } from '../../config.json';
+import { collectionContractId } from '../../config/contracts.json';
 
 const
     isLoading = useIsLoading(),
@@ -69,7 +69,7 @@ const getData = () => {
 
 onMounted(async () => {
     if (!arweave)
-        initArweave();
+        setArweave();
 
     getData();
 });
