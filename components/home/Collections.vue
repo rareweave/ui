@@ -20,7 +20,7 @@
                 </div>
                 <NuxtLink v-if="!isLoading.collections" v-for="(collection,i) of collections" :key="collection.id"
                     class="relative flex w-full flex-wrap hover:bg-gray-800 py-2 px-16 border-b-2 border-gray-800" :to="`/collection/${collection.id}`">
-                    <span :class="`Amazing--${['green','red'][i % 2]}`" class="font-bold w-1/2 min-w-[200px]">
+                    <span :class="`Amazing--${['green','green'][i % 2]}`" class="font-bold w-1/2 min-w-[200px]">
                         {{ collection.state.name }}
                     </span>
                     <span class="font-semibold w-1/2 min-w-[200px]">
@@ -41,13 +41,15 @@
 <script setup>
 import initArweave from '../../plugins/arweave';
 import { useIsLoading, useArweave, useCollections } from '../../composables/useState';
+import { collectionContractId } from '../../config.json';
+
 const
     isLoading = useIsLoading(),
     collections = useCollections(),
     arweave = useArweave().value;
 
 const getData = () => {
-    $fetch(`https://glome.rareweave.store/contracts-under-code/mhbnvFZFgAEjiP-islmBgox8_qD70xNcR1CCcNPo3ps?expandStates=true&limit=10`, {
+    $fetch(`https://glome.rareweave.store/contracts-under-code/${collectionContractId}?expandStates=true&limit=10`, {
         method: "POST",
         body: {
             sortScript: `secondContract.creationTime-firstContract.creationTime`,
