@@ -86,7 +86,10 @@ async function fetchComments() {
     comments.value=fetchedComments
 }
 fetchComments();
-setInterval(fetchComments,10000)
+let commentFetchInterval = setInterval(fetchComments, 10000)
+onUnmounted(() => {
+    clearInterval(commentFetchInterval)
+})
 function timeToRelative(timestamp){
     return formatDistance(timestamp, new Date(), { addSuffix: true })
 }
