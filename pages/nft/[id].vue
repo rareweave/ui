@@ -152,7 +152,7 @@
           nftId
           " class="inline-flex max-h-[20rem] max-w-20rem my-4 purchased" />
         <video v-else-if="nftState?.contentType?.startsWith('video')" autoplay loop muted controls>
-          <source :src="'https://prophet.rareweave.store/' + nftId" :type="nftState?.contentType" />
+          <source :src="'https://g8way.io/' + nftId" :type="nftState?.contentType" />
           Your browser does not support the video tag.
         </video>
         <span class="text-md text-center">Now you own {{ nftState.name }}!</span>
@@ -162,6 +162,7 @@
       </div>
     </div>
     <input type="checkbox" id="transfer-modal" class="modal-toggle" :checked="false" v-model="transferModalOpened" />
+    <Comments v-if="nftId=='uPQ8ugJJoPjbQbVC5fj9-bUMqazHENjopa-cvQKE81Q'" class="mx-6" :content="nftId" />
     <div class="modal">
       <div class="modal-box relative flex flex-col" v-if="!isSomeoneElseBuying">
         <label for="transfer-modal" class="btn btn-sm absolute right-2 top-2">✕</label>
@@ -385,7 +386,7 @@ async function payRoyalty() {
     },
   ];
 
-  let feeEstimate = await fetch(`https://prophet.rareweave.store/price/1000000/${nftState.value.minter}`)
+  let feeEstimate = await fetch(`https://g8way.io/price/1000000/${nftState.value.minter}`)
     .then((res) => res.text())
     .catch(err => {
       alert("Failed to get the fee estimate");
@@ -453,7 +454,7 @@ async function finalizeBuy() {
   ];
 
   let royaltyAnchor = (
-    await fetch(`https://prophet.rareweave.store/graphql`, {
+    await fetch(`https://g8way.io/graphql`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -472,7 +473,7 @@ async function finalizeBuy() {
       .then((tx) => tx.json())
   ).data.transaction.block.id;
 
-  let feeEstimate = await fetch(`https://prophet.rareweave.store/price/1000000/${nftState.value.owner}`)
+  let feeEstimate = await fetch(`https://g8way.io/price/1000000/${nftState.value.owner}`)
     .then((res) => res.text());
 
   let tx = await arweave.createTransaction({

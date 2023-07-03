@@ -181,6 +181,7 @@ import { Buffer } from "buffer";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 import { useWallet, useAccount, useSpendable, useAnsaddr, useArweave, useAccountTools } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
+import { nftContractId } from "../../config/contracts.json"
 
 const arweave = useArweave().value;
 if (!arweave)
@@ -203,7 +204,7 @@ let userAnsName = (
 )?.domain;
 let ownedNfts = (
   await $fetch(
-    "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
       body: {

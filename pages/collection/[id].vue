@@ -49,6 +49,7 @@ const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 import { useAccount, useArweave } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
 import b64urlEncode from 'base64url-encode'
+import { nftContractId } from "../../config/contracts.json"
 
 const arweave = useArweave().value;
 if (!arweave)
@@ -63,7 +64,7 @@ let state = ref(
 console.log(b64urlEncode(`id⊂${JSON.stringify(state.value.items)}`))
 let nfts = ref(
   await $fetch(
-    `https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true`, {
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`, {
     method: "POST", body: {
       filterScript: `id⊂variables.ids`,
       variables: {
@@ -105,7 +106,7 @@ let nftContract = account.value
   });
 async function refreshResults() {
   await $fetch(
-    `https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true`, {
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`, {
     method: "POST", body: {
       filterScript: `id⊂variables.ids`,
       variables: {
