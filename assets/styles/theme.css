@@ -25,7 +25,7 @@
 
     --content-width: calc((100%) - var(--page-spacing) * 2);
     
-    --font-primary: 'Noto Sans', sans-serif;
+    --font-primary: 'Iosevka Aile Web', monospace;
     --font-secondary: 'Iosevka Aile Web', monospace;
 }
 
