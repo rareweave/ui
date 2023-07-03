@@ -47,8 +47,6 @@
                 <Tag t="AR" />
                 <Tag t="Market" />
                 <Tag t="Decentralized" />
-                <Tag t="Warp contract" />
-                <Tag t="GNOME" />
             </div>
             <h4 class="text-white text-2xl mt-16 max-w-[85vw] p-2">
                 Pixelated

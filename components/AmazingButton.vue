@@ -16,7 +16,6 @@
 </template>
 <script setup>
 let { nonBtn } = defineProps(['non-btn'])
-console.log(nonBtn)
 </script>
 <style scoped>
 .btn {
