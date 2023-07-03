@@ -162,6 +162,7 @@
       </div>
     </div>
     <input type="checkbox" id="transfer-modal" class="modal-toggle" :checked="false" v-model="transferModalOpened" />
+    <Comments :content="nftId" />
     <div class="modal">
       <div class="modal-box relative flex flex-col" v-if="!isSomeoneElseBuying">
         <label for="transfer-modal" class="btn btn-sm absolute right-2 top-2">✕</label>
