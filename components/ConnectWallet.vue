@@ -76,11 +76,12 @@ async function connectArconnect() {
 
     await window.arweaveWallet.connect([
         "ACCESS_ADDRESS",
-        "ACCESS_ALL_ADDRESSES",
+        "DECRYPT",
         "ACCESS_PUBLIC_KEY",
         "DISPATCH",
         "SIGN_TRANSACTION",
         "ACCESS_ARWEAVE_CONFIG"
+
     ]);
 
     const address = await window.arweaveWallet.getActiveAddress()
