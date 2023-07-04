@@ -173,48 +173,46 @@
         </div>
       </div>
       <!--Bring back later probably, just glome wont support this for now-->
-      <!-- <div class="MenuSection">
+      <div class="MenuSection">
           <div
             class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
           >
             <h2 class="Amazing--br">Collection detection</h2>
             <span></span>
           </div>
-          <div v-if="isLoading.collections" class="Blocks__loader">
-            <span></span>
-          </div>
+
           <div
-            v-else-if="collections.result?.length > 0"
+            if="collections.length > 0"
             class="MenuOptions"
             v-for="(collection, index) in [
               ...new Set(
-                collections.result?.filter(
+                collections?.filter(
                   (collection) =>
                     collection.state.name !== undefined &&
                     collection.state.name !== ''
                 )
               ),
             ]"
-            :key="collection.contractTxId"
+            :key="collection.id"
           >
             <div class="MenuOption highlite">
               <div class="V1__button_wrapper">
                 <span class="V1__button_decoration"></span>
-                <button
+                <NuxtLink :to="'/collection/' + collection.id"
                   class="V1__button"
                   @click="
-                    searchCondition = collection.contractTxId;
+                    searchCondition = collection.id;
                     searchType = 'collection';
                     searchNFTs();
                     activate($event);
                   "
                 >
                   {{ collection.state.name }}
-                </button>
+                </NuxtLink>
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
     </div>
     <div class="NFTs">
       <div v-if="isLoading.nfts" class="Blocks__loader">
@@ -240,7 +238,7 @@ import NftCard from "../components/NftCard.vue";
 import NftRow from "../components/NftRow.vue";
 import { useIsLoading } from "../composables/useState";
 import debounce from "lodash.debounce";
-import { nftContractId } from "../config/contracts.json"
+import { nftContractId, collectionContractId } from "../config/contracts.json"
 
 const isLoading = useIsLoading();
 
@@ -252,6 +250,8 @@ const nfts = ref(
     }
   )
 );
+
+const collections = ref([]);
 
 console.log(nfts.value[3])
 
@@ -351,34 +351,18 @@ async function refreshResults() {
   );
 }
 
-// onMounted(async () => {
-//   if (nfts.value.length === 0) getNFTs();
+onMounted(async () => {
+  let collectionsRequest = await $fetch(
+    `https://glome.rareweave.store/contracts-under-code/${collectionContractId}?expandStates=true`,
+    {
+      method: "POST",
+    }
+  )
 
-//   if (collections.value.length === 0) getCollections();
+  collections.value = collectionsRequest
 
-//   const observer = new IntersectionObserver(
-//     (entries) => {
-//       entries.forEach((entry) => {
-//         if (entry.isIntersecting) {
-//           const img = entry.target.querySelector("img");
-//           const loader = entry.target.querySelector(".NftCard__Loader");
-//           loader.style.display = "none";
-//           img.src = img.dataset.src;
-//           observer.unobserve(entry.target);
-//         }
-//       });
-//     },
-//     {
-//       threshold: 0.5,
-//     }
-//   );
-
-//   const nftCards = document.querySelectorAll(".NftCard");
-
-//   Array.from(nftCards).forEach((card) => {
-//     observer.observe(card);
-//   });
-// });
+  console.log(collections.value)
+})
 
 definePageMeta({
   layout: "without-auth",
