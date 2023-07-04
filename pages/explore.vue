@@ -247,6 +247,9 @@ const nfts = ref(
     `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
+      body: {
+        filterScript: `1⊕(state.owner="0")`,
+      },
     }
   )
 );
@@ -331,7 +334,7 @@ async function refreshResults() {
     {
       method: "POST",
       body: {
-        filterScript: `${
+        filterScript: `1⊕(state.owner="0")&${
           forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
         }${
           searchInput.value
