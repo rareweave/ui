@@ -182,7 +182,6 @@ const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 import { useWallet, useAccount, useSpendable, useAnsaddr, useArweave, useAccountTools } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
 import { nftContractId, collectionContractId } from "../../config/contracts.json"
-
 const arweave = useArweave().value;
 if (!arweave)
   setArweave();
