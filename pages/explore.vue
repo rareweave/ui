@@ -198,17 +198,14 @@
             <div class="MenuOption highlite">
               <div class="V1__button_wrapper">
                 <span class="V1__button_decoration"></span>
-                <NuxtLink :to="'/collection/' + collection.id"
+                <button
                   class="V1__button"
                   @click="
-                    searchCondition = collection.id;
-                    searchType = 'collection';
-                    searchNFTs();
-                    activate($event);
+                    loadCollection(collection);
                   "
                 >
                   {{ collection.state.name }}
-                </NuxtLink>
+              </button>
               </div>
             </div>
           </div>
@@ -254,9 +251,8 @@ const nfts = ref(
   )
 );
 
-const collections = ref([]);
 
-console.log(nfts.value[3])
+const collections = ref([]);
 
 // Hard coded temp
 
@@ -334,7 +330,7 @@ async function refreshResults() {
     {
       method: "POST",
       body: {
-        filterScript: `1⊕(state.owner="0")&${
+        filterScript: `(1⊕(state.owner="0"))&${
           forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
         }${
           searchInput.value
@@ -348,6 +344,33 @@ async function refreshResults() {
           forSale: forSaleOnly.value,
           minPrice: filter.value.minPrice * 1e12,
           maxPrice: filter.value.maxPrice * 1e12,
+        },
+      },
+    }
+  );
+}
+
+async function loadCollection(collection) {
+  nfts.value = await $fetch(
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
+    {
+      method: "POST",
+      body: {
+        filterScript: `(id⊂variables.items)&(1⊕(state.owner="0"))&${
+          forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
+        }${
+          searchInput.value
+            ? "((state.description~variables.search)|(state.name~variables.search))"
+            : "1"
+        }${filter.value > 0 ? "&(state.price≥variables.minPrice)" : ""}${
+          filter.value > 0 ? "&(state.price≤variables.maxPrice)" : ""
+        }`,
+        variables: {
+          search: searchInput.value,
+          forSale: forSaleOnly.value,
+          minPrice: filter.value.minPrice * 1e12,
+          maxPrice: filter.value.maxPrice * 1e12,
+          items: collection.state.items
         },
       },
     }
