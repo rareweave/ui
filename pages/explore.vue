@@ -201,7 +201,8 @@
                 <button
                   class="V1__button"
                   @click="
-                    loadCollection(collection);
+                    selectedCollection = collection.state.items;
+                    refreshResults();
                   "
                 >
                   {{ collection.state.name }}
@@ -253,6 +254,7 @@ const nfts = ref(
 
 
 const collections = ref([]);
+const selectedCollection = ref("")
 
 // Hard coded temp
 
@@ -321,16 +323,14 @@ const debouncedWatch = debounce(() => {
 
 watch(searchInput, debouncedWatch);
 
-// Not used just nfts for now
-const searchType = ref("");
-
 async function refreshResults() {
+  console.log(selectedCollection.value)
   nfts.value = await $fetch(
     `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
       body: {
-        filterScript: `(1⊕(state.owner="0"))&${
+        filterScript: `${selectedCollection.value ? `(id⊂variables.items)&` : ''}(1⊕(state.owner="0"))&${
           forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
         }${
           searchInput.value
@@ -344,33 +344,7 @@ async function refreshResults() {
           forSale: forSaleOnly.value,
           minPrice: filter.value.minPrice * 1e12,
           maxPrice: filter.value.maxPrice * 1e12,
-        },
-      },
-    }
-  );
-}
-
-async function loadCollection(collection) {
-  nfts.value = await $fetch(
-    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
-    {
-      method: "POST",
-      body: {
-        filterScript: `(id⊂variables.items)&(1⊕(state.owner="0"))&${
-          forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
-        }${
-          searchInput.value
-            ? "((state.description~variables.search)|(state.name~variables.search))"
-            : "1"
-        }${filter.value > 0 ? "&(state.price≥variables.minPrice)" : ""}${
-          filter.value > 0 ? "&(state.price≤variables.maxPrice)" : ""
-        }`,
-        variables: {
-          search: searchInput.value,
-          forSale: forSaleOnly.value,
-          minPrice: filter.value.minPrice * 1e12,
-          maxPrice: filter.value.maxPrice * 1e12,
-          items: collection.state.items
+          items: selectedCollection.value
         },
       },
     }
