@@ -92,11 +92,13 @@ async function fetchComments() {
 }
 fetchComments();
 const messagesStream = new EventSource("https://socioweave.rareweave.store/comment-stream/" + content);
-messagesStream.addEventListener("newMessage", (ev) => {
+function addMessage(ev) {
     comments.value.unshift(ev.data)
-})
+}
+messagesStream.addEventListener("newMessage", addMessage)
 onUnmounted(() => {
-    clearInterval(commentFetchInterval)
+    messagesStream.removeEventListener("newMessage", addMessage)
+    messagesStream.close()
 })
 function timeToRelative(timestamp){
     return formatDistance(timestamp, new Date(), { addSuffix: true })
