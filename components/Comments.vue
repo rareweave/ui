@@ -93,7 +93,8 @@ async function fetchComments() {
 fetchComments();
 const messagesStream = new EventSource("https://socioweave.rareweave.store/comment-stream/" + content);
 function addMessage(ev) {
-    comments.value.unshift(ev.data)
+
+    comments.value.unshift(JSON.parse(ev.data))
 }
 messagesStream.addEventListener("newMessage", addMessage)
 onUnmounted(() => {
