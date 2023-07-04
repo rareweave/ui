@@ -1,7 +1,7 @@
 <template>
     <div class="w-full flex flex-col m-2 max-w-2xl bg-zinc-900/50 p-2 rounded-md mb-4">
         <h2 class="text-xl w-full text-center">Comments</h2>
-        <div v-if="account" class="mt-2 p-2 bg-[#02010488] rounded-md w-full flex flex-row">
+        <div v-if="wallet&&wallet?.type=='Arweave.app'" class="mt-2 p-2 bg-[#02010488] rounded-md w-full flex flex-row">
             <div class="flex items-start space-x-3 p-2 bg-zinc-900/20 shadow-sm rounded-md w-full">
                 <img class="w-10 h-10 rounded-full" :src="account.profile.avatarURL" alt="Profile Image">
                 <div class="flex-1 block">
@@ -18,6 +18,12 @@
                 <awesome-button class="place-self-end mb-2" @click="post">Post</awesome-button>
             </div>
         </div>
+      
+        <div v-else-if="wallet && wallet?.type == 'Arconnect'" class="w-full flex flex-col items-center justify-center">
+        <h2 class="text-red-500 text-md w-full text-center">We're sorry, you can't post comments using Arconnect yet due to issue of decryptiong data through it. We're investigating reason and soon you will be able to do it, use Arweave.app for now</h2>
+        
+        </div>
+     
         <div v-for="comment of comments" :key="comment.id" class="mt-2 p-2 bg-[#02010488] rounded-md w-full flex flex-row">
          <div class="flex items-start space-x-3 p-2 bg-zinc-900/20 shadow-sm rounded-md w-full">
                         <img class="w-10 h-10 rounded-full" :src="comment?.profile?.profile?.avatarURL" alt="Profile Image">
