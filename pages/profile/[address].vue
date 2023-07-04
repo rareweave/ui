@@ -268,7 +268,7 @@ async function uploadNewPfp(e) {
         );
       }
     } else {
-      tx = await wallet.dispatch(tx);
+      tx = await wallet.value.dispatch(tx);
     }
     user.value.profile.avatar = "ar://" + tx.id;
     console.log(tx.id);

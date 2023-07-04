@@ -162,7 +162,7 @@
       </div>
     </div>
     <input type="checkbox" id="transfer-modal" class="modal-toggle" :checked="false" v-model="transferModalOpened" />
-    <Comments v-if="nftId=='uPQ8ugJJoPjbQbVC5fj9-bUMqazHENjopa-cvQKE81Q'" class="mx-6" :content="nftId" />
+    <Comments class="mx-6" :content="nftId" />
     <div class="modal">
       <div class="modal-box relative flex flex-col" v-if="!isSomeoneElseBuying">
         <label for="transfer-modal" class="btn btn-sm absolute right-2 top-2">✕</label>
@@ -277,7 +277,8 @@ let updaterInterval = setInterval(async () => {
     nftPrice.value = parseFloat(
       parseFloat(arweave.ar.winstonToAr(nftState.value.price)).toFixed(3)
     );
-    nftOwner.value = await accountTools.get(nftState.value.owner);
+    nftOwner.value = await accountTools.get(nftState.value.owner).catch(e=>({addr:nftState.value.owner}));
+    console.log(await accountTools.get(nftState.value.owner).catch(e => ({ addr: nftState.value.owner })))
     nftOwnerANS.value = (
       await $fetch(
         `https://ans-resolver.herokuapp.com/resolve/${nftState.value.owner}`

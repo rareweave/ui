@@ -1,5 +1,5 @@
-<template>
-    <div class="w-full flex flex-col m-2 max-w-2xl bg-zinc-900/50 p-2 rounded-md mb-4">
+<template >
+    <div v-if="comments.length||wallet" class="w-full flex flex-col m-2 max-w-2xl bg-zinc-900/50 p-2 rounded-md mb-4">
         <h2 class="text-xl w-full text-center">Comments</h2>
         <div v-if="wallet&&wallet?.type=='Arweave.app'" class="mt-2 p-2 bg-[#02010488] rounded-md w-full flex flex-row">
             <div class="flex items-start space-x-3 p-2 bg-zinc-900/20 shadow-sm rounded-md w-full">

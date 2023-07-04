@@ -132,7 +132,7 @@ async function Create() {
       );
     }
   } else {
-    tx = await wallet.dispatch(tx);
+    tx = await wallet.value.dispatch(tx);
   }
 
   await warp.register(tx.id, "node1").catch((e) => null);
