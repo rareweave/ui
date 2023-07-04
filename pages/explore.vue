@@ -173,29 +173,27 @@
         </div>
       </div>
       <!--Bring back later probably, just glome wont support this for now-->
-      <!-- <div class="MenuSection">
+      <div class="MenuSection">
           <div
             class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
           >
             <h2 class="Amazing--br">Collection detection</h2>
             <span></span>
           </div>
-          <div v-if="isLoading.collections" class="Blocks__loader">
-            <span></span>
-          </div>
+
           <div
-            v-else-if="collections.result?.length > 0"
+            if="collections.length > 0"
             class="MenuOptions"
             v-for="(collection, index) in [
               ...new Set(
-                collections.result?.filter(
+                collections?.filter(
                   (collection) =>
                     collection.state.name !== undefined &&
                     collection.state.name !== ''
                 )
               ),
             ]"
-            :key="collection.contractTxId"
+            :key="collection.id"
           >
             <div class="MenuOption highlite">
               <div class="V1__button_wrapper">
@@ -203,18 +201,15 @@
                 <button
                   class="V1__button"
                   @click="
-                    searchCondition = collection.contractTxId;
-                    searchType = 'collection';
-                    searchNFTs();
-                    activate($event);
+                    loadCollection(collection);
                   "
                 >
                   {{ collection.state.name }}
-                </button>
+              </button>
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
     </div>
     <div class="NFTs">
       <div v-if="isLoading.nfts" class="Blocks__loader">
@@ -240,19 +235,24 @@ import NftCard from "../components/NftCard.vue";
 import NftRow from "../components/NftRow.vue";
 import { useIsLoading } from "../composables/useState";
 import debounce from "lodash.debounce";
+import { nftContractId, collectionContractId } from "../config/contracts.json"
 
 const isLoading = useIsLoading();
 
 const nfts = ref(
   await $fetch(
-    "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
+      body: {
+        filterScript: `1⊕(state.owner="0")`,
+      },
     }
   )
 );
 
-console.log(nfts.value[3])
+
+const collections = ref([]);
 
 // Hard coded temp
 
@@ -326,11 +326,11 @@ const searchType = ref("");
 
 async function refreshResults() {
   nfts.value = await $fetch(
-    "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
       body: {
-        filterScript: `${
+        filterScript: `(1⊕(state.owner="0"))&${
           forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
         }${
           searchInput.value
@@ -350,34 +350,45 @@ async function refreshResults() {
   );
 }
 
-// onMounted(async () => {
-//   if (nfts.value.length === 0) getNFTs();
+async function loadCollection(collection) {
+  nfts.value = await $fetch(
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
+    {
+      method: "POST",
+      body: {
+        filterScript: `(id⊂variables.items)&(1⊕(state.owner="0"))&${
+          forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
+        }${
+          searchInput.value
+            ? "((state.description~variables.search)|(state.name~variables.search))"
+            : "1"
+        }${filter.value > 0 ? "&(state.price≥variables.minPrice)" : ""}${
+          filter.value > 0 ? "&(state.price≤variables.maxPrice)" : ""
+        }`,
+        variables: {
+          search: searchInput.value,
+          forSale: forSaleOnly.value,
+          minPrice: filter.value.minPrice * 1e12,
+          maxPrice: filter.value.maxPrice * 1e12,
+          items: collection.state.items
+        },
+      },
+    }
+  );
+}
 
-//   if (collections.value.length === 0) getCollections();
+onMounted(async () => {
+  let collectionsRequest = await $fetch(
+    `https://glome.rareweave.store/contracts-under-code/${collectionContractId}?expandStates=true`,
+    {
+      method: "POST",
+    }
+  )
 
-//   const observer = new IntersectionObserver(
-//     (entries) => {
-//       entries.forEach((entry) => {
-//         if (entry.isIntersecting) {
-//           const img = entry.target.querySelector("img");
-//           const loader = entry.target.querySelector(".NftCard__Loader");
-//           loader.style.display = "none";
-//           img.src = img.dataset.src;
-//           observer.unobserve(entry.target);
-//         }
-//       });
-//     },
-//     {
-//       threshold: 0.5,
-//     }
-//   );
+  collections.value = collectionsRequest
 
-//   const nftCards = document.querySelectorAll(".NftCard");
-
-//   Array.from(nftCards).forEach((card) => {
-//     observer.observe(card);
-//   });
-// });
+  console.log(collections.value)
+})
 
 definePageMeta({
   layout: "without-auth",

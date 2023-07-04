@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="'/collection/' + collection.contractTxId"
+  <NuxtLink :to="'/collection/' + collection.id"
     class="background nft-card card shadow-xl w-[16rem] m-2 rounded-xl flex flex-col justify-end items-center">
 
     <div class="rounded font-mono flex m-2 p-1 text-white flex-col max-w-max justify-center items-center">

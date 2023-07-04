@@ -170,7 +170,7 @@
         Owned Collections:
       </h2>
       <div class="flex flex-wrap justify-center flex-col">
-        <CollectionCard v-for="collection in ownedCollections" :key="collection.contractTxId" :collection="collection" />
+        <CollectionCard v-for="collection in ownedCollections" :key="collection.id" :collection="collection" />
       </div>
     </template>
   </div>
@@ -181,7 +181,7 @@ import { Buffer } from "buffer";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 import { useWallet, useAccount, useSpendable, useAnsaddr, useArweave, useAccountTools } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
-
+import { nftContractId, collectionContractId } from "../../config/contracts.json"
 const arweave = useArweave().value;
 if (!arweave)
   setArweave();
@@ -203,7 +203,7 @@ let userAnsName = (
 )?.domain;
 let ownedNfts = (
   await $fetch(
-    "https://glome.rareweave.store/contracts-under-code/hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg?expandStates=true",
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
       body: {
@@ -216,12 +216,20 @@ let ownedNfts = (
   )
 )
 
-console.log(ownedNfts)
 let ownedCollections = (
   await $fetch(
-    `https://prophet.rareweave.store/collections?ownedBy=${user.value?.addr}`
+    `https://glome.rareweave.store/contracts-under-code/${collectionContractId}?expandStates=true`,
+    {
+      method: "POST",
+      body: {
+        filterScript: `variables.address⊂state.admins`,
+        variables: {
+          address: user.value?.addr
+        },
+      },
+    }
   )
-)?.result;
+)
 
 console.log(ownedCollections);
 let changed = computed(() => {

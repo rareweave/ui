@@ -4,11 +4,13 @@
       class="h-full-navbared flex-1 flex flex-col items-start justify-center bg-[rgba(17,23,32,.2)] rounded-[2.5rem] overflow-hidden mt-8 mb-32 pb-24 "
       style="box-shadow: 0px 1px 2px rgba(0,0,0,.12), 1px 2px 4px rgba(0,0,0,.1), 2px 4px 8px rgba(0,0,0,.09), 3px 6px 12px rgba(0,0,0,.09), -1px -2px 8px rgba(0,0,0,.07);"
       @submit.prevent="mint">
-      <h1 class="text-3xl font-bold flex-1 mt-16 px-16">
-        Create a new <span class="rareweave-font">RareWeave</span> NFT
-      </h1>
+      <div class="w-full flex flex-fow flex-nowrap justify-between items-center mt-16 px-16">
+        <h1 class="text-3xl font-bold flex-1">
+          Create a new <span class="rareweave-font">RareWeave</span> NFT
+        </h1>
+      </div>
 
-      <div class="flex flex-col items-start justify-center mt-16 px-16">
+      <div class="flex flex-col items-start justify-center w-full mt-16 px-16">
         <label class="flex justify-start items-start">
           <span class="text-xl font-bold">
             Content:
@@ -18,11 +20,11 @@
           Click to upload, or drag and drop your NFT content:
         </p>
         <label for="dropzone-file"
-          class="flex flex-col justify-center items-center w-[316px] aspect-[16/9] border-2 border-dashed rounded-lg cursor-pointer hover:bg-base-200 border-gray-700 hover:border-gray-500 bg-[rgba(3,5,9,0)] mt-2">
+          class="drzone flex flex-col justify-center items-center min-w-[316px] w-[432px] max-w-[85vw] aspect-[16/9] border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200 border-gray-700 hover:border-[rgba(107,114,124,1)] bg-[rgba(11,17,23,1)] mt-2">
           <div class="flex flex-col items-start justify-center pt-5 pb-6">
 
             <span v-if="!imageObjectUrl">
-              <img src="/upload.png" class="w-16 h-16" />
+              <img src="/upload_nft.png" class="Fileicon w-16 h-16" />
             </span>
             <template v-else>
               <img v-if="fileMeta?.type?.startsWith('image')" :src="imageObjectUrl" class="inline-flex" />
@@ -46,7 +48,7 @@
           </span>
         </label>
         <input v-model="title" required type="text" maxlength="40"
-          class="mx-16 bg-[rgba(17,23,32,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"
+          class="mx-16 bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"
           placeholder="Enter the name of your NFT" />
         <label class="label flex flex-col justify-start items-start mt-8 mx-16">
           <span class="text-xl font-bold">
@@ -54,7 +56,7 @@
           </span>
         </label>
         <textarea placeholder="Enter a detailed description of your NFT. (max 500 characters)" v-model="description"
-          class="mx-16 bg-[rgba(17,23,32,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none min-h-[128px] border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"></textarea>
+          class="mx-16 bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none min-h-[128px] border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"></textarea>
         <div class="flex flex-wrap mt-8 mx-16">
           <div class="flex flex-col justify-start items-start mr-16">
             <label class="label flex flex-col justify-start items-start">
@@ -64,7 +66,7 @@
             </label>
             <label class="flex input-group flex-1 w-max">
               <input v-model="price" type="number" placeholder="0,5" step="0.01"
-                class="bg-[rgba(17,23,32,1)] text-white py-3 px-6 rounded-lg  outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1 w-max" />
+                class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg  outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1 w-max" />
               <span class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700">
                 AR
               </span>
@@ -78,7 +80,7 @@
             </label>
             <label class="flex input-group flex-1 w-max">
               <input v-model="royalty" type="number" required placeholder="3" step="0.1"
-                class="bg-[rgba(17,23,32,1)] text-white py-3 px-6 rounded-lg  outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1" />
+                class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg  outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1" />
               <span class="w-12 text-center justify-center border  border-l-0 border-gray-700 bg-gray-700">
                 %
               </span>
@@ -100,7 +102,7 @@
         </label>
         <label class="input-group flex w-[50%] mx-16">
           <input v-model="collectionId" type="text" placeholder="Collection"
-            class="bg-[rgba(17,23,32,1)] text-white py-3 px-6 rounded-lg  outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1" />
+            class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg  outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1" />
           <span class="w-12 text-center justify-center border  border-l-0 border-gray-700 bg-gray-700">
             ID
           </span>
@@ -136,6 +138,7 @@ import { Buffer } from "buffer";
 const { WarpFactory } = await import("warp-contracts");
 import { useWallet, useAccount, useArweave } from "../composables/useState";
 import setArweave from "../plugins/arweave";
+import { nftContractId } from "../config/contracts.json"
 
 const arweave = useArweave().value;
 if (!arweave)
@@ -225,7 +228,7 @@ async function mint() {
       },
       {
         name: "Contract-Src",
-        value: "hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg",
+        value: nftContractId,
       },
       {
         name: "SDK",

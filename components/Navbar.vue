@@ -1,4 +1,21 @@
 <template>
+    <div class="fixed top-0 left-0 w-full h-[128px] z-[99] invisible">
+        <div class="absolute top-[88px] w-full h-0 m-0">
+            <div class="relative w-full max-w-[1740px] mx-auto">
+                <div class="mx-auto max-w-[85vw] flex flex-row flex-nowrap justify-end items-center px-3">
+                    <div class="flex flex-col py-2 px-4 bg-blue-800 font-white rounded-lg">
+                        <span class="text-l font-semibold">
+                            RareWeave is in alpha
+                        </span>
+                        <span
+                            class="text-xs">
+                            Please report any bugs to <a class="text-blue-400" href="https://discord.gg/8qH2x3QZ" target="_blank">Discord</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="Nav">
         <div class="View">
             <div class="Leftside">
@@ -98,21 +115,24 @@
     </div>
 </template>
 <script setup>
-import { useSpendable, useAccount, useAnsaddr } from '../composables/useState';
-// global
-const account = useAccount();
-const spendable = useSpendable();
-const ansaddr = useAnsaddr();
-// state
-const show = ref({
-    menu: false,
-});
+import { useSpendable, useAccount, useWallet, useAnsaddr, useNotifications } from '../composables/useState';
+
+const 
+    account = useAccount(),
+    spendable = useSpendable(),
+    ansaddr = useAnsaddr(),
+    wallet = useWallet().value,
+    notifications = useNotifications().value;
 
 const setShow = (k, v) => {
     show.value[k] = v;
 };
-</script>
 
+const show = ref({
+    menu: false,
+});
+
+</script>
 <style scoped>
 .Nav {
     position: sticky !important;
@@ -127,8 +147,7 @@ const setShow = (k, v) => {
     color: var(--color-primary);
     background-color: rgba(2, 3, 4, 0.375);
     backdrop-filter: blur(20px);
-    font-family: var(--font-secondary) !important;
-    z-index: 9;
+    z-index: 999;
 }
 
 .View {
