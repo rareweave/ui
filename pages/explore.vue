@@ -60,7 +60,7 @@
               <button
                 class="V1__button"
                 @click="
-                  searchType = '';
+                  selectedCollection = '';
                   searchInput = '';
                   forSaleOnly = false;
                   filter = { minPrice: 0, maxPrice: 0 };
