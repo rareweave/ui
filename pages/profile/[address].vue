@@ -170,7 +170,7 @@
         Owned Collections:
       </h2>
       <div class="flex flex-wrap justify-center flex-col">
-        <CollectionCard v-for="collection in ownedCollections" :key="collection.contractTxId" :collection="collection" />
+        <CollectionCard v-for="collection in ownedCollections" :key="collection.id" :collection="collection" />
       </div>
     </template>
   </div>
