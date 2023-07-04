@@ -181,7 +181,7 @@ import { Buffer } from "buffer";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 import { useWallet, useAccount, useSpendable, useAnsaddr, useArweave, useAccountTools } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
-import { nftContractId } from "../../config/contracts.json"
+import { nftContractId, collectionContractId } from "../../config/contracts.json"
 
 const arweave = useArweave().value;
 if (!arweave)
@@ -217,12 +217,20 @@ let ownedNfts = (
   )
 )
 
-console.log(ownedNfts)
 let ownedCollections = (
   await $fetch(
-    `https://prophet.rareweave.store/collections?ownedBy=${user.value?.addr}`
+    `https://glome.rareweave.store/contracts-under-code/${collectionContractId}?expandStates=true`,
+    {
+      method: "POST",
+      body: {
+        filterScript: `variables.address⊂state.admins`,
+        variables: {
+          address: user.value?.addr
+        },
+      },
+    }
   )
-)?.result;
+)
 
 console.log(ownedCollections);
 let changed = computed(() => {
