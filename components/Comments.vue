@@ -88,11 +88,13 @@ async function post() {
 }
 async function fetchComments() {
     let fetchedComments= await $fetch(`https://socioweave.rareweave.store/comments/` + content)
-     console.log(fetchedComments)
     comments.value=fetchedComments
 }
 fetchComments();
-let commentFetchInterval = setInterval(fetchComments, 10000)
+const messagesStream = new EventSource("https://socioweave.rareweave.store/comment-stream/" + content);
+messagesStream.addEventListener("newMessage", (ev) => {
+    comments.value.unshift(ev.data)
+})
 onUnmounted(() => {
     clearInterval(commentFetchInterval)
 })
