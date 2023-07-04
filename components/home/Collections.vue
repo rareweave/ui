@@ -1,180 +1,78 @@
 <template>
-    <div class="flex flex-col align-start justify-start w-full flex-1 py-10 ">
-        <div class="flex flex-col justify-center items-center h-full mt-32 mx-auto ">
-
-            <div class="relative flex flex-col justify-evenly w-full items-start h-full  mx-auto">
+    <div class="flex flex-col align-start justify-start w-full flex-1">
+        <div class="flex flex-col justify-center items-center h-full mt-32 mx-auto w-[1200px] min-w-[316px] max-w-[85vw]">
+            <div class="relative flex flex-col justify-evenly w-full items-start h-full mx-auto">
                 <h2 class="text-white text-center w-full text-4xl font-semibold font-mono p-2 Amazing--red">
                     New collections
                 </h2>
-                <p class="text-1xl my-4 p-2 text-center w-full">
+                <p class="text-lg my-4 p-2 text-center w-full">
                     Explore recently created collections on the RareWeave market.
                 </p>
             </div>
-            <div class="Rarified --observe mt-0 max-w-[85vw]">
-                <div class="Collection Headers">
-                    <span>
+            <div class="relative flex flex-col justify-start items-center w-full h-full mx-auto rounded-[1.5rem] mt-4 pt-4 pb-8 max-w-[85vw] bg-[rgba(17,23,32,1)] text-xl --observe">
+                <div class="relative flex w-full flex-wrap text-[rgba(221, 232, 255, 0.33)] py-2 px-16 border-b-2 border-gray-800">
+                    <span class="font-bold w-1/2 min-w-[200px] underline underline-offset-1">
                         Collection
                     </span>
-                    <span>
+                    <span class="w-1/2 min-w-[200px] underline underline-offset-1">
                         Quantity
                     </span>
-
-
-
                 </div>
-                <NuxtLink v-if="!isLoading.collections" v-for="collection of collections" :key="collection.id"
-                    class="Collection" :to="`/collection/${collection.id}`">
-                    <span class="Amazing-text"> <!-- Collection -->
+                <NuxtLink v-if="!isLoading.collections" v-for="(collection,i) of collections" :key="collection.id"
+                    class="relative flex w-full flex-wrap hover:bg-gray-800 py-2 px-16 border-b-2 border-gray-800" :to="`/collection/${collection.id}`">
+                    <span :class="`Amazing--${['green','green'][i % 2]}`" class="font-bold w-1/2 min-w-[200px]">
                         {{ collection.state.name }}
                     </span>
-                    <span> <!-- Total / For sale -->
+                    <span class="font-semibold w-1/2 min-w-[200px]">
                         {{ collection.state.items?.length }}
                     </span>
-
                 </NuxtLink>
-
+            </div>
+            <div class="relative flex flex-col justify-start items-center w-1/2 min-w[316px] max-w-[85vw] h-max mx-auto rounded-[1.5rem] mt-0 py-2 px-4 max-w-[85vw] text-lg mt-16 text-center text-gray-500 --observe">
+                <p>
+                    Please note that on the RareWeave market a &apos;collection&apos; is defined as: &apos;A group of NFTs that a user has categorized together&apos;, 
+                    rather then: &apos;A group of NFTs that share the same contract&apos;.
+                </p>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import setArweave from '../../plugins/arweave';
+import { useIsLoading, useArweave, useCollections } from '../../composables/useState';
+import { collectionContractId } from '../../config/contracts.json';
 
-import initArweave from '../../plugins/arweave';
-import { useNfts, useIsLoading, useIsError, useArweave } from '../../composables/useState';
-import base64urlencode from 'base64url-encode';
-import { collectionContractId } from "../../config/contracts.json"
-
-let collections = ref([])
 const
     isLoading = useIsLoading(),
-    isError = useIsError(),
+    collections = useCollections(),
     arweave = useArweave().value;
 
-const children = ref([]), // any nft that is a child of a collection
-    rare = ref([]);
-
-onMounted(async () => {
-    if (!arweave) initArweave();
-
+const getData = () => {
     $fetch(`https://glome.rareweave.store/contracts-under-code/${collectionContractId}?expandStates=true&limit=10`, {
         method: "POST",
         body: {
             sortScript: `secondContract.creationTime-firstContract.creationTime`,
             filterScript: `"type"!state.name="string"&("len"!state.items>3)`
         }
-    }
-    )
+    })
         .then(res => {
-            collections.value = res
-            console.log(collections)
+            collections.value = res;
         })
+        .catch(err => {
+            console.log(err);
+        })
+        .finally(() => {
+            isLoading.collections = false;
+        });
+};
 
+onMounted(async () => {
+    if (!arweave)
+        setArweave();
 
-
-
+    getData();
 });
 </script>
 
-<style scoped>    .Rarified {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        margin: 0 auto;
-        background: rgba(17, 23, 32, 0.5);
-        border-radius: 1.5rem;
-
-    }
-
-    .Collection {
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr;
-        grid-template-areas:
-            "name floorprice sweep percentage_change_24h percentage_change_7d";
-        justify-content: space-evenly;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 12px 38px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    @media only screen and (max-width: 1440px) {
-        .Collection {
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: repeat(auto-fill, 1fr);
-            grid-template-areas:
-                "name floorprice sweep"
-                "percentage_change_24h percentage_change_7d percentage_change_7d";
-        }
-    }
-
-    @media only screen and (max-width: 768px) {
-        .Collection {
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: repeat(auto-fill, 1fr);
-            grid-template-areas:
-                "name floorprice"
-                "sweep percentage_change_24h"
-                "percentage_change_7d percentage_change_7d";
-        }
-    }
-
-    @media only screen and (max-width: 480px) {
-        .Collection {
-            grid-template-columns: 1fr;
-            grid-template-rows: repeat(auto-fill, 1fr);
-            grid-template-areas:
-                "name"
-                "floorprice"
-                "sweep"
-                "percentage_change_24h"
-                "percentage_change_7d";
-        }
-    }
-
-
-
-    .Collection:hover {
-        background: rgba(17, 23, 32, 0.5);
-    }
-
-
-    .Collection.Headers {
-        color: rgba(221, 232, 255, 0.33);
-
-    }
-
-    .Collection.Headers span:nth-child(1) {
-        font-weight: 900;
-    }
-
-    .Winston {
-        font-size: 11pt;
-        font-weight: 400;
-        color: rgba(221, 232, 255, 0.25);
-    }
-
-    .Notification {
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-    }
-
-    .Notification p {
-        font-size: 12pt;
-        font-weight: 400;
-        text-align: center;
-        margin: .5rem 0;
-        padding: 1.125rem 2.25rem;
-    }
-</style>
+<style scoped></style>

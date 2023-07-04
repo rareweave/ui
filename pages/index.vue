@@ -3,21 +3,17 @@
     <Centerfold />
     <Collections />
     <Pricing />
-    <!-- <Highlights /> -->
     <Howto />
-    <!-- <Qa /> -->
     <Footer></Footer>
   </div>
 </template>
 
 <script setup>
-import Centerfold from '../components/home/Centerfold.vue';
-import Collections from '../components/home/Collections.vue';
-// import Highlights from '../components/home/Highlights.vue';
-import Howto from '../components/home/Howto.vue';
-import Pricing from '../components/home/Pricing.vue';
-// import Qa from '../components/home/Qa.vue';
-import Footer from '../components/Footer.vue';
+import Centerfold from '~/components/home/Centerfold.vue';
+import Collections from '~/components/home/Collections.vue';
+import Howto from '~/components/home/Howto.vue';
+import Pricing from '~/components/home/Pricing.vue';
+import Footer from '~/components/Footer.vue';
 
 onMounted(() => {
   const observer = new IntersectionObserver((entries) => {
@@ -31,9 +27,9 @@ onMounted(() => {
       };
     });
   },
-    {
-      threshold: 0.1
-    });
+  { 
+    threshold: 0.1
+  });
   const observables = document.querySelectorAll(`.--observe`);
   observables.forEach(observable => {
     observer.observe(observable);
