@@ -327,7 +327,7 @@ async function saveChangesToNft() {
   });
 
   try {
-    await wallet.dispatch(tx)
+    await wallet.value.dispatch(tx)
   }
   catch (e) {
     console.log(e)
@@ -542,9 +542,11 @@ async function transfer() {
   });
 
   try {
-    await wallet.dispatch(tx)
+    console.log(wallet)
+    await wallet.value.dispatch(tx)
   }
   catch (e) {
+    console.log(e)
     alert("Failed to post the transaction to transfer your nft");
   };
 
