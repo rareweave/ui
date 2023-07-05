@@ -20,7 +20,7 @@
         </div>
       
         <div v-else-if="wallet && wallet?.type == 'Arconnect'" class="w-full flex flex-col items-center justify-center">
-        <h2 class="text-red-500 text-md w-full text-center">We're sorry, you can't post comments using Arconnect yet due to issue of decryptiong data through it. We're investigating reason and soon you will be able to do it, use Arweave.app for now</h2>
+        <h2 class="text-red-500 text-md w-full text-center">We're sorry, you can't post comments using Arconnect yet due to issue of decrypting data through it. We're investigating reason and soon you will be able to do it, use Arweave.app for now</h2>
         
         </div>
      
