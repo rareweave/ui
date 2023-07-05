@@ -76,7 +76,7 @@ async function post() {
     let signer= new ArweaveSigner(subaccount.jwk)
     let dataItem = createData(commentContent.value,signer , { tags: [{ name: "Content-Type", value: "text/plain" }, { name: "Data-Protocol", value: "Comment" }, { name: "Data-Source", value: content }] })
     await dataItem.sign(signer)
-    await $fetch(`https://node2.bundlr.network/tx`, {
+    await $fetch(`https://socioweave.rareweave.store/tx`, {
         method: "POST",
         headers: {
             "Content-Type": "application/octet-stream"
