@@ -174,46 +174,46 @@
       </div>
       <!--Bring back later probably, just glome wont support this for now-->
       <div class="MenuSection">
-          <div
-            class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
-          >
-            <h2 class="Amazing--br">Collection detection</h2>
-            <span></span>
-          </div>
+        <div
+          class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
+        >
+          <h2 class="Amazing--br">Collection detection</h2>
+          <span></span>
+        </div>
 
-          <div
-            if="collections.length > 0"
-            class="MenuOptions"
-            v-for="(collection, index) in [
-              ...new Set(
-                collections?.filter(
-                  (collection) =>
-                    collection.state.name !== undefined &&
-                    collection.state.name !== ''
-                )
-              ),
-            ]"
-            :key="collection.id"
-          >
-            <div class="MenuOption highlite">
-              <div class="V1__button_wrapper">
-                <span class="V1__button_decoration"></span>
-                <button
-                  class="V1__button"
-                  @click="
-                    selectedCollection = collection.state.items;
-                    refreshResults();
-                  "
-                >
-                  {{ collection.state.name }}
+        <div
+          if="collections.length > 0"
+          class="MenuOptions"
+          v-for="(collection, index) in [
+            ...new Set(
+              collections?.filter(
+                (collection) =>
+                  collection.state.name !== undefined &&
+                  collection.state.name !== ''
+              )
+            ),
+          ]"
+          :key="collection.id"
+        >
+          <div class="MenuOption highlite">
+            <div class="V1__button_wrapper">
+              <span class="V1__button_decoration"></span>
+              <button
+                class="V1__button"
+                @click="
+                  selectedCollection = collection.state.items;
+                  refreshResults();
+                "
+              >
+                {{ collection.state.name }}
               </button>
-              </div>
             </div>
           </div>
         </div>
+      </div>
     </div>
     <div class="NFTs">
-      <div v-if="isLoading.nfts" class="Blocks__loader">
+      <div v-if="isLoading" class="Blocks__loader">
         <span></span>
       </div>
       <div v-else-if="nfts.length === 0" class="Empty">
@@ -234,27 +234,13 @@
 import { ref, onMounted } from "vue";
 import NftCard from "../components/NftCard.vue";
 import NftRow from "../components/NftRow.vue";
-import { useIsLoading } from "../composables/useState";
 import debounce from "lodash.debounce";
-import { nftContractId, collectionContractId } from "../config/contracts.json"
+import { nftContractId, collectionContractId } from "../config/contracts.json";
 
-const isLoading = useIsLoading();
-
-const nfts = ref(
-  await $fetch(
-    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
-    {
-      method: "POST",
-      body: {
-        filterScript: `1⊕(state.owner="0")`,
-      },
-    }
-  )
-);
-
-
+const isLoading = ref(true);
 const collections = ref([]);
-const selectedCollection = ref("")
+const selectedCollection = ref("");
+const nfts = ref([]);
 
 // Hard coded temp
 
@@ -324,13 +310,15 @@ const debouncedWatch = debounce(() => {
 watch(searchInput, debouncedWatch);
 
 async function refreshResults() {
-  console.log(selectedCollection.value)
+  console.log(selectedCollection.value);
   nfts.value = await $fetch(
     `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
       body: {
-        filterScript: `${selectedCollection.value ? `(id⊂variables.items)&` : ''}(1⊕(state.owner="0"))&${
+        filterScript: `${
+          selectedCollection.value ? `(id⊂variables.items)&` : ""
+        }(1⊕(state.owner="0"))&${
           forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
         }${
           searchInput.value
@@ -344,7 +332,7 @@ async function refreshResults() {
           forSale: forSaleOnly.value,
           minPrice: filter.value.minPrice * 1e12,
           maxPrice: filter.value.maxPrice * 1e12,
-          items: selectedCollection.value
+          items: selectedCollection.value,
         },
       },
     }
@@ -352,17 +340,45 @@ async function refreshResults() {
 }
 
 onMounted(async () => {
+  let urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.has("collection")) {
+    console.log(urlParams.get("collection"));
+    let FetchCollection = await $fetch(
+      `https://glome.rareweave.store/state/${urlParams.get("collection")}`
+    );
+
+    selectedCollection.value = FetchCollection.items;
+  }
+  let nftList = await $fetch(
+    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
+    {
+      method: "POST",
+      body: {
+        filterScript: `${
+          selectedCollection.value ? `(id⊂variables.items)&` : ""
+        }(1⊕(state.owner="0"))`,
+        variables: {
+          items: selectedCollection.value,
+        },
+      },
+    }
+  );
+
+  isLoading.value = false;
+  nfts.value = nftList;
+
   let collectionsRequest = await $fetch(
     `https://glome.rareweave.store/contracts-under-code/${collectionContractId}?expandStates=true`,
     {
       method: "POST",
     }
-  )
+  );
 
-  collections.value = collectionsRequest
+  collections.value = collectionsRequest;
 
-  console.log(collections.value)
-})
+  console.log(collections.value);
+});
 
 definePageMeta({
   layout: "without-auth",
