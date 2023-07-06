@@ -60,7 +60,7 @@
               <button
                 class="V1__button"
                 @click="
-                  selectedCollection = '';
+                  selectedCollection = {};
                   searchInput = '';
                   forSaleOnly = false;
                   filter = { minPrice: 0, maxPrice: 0 };
@@ -73,6 +73,31 @@
           </div>
         </div>
       </div>
+      <template
+        v-if="
+          account &&
+          account.addr &&
+          selectedCollection?.state?.admins.includes(account.addr)
+        "
+      >
+        <div class="MenuSection">
+          <div
+            class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
+          >
+            <h2 class="Amazing--br">Admin Only</h2>
+            <span></span>
+          </div>
+          <div class="MenuOptions">
+            <div class="MenuOption">
+              <div class="FilterButton">
+                <button class="MenuButton" @click="refreshResults()">
+                  Add NFTS
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
       <!-- <div class="MenuSection">
         <div
           class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
@@ -201,7 +226,7 @@
               <button
                 class="V1__button"
                 @click="
-                  selectedCollection = collection.state.items;
+                  selectedCollection = collection;
                   refreshResults();
                 "
               >
@@ -221,10 +246,30 @@
         <h2>No NFTs found</h2>
       </div>
       <div v-else v-if="view === 'grid'" class="Showcase">
-        <NftCard v-for="nft in nfts" :key="nft.id" :nft="nft" />
+        <NftCard
+          v-for="nft in nfts"
+          :key="nft.id"
+          :nft="nft"
+          :disposable="
+            account &&
+            account.addr &&
+            selectedCollection?.state?.admins.includes(account.addr)
+          "
+          @remove-item="deleteNFT"
+        />
       </div>
       <div v-if="!isLoading.nfts && view === 'list'" class="Details">
-        <NftRow v-for="nft in nfts" :key="nft.id" :nft="nft" />
+        <NftRow
+          v-for="nft in nfts"
+          :key="nft.id"
+          :nft="nft"
+          :disposable="
+            account &&
+            account.addr &&
+            selectedCollection?.state?.admins.includes(account.addr)
+          "
+          @remove-item="deleteNFT"
+        />
       </div>
     </div>
   </div>
@@ -233,14 +278,38 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import NftCard from "../components/NftCard.vue";
+import { useWallet, useAccount, useArweave } from "../composables/useState";
 import NftRow from "../components/NftRow.vue";
 import debounce from "lodash.debounce";
 import { nftContractId, collectionContractId } from "../config/contracts.json";
+import setArweave from "../plugins/arweave";
 
-const isLoading = ref(true);
-const collections = ref([]);
-const selectedCollection = ref("");
+const arweave = useArweave().value;
+if (!arweave) setArweave();
+const wallet = useWallet();
+const account = useAccount();
+
+const isLoading = ref(true); // set false once nfts are fetched in onMount
+const collections = ref([]); // List of all collections, also fetched in onMount
+const selectedCollection = ref({}); // Data of collection being viewed
 const nfts = ref([]);
+const view = ref("grid");
+
+// All search params
+const forSaleOnly = ref(false);
+let searchCondition = ref("");
+const searchInput = ref("");
+const filter = ref({
+  minPrice: 0,
+  maxPrice: 0,
+});
+
+const debouncedWatch = debounce(() => {
+  searchCondition = searchInput;
+  refreshResults();
+}, 500);
+
+watch(searchInput, debouncedWatch);
 
 // Hard coded temp
 
@@ -292,23 +361,6 @@ const rarifiedCollections = ref([
   },
 ]);
 
-const view = ref("grid");
-let searchCondition = ref("");
-const forSaleOnly = ref(false);
-const searchInput = ref("");
-
-const filter = ref({
-  minPrice: 0,
-  maxPrice: 0,
-});
-
-const debouncedWatch = debounce(() => {
-  searchCondition = searchInput;
-  refreshResults();
-}, 500);
-
-watch(searchInput, debouncedWatch);
-
 async function refreshResults() {
   console.log(selectedCollection.value);
   nfts.value = await $fetch(
@@ -317,7 +369,7 @@ async function refreshResults() {
       method: "POST",
       body: {
         filterScript: `${
-          selectedCollection.value ? `(id⊂variables.items)&` : ""
+          selectedCollection.value?.state?.items ? `(id⊂variables.items)&` : ""
         }(1⊕(state.owner="0"))&${
           forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
         }${
@@ -332,11 +384,57 @@ async function refreshResults() {
           forSale: forSaleOnly.value,
           minPrice: filter.value.minPrice * 1e12,
           maxPrice: filter.value.maxPrice * 1e12,
-          items: selectedCollection.value,
+          items: selectedCollection.value?.state?.items,
         },
       },
     }
   );
+}
+
+async function deleteNFT(contract) {
+  let tags = [
+    {
+      name: "Contract",
+      value: selectedCollection.value.id,
+    },
+    {
+      name: "Input",
+      value: JSON.stringify({
+        function: "remove-item",
+        target: contract,
+      }),
+    },
+    {
+      name: "App-Name",
+      value: "SmartWeaveAction",
+    },
+    {
+      name: "App-Version",
+      value: "0.3.0",
+    },
+    {
+      name: "Nonce",
+      value: Date.now().toString(),
+    },
+    {
+      name: "SDK",
+      value: "0.3.0",
+    },
+  ];
+
+  let tx = await arweave.createTransaction({
+    data: "Glome Contract Call",
+    tags: encodeTags(tags),
+  });
+
+  try {
+    console.log(wallet.value);
+    await wallet.value.dispatch(tx);
+    nfts.value = nfts.value.filter((nft) => nft.id != contract);
+  } catch (e) {
+    console.log(e);
+    alert("Failed to post the transaction to delete nft from collection");
+  }
 }
 
 onMounted(async () => {
@@ -348,7 +446,7 @@ onMounted(async () => {
       `https://glome.rareweave.store/state/${urlParams.get("collection")}`
     );
 
-    selectedCollection.value = FetchCollection.items;
+    selectedCollection.value = FetchCollection;
   }
   let nftList = await $fetch(
     `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
@@ -356,7 +454,7 @@ onMounted(async () => {
       method: "POST",
       body: {
         filterScript: `${
-          selectedCollection.value ? `(id⊂variables.items)&` : ""
+          selectedCollection.value?.state?.items ? `(id⊂variables.items)&` : ""
         }(1⊕(state.owner="0"))`,
         variables: {
           items: selectedCollection.value,
@@ -365,6 +463,7 @@ onMounted(async () => {
     }
   );
 
+  console.log(nftList);
   isLoading.value = false;
   nfts.value = nftList;
 
@@ -379,6 +478,13 @@ onMounted(async () => {
 
   console.log(collections.value);
 });
+
+function encodeTags(tags) {
+  return tags.map((tag) => ({
+    name: btoa(tag.name),
+    value: btoa(tag.value),
+  }));
+}
 
 definePageMeta({
   layout: "without-auth",
