@@ -533,6 +533,8 @@ onMounted(async () => {
     );
 
     selectedCollection.value = FetchCollection;
+
+    console.log(FetchCollection);
   }
   let nftList = await $fetch(
     `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
@@ -540,10 +542,10 @@ onMounted(async () => {
       method: "POST",
       body: {
         filterScript: `${
-          selectedCollection.value?.state?.items ? `(id⊂variables.items)&` : ""
+          selectedCollection.value?.items ? `(id⊂variables.items)&` : ""
         }(1⊕(state.owner="0"))`,
         variables: {
-          items: selectedCollection.value,
+          items: selectedCollection.value?.items,
         },
       },
     }
