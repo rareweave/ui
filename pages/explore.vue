@@ -324,6 +324,7 @@ import debounce from "lodash.debounce";
 import { nftContractId, collectionContractId } from "../config/contracts.json";
 import setArweave from "../plugins/arweave";
 const router = useRouter();
+let urlParams = new URLSearchParams(window.location.search);
 
 const arweave = useArweave().value;
 if (!arweave) setArweave();
@@ -452,7 +453,9 @@ async function deleteNFT(contract) {
   let tags = [
     {
       name: "Contract",
-      value: selectedCollection.value.id,
+      value: selectedCollection.value.id
+        ? selectedCollection.value.id
+        : urlParams.get("collection"),
     },
     {
       name: "Input",
@@ -507,7 +510,9 @@ async function addNft() {
   let tags = [
     {
       name: "Contract",
-      value: selectedCollection.value.id,
+      value: selectedCollection.value.id
+        ? selectedCollection.value.id
+        : urlParams.get("collection"),
     },
     {
       name: "Input",
@@ -551,8 +556,6 @@ async function addNft() {
 }
 
 onMounted(async () => {
-  let urlParams = new URLSearchParams(window.location.search);
-
   if (urlParams.has("collection")) {
     console.log(urlParams.get("collection"));
     let FetchCollection = await $fetch(
