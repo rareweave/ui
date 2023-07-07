@@ -96,7 +96,7 @@ import Tag from '~/components/Tag.vue';
 import CenterfoldCard from '~/components/CenterfoldCard.vue';
 import { Rows } from '~/contents/june23.js';
 const nftWidth = 316;
-const centerfoldImage = ref(`/centerfold-images/${Math.round(Math.random() * 5) + 1}.jpg`)
+const centerfoldImage = ref(`/centerfold-images/1.jpg`)
 const setW = () => window.innerWidth / nftWidth > 5 ? 5 : Math.floor(window.innerWidth / nftWidth);
 const initialW = setW();
 const w = ref(initialW);
