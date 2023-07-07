@@ -76,9 +76,12 @@
       </div>
       <template
         v-if="
-          account &&
-          account.addr &&
-          selectedCollection?.state?.admins.includes(account.addr)
+          (account &&
+            account.addr &&
+            selectedCollection?.state?.admins.includes(account.addr)) ||
+          (account &&
+            account.addr &&
+            selectedCollection?.admins?.includes(account.addr))
         "
       >
         <div class="MenuSection">
@@ -255,9 +258,12 @@
           :key="nft.id"
           :nft="nft"
           :disposable="
-            account &&
-            account.addr &&
-            selectedCollection?.state?.admins.includes(account.addr)
+            (account &&
+              account.addr &&
+              selectedCollection?.state?.admins.includes(account.addr)) ||
+            (account &&
+              account.addr &&
+              selectedCollection?.admins?.includes(account.addr))
           "
           @remove-item="deleteNFT"
         />
@@ -268,9 +274,12 @@
           :key="nft.id"
           :nft="nft"
           :disposable="
-            account &&
-            account.addr &&
-            selectedCollection?.state?.admins.includes(account.addr)
+            (account &&
+              account.addr &&
+              selectedCollection?.state?.admins.includes(account.addr)) ||
+            (account &&
+              account.addr &&
+              selectedCollection?.admins?.includes(account.addr))
           "
           @remove-item="deleteNFT"
         />
@@ -287,7 +296,9 @@
   <div class="modal">
     <div class="modal-box relative flex flex-col">
       <label for="add-modal" class="btn btn-sm absolute right-2 top-2">✕</label>
-      <h3 class="font-bold text-lg text-center">Test</h3>
+      <h3 class="font-bold text-lg text-center">
+        {{ selectedCollection.name }}
+      </h3>
       <form class="modal-action flex flex-col" @submit.prevent="addNft">
         <input
           v-model="nftBeingAdded"
@@ -409,7 +420,6 @@ async function updateUrl(collection) {
 }
 
 async function refreshResults() {
-  console.log(selectedCollection.value);
   nfts.value = await $fetch(
     `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
     {
