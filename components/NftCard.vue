@@ -1,11 +1,13 @@
 <template>
   <div class="Component">
-
-    <NuxtLink :to="'/nft/' + (nft.id)" class="Card">
+    <NuxtLink :to="'/nft/' + nft.id" class="Card">
       <Graphic :nft="nft" />
       <div class="Buttons">
-        <button v-if="disposable" @click.prevent.stop="$emit('remove-item', (nft.id))"
-          class="nft-button">
+        <button
+          v-if="disposable"
+          @click.prevent.stop="$emit('remove-item', nft.id)"
+          class="Disposable"
+        >
           ✕
         </button>
       </div>
@@ -34,10 +36,12 @@
             </NuxtLink>
           </span>
         </div>
-        <div :class="{
-          'Row --forSale': nft.state.forSale,
-          'Row': !nft.state.forSale
-        }">
+        <div
+          :class="{
+            'Row --forSale': nft.state.forSale,
+            Row: !nft.state.forSale,
+          }"
+        >
           <div class="Nft Price">
             <span class="Nft Split">
               <span class="Icon">
@@ -46,23 +50,19 @@
                 </span>
               </span>
               <span class="Nft PriceInAr" v-if="nft.state.forSale">
-                {{ (nft.state.price / 1e12).toFixed(2) }} {{ nft.state.listingDenom || "AR" }}
+                {{ (nft.state.price / 1e12).toFixed(2) }}
+                {{ nft.state.listingDenom || "AR" }}
               </span>
             </span>
           </div>
-          <span class="Nft Buy Btn" v-if="nft.state.forSale">
-            Buy now
-          </span>
+          <span class="Nft Buy Btn" v-if="nft.state.forSale"> Buy now </span>
         </div>
       </div>
     </NuxtLink>
   </div>
 </template>
 <script setup>
-const { nft, disposable } = defineProps([
-  "nft",
-  "disposable"
-]);
+const { nft, disposable } = defineProps(["nft", "disposable"]);
 </script>
 <style scoped>
 .Component {
@@ -90,20 +90,13 @@ const { nft, disposable } = defineProps([
   margin: 6px 9px 18px;
   padding: 0;
   box-sizing: content-box;
-  border: 1px solid rgba(43, 56, 68, .33);
+  border: 1px solid rgba(43, 56, 68, 0.33);
   border-radius: 8px;
-  box-shadow:
-    0px 1px 1px rgba(0, 0, 0, 0.17),
-    1px 2px 2px rgba(0, 0, 0, 0.17),
-    2px 4px 4px rgba(0, 0, 0, 0.17),
-    4px 8px 8px rgba(0, 0, 0, 0.17),
-    8px 16px 16px rgba(0, 0, 0, 0.17),
-    16px 32px 32px rgba(0, 0, 0, 0.17);
-  text-shadow:
-    0px 1px 1px rgba(0, 0, 0, 0.17),
-    1px 2px 2px rgba(0, 0, 0, 0.17),
-    2px 4px 4px rgba(0, 0, 0, 0.17),
-    4px 8px 8px rgba(0, 0, 0, 0.17),
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.17), 1px 2px 2px rgba(0, 0, 0, 0.17),
+    2px 4px 4px rgba(0, 0, 0, 0.17), 4px 8px 8px rgba(0, 0, 0, 0.17),
+    8px 16px 16px rgba(0, 0, 0, 0.17), 16px 32px 32px rgba(0, 0, 0, 0.17);
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.17), 1px 2px 2px rgba(0, 0, 0, 0.17),
+    2px 4px 4px rgba(0, 0, 0, 0.17), 4px 8px 8px rgba(0, 0, 0, 0.17),
     8px 16px 16px rgba(0, 0, 0, 0.17);
 }
 
@@ -114,9 +107,11 @@ const { nft, disposable } = defineProps([
   left: -2px;
   width: calc((100%) + (2 * 2px));
   height: calc((100%) + (2 * 2px));
-  background: radial-gradient(ellipse at center,
-      rgba(17, 23, 32, 0),
-      rgba(17, 23, 32, 0)) !important;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(17, 23, 32, 0),
+    rgba(17, 23, 32, 0)
+  ) !important;
   border-radius: 6px;
   z-index: -1;
   background-size: 200% 200%;
@@ -124,13 +119,9 @@ const { nft, disposable } = defineProps([
 
 .Card:hover {
   /* border: 1px solid rgba(255, 255, 255, 0); */
-  box-shadow:
-    0px 1px 1px rgba(0, 0, 0, 0.17),
-    1px 2px 2px rgba(0, 0, 0, 0.17),
-    2px 4px 4px rgba(0, 0, 0, 0.17),
-    4px 8px 8px rgba(0, 0, 0, 0.17),
-    8px 16px 16px rgba(0, 0, 0, 0.17),
-    16px 32px 32px rgba(0, 0, 0, 0.17);
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.17), 1px 2px 2px rgba(0, 0, 0, 0.17),
+    2px 4px 4px rgba(0, 0, 0, 0.17), 4px 8px 8px rgba(0, 0, 0, 0.17),
+    8px 16px 16px rgba(0, 0, 0, 0.17), 16px 32px 32px rgba(0, 0, 0, 0.17);
   background-color: rgba(17, 23, 32, 1);
 }
 
@@ -149,9 +140,7 @@ const { nft, disposable } = defineProps([
 
 .--forSale:hover {
   /* background: linear-gradient(93deg, rgba(129,234,174,1), rgb(9, 192, 238)); */
-  background: linear-gradient(93deg,
-      rgb(158 19 131),
-      rgb(238 129 9));
+  background: linear-gradient(93deg, rgb(158 19 131), rgb(238 129 9));
   /* background: rgb(214 116 8); */
 }
 
@@ -185,7 +174,7 @@ const { nft, disposable } = defineProps([
 .Row {
   display: flex;
   margin: 0;
-  padding: .25em;
+  padding: 0.25em;
   height: 40px;
 }
 
@@ -201,7 +190,7 @@ const { nft, disposable } = defineProps([
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  transition: .36s ease-in-out;
+  transition: 0.36s ease-in-out;
 }
 
 .Nft.Detail {
@@ -209,7 +198,7 @@ const { nft, disposable } = defineProps([
   padding: 0 12px;
   font-size: 12pt;
   font-weight: 600;
-  font-family: 'Arimo', sans-serif;
+  font-family: "Arimo", sans-serif;
   color: rgba(251, 250, 255, 1);
   white-space: nowrap;
   overflow: hidden;
@@ -247,7 +236,7 @@ const { nft, disposable } = defineProps([
 }
 
 .Link:hover {
-  color: rgba(251, 250, 255, .5);
+  color: rgba(251, 250, 255, 0.5);
   text-decoration: 1px underline !important;
 }
 
@@ -282,5 +271,21 @@ const { nft, disposable } = defineProps([
 .Buy {
   flex: 0 0 max-content;
   padding: 0 12px;
+}
+
+.Disposable {
+  background-color: #cc352d;
+  border-radius: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  transition: transform 1s ease 0s;
+  padding: 0.2em 0.2em;
+  font-size: 1.2em;
+}
+
+.Disposable:hover {
+  transition: transform 0.5s ease 0s;
+  background-color: #a12720;
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
 }
 </style>
