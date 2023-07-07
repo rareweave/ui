@@ -90,9 +90,11 @@
           <div class="MenuOptions">
             <div class="MenuOption">
               <div class="FilterButton">
-                <button class="MenuButton" @click="refreshResults()">
-                  Add NFTS
-                </button>
+                <label
+                  for="add-modal"
+                  class="btn btn-xl text-lg amazing-button rounded-md hover:rounded-lg transition-all font-mono m-1 w-full"
+                  >Add NFTS</label
+                >
               </div>
             </div>
           </div>
@@ -273,6 +275,31 @@
       </div>
     </div>
   </div>
+  <input
+    type="checkbox"
+    id="add-modal"
+    class="modal-toggle"
+    :checked="false"
+    v-model="addModalOpened"
+  />
+  <div class="modal">
+    <div class="modal-box relative flex flex-col">
+      <label for="add-modal" class="btn btn-sm absolute right-2 top-2">✕</label>
+      <h3 class="font-bold text-lg text-center">Test</h3>
+      <form class="modal-action flex flex-col" @submit.prevent="addNft">
+        <input
+          v-model="nftBeingAdded"
+          class="input input-bordered w-full rounded-lg p-2"
+          type="text"
+          required
+          placeholder="NFT IDs (Seperate with spaces)"
+        />
+        <button type="submit" class="btn btn-primary rounded-lg mt-4">
+          Add
+        </button>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -294,6 +321,9 @@ const collections = ref([]); // List of all collections, also fetched in onMount
 const selectedCollection = ref({}); // Data of collection being viewed
 const nfts = ref([]);
 const view = ref("grid");
+
+let addModalOpened = ref(false);
+let nftBeingAdded = ref("");
 
 // All search params
 const forSaleOnly = ref(false);
@@ -401,7 +431,7 @@ async function deleteNFT(contract) {
       name: "Input",
       value: JSON.stringify({
         function: "remove-item",
-        target: contract,
+        item: contract,
       }),
     },
     {
@@ -429,12 +459,68 @@ async function deleteNFT(contract) {
 
   try {
     console.log(wallet.value);
-    await wallet.value.dispatch(tx);
+    console.log(await wallet.value.dispatch(tx));
     nfts.value = nfts.value.filter((nft) => nft.id != contract);
   } catch (e) {
     console.log(e);
     alert("Failed to post the transaction to delete nft from collection");
   }
+}
+
+async function addNft() {
+  let newNfts = nftBeingAdded.value.split(" ");
+  let inputs = [];
+  for (let nft of newNfts) {
+    inputs.push({
+      function: "add-item",
+      item: nft,
+    });
+  }
+
+  let tags = [
+    {
+      name: "Contract",
+      value: selectedCollection.value.id,
+    },
+    {
+      name: "Input",
+      value: JSON.stringify({
+        function: "bulk",
+        inputs: inputs,
+      }),
+    },
+    {
+      name: "App-Name",
+      value: "SmartWeaveAction",
+    },
+    {
+      name: "App-Version",
+      value: "0.3.0",
+    },
+    {
+      name: "Nonce",
+      value: Date.now().toString(),
+    },
+    {
+      name: "SDK",
+      value: "0.3.0",
+    },
+  ];
+
+  let tx = await arweave.createTransaction({
+    data: "Glome Contract Call",
+    tags: encodeTags(tags),
+  });
+
+  try {
+    await wallet.value.dispatch(tx);
+  } catch (e) {
+    console.log(e);
+    alert("Failed to post the transaction to add nfts to collection");
+  }
+
+  addModalOpened.value = false;
+  refreshResults();
 }
 
 onMounted(async () => {
