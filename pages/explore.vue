@@ -64,6 +64,7 @@
                   searchInput = '';
                   forSaleOnly = false;
                   filter = { minPrice: 0, maxPrice: 0 };
+                  updateUrl(null);
                   refreshResults();
                 "
               >
@@ -229,6 +230,7 @@
                 class="V1__button"
                 @click="
                   selectedCollection = collection;
+                  updateUrl(collection.id);
                   refreshResults();
                 "
               >
@@ -310,6 +312,7 @@ import NftRow from "../components/NftRow.vue";
 import debounce from "lodash.debounce";
 import { nftContractId, collectionContractId } from "../config/contracts.json";
 import setArweave from "../plugins/arweave";
+const router = useRouter();
 
 const arweave = useArweave().value;
 if (!arweave) setArweave();
@@ -390,6 +393,20 @@ const rarifiedCollections = ref([
     count: 2,
   },
 ]);
+
+async function updateUrl(collection) {
+  if (collection == null) {
+    router.push({
+      path: `/explore`,
+      query: {},
+    });
+  } else {
+    router.push({
+      path: `/explore`,
+      query: { collection: collection },
+    });
+  }
+}
 
 async function refreshResults() {
   console.log(selectedCollection.value);
