@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    :to="'/explore?' + collection.id"
+    :to="'/explore?collection=' + collection.id"
     class="background nft-card card shadow-xl w-[16rem] m-2 rounded-xl flex flex-col justify-end items-center"
   >
     <div
