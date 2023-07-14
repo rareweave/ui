@@ -336,6 +336,8 @@ import {
 } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
 
+import { GlomeNode } from "../../config/config.json";
+
 const arweave = useArweave().value;
 if (!arweave) setArweave();
 
@@ -344,11 +346,11 @@ let wallet = useWallet();
 const account = useAccount();
 const accountTools = useAccountTools().value;
 
-let height = ref((await $fetch("https://glome.rareweave.store/info")).height);
+let height = ref((await $fetch(`${GlomeNode}/info`)).height);
 
 let nftId = useRoute().params.id || useRoute().hash.slice(1);
 
-let nftStateOrig = await $fetch(`https://glome.rareweave.store/state/` + nftId);
+let nftStateOrig = await $fetch(`${GlomeNode}/state/` + nftId);
 
 let transferModalOpened = ref(false);
 let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig)));
@@ -408,12 +410,12 @@ let changed = computed(() => {
   return ch;
 });
 let updaterInterval = setInterval(async () => {
-  height.value = (await $fetch("https://glome.rareweave.store/info")).height;
+  height.value = (await $fetch(`${GlomeNode}/info`)).height;
 
   if (!changed.value) {
-    nftStateOrig.value = await fetch(
-      `https://glome.rareweave.store/state/` + nftId
-    ).then((res) => res.json());
+    nftStateOrig.value = await fetch(`${GlomeNode}/state/` + nftId).then(
+      (res) => res.json()
+    );
     if (
       !nftStateOrig.value.reservationTxId &&
       height.value - nftStateOrig.value.reservationBlockHeight < 12 &&

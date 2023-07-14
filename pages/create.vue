@@ -198,6 +198,7 @@ import { Buffer } from "buffer";
 import { useWallet, useAccount, useArweave } from "../composables/useState";
 import setArweave from "../plugins/arweave";
 import { nftContractId } from "../config/contracts.json";
+import { GlomeNode } from "../config/config.json";
 
 const arweave = useArweave().value;
 if (!arweave) setArweave();
@@ -327,7 +328,7 @@ async function mint() {
       return "error";
     }
     try {
-      let res = await $fetch(`https://glome.rareweave.store/state/` + nftId);
+      let res = await $fetch(`${GlomeNode}/state/` + nftId);
       return "ok";
     } catch (e) {
       console.log(e);
