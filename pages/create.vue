@@ -94,6 +94,8 @@
           v-model="description"
           class="mx-16 bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none min-h-[128px] border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"
         ></textarea>
+
+        <!-- Price Drop downs -->
         <div class="flex flex-wrap mt-8 mx-16">
           <div class="flex flex-col justify-start items-start mr-16">
             <label class="label flex flex-col justify-start items-start">
@@ -135,6 +137,54 @@
             </label>
           </div>
         </div>
+
+        <!-- Listing Coin/Chain -->
+        <div class="flex flex-wrap mt-8 mx-16">
+          <div class="flex flex-col justify-start items-start mr-16">
+            <label class="label flex flex-col justify-start items-start">
+              <span class="text-xl font-bold">Chain:</span>
+            </label>
+            <div class="dropdown inline-block relative">
+              <select
+                v-model="chain"
+                class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200"
+              >
+                <option selected>Select a Chain</option>
+                <option>arweave</option>
+                <option>everpay</option>
+              </select>
+              <span
+                class="dropdown-icon w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700"
+              >
+                ▼
+              </span>
+            </div>
+          </div>
+
+          <template v-if="chain == 'everpay'">
+            <div class="flex flex-col justify-start items-start mr-16">
+              <label class="label flex flex-col justify-start items-start">
+                <span class="text-xl font-bold">Coin:</span>
+              </label>
+              <div class="dropdown inline-block relative">
+                <select
+                  v-model="coin"
+                  class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200"
+                >
+                  <option v-for="item in EverpayCoins" :value="item">
+                    {{ item }}
+                  </option>
+                </select>
+                <span
+                  class="dropdown-icon w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700"
+                >
+                  ▼
+                </span>
+              </div>
+            </div>
+          </template>
+        </div>
+
         <label class="label flex flex-col justify-start items-start mt-8 px-16">
           <span class="text-xl font-bold"> Collection: </span>
           <span class="pt-2 text-gray-500">
@@ -210,6 +260,10 @@ const title = ref("");
 const uploading = ref(false);
 const description = ref("");
 const price = ref(0.5);
+
+const chain = ref("Select a Chain");
+const coin = ref("AR");
+
 const royalty = ref(3);
 const forSale = ref(true);
 const collectionId = ref("");
@@ -218,6 +272,20 @@ const imageObjectUrl = ref(null);
 const fileMeta = ref({});
 
 let nftContent = new ArrayBuffer(0);
+
+// HARD CODED FOR NOW
+
+let EverpayCoins = [
+  "AR",
+  "ETH",
+  "U",
+  "BNB",
+  "USDC",
+  "USDT",
+  "ARDRIVE",
+  "DAI",
+  "WBTC",
+];
 
 async function uploadNftContent(e) {
   if (e.target.files && e.target.files[0]) {
@@ -261,6 +329,13 @@ async function mint() {
     price: parseInt(arweave.ar.arToWinston(price.value)),
     reservationBlockHeight: 0,
     royalty: royalty.value / 100,
+    royaltyAddresses: {
+      arweave: account.value.addr,
+      everpay: account.value.addr,
+    },
+    listingAddress: account.value.addr,
+    listingChain: chain,
+    listingCoin: coin,
   };
 
   uploading.value = true;
