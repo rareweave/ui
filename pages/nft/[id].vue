@@ -122,6 +122,28 @@
           <div v-else class="p-2 bg-red-600 text-sm">No</div>
         </template>
       </div>
+      <template v-if="nftState.listingChain && nftState.listingCoin">
+        <div
+          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
+        >
+          Chain:
+          <div
+            class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center"
+          >
+            {{ nftState.listingChain }}
+          </div>
+        </div>
+        <div
+          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
+        >
+          Coin:
+          <div
+            class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center"
+          >
+            {{ nftState.listingCoin }}
+          </div>
+        </div>
+      </template>
       <template v-if="nftState.forSale">
         <div
           class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
@@ -354,6 +376,7 @@ let nftStateOrig = await $fetch(`${GlomeNode}/state/` + nftId);
 
 let transferModalOpened = ref(false);
 let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig)));
+
 let isBuying = computed(
   () =>
     nftState.value.reservationTxId &&
