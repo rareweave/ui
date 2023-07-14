@@ -88,6 +88,7 @@ import { useAccount, useArweave } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
 import b64urlEncode from "base64url-encode";
 import { nftContractId } from "../../config/contracts.json";
+import { GlomeNode } from "../../config/config.json";
 
 const arweave = useArweave().value;
 if (!arweave) setArweave();
@@ -95,13 +96,11 @@ if (!arweave) setArweave();
 const account = useAccount();
 
 let collectionId = useRoute().params.id || useRoute().hash.slice(1);
-let state = ref(
-  await $fetch("https://glome.rareweave.store/state/" + collectionId)
-);
+let state = ref(await $fetch(`${GlomeNode}/state/` + collectionId));
 console.log(b64urlEncode(`id⊂${JSON.stringify(state.value.items)}`));
 let nfts = ref(
   await $fetch(
-    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
+    `${GlomeNode}/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
       body: {
@@ -145,7 +144,7 @@ let nftContract = account.value
     });
 async function refreshResults() {
   await $fetch(
-    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
+    `${GlomeNode}/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
       body: {
@@ -171,9 +170,7 @@ async function add() {
     inputs: inputs,
   });
   addModalOpened.value = false;
-  state.value = await $fetch(
-    "https://glome.rareweave.store/state/" + collectionId
-  );
+  state.value = await $fetch(`${GlomeNode}/state/` + collectionId);
   refreshResults();
 }
 

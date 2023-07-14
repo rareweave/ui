@@ -322,6 +322,7 @@ import { useWallet, useAccount, useArweave } from "../composables/useState";
 import NftRow from "../components/NftRow.vue";
 import debounce from "lodash.debounce";
 import { nftContractId, collectionContractId } from "../config/contracts.json";
+import { GlomeNode } from "../config/config.json";
 import setArweave from "../plugins/arweave";
 const router = useRouter();
 let urlParams = new URLSearchParams(window.location.search);
@@ -559,7 +560,7 @@ onMounted(async () => {
   if (urlParams.has("collection")) {
     console.log(urlParams.get("collection"));
     let FetchCollection = await $fetch(
-      `https://glome.rareweave.store/state/${urlParams.get("collection")}`
+      `${GlomeNode}/state/${urlParams.get("collection")}`
     );
 
     selectedCollection.value = FetchCollection;
@@ -567,7 +568,7 @@ onMounted(async () => {
     console.log(FetchCollection);
   }
   let nftList = await $fetch(
-    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
+    `${GlomeNode}/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
       body: {
@@ -586,7 +587,7 @@ onMounted(async () => {
   nfts.value = nftList;
 
   let collectionsRequest = await $fetch(
-    `https://glome.rareweave.store/contracts-under-code/${collectionContractId}?expandStates=true`,
+    `${GlomeNode}/contracts-under-code/${collectionContractId}?expandStates=true`,
     {
       method: "POST",
     }
