@@ -334,8 +334,8 @@ async function mint() {
       everpay: account.value.addr,
     },
     listingAddress: account.value.addr,
-    listingChain: chain,
-    listingCoin: coin,
+    listingChain: chain.value,
+    listingCoin: coin.value,
   };
 
   uploading.value = true;
