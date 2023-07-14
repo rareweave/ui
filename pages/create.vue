@@ -50,6 +50,15 @@
                 <source :src="imageObjectUrl" :type="fileMeta.type" />
                 Your browser does not support the video tag.
               </video>
+              <audio
+                v-else-if="fileMeta?.type?.startsWith('audio')"
+                autoplay
+                muted
+                controls
+              >
+                <source :src="imageObjectUrl" :type="fileMeta.type" />
+                Your browser does not support the audio tag.
+              </audio>
             </template>
           </div>
           <input
