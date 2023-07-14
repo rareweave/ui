@@ -1,6 +1,9 @@
 <template>
-  <form v-if="!uploading" class="h-full-navbared w-full flex flex-col items-center justify-center font-mono"
-    @submit.prevent="Create">
+  <form
+    v-if="!uploading"
+    class="h-full-navbared w-full flex flex-col items-center justify-center font-mono"
+    @submit.prevent="Create"
+  >
     <h1 class="text-3xl text-center">
       Create
       <p class="rareweave-font">Collection</p>
@@ -10,28 +13,49 @@
       <label class="label">
         <span class="label-text">Collection name</span>
       </label>
-      <input v-model="title" required type="text" maxlength="40" placeholder="RareWeave Collection"
-        class="input input-bordered" />
+      <input
+        v-model="title"
+        required
+        type="text"
+        maxlength="40"
+        placeholder="RareWeave Collection"
+        class="input input-bordered"
+      />
       <label class="label">
         <span class="label-text">Describe your Collection</span>
       </label>
 
-      <textarea placeholder="Super Awesome NFTs!" v-model="description"
-        class="textarea textarea-bordered textarea-xs w-full max-w-xs"></textarea>
+      <textarea
+        placeholder="Super Awesome NFTs!"
+        v-model="description"
+        class="textarea textarea-bordered textarea-xs w-full max-w-xs"
+      ></textarea>
 
       <label class="label">
         <span class="label-text">Tags</span>
       </label>
-      <input v-model="tags" required type="text" maxlength="40" placeholder="doge rare cool..."
-        class="input input-bordered" />
+      <input
+        v-model="tags"
+        required
+        type="text"
+        maxlength="40"
+        placeholder="doge rare cool..."
+        class="input input-bordered"
+      />
 
-      <button type="submit" class="btn btn-lg py-3 amazing-button rounded-lg min-h-0 h-auto my-2">
+      <button
+        type="submit"
+        class="btn btn-lg py-3 amazing-button rounded-lg min-h-0 h-auto my-2"
+      >
         Create!
       </button>
     </div>
   </form>
 
-  <div v-else class="h-full-navbared w-full flex flex-col items-center justify-center font-mono">
+  <div
+    v-else
+    class="h-full-navbared w-full flex flex-col items-center justify-center font-mono"
+  >
     <div class="loading-wrapper h-20 m-2 flex items-center justify-center">
       <div class="loading"></div>
     </div>
@@ -51,11 +75,10 @@ import { Buffer } from "buffer";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 import { useWallet, useAccount, useArweave } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
-import { collectionContractId } from "../../config/contracts.json"
+import { collectionContractId } from "../../config/contracts.json";
 
 const arweave = useArweave().value;
-if (!arweave)
-  setArweave();
+if (!arweave) setArweave();
 
 const account = useAccount();
 const wallet = useWallet();
@@ -106,7 +129,7 @@ async function Create() {
     tags: encodeTags([
       { name: "App-Name", value: "SmartWeaveContract" },
       { name: "App-Version", value: "0.3.0" },
-      { name: 'Content-Type', value: 'application/json' },
+      { name: "Content-Type", value: "application/json" },
       {
         name: "Contract-Src",
         value: collectionContractId,
@@ -167,7 +190,7 @@ async function Create() {
   }
 
   await checkContract(tx.id);
-  await navigateTo("/collection/" + tx.id);
+  await navigateTo("/explore?collection=" + tx.id);
 }
 function encodeTags(tags) {
   return tags.map((tag) => ({ name: btoa(tag.name), value: btoa(tag.value) }));
