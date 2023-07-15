@@ -28,16 +28,17 @@
           {{ nft.state.forSale ? "Yes" : "No" }}
         </span>
 
-        <label class="price">
-          {{ nft.state.listingDenom || "AR" }}
-        </label>
+        <label class="chain"> Chain: </label>
+        <span class="chain">
+          {{ nft.state.listingChain ? nft.state.listingChain : "Arweave" }}
+        </span>
+
+        <label class="price"> Price </label>
         <span class="price">
           {{
             nft.state.price > 0
-              ? (nft.state.price / 1e12).toFixed(2) +
-                " (" +
-                nft.state.price +
-                " winston)"
+              ? (nft.state.price / 1e12).toFixed(2).toString() +
+                (nft.state.listingCoin ? nft.state.listingCoin : "AR")
               : "free"
           }}
         </span>

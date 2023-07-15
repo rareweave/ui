@@ -46,12 +46,12 @@
             <span class="Nft Split">
               <span class="Icon">
                 <span class="AR">
-                  {{ nft.state.listingDenom || "a" }}
+                  <img :src="coinImage" alt="My Happy SVG" />
                 </span>
               </span>
               <span class="Nft PriceInAr" v-if="nft.state.forSale">
                 {{ (nft.state.price / 1e12).toFixed(2) }}
-                {{ nft.state.listingDenom || "AR" }}
+                {{ nft.state.listingCoin || "AR" }}
               </span>
             </span>
           </div>
@@ -62,6 +62,10 @@
   </div>
 </template>
 <script setup>
+const coinImage = nft.state.listingChain
+  ? ref(`/coin-images/${nft.state.listingChain}.svg`)
+  : ref(`/coin-images/arweave.svg`);
+
 const { nft, disposable } = defineProps(["nft", "disposable"]);
 </script>
 <style scoped>
