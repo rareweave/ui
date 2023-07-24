@@ -150,8 +150,9 @@
                 class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200"
               >
                 <option selected>Select a Chain</option>
-                <option>arweave</option>
-                <option>everpay</option>
+                <option v-for="chain in Coins.Chains" :value="chain">
+                  {{ chain }}
+                </option>
               </select>
               <span
                 class="dropdown-icon w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700"
@@ -171,8 +172,8 @@
                   v-model="coin"
                   class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200"
                 >
-                  <option v-for="item in EverpayCoins" :value="item">
-                    {{ item }}
+                  <option v-for="coin in Coins.EverpayCoins" :value="coin">
+                    {{ coin }}
                   </option>
                 </select>
                 <span
@@ -249,6 +250,7 @@ import { useWallet, useAccount, useArweave } from "../composables/useState";
 import setArweave from "../plugins/arweave";
 import { nftContractId } from "../config/contracts.json";
 import { GlomeNode } from "../config/config.json";
+import Coins from "../config/coins";
 
 const arweave = useArweave().value;
 if (!arweave) setArweave();
@@ -274,18 +276,6 @@ const fileMeta = ref({});
 let nftContent = new ArrayBuffer(0);
 
 // HARD CODED FOR NOW
-
-let EverpayCoins = [
-  "AR",
-  "ETH",
-  "U",
-  "BNB",
-  "USDC",
-  "USDT",
-  "ARDRIVE",
-  "DAI",
-  "WBTC",
-];
 
 async function uploadNftContent(e) {
   if (e.target.files && e.target.files[0]) {
