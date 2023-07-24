@@ -49,8 +49,14 @@
                   <img :src="coinImage" alt="My Happy SVG" />
                 </span>
               </span>
-              <span class="Nft PriceInAr" v-if="nft.state.forSale">
-                {{ (nft.state.price / 1e12).toFixed(2) }}
+              <span
+                class="Nft"
+                v-if="nft.state.forSale && nft.state.price != null"
+              >
+                {{
+                  new Big(nft.state.price) /
+                  new Big(Coins.Exponents[nft.state.listingCoin])
+                }}
                 {{ nft.state.listingCoin || "AR" }}
               </span>
             </span>
@@ -62,6 +68,9 @@
   </div>
 </template>
 <script setup>
+import Coins from "../config/coins";
+import Big from "big.js";
+
 const coinImage = nft.state.listingChain
   ? ref(`/coin-images/${nft.state.listingChain}.svg`)
   : ref(`/coin-images/arweave.svg`);

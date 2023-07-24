@@ -158,10 +158,11 @@
                 class="input text-start appearance-[textfield] w-14 rounded-none px-1 input-sm bg-transparent"
                 placeholder="Price"
               />
-              AR
             </div>
           </template>
-          <div v-else class="p-2 bg-zinc-700 text-sm">{{ nftPrice }} AR</div>
+          <div v-else class="p-2 bg-zinc-700 text-sm">
+            {{ nftPrice }} {{ nftState.listingCoin || "AR" }}
+          </div>
         </div>
         <div
           class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
@@ -350,12 +351,16 @@
   </div>
 </template>
 <script setup>
+import Big from "big.js";
+
+import Coins from "../../config/coins";
 import {
   useAccount,
   useArweave,
   useAccountTools,
   useWallet,
 } from "../../composables/useState";
+
 import setArweave from "../../plugins/arweave";
 
 import { GlomeNode } from "../../config/config.json";
@@ -393,9 +398,7 @@ let payingRoyalty = ref(false);
 let buyStatus = ref(0);
 let transferRecipient = ref("");
 let nftPrice = ref(
-  parseFloat(
-    parseFloat(arweave.ar.winstonToAr(nftState.value.price)).toFixed(3)
-  )
+  Big(nftState.value.price) / Big(Coins.Exponents[nftState.value.listingCoin])
 );
 let nftRoyalty = ref(parseFloat(nftState.value.royalty * 100));
 let nftOwner = ref(

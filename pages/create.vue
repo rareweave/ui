@@ -112,7 +112,7 @@
               <span
                 class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700"
               >
-                AR
+                {{ coin }}
               </span>
             </label>
           </div>
@@ -246,6 +246,7 @@
 </template>
 <script setup>
 import { Buffer } from "buffer";
+import Big from "big.js";
 import { useWallet, useAccount, useArweave } from "../composables/useState";
 import setArweave from "../plugins/arweave";
 import { nftContractId } from "../config/contracts.json";
@@ -303,6 +304,9 @@ function readAsArrayBuffer(file) {
 }
 
 async function mint() {
+  console.log(new Big(price.value));
+  console.log(new Big(Coins.Exponents[coin.value]));
+  console.log(new Big(price.value) * new Big(Coins.Exponents[coin.value]));
   let initState = {
     owner: account.value.addr,
     minter: account.value.addr,
@@ -316,7 +320,7 @@ async function mint() {
     createdAt: Date.now(),
     evolve: null,
     forSale: forSale.value,
-    price: parseInt(arweave.ar.arToWinston(price.value)),
+    price: new Big(price.value) * new Big(Coins.Exponents[coin.value]),
     reservationBlockHeight: 0,
     royalty: royalty.value / 100,
     royaltyAddresses: {
@@ -375,18 +379,18 @@ async function mint() {
     ]),
   });
 
-  if (nftContent.byteLength > 100000) {
-    await arweave.transactions.sign(tx);
-    let uploader = await arweave.transactions.getUploader(tx);
-    while (!uploader.isComplete) {
-      await uploader.uploadChunk();
-      console.log(
-        `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
-      );
-    }
-  } else {
-    tx = await wallet.value.dispatch(tx);
-  }
+  // if (nftContent.byteLength > 100000) {
+  //   await arweave.transactions.sign(tx);
+  //   let uploader = await arweave.transactions.getUploader(tx);
+  //   while (!uploader.isComplete) {
+  //     await uploader.uploadChunk();
+  //     console.log(
+  //       `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
+  //     );
+  //   }
+  // } else {
+  //   tx = await wallet.value.dispatch(tx);
+  // }
 
   async function checkNFT(nftId, tries = 0) {
     if (tries >= 100) {

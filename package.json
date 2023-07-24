@@ -21,6 +21,7 @@
     "arweave-subaccounts": "https://github.com/rareweave/subaccounts",
     "arweave-wallet-connector": "^1.0.0",
     "base64url-encode": "^1.0.1",
+    "big.js": "^6.2.1",
     "bn.js": "^5.2.1",
     "buffer": "^6.0.3",
     "daisyui": "^2.50.0",

@@ -34,10 +34,13 @@
         </span>
 
         <label class="price"> Price </label>
-        <span class="price">
+        <span class="price" v-if="nft.state.price != null">
           {{
             nft.state.price > 0
-              ? (nft.state.price / 1e12).toFixed(2).toString() +
+              ? (
+                  Big(nft.state.price) /
+                  Big(Coins.Exponents[nft.state.listingCoin])
+                ).toString() +
                 (nft.state.listingCoin ? nft.state.listingCoin : "AR")
               : "free"
           }}
@@ -55,6 +58,9 @@
   </div>
 </template>
 <script setup>
+import Big from "big.js";
+import Coins from "../config/coins";
+
 import Graphic from "./Graphic.vue";
 const { nft } = defineProps(["nft"]);
 </script>
