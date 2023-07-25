@@ -152,7 +152,7 @@
           <template v-if="isNftOwner">
             <div class="p-1 pr-2 bg-zinc-700 text-sm">
               <input
-                v-model="nftPrice"
+                v-model="nftPriceBase"
                 type="number"
                 step="0.1"
                 class="input text-start appearance-[textfield] w-14 rounded-none px-1 input-sm bg-transparent"
@@ -161,7 +161,7 @@
             </div>
           </template>
           <div v-else class="p-2 bg-zinc-700 text-sm">
-            {{ nftPrice }} {{ nftState.listingCoin || "AR" }}
+            {{ nftPriceBase }} {{ nftState.listingCoin || "AR" }}
           </div>
         </div>
         <div
@@ -236,7 +236,8 @@
               @click="payRoyalty"
               v-if="!payingRoyalty && !isBuying"
             >
-              Pay royalty ({{ nftPrice * (nftRoyalty / 100) }} AR)
+              Pay royalty ({{ nftPriceBase * (nftRoyalty / 100) }}
+              {{ nftState.listingCoin }})
             </awesome-button>
             <span class="text-lg" v-else-if="isBuying">Paid royalty</span>
             <span class="text-lg" v-else
@@ -249,7 +250,7 @@
               v-if="!isSomeoneElseBuying && buyStatus != 2"
               @click="finalizeBuy"
             >
-              Finalize buy ({{ nftPrice }} AR)
+              Finalize buy ({{ nftPriceBase }} AR)
             </amazing-button>
             <span v-else-if="buyStatus == 2" class="text-lg"
               >Finalizing buy...
@@ -352,7 +353,7 @@
 </template>
 <script setup>
 import Big from "big.js";
-
+import Everpay from "everpay";
 import Coins from "../../config/coins";
 import {
   useAccount,
@@ -362,51 +363,62 @@ import {
 } from "../../composables/useState";
 
 import setArweave from "../../plugins/arweave";
-
 import { GlomeNode } from "../../config/config.json";
-
 const arweave = useArweave().value;
 if (!arweave) setArweave();
-
 let wallet = useWallet();
-
 const account = useAccount();
 const accountTools = useAccountTools().value;
-
-let height = ref((await $fetch(`${GlomeNode}/info`)).height);
-
+let timestamp = ref(Date.now());
 let nftId = useRoute().params.id || useRoute().hash.slice(1);
-
 let nftStateOrig = await $fetch(`${GlomeNode}/state/` + nftId);
-
 let transferModalOpened = ref(false);
 let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig)));
+
+// Might get changed to just be the signer for everything???? dunno yet
+const everpay =
+  nftState.value.listingChain == "everpay"
+    ? new Everpay({
+        account: await wallet?.value?.getActiveAddress(),
+        chainType: "arweave",
+        arJWK: "use_wallet",
+      })
+    : null;
+
+const { tokenList } = everpay ? await everpay.info() : null;
 
 let isBuying = computed(
   () =>
     nftState.value.reservationTxId &&
-    height.value - nftState.value.reservationBlockHeight < 12 &&
+    timestamp.value - nftState.value.reservationTimestamp < 600000 &&
     nftState.value.reserver == account.value?.addr
 );
+
 let isSomeoneElseBuying = computed(
   () =>
     nftState.value.reservationTxId &&
-    height.value - nftState.value.reservationBlockHeight < 16 &&
+    timestamp.value - nftState.value.reservationTimestamp < 600000 &&
     nftState.value.reserver != account.value?.addr
 );
+
 let payingRoyalty = ref(false);
 let buyStatus = ref(0);
 let transferRecipient = ref("");
-let nftPrice = ref(
+
+let nftPriceBase = ref(
   Big(nftState.value.price) / Big(Coins.Exponents[nftState.value.listingCoin])
 );
+
 let nftRoyalty = ref(parseFloat(nftState.value.royalty * 100));
+
 let nftOwner = ref(
   await accountTools.get(nftState.value.owner).catch((e) => null)
 );
+
 let nftMinter = await accountTools
   .get(nftState.value.minter)
   .catch((e) => null);
+
 let nftOwnerANS = ref(
   (
     await $fetch(
@@ -419,58 +431,68 @@ let nftMinterANS = (
     `https://ans-resolver.herokuapp.com/resolve/${nftState.value.minter}`
   )
 )?.domain;
+
 let isNftOwner = computed(
   () =>
     account.value &&
     account.value.addr &&
     account.value.addr == nftState.value.owner
 );
+
 let changed = computed(() => {
   let ch =
-    nftPrice.value !=
-      parseFloat(
-        parseFloat(arweave.ar.winstonToAr(nftStateOrig.price)).toFixed(3)
-      ) ||
+    nftPriceBase.value !=
+      Big(nftState.value.price) /
+        Big(Coins.Exponents[nftState.value.listingCoin]) ||
     nftStateOrig.description != nftState.value.description ||
     nftStateOrig.forSale != nftState.value.forSale;
   return ch;
 });
-let updaterInterval = setInterval(async () => {
-  height.value = (await $fetch(`${GlomeNode}/info`)).height;
 
-  if (!changed.value) {
-    nftStateOrig.value = await fetch(`${GlomeNode}/state/` + nftId).then(
-      (res) => res.json()
-    );
-    if (
-      !nftStateOrig.value.reservationTxId &&
-      height.value - nftStateOrig.value.reservationBlockHeight < 12 &&
-      nftStateOrig.value.reserver == account.value?.addr &&
-      nftStateOrig.value.reservationTxId != nftState.value.reservationTxId
-    ) {
-      finalizeBuy();
-    }
-    nftState.value = JSON.parse(JSON.stringify(nftStateOrig.value));
-    nftPrice.value = parseFloat(
-      parseFloat(arweave.ar.winstonToAr(nftState.value.price)).toFixed(3)
-    );
-    nftOwner.value = await accountTools
-      .get(nftState.value.owner)
-      .catch((e) => ({ addr: nftState.value.owner }));
-    console.log(
-      await accountTools
+let updaterInterval = setInterval(
+  async () => {
+    timestamp.value = Date.now();
+
+    if (!changed.value) {
+      // Fetch the contract to compare data
+      nftStateOrig.value = await fetch(`${GlomeNode}/state/` + nftId).then(
+        (res) => res.json()
+      );
+
+      if (
+        !nftStateOrig.value.reservationTxId &&
+        timestamp.value - nftStateOrig.value.reservationTimestamp < 600000 &&
+        nftStateOrig.value.reserver == account.value?.addr &&
+        nftStateOrig.value.reservationTxId != nftState.value.reservationTxId
+      ) {
+        // Move them to finalize buy screen if they payed royalt
+        finalizeBuy();
+      }
+
+      nftState.value = JSON.parse(JSON.stringify(nftStateOrig.value));
+
+      // Update price
+      nftPriceBase.value =
+        Big(nftState.value.price) /
+        Big(Coins.Exponents[nftState.value.listingCoin]);
+
+      // Update owner if it has
+      nftOwner.value = await accountTools
         .get(nftState.value.owner)
-        .catch((e) => ({ addr: nftState.value.owner }))
-    );
-    nftOwnerANS.value = (
-      await $fetch(
-        `https://ans-resolver.herokuapp.com/resolve/${nftState.value.owner}`
-      )
-    )?.domain;
-  }
-}, 50000);
+        .catch((e) => ({ addr: nftState.value.owner }));
 
-onBeforeUnmount(() => clearInterval(updaterInterval));
+      // Update ANS name
+      nftOwnerANS.value = (
+        await $fetch(
+          `https://ans-resolver.herokuapp.com/resolve/${nftState.value.owner}`
+        )
+      )?.domain;
+    }
+  },
+  everpay ? 10000 : 40000
+);
+
+onBeforeUnmount(() => updaterInterval);
 
 async function saveChangesToNft() {
   let tags = [
@@ -484,7 +506,9 @@ async function saveChangesToNft() {
         function: "edit-nft",
         description: nftState.value.description,
         forSale: nftState.value.forSale,
-        price: parseInt(arweave.ar.arToWinston(nftPrice.value)),
+        price:
+          Big(nftPriceBase.value) *
+          Big(Coins.Exponents[nftState.value.listingCoin]),
       }),
     },
     {
@@ -520,168 +544,263 @@ async function saveChangesToNft() {
   nftStateOrig.value = JSON.parse(
     JSON.stringify({
       ...nftState.value,
-      price: arweave.ar.arToWinston(nftPrice.value),
+      price:
+        Big(nftState.value.price) /
+        Big(Coins.Exponents[nftState.value.listingCoin]),
     })
   );
   console.log(
-    nftPrice.value !=
-      parseFloat(
-        parseFloat(arweave.ar.winstonToAr(nftStateOrig.value.price)).toFixed(3)
-      ),
+    nftPriceBase.value !=
+      Big(nftState.value.price) /
+        Big(Coins.Exponents[nftState.value.listingCoin]),
     nftStateOrig.value.description != nftState.value.description,
     nftStateOrig.value.forSale != nftState.value.forSale
   );
 }
 
-function buy() {}
 async function payRoyalty() {
   buyStatus.value = 1;
   payingRoyalty.value = true;
 
-  let tags = [
-    {
-      name: "Contract",
-      value: nftId,
-    },
-    {
-      name: "Input",
-      value: JSON.stringify({
-        function: "reserve-buying-zone",
-        price: parseInt(arweave.ar.arToWinston(nftPrice.value)),
-      }),
-    },
-    {
-      name: "App-Name",
-      value: "SmartWeaveAction",
-    },
-    {
-      name: "App-Version",
-      value: "0.3.0",
-    },
-    {
-      name: "Nonce",
-      value: Date.now().toString(),
-    },
-    {
-      name: "SDK",
-      value: "0.3.0",
-    },
-  ];
+  switch (nftState.value.listingChain) {
+    case "arweave":
+      var tags = [
+        {
+          name: "Contract",
+          value: nftId,
+        },
+        {
+          name: "Input",
+          value: JSON.stringify({
+            function: "reserve-buying-zone",
+            price: parseInt(arweave.ar.arToWinston(nftPriceBase.value)),
+          }),
+        },
+        {
+          name: "App-Name",
+          value: "SmartWeaveAction",
+        },
+        {
+          name: "App-Version",
+          value: "0.3.0",
+        },
+        {
+          name: "Nonce",
+          value: Date.now().toString(),
+        },
+        {
+          name: "SDK",
+          value: "0.3.0",
+        },
+      ];
 
-  let feeEstimate = await fetch(
-    `https://g8way.io/price/1000000/${nftState.value.minter}`
-  )
-    .then((res) => res.text())
-    .catch((err) => {
-      alert("Failed to get the fee estimate");
-      payRoyalty.value = false;
-    });
+      var feeEstimate = await fetch(
+        `https://g8way.io/price/1000000/${nftState.value.minter}`
+      )
+        .then((res) => res.text())
+        .catch((err) => {
+          alert("Failed to get the fee estimate");
+          payRoyalty.value = false;
+        });
 
-  let tx = await arweave.createTransaction({
-    tags: encodeTags(tags),
-    target: nftState.value.minter,
-    quantity: (
-      parseInt(arweave.ar.arToWinston(nftPrice.value)) * nftState.value.royalty
-    ).toString(),
-    reward: feeEstimate,
-  });
+      var tx = await arweave.createTransaction({
+        tags: encodeTags(tags),
+        target: nftState.value.minter,
+        quantity: (
+          parseInt(arweave.ar.arToWinston(nftPriceBase.value)) *
+          nftState.value.royalty
+        ).toString(),
+        reward: feeEstimate,
+      });
 
-  try {
-    await arweave.transactions.sign(tx);
-  } catch (e) {
-    alert("You need to sign the transaction to pay the royalty");
-    payRoyalty.value = false;
-  }
+      try {
+        await wallet.value.dispatch(tx);
+      } catch (e) {
+        console.log(e);
+        alert("Failed to post the transaction to pay royalty");
+      }
 
-  try {
-    await arweave.transactions.post(tx);
-  } catch (e) {
-    alert("Failed to post the transaction to pay the royalty");
-    payRoyalty.value = false;
+    case "everpay":
+      const payingCoin = tokenList.find(
+        (element) => element.symbol === nftState.value.listingCoin
+      );
+
+      let payRoyalty = await everpay.transfer({
+        tag: payingCoin.tag,
+        amount: (
+          nftPriceBase.value * nftState.value.royalty +
+          0.001
+        ).toString(),
+        to: nftState.value.royaltyAddresses[nftState.value.listingChain],
+      });
+
+      var tags = [
+        {
+          name: "Contract",
+          value: nftId,
+        },
+        {
+          name: "Input",
+          value: JSON.stringify({
+            function: "reserve-buying-zone",
+            transferTxID: payRoyalty.everHash,
+            price: (
+              Big(nftPriceBase.value) *
+              Big(Coins.Exponents[nftState.value.listingCoin])
+            ).toString(),
+          }),
+        },
+        {
+          name: "App-Name",
+          value: "SmartWeaveAction",
+        },
+        {
+          name: "App-Version",
+          value: "0.3.0",
+        },
+        {
+          name: "Nonce",
+          value: Date.now().toString(),
+        },
+        {
+          name: "SDK",
+          value: "0.3.0",
+        },
+      ];
+
+      var tx = await arweave.createTransaction({
+        tags: encodeTags(tags),
+        data: "Glome Contract Call",
+      });
+
+      try {
+        await wallet.value.dispatch(tx);
+      } catch (e) {
+        console.log(e);
+        alert("Failed to post the transaction to pay for royalty your NFT");
+      }
   }
 }
+
 async function finalizeBuy() {
   buyStatus.value = 2;
   let reservationTxId = nftState.value.reservationTxId;
-  let tags = [
-    {
-      name: "Contract",
-      value: nftId,
-    },
-    {
-      name: "Input",
-      value: JSON.stringify({
-        function: "finalize-buy",
-        price: parseInt(arweave.ar.arToWinston(nftPrice.value)),
-        reservationTxId: reservationTxId,
-      }),
-    },
-    {
-      name: "App-Name",
-      value: "SmartWeaveAction",
-    },
-    {
-      name: "App-Version",
-      value: "0.3.0",
-    },
-    {
-      name: "Nonce",
-      value: Date.now().toString(),
-    },
-    {
-      name: "SDK",
-      value: "0.3.0",
-    },
-  ];
 
-  let royaltyAnchor = (
-    await fetch(`https://g8way.io/graphql`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        query: `query {
-           transaction(id: "${reservationTxId}") {
-              id
-              block {
-              id
-             }
-           }
-        }`,
-      }),
-    }).then((tx) => tx.json())
-  ).data.transaction.block.id;
+  switch (nftState.value.listingChain) {
+    case "arweave":
+      var tags = [
+        {
+          name: "Contract",
+          value: nftId,
+        },
+        {
+          name: "Input",
+          value: JSON.stringify({
+            function: "finalize-buy",
+            price: parseInt(arweave.ar.arToWinston(nftPriceBase.value)),
+            reservationTxId: reservationTxId,
+          }),
+        },
+        {
+          name: "App-Name",
+          value: "SmartWeaveAction",
+        },
+        {
+          name: "App-Version",
+          value: "0.3.0",
+        },
+        {
+          name: "Nonce",
+          value: Date.now().toString(),
+        },
+        {
+          name: "SDK",
+          value: "0.3.0",
+        },
+      ];
 
-  let feeEstimate = await fetch(
-    `https://g8way.io/price/1000000/${nftState.value.owner}`
-  ).then((res) => res.text());
+      var tx = await arweave.createTransaction({
+        tags: encodeTags(tags),
+        target: nftState.value.owner,
+        quantity: arweave.ar.arToWinston(nftPriceBase.value),
+        reward: feeEstimate,
+        last_tx: royaltyAnchor,
+      });
 
-  let tx = await arweave.createTransaction({
-    tags: encodeTags(tags),
-    target: nftState.value.owner,
-    quantity: arweave.ar.arToWinston(nftPrice.value),
-    reward: feeEstimate,
-    last_tx: royaltyAnchor,
-  });
+      try {
+        await wallet.value.dispatch(tx);
+      } catch (e) {
+        console.log(e);
+        alert("Failed to post the transaction to pay your NFT");
+      }
 
-  try {
-    await arweave.transactions.sign(tx);
-  } catch (e) {
-    alert("Transaction was not signed. Please try again.");
+      var finalizationCheckInterval = setInterval(() => {
+        if (nftState.value.owner == account.value.addr) {
+          buyStatus.value = 3;
+          clearInterval(finalizationCheckInterval);
+        }
+      });
+
+    case "everpay":
+      const payingCoin = tokenList.find(
+        (element) => element.symbol === nftState.value.listingCoin
+      );
+
+      let buyNft = await everpay.transfer({
+        tag: payingCoin.tag,
+        amount: (nftPriceBase.value + 0.001).toString(),
+        to: nftState.value.royaltyAddresses[nftState.value.listingChain],
+      });
+
+      var tags = [
+        {
+          name: "Contract",
+          value: nftId,
+        },
+        {
+          name: "Input",
+          value: JSON.stringify({
+            function: "finalize-buy",
+            reservationTxId: reservationTxId,
+            transferTxID: buyNft.everHash,
+          }),
+        },
+        {
+          name: "App-Name",
+          value: "SmartWeaveAction",
+        },
+        {
+          name: "App-Version",
+          value: "0.3.0",
+        },
+        {
+          name: "Nonce",
+          value: Date.now().toString(),
+        },
+        {
+          name: "SDK",
+          value: "0.3.0",
+        },
+      ];
+
+      var tx = await arweave.createTransaction({
+        tags: encodeTags(tags),
+        data: "Glome Contract Call",
+      });
+
+      try {
+        await wallet.value.dispatch(tx);
+      } catch (e) {
+        alert("Transaction post failed. Please try again.");
+      }
+
+      var finalizationCheckInterval = setInterval(() => {
+        if (nftState.value.owner == account.value.addr) {
+          buyStatus.value = 3;
+          clearInterval(finalizationCheckInterval);
+        }
+      });
   }
-  try {
-    await arweave.transactions.post(tx);
-  } catch (e) {
-    alert("Transaction post failed. Please try again.");
-  }
-
-  let finalizationCheckInterval = setInterval(() => {
-    if (nftState.value.owner == account.value.addr) {
-      buyStatus.value = 3;
-      clearInterval(finalizationCheckInterval);
-    }
-  });
 }
 
 async function transfer() {
@@ -746,6 +865,7 @@ function encodeTags(tags) {
     value: btoa(tag.value),
   }));
 }
+
 definePageMeta({
   layout: "without-auth",
 });
