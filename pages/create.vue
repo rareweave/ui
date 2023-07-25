@@ -304,9 +304,6 @@ function readAsArrayBuffer(file) {
 }
 
 async function mint() {
-  console.log(new Big(price.value));
-  console.log(new Big(Coins.Exponents[coin.value]));
-  console.log(new Big(price.value) * new Big(Coins.Exponents[coin.value]));
   let initState = {
     owner: account.value.addr,
     minter: account.value.addr,
@@ -379,18 +376,18 @@ async function mint() {
     ]),
   });
 
-  // if (nftContent.byteLength > 100000) {
-  //   await arweave.transactions.sign(tx);
-  //   let uploader = await arweave.transactions.getUploader(tx);
-  //   while (!uploader.isComplete) {
-  //     await uploader.uploadChunk();
-  //     console.log(
-  //       `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
-  //     );
-  //   }
-  // } else {
-  //   tx = await wallet.value.dispatch(tx);
-  // }
+  if (nftContent.byteLength > 100000) {
+    await arweave.transactions.sign(tx);
+    let uploader = await arweave.transactions.getUploader(tx);
+    while (!uploader.isComplete) {
+      await uploader.uploadChunk();
+      console.log(
+        `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
+      );
+    }
+  } else {
+    tx = await wallet.value.dispatch(tx);
+  }
 
   async function checkNFT(nftId, tries = 0) {
     if (tries >= 100) {

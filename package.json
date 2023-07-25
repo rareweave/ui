@@ -26,6 +26,7 @@
     "buffer": "^6.0.3",
     "daisyui": "^2.50.0",
     "date-fns": "^2.30.0",
+    "everpay": "https://github.com/angrymouse/everpay-js",
     "jsonpath-plus": "^7.2.0",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.4",
