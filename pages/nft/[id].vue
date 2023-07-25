@@ -385,8 +385,10 @@ const everpay =
       })
     : null;
 
-const { tokenList } = everpay ? await everpay.info() : null;
+// All everpay token
+const { tokenList } = everpay ? await everpay.info() : { tokenList: null };
 
+// Checks if the logged in user is buying the nft
 let isBuying = computed(
   () =>
     nftState.value.reservationTxId &&
@@ -394,6 +396,7 @@ let isBuying = computed(
     nftState.value.reserver == account.value?.addr
 );
 
+// Checks if someone else currently has the nft reserved
 let isSomeoneElseBuying = computed(
   () =>
     nftState.value.reservationTxId &&
@@ -405,6 +408,7 @@ let payingRoyalty = ref(false);
 let buyStatus = ref(0);
 let transferRecipient = ref("");
 
+// Base nft price (1.234)
 let nftPriceBase = ref(
   Big(nftState.value.price) / Big(Coins.Exponents[nftState.value.listingCoin])
 );
@@ -426,12 +430,14 @@ let nftOwnerANS = ref(
     )
   )?.domain
 );
+
 let nftMinterANS = (
   await $fetch(
     `https://ans-resolver.herokuapp.com/resolve/${nftState.value.minter}`
   )
 )?.domain;
 
+// Checks if logged in wallet owns the nft
 let isNftOwner = computed(
   () =>
     account.value &&
@@ -561,7 +567,6 @@ async function saveChangesToNft() {
 async function payRoyalty() {
   buyStatus.value = 1;
   payingRoyalty.value = true;
-
   switch (nftState.value.listingChain) {
     case "arweave":
       var tags = [
@@ -614,12 +619,20 @@ async function payRoyalty() {
       });
 
       try {
-        await wallet.value.dispatch(tx);
+        await arweave.transactions.sign(tx);
       } catch (e) {
-        console.log(e);
-        alert("Failed to post the transaction to pay royalty");
+        alert("You need to sign the transaction to pay the royalty");
+        payRoyalty.value = false;
       }
 
+      try {
+        let postedTx = await arweave.transactions.post(tx);
+
+        console.log(postedTx);
+      } catch (e) {
+        alert("Failed to post the transaction to pay the royalty");
+        payRoyalty.value = false;
+      }
     case "everpay":
       const payingCoin = tokenList.find(
         (element) => element.symbol === nftState.value.listingCoin
@@ -740,9 +753,8 @@ async function finalizeBuy() {
           clearInterval(finalizationCheckInterval);
         }
       });
-
     case "everpay":
-      const payingCoin = tokenList.find(
+      const payingCoin = tokenList?.find(
         (element) => element.symbol === nftState.value.listingCoin
       );
 
