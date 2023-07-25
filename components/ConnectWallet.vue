@@ -67,8 +67,8 @@ async function connectArweaveApp() {
     account.value = await accountTools.get(address);
     ansAddr.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${address}`))?.domain
     webwallet.namespaces.arweaveWallet.type = "Arweave.app"
-    webwallet.namespaces.signature = async (message, options) => {
-        return await webwallet.signMessage(message, options)
+    webwallet.namespaces.arweaveWallet.signature = async (message) => {
+        return await webwallet.signMessage(message, { hashAlgorithm: "SHA-256" })
     }
     walletState.value = webwallet.namespaces.arweaveWallet;
 
