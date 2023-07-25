@@ -66,7 +66,10 @@ async function connectArweaveApp() {
 
     account.value = await accountTools.get(address);
     ansAddr.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${address}`))?.domain
-    webwallet.namespaces.arweaveWallet.type="Arweave.app"
+    webwallet.namespaces.arweaveWallet.type = "Arweave.app"
+    webwallet.namespaces.signature = async (message, options) => {
+        return await webwallet.signMessage(message, options)
+    }
     walletState.value = webwallet.namespaces.arweaveWallet;
 
     setSpendable(address);
@@ -89,7 +92,7 @@ async function connectArconnect() {
 
     account.value = await accountTools.get(address);
     ansAddr.value = (await $fetch(`https://ans-resolver.herokuapp.com/resolve/${address}`))?.domain
-    window.arweaveWallet.type="Arconnect"
+    window.arweaveWallet.type = "Arconnect"
     walletState.value = window.arweaveWallet;
 
     setSpendable(address);
