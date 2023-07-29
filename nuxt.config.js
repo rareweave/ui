@@ -5,7 +5,6 @@ export default defineNuxtConfig({
         'nuxt-lazy-load'
     ],
     plugins: [
-        "~/plugins/prophet.js",
     ],
     target: "static",
     mode: "spa",
