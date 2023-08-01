@@ -26,7 +26,7 @@
               width="20"
               height="20"
             /> -->
-          </span>
+          </span> 
         </div>
         <div class="Row">
           <span class="Nft Owner Detail" v-if="nft.state.owner">
