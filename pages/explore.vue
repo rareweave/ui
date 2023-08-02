@@ -63,7 +63,7 @@
                   selectedCollection = {};
                   searchInput = '';
                   forSaleOnly = false;
-                  filter = { minPrice: 0, maxPrice: 0 };
+                  filter = { minPrice: 0, maxPrice: 0, type: 'all' };
                   updateUrl(null);
                   refreshResults();
                 "
@@ -104,39 +104,6 @@
           </div>
         </div>
       </template>
-      <!-- <div class="MenuSection">
-        <div
-          class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
-        >
-          <h2 class="Amazing--br">Rarified</h2>
-          <span></span>
-        </div>
-         <div
-          v-for="(rarifiedCollection, index) in rarifiedCollections"
-          class="MenuOptions"
-        >
-          <div
-            class="highlite MenuOption"
-            :style="{
-              animationDuration: `${0.12 + 0.12 * index}s`,
-            }"
-          >
-            <div class="V1__button_wrapper">
-              <span class="V1__button_decoration"></span>
-              <button
-                class="V1__button"
-                @click="
-                  searchCondition = rarifiedCollection.contractTxId;
-                  searchType = 'collection';
-                  activate($event);
-                "
-              >
-                {{ rarifiedCollection.name }}...[{{ rarifiedCollection.count }}]
-              </button>
-            </div>
-          </div> 
-        </div>
-      </div> -->
       <div class="MenuSection">
         <div
           class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
@@ -184,6 +151,17 @@
             </div>
           </div>
           <div class="MenuOption">
+            <div class="Row">
+              <label class="mr-2">Type</label>
+              <select v-model="filter.type" class="relative py-1 px-2">
+                <option value="all">All</option>
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+                <option value="audio">Audio</option>
+              </select>
+            </div>
+          </div>
+          <div class="MenuOption">
             <div class="FilterButton">
               <button class="MenuButton" @click="refreshResults()">
                 Apply
@@ -191,8 +169,7 @@
               <button
                 class="Reset"
                 @click="
-                  filter = { minPrice: 0, maxPrice: 0 };
-                  forSaleOnly = false;
+                  filter = { minPrice: 0, maxPrice: 0, type: 'all' };
                   forSaleOnly = false;
                   refreshResults();
                 "
@@ -348,6 +325,7 @@ const searchInput = ref("");
 const filter = ref({
   minPrice: 0,
   maxPrice: 0,
+  type: "all",
 });
 
 const debouncedWatch = debounce(() => {
