@@ -63,7 +63,7 @@
                   selectedCollection = {};
                   searchInput = '';
                   forSaleOnly = false;
-                  filter = { minPrice: 0, maxPrice: 0 };
+                  filter = { minPrice: 0, maxPrice: 0, type: 'all' };
                   updateUrl(null);
                   refreshResults();
                 "
@@ -184,6 +184,17 @@
             </div>
           </div>
           <div class="MenuOption">
+            <div class="Row">
+              <label class="mr-2">Type</label>
+              <select v-model="filter.type" class="relative py-1 px-2">
+                <option value="all">All</option>
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+                <option value="audio">Audio</option>
+              </select>
+            </div>
+          </div>
+          <div class="MenuOption">
             <div class="FilterButton">
               <button class="MenuButton" @click="refreshResults()">
                 Apply
@@ -191,7 +202,7 @@
               <button
                 class="Reset"
                 @click="
-                  filter = { minPrice: 0, maxPrice: 0 };
+                  filter = { minPrice: 0, maxPrice: 0, type: 'all' };
                   forSaleOnly = false;
                   forSaleOnly = false;
                   refreshResults();
@@ -348,6 +359,7 @@ const searchInput = ref("");
 const filter = ref({
   minPrice: 0,
   maxPrice: 0,
+  type: "all",
 });
 
 const debouncedWatch = debounce(() => {

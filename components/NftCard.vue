@@ -49,19 +49,22 @@
                   <img :src="coinImage" alt="My Happy SVG" />
                 </span>
               </span>
-              <span
-                class="Nft"
-                v-if="nft.state.forSale && nft.state.price != null"
-              >
+              <span class="Nft" v-if="nft.state.forSale">
                 {{
-                  new Big(nft.state.price) /
-                  new Big(Coins.Exponents[nft.state.listingCoin])
+                  Big(nft?.state?.price) /
+                  Big(
+                    nft.state.listingCoin
+                      ? Coins.Exponents[nft.state.listingCoin]
+                      : Coins.Exponents["AR"]
+                  )
                 }}
                 {{ nft.state.listingCoin || "AR" }}
               </span>
             </span>
           </div>
-          <span class="Nft Buy Btn" v-if="nft.state.forSale"> Buy now </span>
+          <span class="Nft Buy Btn">
+            {{ nft.state.forSale ? "Buy Now" : "Not For Sale" }}
+          </span>
         </div>
       </div>
     </NuxtLink>

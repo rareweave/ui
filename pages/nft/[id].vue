@@ -410,7 +410,12 @@ let transferRecipient = ref("");
 
 // Base nft price (1.234)
 let nftPriceBase = ref(
-  Big(nftState.value.price) / Big(Coins.Exponents[nftState.value.listingCoin])
+  Big(nftState.value.price) /
+    Big(
+      nftState.value.listingCoin
+        ? Coins.Exponents[nftState.value.listingCoin]
+        : Coins.Exponents["AR"]
+    )
 );
 
 let nftRoyalty = ref(parseFloat(nftState.value.royalty * 100));
@@ -449,7 +454,11 @@ let changed = computed(() => {
   let ch =
     nftPriceBase.value !=
       Big(nftState.value.price) /
-        Big(Coins.Exponents[nftState.value.listingCoin]) ||
+        Big(
+          nftState.value.listingCoin
+            ? Coins.Exponents[nftState.value.listingCoin]
+            : Coins.Exponents["AR"]
+        ) ||
     nftStateOrig.description != nftState.value.description ||
     nftStateOrig.forSale != nftState.value.forSale;
   return ch;
@@ -480,7 +489,11 @@ let updaterInterval = setInterval(
       // Update price
       nftPriceBase.value =
         Big(nftState.value.price) /
-        Big(Coins.Exponents[nftState.value.listingCoin]);
+        Big(
+          nftState.value.listingCoin
+            ? Coins.Exponents[nftState.value.listingCoin]
+            : Coins.Exponents["AR"]
+        );
 
       // Update owner if it has
       nftOwner.value = await accountTools
@@ -552,15 +565,12 @@ async function saveChangesToNft() {
       ...nftState.value,
       price:
         Big(nftState.value.price) /
-        Big(Coins.Exponents[nftState.value.listingCoin]),
+        Big(
+          nftState.value.listingCoin
+            ? Coins.Exponents[nftState.value.listingCoin]
+            : Coins.Exponents["AR"]
+        ),
     })
-  );
-  console.log(
-    nftPriceBase.value !=
-      Big(nftState.value.price) /
-        Big(Coins.Exponents[nftState.value.listingCoin]),
-    nftStateOrig.value.description != nftState.value.description,
-    nftStateOrig.value.forSale != nftState.value.forSale
   );
 }
 

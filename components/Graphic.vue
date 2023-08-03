@@ -27,13 +27,29 @@
       />
       Your browser does not support the video tag.
     </video>
-    <audio v-else-if="nft.state?.contentType?.startsWith('audio')">
-      <source
-        :src="`https://prophet.rareweave.store/${nft.contractTxId || nft.id}`"
-        :type="nft.state?.contentType"
+    <span v-else-if="nft.state?.contentType?.startsWith('audio')">
+      <img
+        src="/rw-record-static.gif"
+        data-src="/rw-record.gif"
+        alt="Audio NFT"
+        class="relative flex justify-center items-center w-full h-full object-cover transition-all duration-200 ease-in-out hover:w-full hover:h-full Record"
+        @load="imgHasBeenLoaded"
+        @error="imgNotLoaded"
+        @mouseover="audioHover"
+        @mouseout="audioFreeze"
       />
-      Your browser does not support the video tag.
-    </audio>
+      <audio
+        controls
+        class="absolute bottom-0 w-[99%]"
+        @mouseover="audioHoverParent"
+        @mouseout="audioFreezeChild"
+      >
+        <source
+          :src="`https://prophet.rareweave.store/${nft.contractTxId || nft.id}`"
+          :type="nft.state?.contentType"
+        />
+      </audio>
+    </span>
   </div>
 </template>
 <script setup>
@@ -45,6 +61,19 @@ function imgNotLoaded(e) {
   e.target.parentNode.querySelector(".load").style.display = "none";
   e.target.parentNode.querySelector(".Image").src = `/placeholder.svg`;
   e.target.parentNode.querySelector(".Image").classList.add("--error");
+}
+
+function audioHover(e) {
+  e.target.src = "/rw-record.gif";
+}
+function audioFreeze(e) {
+  e.target.src = "/rw-record-static.gif";
+}
+function audioHoverParent(e) {
+  e.target.parentNode.querySelector(".Record").src = "/rw-record.gif";
+}
+function audioFreezeChild(e) {
+  e.target.parentNode.querySelector(".Record").src = "/rw-record-static.gif";
 }
 </script>
 <style scoped>
