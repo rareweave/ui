@@ -74,8 +74,6 @@
 import Coins from "../config/coins";
 import Big from "big.js";
 
-console.log(nft.state.price);
-
 const coinImage = nft.state.listingChain
   ? ref(`/coin-images/${nft.state.listingChain}.svg`)
   : ref(`/coin-images/arweave.svg`);

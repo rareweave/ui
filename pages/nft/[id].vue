@@ -572,17 +572,6 @@ async function saveChangesToNft() {
         ),
     })
   );
-  console.log(
-    nftPriceBase.value !=
-      Big(nftState.value.price) /
-        Big(
-          nftState.value.listingCoin
-            ? Coins.Exponents[nftState.value.listingCoin]
-            : Coins.Exponents["AR"]
-        ),
-    nftStateOrig.value.description != nftState.value.description,
-    nftStateOrig.value.forSale != nftState.value.forSale
-  );
 }
 
 async function payRoyalty() {
