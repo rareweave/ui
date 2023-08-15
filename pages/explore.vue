@@ -329,7 +329,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import NftCard from "../components/NftCard.vue";
-import { useWallet, useAccount, useArweave } from "../composables/useState";
+import { useArWallet, useAccount, useArweave } from "../composables/useState";
 import NftRow from "../components/NftRow.vue";
 import debounce from "lodash.debounce";
 import { nftContractId, collectionContractId } from "../config/contracts.json";
@@ -340,7 +340,7 @@ let urlParams = new URLSearchParams(window.location.search);
 
 const arweave = useArweave().value;
 if (!arweave) setArweave();
-const wallet = useWallet();
+const wallet = useArWallet();
 const account = useAccount();
 
 const isLoading = ref(true); // set false once nfts are fetched in onMount
@@ -354,7 +354,6 @@ let nftBeingAdded = ref("");
 
 // All search params
 const forSaleOnly = ref(false);
-let searchCondition = ref("");
 const searchInput = ref("");
 const filter = ref({
   minPrice: 0,

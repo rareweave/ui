@@ -202,8 +202,8 @@
         >Transfer</label
       >
       <label
-        v-else-if="account && account.addr && nftState.forSale"
         for="buy-modal"
+        v-else-if="account && account.addr && nftState.forSale"
       >
         <amazing-button
           :disabled="isSomeoneElseBuying"
@@ -222,7 +222,31 @@
       :checked="false"
     />
     <div class="modal">
-      <div class="modal-box relative flex flex-col" v-if="buyStatus != 3">
+      <div class="modal-box relative flex flex-col" v-if="!wallet">
+        <h3 class="font-bold font-mono text-3xl text-center">
+          Connect Your
+          {{
+            nftState.listingChain.charAt(0).toUpperCase() +
+            nftState.listingChain.slice(1)
+          }}
+          Wallet
+        </h3>
+        <div class="flex justify-center">
+          <WalletSelector
+            :chain="nftState.listingChain"
+            :Connect="walletConnect"
+          ></WalletSelector>
+        </div>
+        <div class="modal-action m-0">
+          <label
+            for="buy-modal"
+            class="btn"
+            v-if="buyStatus == 0 || buyStatus == 3"
+            >Close</label
+          >
+        </div>
+      </div>
+      <div class="modal-box relative flex flex-col" v-else-if="buyStatus != 3">
         <label
           for="buy-modal"
           class="btn btn-sm absolute right-2 top-2"
@@ -239,6 +263,7 @@
               Pay royalty ({{ nftPriceBase * (nftRoyalty / 100) }}
               {{ nftState.listingCoin }})
             </awesome-button>
+
             <span class="text-lg" v-else-if="isBuying">Paid royalty</span>
             <span class="text-lg" v-else
               >Paying royalty... Don't close this tab</span
@@ -250,7 +275,8 @@
               v-if="!isSomeoneElseBuying && buyStatus != 2"
               @click="finalizeBuy"
             >
-              Finalize buy ({{ nftPriceBase }} AR)
+              Finalize buy ({{ nftPriceBase }}
+              {{ nftState.listingCoin || "AR" }})
             </amazing-button>
             <span v-else-if="buyStatus == 2" class="text-lg"
               >Finalizing buy...
@@ -358,15 +384,26 @@ import Coins from "../../config/coins";
 import {
   useAccount,
   useArweave,
+  useSolWallet,
   useAccountTools,
-  useWallet,
+  useArWallet,
 } from "../../composables/useState";
+
+// Solana imports
+import { solanaWalletFacotry } from "../../wallets/solana.js";
+const solWalletState = useState("solWallet", () => null);
+const everWalletState = useState("everpayWallet", () => null);
+
+import { walletFacotry } from "../../wallets/selector";
 
 import setArweave from "../../plugins/arweave";
 import { GlomeNode } from "../../config/config.json";
+import ConnectWallet from "../../components/ConnectWallet.vue";
+import WalletSelector from "../../components/WalletSelector.vue";
+import { ConsoleLogger } from "../../dist/_nuxt/web.bundle.min.3c427dc7";
 const arweave = useArweave().value;
 if (!arweave) setArweave();
-let wallet = useWallet();
+let arWallet = useArWallet();
 const account = useAccount();
 const accountTools = useAccountTools().value;
 let timestamp = ref(Date.now());
@@ -375,18 +412,7 @@ let nftStateOrig = await $fetch(`${GlomeNode}/state/` + nftId);
 let transferModalOpened = ref(false);
 let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig)));
 
-// Might get changed to just be the signer for everything???? dunno yet
-const everpay =
-  nftState.value.listingChain == "everpay"
-    ? new Everpay({
-        account: await wallet?.value?.getActiveAddress(),
-        chainType: "arweave",
-        arJWK: "use_wallet",
-      })
-    : null;
-
-// All everpay token
-const { tokenList } = everpay ? await everpay.info() : { tokenList: null };
+let wallet = ref(await walletFacotry(nftState.value.listingChain));
 
 // Checks if the logged in user is buying the nft
 let isBuying = computed(
@@ -508,7 +534,7 @@ let updaterInterval = setInterval(
       )?.domain;
     }
   },
-  everpay ? 10000 : 40000
+  wallet ? 50000 : 40000
 );
 
 onBeforeUnmount(() => updaterInterval);
@@ -554,7 +580,7 @@ async function saveChangesToNft() {
   });
 
   try {
-    await wallet.value.dispatch(tx);
+    await arWallet.value.dispatch(tx);
   } catch (e) {
     console.log(e);
     alert("Failed to post the transaction to update your NFT");
@@ -577,252 +603,269 @@ async function saveChangesToNft() {
 async function payRoyalty() {
   buyStatus.value = 1;
   payingRoyalty.value = true;
-  switch (nftState.value.listingChain) {
-    case "arweave":
-      var tags = [
-        {
-          name: "Contract",
-          value: nftId,
-        },
-        {
-          name: "Input",
-          value: JSON.stringify({
-            function: "reserve-buying-zone",
-            price: parseInt(arweave.ar.arToWinston(nftPriceBase.value)),
-          }),
-        },
-        {
-          name: "App-Name",
-          value: "SmartWeaveAction",
-        },
-        {
-          name: "App-Version",
-          value: "0.3.0",
-        },
-        {
-          name: "Nonce",
-          value: Date.now().toString(),
-        },
-        {
-          name: "SDK",
-          value: "0.3.0",
-        },
-      ];
 
-      var feeEstimate = await fetch(
-        `https://g8way.io/price/1000000/${nftState.value.minter}`
-      )
-        .then((res) => res.text())
-        .catch((err) => {
-          alert("Failed to get the fee estimate");
-          payRoyalty.value = false;
-        });
+  if (wallet.value) {
+    let payRoyalty = await wallet.value.send(
+      wallet.value.getAddress(),
+      nftState.value.royaltyAddresses[nftState.value.listingChain],
+      Big((nftPriceBase.value + 0.006) * nftState.value.royalty) *
+        Big(
+          nftState.value.listingCoin
+            ? Coins.Exponents[nftState.value.listingCoin]
+            : Coins.Exponents["AR"]
+        ) +
+        450000,
+      nftState.value.listingCoin,
+      nftState.value.minter
+    );
 
-      var tx = await arweave.createTransaction({
-        tags: encodeTags(tags),
-        target: nftState.value.minter,
-        quantity: (
-          parseInt(arweave.ar.arToWinston(nftPriceBase.value)) *
-          nftState.value.royalty
-        ).toString(),
-        reward: feeEstimate,
-      });
+    console.log(payRoyalty);
 
-      try {
-        await arweave.transactions.sign(tx);
-      } catch (e) {
-        alert("You need to sign the transaction to pay the royalty");
-        payRoyalty.value = false;
-      }
+    await wait(10000);
 
-      try {
-        let postedTx = await arweave.transactions.post(tx);
+    var tags = [
+      {
+        name: "Contract",
+        value: nftId,
+      },
+      {
+        name: "Input",
+        value: JSON.stringify({
+          function: "reserve-buying-zone",
+          transferTxID: payRoyalty,
+          price: (
+            Big(nftPriceBase.value) *
+            Big(Coins.Exponents[nftState.value.listingCoin])
+          ).toString(),
+        }),
+      },
+      {
+        name: "App-Name",
+        value: "SmartWeaveAction",
+      },
+      {
+        name: "App-Version",
+        value: "0.3.0",
+      },
+      {
+        name: "Nonce",
+        value: Date.now().toString(),
+      },
+      {
+        name: "SDK",
+        value: "0.3.0",
+      },
+    ];
 
-        console.log(postedTx);
-      } catch (e) {
-        alert("Failed to post the transaction to pay the royalty");
-        payRoyalty.value = false;
-      }
-    case "everpay":
-      const payingCoin = tokenList.find(
-        (element) => element.symbol === nftState.value.listingCoin
-      );
+    var tx = await arweave.createTransaction({
+      tags: encodeTags(tags),
+      data: "Glome Contract Call",
+    });
 
-      let payRoyalty = await everpay.transfer({
-        tag: payingCoin.tag,
-        amount: (
-          nftPriceBase.value * nftState.value.royalty +
-          0.001
-        ).toString(),
-        to: nftState.value.royaltyAddresses[nftState.value.listingChain],
-      });
-
-      var tags = [
-        {
-          name: "Contract",
-          value: nftId,
-        },
-        {
-          name: "Input",
-          value: JSON.stringify({
-            function: "reserve-buying-zone",
-            transferTxID: payRoyalty.everHash,
-            price: (
-              Big(nftPriceBase.value) *
-              Big(Coins.Exponents[nftState.value.listingCoin])
-            ).toString(),
-          }),
-        },
-        {
-          name: "App-Name",
-          value: "SmartWeaveAction",
-        },
-        {
-          name: "App-Version",
-          value: "0.3.0",
-        },
-        {
-          name: "Nonce",
-          value: Date.now().toString(),
-        },
-        {
-          name: "SDK",
-          value: "0.3.0",
-        },
-      ];
-
-      var tx = await arweave.createTransaction({
-        tags: encodeTags(tags),
-        data: "Glome Contract Call",
-      });
-
-      try {
-        await wallet.value.dispatch(tx);
-      } catch (e) {
-        console.log(e);
-        alert("Failed to post the transaction to pay for royalty your NFT");
-      }
+    try {
+      await arWallet.value.dispatch(tx);
+    } catch (e) {
+      console.log(e);
+      alert("Failed to post the transaction to pay for royalty your NFT");
+    }
+  } else {
   }
 }
+// switch (nftState.value.listingChain) {
+//   // case "arweave":
+//   //   var tags = [
+//   //     {
+//   //       name: "Contract",
+//   //       value: nftId,
+//   //     },
+//   //     {
+//   //       name: "Input",
+//   //       value: JSON.stringify({
+//   //         function: "reserve-buying-zone",
+//   //         price: parseInt(arweave.ar.arToWinston(nftPriceBase.value)),
+//   //       }),
+//   //     },
+//   //     {
+//   //       name: "App-Name",
+//   //       value: "SmartWeaveAction",
+//   //     },
+//   //     {
+//   //       name: "App-Version",
+//   //       value: "0.3.0",
+//   //     },
+//   //     {
+//   //       name: "Nonce",
+//   //       value: Date.now().toString(),
+//   //     },
+//   //     {
+//   //       name: "SDK",
+//   //       value: "0.3.0",
+//   //     },
+//   //   ];
+
+//   //   var feeEstimate = await fetch(
+//   //     `https://g8way.io/price/1000000/${nftState.value.minter}`
+//   //   )
+//   //     .then((res) => res.text())
+//   //     .catch((err) => {
+//   //       alert("Failed to get the fee estimate");
+//   //       payRoyalty.value = false;
+//   //     });
+
+//   //   var tx = await arweave.createTransaction({
+//   //     tags: encodeTags(tags),
+//   //     target: nftState.value.minter,
+//   //     quantity: (
+//   //       parseInt(arweave.ar.arToWinston(nftPriceBase.value)) *
+//   //       nftState.value.royalty
+//   //     ).toString(),
+//   //     reward: feeEstimate,
+//   //   });
+
+//   //   try {
+//   //     await arweave.transactions.sign(tx);
+//   //   } catch (e) {
+//   //     alert("You need to sign the transaction to pay the royalty");
+//   //     payRoyalty.value = false;
+//   //   }
+
+//   //   try {
+//   //     let postedTx = await arweave.transactions.post(tx);
+
+//   //     console.log(postedTx);
+//   //   } catch (e) {
+//   //     alert("Failed to post the transaction to pay the royalty");
+//   //     payRoyalty.value = false;
+//   //   }
+//   // case "everpay":
+//   //   const payingCoin = tokenList.find(
+//   //     (element) => element.symbol === nftState.value.listingCoin
+//   //   );
+
+//   //   let payRoyalty = await everpay.transfer({
+//   //     tag: payingCoin.tag,
+//   //     amount: (
+//   //       nftPriceBase.value * nftState.value.royalty +
+//   //       0.001
+//   //     ).toString(),
+//   //     to: nftState.value.royaltyAddresses[nftState.value.listingChain],
+//   //   });
+
+//   //   var tags = [
+//   //     {
+//   //       name: "Contract",
+//   //       value: nftId,
+//   //     },
+//   //     {
+//   //       name: "Input",
+//   //       value: JSON.stringify({
+//   //         function: "reserve-buying-zone",
+//   //         transferTxID: payRoyalty.everHash,
+//   //         price: (
+//   //           Big(nftPriceBase.value) *
+//   //           Big(Coins.Exponents[nftState.value.listingCoin])
+//   //         ).toString(),
+//   //       }),
+//   //     },
+//   //     {
+//   //       name: "App-Name",
+//   //       value: "SmartWeaveAction",
+//   //     },
+//   //     {
+//   //       name: "App-Version",
+//   //       value: "0.3.0",
+//   //     },
+//   //     {
+//   //       name: "Nonce",
+//   //       value: Date.now().toString(),
+//   //     },
+//   //     {
+//   //       name: "SDK",
+//   //       value: "0.3.0",
+//   //     },
+//   //   ];
+
+//   //   var tx = await arweave.createTransaction({
+//   //     tags: encodeTags(tags),
+//   //     data: "Glome Contract Call",
+//   //   });
+
+//   //   try {
+//   //     await arWallet.value.dispatch(tx);
+//   //   } catch (e) {
+//   //     console.log(e);
+//   //     alert("Failed to post the transaction to pay for royalty your NFT");
+//   //   }
+// }
 
 async function finalizeBuy() {
   buyStatus.value = 2;
   let reservationTxId = nftState.value.reservationTxId;
 
-  switch (nftState.value.listingChain) {
-    case "arweave":
-      var tags = [
-        {
-          name: "Contract",
-          value: nftId,
-        },
-        {
-          name: "Input",
-          value: JSON.stringify({
-            function: "finalize-buy",
-            price: parseInt(arweave.ar.arToWinston(nftPriceBase.value)),
-            reservationTxId: reservationTxId,
-          }),
-        },
-        {
-          name: "App-Name",
-          value: "SmartWeaveAction",
-        },
-        {
-          name: "App-Version",
-          value: "0.3.0",
-        },
-        {
-          name: "Nonce",
-          value: Date.now().toString(),
-        },
-        {
-          name: "SDK",
-          value: "0.3.0",
-        },
-      ];
+  if (wallet.value) {
+    let buyNft = await wallet.value.send(
+      wallet.value.getAddress(),
+      nftState.value.listingAddress,
+      Big(nftPriceBase.value) *
+        Big(Coins.Exponents[nftState.value.listingCoin]) +
+        4500,
+      nftState.value.listingCoin,
+      nftState.value.minter
+    );
 
-      var tx = await arweave.createTransaction({
-        tags: encodeTags(tags),
-        target: nftState.value.owner,
-        quantity: arweave.ar.arToWinston(nftPriceBase.value),
-        reward: feeEstimate,
-        last_tx: royaltyAnchor,
-      });
+    await wait(10000);
 
-      try {
-        await wallet.value.dispatch(tx);
-      } catch (e) {
-        console.log(e);
-        alert("Failed to post the transaction to pay your NFT");
-      }
+    var tags = [
+      {
+        name: "Contract",
+        value: nftId,
+      },
+      {
+        name: "Input",
+        value: JSON.stringify({
+          function: "finalize-buy",
+          transferTxID: buyNft,
+          reservationTxId: reservationTxId,
+        }),
+      },
+      {
+        name: "App-Name",
+        value: "SmartWeaveAction",
+      },
+      {
+        name: "App-Version",
+        value: "0.3.0",
+      },
+      {
+        name: "Nonce",
+        value: Date.now().toString(),
+      },
+      {
+        name: "SDK",
+        value: "0.3.0",
+      },
+    ];
 
-      var finalizationCheckInterval = setInterval(() => {
-        if (nftState.value.owner == account.value.addr) {
-          buyStatus.value = 3;
-          clearInterval(finalizationCheckInterval);
-        }
-      });
-    case "everpay":
-      const payingCoin = tokenList?.find(
-        (element) => element.symbol === nftState.value.listingCoin
-      );
+    var tx = await arweave.createTransaction({
+      tags: encodeTags(tags),
+      data: "Glome Contract Call",
+    });
 
-      let buyNft = await everpay.transfer({
-        tag: payingCoin.tag,
-        amount: (nftPriceBase.value + 0.001).toString(),
-        to: nftState.value.royaltyAddresses[nftState.value.listingChain],
-      });
-
-      var tags = [
-        {
-          name: "Contract",
-          value: nftId,
-        },
-        {
-          name: "Input",
-          value: JSON.stringify({
-            function: "finalize-buy",
-            reservationTxId: reservationTxId,
-            transferTxID: buyNft.everHash,
-          }),
-        },
-        {
-          name: "App-Name",
-          value: "SmartWeaveAction",
-        },
-        {
-          name: "App-Version",
-          value: "0.3.0",
-        },
-        {
-          name: "Nonce",
-          value: Date.now().toString(),
-        },
-        {
-          name: "SDK",
-          value: "0.3.0",
-        },
-      ];
-
-      var tx = await arweave.createTransaction({
-        tags: encodeTags(tags),
-        data: "Glome Contract Call",
-      });
-
-      try {
-        await wallet.value.dispatch(tx);
-      } catch (e) {
-        alert("Transaction post failed. Please try again.");
-      }
-
-      var finalizationCheckInterval = setInterval(() => {
-        if (nftState.value.owner == account.value.addr) {
-          buyStatus.value = 3;
-          clearInterval(finalizationCheckInterval);
-        }
-      });
+    try {
+      await arWallet.value.dispatch(tx);
+    } catch (e) {
+      console.log(e);
+      alert("Failed to post the transaction to pay for royalty your NFT");
+    }
+  } else {
   }
+
+  var finalizationCheckInterval = setInterval(() => {
+    if (nftState.value.owner == account.value.addr) {
+      buyStatus.value = 3;
+      clearInterval(finalizationCheckInterval);
+    }
+  });
 }
 
 async function transfer() {
@@ -862,8 +905,7 @@ async function transfer() {
   });
 
   try {
-    console.log(wallet);
-    await wallet.value.dispatch(tx);
+    await arWallet.value.dispatch(tx);
   } catch (e) {
     console.log(e);
     alert("Failed to post the transaction to transfer your nft");
@@ -879,6 +921,30 @@ async function transfer() {
     )
   )?.domain;
   transferModalOpened.value = false;
+}
+
+async function walletConnect(walletProvider) {
+  switch (nftState.value.listingChain) {
+    case "solana": {
+      let solWal = await solanaWalletFacotry(walletProvider);
+      solWalletState.value = solWal;
+
+      wallet.value = await walletFacotry(nftState.value.listingChain);
+    }
+
+    case "everpay": {
+      let everWallet = await solanaWalletFacotry(walletProvider);
+      everWalletState.value = everWallet;
+
+      wallet.value = await walletFacotry(nftState.value.listingChain);
+    }
+  }
+}
+
+async function wait(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 function encodeTags(tags) {
