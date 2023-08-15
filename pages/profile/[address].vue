@@ -268,7 +268,7 @@
 <script setup>
 import { Buffer } from "buffer";
 import {
-  useWallet,
+  useArWallet,
   useAccount,
   useSpendable,
   useAnsaddr,
@@ -286,7 +286,7 @@ if (!arweave) setArweave();
 
 const account = useAccount();
 const accountTools = useAccountTools().value;
-const wallet = useWallet();
+const wallet = useArWallet();
 
 let profileAddress = computed(
   () => useRoute().params.address || useRoute().hash.slice(1)

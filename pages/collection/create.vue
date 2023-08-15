@@ -73,7 +73,11 @@
 import { DeployPlugin } from "warp-contracts-plugin-deploy";
 import { Buffer } from "buffer";
 const { Warp, Contract, WarpFactory } = await import("warp-contracts");
-import { useWallet, useAccount, useArweave } from "../../composables/useState";
+import {
+  useArWallet,
+  useAccount,
+  useArweave,
+} from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
 import { collectionContractId } from "../../config/contracts.json";
 
@@ -81,7 +85,7 @@ const arweave = useArweave().value;
 if (!arweave) setArweave();
 
 const account = useAccount();
-const wallet = useWallet();
+const wallet = useArWallet();
 
 let uploading = ref(false);
 let title = ref("");

@@ -9,7 +9,7 @@
   <div class="modal">
     <div class="modal-box">
       <h3 class="font-bold font-mono text-3xl text-center">
-        Select your arweave wallet
+        Select your arweave wallet required!
       </h3>
       <div class="py-4 flex justify-center">
         <div
@@ -52,26 +52,33 @@
   </div>
 </template>
 <script setup>
-import { ArweaveWebWallet } from "arweave-wallet-connector";
+import Everpay from "everpay";
 import {
-  useWallet,
+  useArWallet,
   useAccount,
   useSpendable,
   useAnsaddr,
   useArweave,
   useAccountTools,
 } from "../composables/useState";
+import Coins from "../config/coins";
 import setArweave from "../plugins/arweave";
+
+// Arweave
+import { ArweaveWebWallet } from "arweave-wallet-connector";
+const arWallet = useArWallet();
 
 const arweave = useArweave().value;
 if (!arweave) setArweave();
-
 const account = useAccount();
 const accountTools = useAccountTools().value;
 const ansAddr = useAnsaddr();
 const spendable = useSpendable();
-const wallet = useWallet();
-const walletState = useState("wallet", () => null);
+
+// Wallet States
+const arWalletState = useState("arWallet", () => null);
+const everypayWallet = useState("everypayWallet", () => null);
+const arweaveWalletState = useState("arweaveWallet", () => null);
 
 const props = defineProps(["show"]);
 const show = ref(props.show || false);
@@ -95,6 +102,100 @@ async function connectArweaveApp() {
 
   const address = webwallet.namespaces.arweaveWallet.getActiveAddress();
 
+  let everpay = new Everpay({
+    account: address,
+    chainType: "arweave",
+    arJWK: "use_wallet",
+  });
+
+  const { tokenList } = everpay ? await everpay.info() : { tokenList: null };
+
+  everypayWallet.value = {
+    getAddress: () => {
+      return address;
+    },
+
+    send: async (from, to, amount, denom) => {
+      const epay = everpay;
+      const tList = tokenList;
+
+      const payingCoin = tList?.find((element) => element.symbol === denom);
+
+      let send = await epay.transfer({
+        tag: payingCoin.tag,
+        amount: (amount / Coins.Exponents[denom]).toString(),
+        to: to,
+      });
+
+      return send.everHash;
+    },
+  };
+
+  arweaveWalletState.value = {
+    getAddress: () => {
+      return address;
+    },
+
+    send: async (from, to, amount, denom, address) => {
+      let feeEstimate = await fetch(`https://g8way.io/price/1000000/${address}`)
+        .then((res) => res.text())
+        .catch((err) => {
+          alert("Failed to get the fee estimate");
+          payRoyalty.value = false;
+        });
+
+      let tx = await arweave.createTransaction({
+        data: "Payment",
+        target: to,
+        quantity: amount.toString(),
+        reward: feeEstimate,
+      });
+
+      try {
+        await arweave.transactions.sign(tx);
+      } catch (e) {
+        console.log(e);
+        alert("You need to sign the transaction to be able to send it");
+        payRoyalty.value = false;
+      }
+
+      try {
+        let postedTx = await arweave.transactions.post(tx);
+        console.log(await postedTx);
+
+        console.log(await waitTillTxPublished(tx.id));
+
+        return tx.id;
+      } catch (e) {
+        console.log(e);
+        alert("You need to sign the transaction to be able to send it");
+        payRoyalty.value = false;
+      }
+
+      async function waitTillTxPublished(TxId, tries = 0) {
+        if (tries >= 100) {
+          return "error";
+        }
+        try {
+          const res = await (
+            await fetch("https://ar-io.net" + "/tx/" + TxId)
+          ).json();
+          return "ok";
+        } catch (e) {
+          console.log(e);
+          await wait(10000);
+          return await waitTillTxPublished(TxId, ++tries);
+        }
+      }
+
+      function wait(ms) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      }
+    },
+  };
+
   account.value = await accountTools.get(address);
   ansAddr.value = (
     await $fetch(`https://ans-resolver.herokuapp.com/resolve/${address}`)
@@ -103,35 +204,135 @@ async function connectArweaveApp() {
   webwallet.namespaces.arweaveWallet.signature = async (message) => {
     return await webwallet.signMessage(message, { hashAlgorithm: "SHA-256" });
   };
-  walletState.value = webwallet.namespaces.arweaveWallet;
+  arWalletState.value = webwallet.namespaces.arweaveWallet;
 
   setSpendable(address);
 }
+
 async function connectArconnect() {
   if (!("arweaveWallet" in window && "connect" in window.arweaveWallet)) return;
 
-  await window.arweaveWallet.connect([
-    "ACCESS_ADDRESS",
-    "DECRYPT",
-    "ACCESS_PUBLIC_KEY",
-    "DISPATCH",
-    "SIGN_TRANSACTION",
-    "ACCESS_ARWEAVE_CONFIG",
-  ]);
+  const permissions = await window.arweaveWallet.getPermissions();
+
+  if (permissions.length <= 0) {
+    await window.arweaveWallet.connect([
+      "ACCESS_ADDRESS",
+      "DECRYPT",
+      "ACCESS_PUBLIC_KEY",
+      "DISPATCH",
+      "SIGN_TRANSACTION",
+      "ACCESS_ARWEAVE_CONFIG",
+    ]);
+  }
 
   const address = await window.arweaveWallet.getActiveAddress();
+
+  let everpay = new Everpay({
+    account: address,
+    chainType: "arweave",
+    arJWK: "use_wallet",
+  });
+
+  const { tokenList } = everpay ? await everpay.info() : { tokenList: null };
+
+  everypayWallet.value = {
+    getAddress: () => {
+      return address.toString();
+    },
+
+    send: async (from, to, amount, denom) => {
+      const epay = everpay;
+      const tList = tokenList;
+
+      const payingCoin = tList?.find((element) => element.symbol === denom);
+
+      let send = await epay.transfer({
+        tag: payingCoin.tag,
+        amount: (amount / Coins.Exponents[denom]).toString(),
+        to: to,
+      });
+
+      return send.everHash;
+    },
+  };
+
+  arweaveWalletState.value = {
+    getAddress: () => {
+      return address;
+    },
+
+    send: async (from, to, amount, denom, address) => {
+      let feeEstimate = await fetch(`https://g8way.io/price/1000000/${address}`)
+        .then((res) => res.text())
+        .catch((err) => {
+          alert("Failed to get the fee estimate");
+          payRoyalty.value = false;
+        });
+
+      let tx = await arweave.createTransaction({
+        data: "Payment",
+        target: to,
+        quantity: amount.toString(),
+        reward: feeEstimate,
+      });
+
+      try {
+        await arweave.transactions.sign(tx);
+      } catch (e) {
+        console.log(e);
+        alert("You need to sign the transaction to be able to send it");
+        payRoyalty.value = false;
+      }
+
+      try {
+        let postedTx = await arweave.transactions.post(tx);
+        console.log(await postedTx);
+
+        console.log(await waitTillTxPublished(tx.id));
+
+        return tx.id;
+      } catch (e) {
+        console.log(e);
+        alert("You need to sign the transaction to be able to send it");
+        payRoyalty.value = false;
+      }
+
+      async function waitTillTxPublished(TxId, tries = 0) {
+        if (tries >= 100) {
+          return "error";
+        }
+        try {
+          const res = await (
+            await fetch("https://ar-io.net" + "/tx/" + TxId)
+          ).json();
+          return "ok";
+        } catch (e) {
+          console.log(e);
+          await wait(10000);
+          return await waitTillTxPublished(TxId, ++tries);
+        }
+      }
+
+      function wait(ms) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      }
+    },
+  };
 
   account.value = await accountTools.get(address);
   ansAddr.value = (
     await $fetch(`https://ans-resolver.herokuapp.com/resolve/${address}`)
   )?.domain;
   window.arweaveWallet.type = "Arconnect";
-  walletState.value = window.arweaveWallet;
+  arWalletState.value = window.arweaveWallet;
 
   setSpendable(address);
 }
 async function setSpendable(address) {
   const winston = await arweave.wallets.getBalance(address);
+
   spendable.value = arweave.ar.winstonToAr(winston);
 }
 </script>

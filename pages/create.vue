@@ -154,36 +154,74 @@
                   {{ chain }}
                 </option>
               </select>
-              <span
-                class="dropdown-icon w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700"
-              >
-                ▼
-              </span>
             </div>
           </div>
 
-          <template v-if="chain == 'everpay'">
-            <div class="flex flex-col justify-start items-start mr-16">
-              <label class="label flex flex-col justify-start items-start">
-                <span class="text-xl font-bold">Coin:</span>
-              </label>
-              <div class="dropdown inline-block relative">
-                <select
-                  v-model="coin"
-                  class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200"
-                >
-                  <option v-for="coin in Coins.EverpayCoins" :value="coin">
-                    {{ coin }}
-                  </option>
-                </select>
-                <span
-                  class="dropdown-icon w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700"
-                >
-                  ▼
-                </span>
-              </div>
+          <div
+            class="flex flex-col justify-start items-start mr-16"
+            v-if="chain && Coins[chain]?.length > 1"
+          >
+            <label class="label flex flex-col justify-start items-start">
+              <span class="text-xl font-bold">Coin:</span>
+            </label>
+            <div class="dropdown inline-block relative">
+              <select
+                v-model="coin"
+                class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200"
+              >
+                <option v-for="coin in Coins[chain]" :value="coin">
+                  {{ coin }}
+                </option>
+              </select>
             </div>
-          </template>
+          </div>
+
+          <div class="flex flex-col justify-start items-start mr-16">
+            <label class="label flex flex-col justify-start items-start">
+              <span class="text-xl font-bold">Address:</span>
+            </label>
+            <div class="dropdown inline-block relative">
+              <input
+                v-model="address"
+                required
+                type="text"
+                class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"
+                placeholder="Address"
+              />
+            </div>
+            <span class="pt-2 text-gray-500">
+              *This will be the address that recieves payments/Royalties
+            </span>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap mt-8 mx-16">
+          <label class="label flex flex-col justify-start items-start">
+            <span class="text-xl font-bold">Supported Royalties:</span>
+            <span class="pt-2 text-gray-500">
+              *When someone buys your NFT, They can change the payment method to
+              one of these,
+              <br />
+              and youll recieve the royalties in that respective chain
+            </span>
+          </label>
+
+          <table class="table-auto w-full">
+            <thead>
+              <tr>
+                <th class="px-4 py-2">Chain</th>
+                <th class="px-4 py-2">Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(chain, index) in Coins.royaltyList" :key="index">
+                <td class="border px-4 py-2">{{ chain }}</td>
+                <td class="border px-4 py-2">
+                  <input v-model="addressList[index]" class="w-full" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <label class="label flex flex-col justify-start items-start mt-8 px-16">
@@ -247,7 +285,7 @@
 <script setup>
 import { Buffer } from "buffer";
 import Big from "big.js";
-import { useWallet, useAccount, useArweave } from "../composables/useState";
+import { useArWallet, useAccount, useArweave } from "../composables/useState";
 import setArweave from "../plugins/arweave";
 import { nftContractId } from "../config/contracts.json";
 import { GlomeNode } from "../config/config.json";
@@ -257,15 +295,17 @@ const arweave = useArweave().value;
 if (!arweave) setArweave();
 
 const account = useAccount();
-const wallet = useWallet();
+const wallet = useArWallet();
 
+// NFT Data
 const title = ref("");
 const uploading = ref(false);
 const description = ref("");
 const price = ref(0.5);
 
-const chain = ref("Select a Chain");
+const chain = ref("arweave");
 const coin = ref("AR");
+const address = ref(account.value.addr);
 
 const royalty = ref(3);
 const forSale = ref(true);
@@ -274,9 +314,11 @@ const collectionId = ref("");
 const imageObjectUrl = ref(null);
 const fileMeta = ref({});
 
-let nftContent = new ArrayBuffer(0);
+const arweaveIndex = Coins.royaltyList.indexOf("arweave");
+const addressList = ref(new Array(Coins.royaltyList.length).fill(""));
+addressList.value[arweaveIndex] = account.value.addr;
 
-// HARD CODED FOR NOW
+let nftContent = new ArrayBuffer(0);
 
 async function uploadNftContent(e) {
   if (e.target.files && e.target.files[0]) {
@@ -303,7 +345,19 @@ function readAsArrayBuffer(file) {
   });
 }
 
+// Null the coin value, incase they set a denom, then change the chain value
+watch(chain, () => {
+  coin.value = Coins[chain.value][0];
+
+  if (chain.value == "arweave" || chain.value == "everpay") {
+    address.value = account.value.addr;
+  } else {
+    address.value = "";
+  }
+});
+
 async function mint() {
+  console.log(addressList.value);
   let initState = {
     owner: account.value.addr,
     minter: account.value.addr,
@@ -324,10 +378,17 @@ async function mint() {
       arweave: account.value.addr,
       everpay: account.value.addr,
     },
-    listingAddress: account.value.addr,
+    listingAddress: address.value,
     listingChain: chain.value,
     listingCoin: coin.value,
   };
+
+  Coins.royaltyList.forEach((chain, index) => {
+    const address = addressList.value[index];
+    if (address) {
+      initState.royaltyAddresses[chain] = address;
+    }
+  });
 
   uploading.value = true;
   let tx = await arweave.createTransaction({
