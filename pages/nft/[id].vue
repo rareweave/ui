@@ -400,7 +400,7 @@ import setArweave from "../../plugins/arweave";
 import { GlomeNode } from "../../config/config.json";
 import ConnectWallet from "../../components/ConnectWallet.vue";
 import WalletSelector from "../../components/WalletSelector.vue";
-import { ConsoleLogger } from "../../dist/_nuxt/web.bundle.min.3c427dc7";
+
 const arweave = useArweave().value;
 if (!arweave) setArweave();
 let arWallet = useArWallet();

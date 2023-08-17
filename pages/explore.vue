@@ -362,7 +362,7 @@ const filter = ref({
 });
 
 const debouncedWatch = debounce(() => {
-  searchCondition = searchInput;
+
   refreshResults();
 }, 500);
 
@@ -433,22 +433,23 @@ async function updateUrl(collection) {
 }
 
 async function refreshResults() {
+
   nfts.value = await $fetch(
-    `https://glome.rareweave.store/contracts-under-code/${nftContractId}?expandStates=true`,
+    `${GlomeNode}/contracts-under-code/${nftContractId}?expandStates=true`,
     {
       method: "POST",
       body: {
-        filterScript: `${
-          selectedCollection.value?.state?.items ? `(id⊂variables.items)&` : ""
-        }(1⊕(state.owner="0"))&${
-          forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
-        }${
+        filterScript: `return (${
+          selectedCollection.value?.state?.items ? `includes(variables.items,id)` : "true"
+        } and state.owner~="0" and ${
+          forSaleOnly.value ? "state.forSale==variables.forSale" : "true"
+        } and ${
           searchInput.value
-            ? "((state.description~variables.search)|(state.name~variables.search))"
-            : "1"
-        }${filter.value > 0 ? "&(state.price≥variables.minPrice)" : ""}${
-          filter.value > 0 ? "&(state.price≤variables.maxPrice)" : ""
-        }`,
+            ? "(similarityScore(state.description,variables.search)>=0.2 or similarityScore(state.name,variables.search)>=0.7)"
+            : "true"
+        } and ${filter.value > 0 ? " state.price>=variables.minPrice" : "true"} and ${
+          filter.value > 0 ? "state.price<=variables.maxPrice" : "true"
+        })`,
         variables: {
           search: searchInput.value,
           forSale: forSaleOnly.value,
@@ -583,9 +584,9 @@ onMounted(async () => {
     {
       method: "POST",
       body: {
-        filterScript: `${
-          selectedCollection.value?.items ? `(id⊂variables.items)&` : ""
-        }(1⊕(state.owner="0"))`,
+        filterScript: `return ${
+          selectedCollection.value?.items ? `includes(variables.items,id)` : "true"
+        } and state.owner~="0"`,
         variables: {
           items: selectedCollection.value?.items,
         },
@@ -593,7 +594,7 @@ onMounted(async () => {
     }
   );
 
-  console.log(nftList);
+
   isLoading.value = false;
   nfts.value = nftList;
 
@@ -606,7 +607,7 @@ onMounted(async () => {
 
   collections.value = collectionsRequest;
 
-  console.log(collections.value);
+
 });
 
 function encodeTags(tags) {
