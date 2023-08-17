@@ -608,13 +608,14 @@ async function payRoyalty() {
     let payRoyalty = await wallet.value.send(
       wallet.value.getAddress(),
       nftState.value.royaltyAddresses[nftState.value.listingChain],
-      Big((nftPriceBase.value + 0.006) * nftState.value.royalty) *
-        Big(
-          nftState.value.listingCoin
-            ? Coins.Exponents[nftState.value.listingCoin]
-            : Coins.Exponents["AR"]
-        ) +
-        450000,
+      Big(
+        Big((nftPriceBase.value + 0.006) * nftState.value.royalty) *
+          Big(
+            nftState.value.listingCoin
+              ? Coins.Exponents[nftState.value.listingCoin]
+              : Coins.Exponents["AR"]
+          )
+      ).round(0),
       nftState.value.listingCoin,
       nftState.value.minter
     );
@@ -806,9 +807,11 @@ async function finalizeBuy() {
     let buyNft = await wallet.value.send(
       wallet.value.getAddress(),
       nftState.value.listingAddress,
-      Big(nftPriceBase.value) *
-        Big(Coins.Exponents[nftState.value.listingCoin]) +
-        4500,
+      Big(
+        Big(nftPriceBase.value) *
+          Big(Coins.Exponents[nftState.value.listingCoin]) +
+          4500
+      ).round(0),
       nftState.value.listingCoin,
       nftState.value.minter
     );
