@@ -1,33 +1,16 @@
 <template>
   <div class="h-full-navbared w-full flex flex-col items-center justify-center">
     <div class="m-2 rounded mt-6">
-      <img
-        v-if="nftState?.contentType?.startsWith('image')"
-        :src="
-          'https://prophet.rareweave.store/_ipx/width_320,animated,f_webp/https://prophet.rareweave.store/' +
-          nftId
-        "
-        class="inline-flex max-h-[20rem] max-w-20rem"
-      />
-      <video
-        v-else-if="nftState?.contentType?.startsWith('video')"
-        autoplay
-        muted
-        loop
-        controls
-      >
-        <source
-          :src="'https://prophet.rareweave.store/' + nftId"
-          :type="nftState?.contentType"
-        />
+      <img v-if="nftState?.contentType?.startsWith('image')" :src="'https://prophet.rareweave.store/_ipx/width_320,animated,f_webp/https://prophet.rareweave.store/' +
+        nftId
+        " class="inline-flex max-h-[20rem] max-w-20rem" />
+      <video v-else-if="nftState?.contentType?.startsWith('video')" autoplay muted loop controls>
+        <source :src="'https://prophet.rareweave.store/' + nftId" :type="nftState?.contentType" />
         Your browser does not support the video tag.
       </video>
 
       <audio v-else-if="nftState?.contentType?.startsWith('audio')" controls>
-        <source
-          :src="'https://prophet.rareweave.store/' + nftId"
-          :type="nftState?.contentType"
-        />
+        <source :src="'https://prophet.rareweave.store/' + nftId" :type="nftState?.contentType" />
         Your browser does not support the audio tag.
       </audio>
     </div>
@@ -35,14 +18,10 @@
     <template v-if="account && account.addr && account.addr == nftState.owner">
       <textarea
         class="text-md textarea font-sans m-2 max-w-[32rem] w-full overflow-auto transition-none textarea-bordered rounded-md"
-        v-model="nftState.description"
-      ></textarea>
+        v-model="nftState.description"></textarea>
     </template>
     <template v-else>
-      <p
-        class="text-md text-center font-sans p-2 max-w-[32rem]"
-        v-if="nftState.description"
-      >
+      <p class="text-md text-center font-sans p-2 max-w-[32rem]" v-if="nftState.description">
         {{ nftState.description }}
       </p>
       <p class="text-md text-center font-sans text-zinc-500" v-else>
@@ -51,25 +30,15 @@
     </template>
     <div class="my-2 w-max min-w-[14rem] font-mono">
       <div
-        class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-      >
+        class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between">
         Owner:
-        <div
-          v-if="account && account.addr && account.addr == nftState.owner"
-          class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center"
-        >
+        <div v-if="account && account.addr && account.addr == nftState.owner"
+          class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center">
           You
         </div>
-        <NuxtLink
-          :to="'/profile/' + nftState.owner"
-          v-else
-          class="text-sm rounded-xl p-1 ml-2 bg-zinc-700 flex-row flex items-center"
-        >
-          <img
-            :src="nftOwner?.profile?.avatarURL"
-            v-if="nftOwner?.profile?.avatarURL"
-            class="w-8 rounded-xl mr-2"
-          />
+        <NuxtLink :to="'/profile/' + nftState.owner" v-else
+          class="text-sm rounded-xl p-1 ml-2 bg-zinc-700 flex-row flex items-center">
+          <img :src="nftOwner?.profile?.avatarURL" v-if="nftOwner?.profile?.avatarURL" class="w-8 rounded-xl mr-2" />
           {{
             nftOwnerANS ||
             nftOwner?.handle ||
@@ -80,40 +49,26 @@
         </NuxtLink>
       </div>
       <div
-        class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-      >
+        class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between">
         Minter:
-        <div
-          v-if="account && account.addr && account.addr == nftMinter.addr"
-          class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center"
-        >
+        <div v-if="account && account.addr && account.addr == nftMinter.addr"
+          class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center">
           You
         </div>
-        <NuxtLink
-          :to="'/profile/' + nftState.minter"
-          v-else
-          class="text-sm rounded-xl p-1 ml-2 bg-zinc-700 flex-row flex items-center"
-        >
-          <img
-            :src="nftMinter?.profile?.avatarURL"
-            class="w-8 rounded-xl mr-2"
-          />
+        <NuxtLink :to="'/profile/' + nftState.minter" v-else
+          class="text-sm rounded-xl p-1 ml-2 bg-zinc-700 flex-row flex items-center">
+          <img :src="nftMinter?.profile?.avatarURL" class="w-8 rounded-xl mr-2" />
           {{ nftMinterANS || nftMinter?.handle }}
         </NuxtLink>
       </div>
       <div
-        class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-      >
+        class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between">
         For sale:
         <template v-if="isNftOwner">
-          <input
-            type="checkbox"
-            :class="[
-              'toggle',
-              nftState.forSale ? 'toggle-success' : 'toggle-error',
-            ]"
-            v-model="nftState.forSale"
-          />
+          <input type="checkbox" :class="[
+            'toggle',
+            nftState.forSale ? 'toggle-success' : 'toggle-error',
+          ]" v-model="nftState.forSale" />
         </template>
         <template v-else>
           <div v-if="nftState.forSale" class="p-2 bg-green-600 text-sm">
@@ -124,40 +79,29 @@
       </div>
       <template v-if="nftState.listingChain && nftState.listingCoin">
         <div
-          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-        >
+          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between">
           Chain:
-          <div
-            class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center"
-          >
+          <div class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center">
             {{ nftState.listingChain }}
           </div>
         </div>
         <div
-          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-        >
+          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between">
           Coin:
-          <div
-            class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center"
-          >
+          <div class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center">
             {{ nftState.listingCoin }}
           </div>
         </div>
       </template>
       <template v-if="nftState.forSale">
         <div
-          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-        >
+          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between">
           Price:
           <template v-if="isNftOwner">
             <div class="p-1 pr-2 bg-zinc-700 text-sm">
-              <input
-                v-model="nftPriceBase"
-                type="number"
-                step="0.1"
+              <input v-model="nftPriceBase" type="number" step="0.1"
                 class="input text-start appearance-[textfield] w-14 rounded-none px-1 input-sm bg-transparent"
-                placeholder="Price"
-              />
+                placeholder="Price" />
             </div>
           </template>
           <div v-else class="p-2 bg-zinc-700 text-sm">
@@ -165,62 +109,38 @@
           </div>
         </div>
         <div
-          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-        >
+          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between">
           Royalty:
           <div class="p-2 bg-zinc-700 text-sm">{{ nftRoyalty }}%</div>
         </div>
       </template>
-      <button
-        v-if="isNftOwner"
-        :class="[
-          'btn',
-          'amazing-button2',
-          'rounded-md',
-          'w-full',
-          'my-2',
-          ,
-          changed ? '' : 'btn-disabled',
-        ]"
-        :disabled="!changed"
-        @click="saveChangesToNft"
-      >
+      <button v-if="isNftOwner" :class="[
+        'btn',
+        'amazing-button2',
+        'rounded-md',
+        'w-full',
+        'my-2',
+        ,
+        changed ? '' : 'btn-disabled',
+      ]" :disabled="!changed" @click="saveChangesToNft">
         Save changes
       </button>
-      <label
-        v-if="isNftOwner"
-        for="transfer-modal"
-        :class="{
-          btn: true,
-          'btn-primary': true,
-          'rounded-md': true,
-          'w-full': true,
-          'my-2': true,
-          'text-md': true,
-          'btn-disabled': isSomeoneElseBuying,
-        }"
-        >Transfer</label
-      >
-      <label
-        for="buy-modal"
-        v-else-if="account && account.addr && nftState.forSale"
-      >
-        <amazing-button
-          :disabled="isSomeoneElseBuying"
-          :non-btn="true"
-          class="mt-2 w-full"
-          for="buy-modal"
-          >Buy</amazing-button
-        >
+      <label v-if="isNftOwner" for="transfer-modal" :class="{
+        btn: true,
+        'btn-primary': true,
+        'rounded-md': true,
+        'w-full': true,
+        'my-2': true,
+        'text-md': true,
+        'btn-disabled': isSomeoneElseBuying,
+      }">Transfer</label>
+      <label for="buy-modal" v-else-if="account && account.addr && nftState.forSale">
+        <amazing-button :disabled="isSomeoneElseBuying" :non-btn="true" class="mt-2 w-full"
+          for="buy-modal">Buy</amazing-button>
       </label>
       <!-- Put this part before </body> tag -->
     </div>
-    <input
-      type="checkbox"
-      id="buy-modal"
-      class="modal-toggle"
-      :checked="false"
-    />
+    <input type="checkbox" id="buy-modal" class="modal-toggle" :checked="false" />
     <div class="modal">
       <div class="modal-box relative flex flex-col" v-if="!wallet">
         <h3 class="font-bold font-mono text-3xl text-center">
@@ -232,54 +152,31 @@
           Wallet
         </h3>
         <div class="flex justify-center">
-          <WalletSelector
-            :chain="nftState.listingChain"
-            :Connect="walletConnect"
-          ></WalletSelector>
+          <WalletSelector :chain="nftState.listingChain" :Connect="walletConnect"></WalletSelector>
         </div>
         <div class="modal-action m-0">
-          <label
-            for="buy-modal"
-            class="btn"
-            v-if="buyStatus == 0 || buyStatus == 3"
-            >Close</label
-          >
+          <label for="buy-modal" class="btn" v-if="buyStatus == 0 || buyStatus == 3">Close</label>
         </div>
       </div>
       <div class="modal-box relative flex flex-col" v-else-if="buyStatus != 3">
-        <label
-          for="buy-modal"
-          class="btn btn-sm absolute right-2 top-2"
-          v-if="buyStatus == 0 || buyStatus == 3"
-          >✕</label
-        >
+        <label for="buy-modal" class="btn btn-sm absolute right-2 top-2" v-if="buyStatus == 0 || buyStatus == 3">✕</label>
         <h3 class="font-bold text-lg text-center">Buy "{{ nftState.name }}"</h3>
         <ul class="steps steps-vertical mt-4 ml-4">
           <li class="step step-primary">
-            <awesome-button
-              @click="payRoyalty"
-              v-if="!payingRoyalty && !isBuying"
-            >
+            <awesome-button @click="payRoyalty" v-if="!payingRoyalty && !isBuying">
               Pay royalty ({{ nftPriceBase * (nftRoyalty / 100) }}
               {{ nftState.listingCoin }})
             </awesome-button>
 
             <span class="text-lg" v-else-if="isBuying">Paid royalty</span>
-            <span class="text-lg" v-else
-              >Paying royalty... Don't close this tab</span
-            >
+            <span class="text-lg" v-else>Paying royalty... Don't close this tab</span>
           </li>
           <li :class="{ step: true, 'step-primary': isBuying }">
-            <amazing-button
-              :disabled="!isBuying"
-              v-if="!isSomeoneElseBuying && buyStatus != 2"
-              @click="finalizeBuy"
-            >
+            <amazing-button :disabled="!isBuying" v-if="!isSomeoneElseBuying && buyStatus != 2" @click="finalizeBuy">
               Finalize buy ({{ nftPriceBase }}
               {{ nftState.listingCoin || "AR" }})
             </amazing-button>
-            <span v-else-if="buyStatus == 2" class="text-lg"
-              >Finalizing buy...
+            <span v-else-if="buyStatus == 2" class="text-lg">Finalizing buy...
             </span>
             <button v-else class="btn btn-error btn-outline rounded-lg btn-sm">
               Someone else did reserve this NFT before you
@@ -287,89 +184,49 @@
           </li>
         </ul>
         <div class="modal-action">
-          <label
-            for="buy-modal"
-            class="btn"
-            v-if="buyStatus == 0 || buyStatus == 3"
-            >Close</label
-          >
+          <label for="buy-modal" class="btn" v-if="buyStatus == 0 || buyStatus == 3">Close</label>
         </div>
       </div>
       <div class="modal-box relative flex flex-col items-center" v-else>
-        <label for="buy-modal" class="btn btn-sm absolute right-2 top-2"
-          >✕</label
-        >
+        <label for="buy-modal" class="btn btn-sm absolute right-2 top-2">✕</label>
         <h3 class="font-bold text-lg text-center">
           Successfully bought "{{ nftState.name }}"
         </h3>
-        <img
-          v-if="nftState?.contentType?.startsWith('image')"
-          :src="
-            'https://prophet.rareweave.store/_ipx/width_320,animated,f_webp/https://prophet.rareweave.store/' +
-            nftId
-          "
-          class="inline-flex max-h-[20rem] max-w-20rem my-4 purchased"
-        />
-        <video
-          v-else-if="nftState?.contentType?.startsWith('video')"
-          autoplay
-          loop
-          muted
-          controls
-        >
-          <source
-            :src="'https://g8way.io/' + nftId"
-            :type="nftState?.contentType"
-          />
+        <img v-if="nftState?.contentType?.startsWith('image')" :src="'https://prophet.rareweave.store/_ipx/width_320,animated,f_webp/https://prophet.rareweave.store/' +
+          nftId
+          " class="inline-flex max-h-[20rem] max-w-20rem my-4 purchased" />
+        <video v-else-if="nftState?.contentType?.startsWith('video')" autoplay loop muted controls>
+          <source :src="'https://g8way.io/' + nftId" :type="nftState?.contentType" />
           Your browser does not support the video tag.
         </video>
-        <span class="text-md text-center"
-          >Now you own {{ nftState.name }}!</span
-        >
+        <span class="text-md text-center">Now you own {{ nftState.name }}!</span>
         <div class="modal-action">
           <label for="buy-modal" class="btn">Close</label>
         </div>
       </div>
     </div>
     <Comments class="mx-6" :content="nftId" />
-    <input
-      type="checkbox"
-      id="transfer-modal"
-      class="modal-toggle"
-      :checked="false"
-      v-model="transferModalOpened"
-    />
+    <input type="checkbox" id="transfer-modal" class="modal-toggle" :checked="false" v-model="transferModalOpened" />
     <div class="modal">
       <div class="modal-box relative flex flex-col" v-if="!isSomeoneElseBuying">
-        <label for="transfer-modal" class="btn btn-sm absolute right-2 top-2"
-          >✕</label
-        >
+        <label for="transfer-modal" class="btn btn-sm absolute right-2 top-2">✕</label>
         <h3 class="font-bold text-lg text-center">
           Transfer "{{ nftState.name }}"
         </h3>
         <form class="modal-action" @submit.prevent="transfer">
-          <input
-            v-model="transferRecipient"
-            class="input input-bordered w-full rounded-lg p-2"
-            type="text"
-            required
-            placeholder="Recipient's arweave address"
-          />
+          <input v-model="transferRecipient" class="input input-bordered w-full rounded-lg p-2" type="text" required
+            placeholder="Recipient's arweave address" />
           <button type="submit" class="btn btn-primary rounded-lg">
             Transfer
           </button>
         </form>
       </div>
       <div class="modal-box relative flex flex-col items-center" v-else>
-        <label for="transfer-modal" class="btn btn-sm absolute right-2 top-2"
-          >✕</label
-        >
+        <label for="transfer-modal" class="btn btn-sm absolute right-2 top-2">✕</label>
         <h3 class="font-bold text-lg text-center">
           Can't transfer "{{ nftState.name }}"
         </h3>
-        <span class="text-md text-center"
-          >Somebody is buying this NFT now.</span
-        >
+        <span class="text-md text-center">Somebody is buying this NFT now.</span>
         <div class="modal-action">
           <label for="transfer-modal" class="btn">Close</label>
         </div>
@@ -384,7 +241,6 @@ import Coins from "../../config/coins";
 import {
   useAccount,
   useArweave,
-  useSolWallet,
   useAccountTools,
   useArWallet,
 } from "../../composables/useState";
@@ -437,11 +293,11 @@ let transferRecipient = ref("");
 // Base nft price (1.234)
 let nftPriceBase = ref(
   Big(nftState.value.price) /
-    Big(
-      nftState.value.listingCoin
-        ? Coins.Exponents[nftState.value.listingCoin]
-        : Coins.Exponents["AR"]
-    )
+  Big(
+    nftState.value.listingCoin
+      ? Coins.Exponents[nftState.value.listingCoin]
+      : Coins.Exponents["AR"]
+  )
 );
 
 let nftRoyalty = ref(parseFloat(nftState.value.royalty * 100));
@@ -479,12 +335,12 @@ let isNftOwner = computed(
 let changed = computed(() => {
   let ch =
     nftPriceBase.value !=
-      Big(nftState.value.price) /
-        Big(
-          nftState.value.listingCoin
-            ? Coins.Exponents[nftState.value.listingCoin]
-            : Coins.Exponents["AR"]
-        ) ||
+    Big(nftState.value.price) /
+    Big(
+      nftState.value.listingCoin
+        ? Coins.Exponents[nftState.value.listingCoin]
+        : Coins.Exponents["AR"]
+    ) ||
     nftStateOrig.description != nftState.value.description ||
     nftStateOrig.forSale != nftState.value.forSale;
   return ch;
@@ -574,13 +430,20 @@ async function saveChangesToNft() {
     },
   ];
 
-  let tx = await arweave.createTransaction({
+  let tx = {
     data: "Glome Contract Call",
-    tags: encodeTags(tags),
-  });
+    tags: tags,
+  }
 
   try {
-    await arWallet.value.dispatch(tx);
+    const signed = await arWallet.value.signDataItem(tx)
+    await fetch(`${GlomeNode}/tx`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/octet-stream"
+      },
+      body: signed
+    });
   } catch (e) {
     console.log(e);
     alert("Failed to post the transaction to update your NFT");
@@ -610,11 +473,11 @@ async function payRoyalty() {
       nftState.value.royaltyAddresses[nftState.value.listingChain],
       Big(
         Big((nftPriceBase.value + 0.006) * nftState.value.royalty) *
-          Big(
-            nftState.value.listingCoin
-              ? Coins.Exponents[nftState.value.listingCoin]
-              : Coins.Exponents["AR"]
-          )
+        Big(
+          nftState.value.listingCoin
+            ? Coins.Exponents[nftState.value.listingCoin]
+            : Coins.Exponents["AR"]
+        )
       ).round(0),
       nftState.value.listingCoin,
       nftState.value.minter
@@ -658,18 +521,24 @@ async function payRoyalty() {
       },
     ];
 
-    var tx = await arweave.createTransaction({
-      tags: encodeTags(tags),
+    let tx = {
+      tags: tags,
       data: "Glome Contract Call",
-    });
+    };
 
     try {
-      await arWallet.value.dispatch(tx);
+      const signed = await arWallet.value.signDataItem(tx)
+      await fetch(`${GlomeNode}/tx`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/octet-stream"
+        },
+        body: signed
+      });
     } catch (e) {
       console.log(e);
       alert("Failed to post the transaction to pay for royalty your NFT");
     }
-  } else {
   }
 }
 // switch (nftState.value.listingChain) {
@@ -809,8 +678,8 @@ async function finalizeBuy() {
       nftState.value.listingAddress,
       Big(
         Big(nftPriceBase.value) *
-          Big(Coins.Exponents[nftState.value.listingCoin]) +
-          4500
+        Big(Coins.Exponents[nftState.value.listingCoin]) +
+        4500
       ).round(0),
       nftState.value.listingCoin,
       nftState.value.minter
@@ -849,13 +718,20 @@ async function finalizeBuy() {
       },
     ];
 
-    var tx = await arweave.createTransaction({
-      tags: encodeTags(tags),
+    let tx = {
+      tags: tags,
       data: "Glome Contract Call",
-    });
+    };
 
     try {
-      await arWallet.value.dispatch(tx);
+      const signed = await arWallet.value.signDataItem(tx)
+      await fetch(`${GlomeNode}/tx`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/octet-stream"
+        },
+        body: signed
+      });
     } catch (e) {
       console.log(e);
       alert("Failed to post the transaction to pay for royalty your NFT");
@@ -902,13 +778,20 @@ async function transfer() {
     },
   ];
 
-  let tx = await arweave.createTransaction({
+  let tx = {
+    tags: tags,
     data: "Glome Contract Call",
-    tags: encodeTags(tags),
-  });
+  };
 
   try {
-    await arWallet.value.dispatch(tx);
+    const signed = await arWallet.value.signDataItem(tx)
+    await fetch(`${GlomeNode}/tx`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/octet-stream"
+      },
+      body: signed
+    });
   } catch (e) {
     console.log(e);
     alert("Failed to post the transaction to transfer your nft");

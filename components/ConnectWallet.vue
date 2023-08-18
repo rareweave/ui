@@ -1,10 +1,5 @@
 <template>
-  <input
-    type="checkbox"
-    id="connectWallet"
-    class="modal-toggle"
-    :checked="show"
-  />
+  <input type="checkbox" id="connectWallet" class="modal-toggle" :checked="show" />
 
   <div class="modal">
     <div class="modal-box">
@@ -12,16 +7,11 @@
         Select your arweave wallet required!
       </h3>
       <div class="py-4 flex justify-center">
-        <div
-          class="card card-compact m-2 w-1/3 bg-base-200 cursor-pointer"
-          @click="connectArconnect"
-        >
+        <div class="card card-compact m-2 w-1/3 bg-base-200 cursor-pointer" @click="connectArconnect">
           <figure>
             <img
               src="https://7qx7gbohuua3h7r32vf6ddrjoi7mkdmczz6cdtcq2e3dhdpavd3q.arweave.net/_C_zBcelAbP-O9VL4Y4pcj7FDYLOfCHMUNE2M43gqPc"
-              alt="ArConnect"
-              height="200"
-            />
+              alt="ArConnect" height="200" />
           </figure>
           <div class="card-body w-full flex bg-neutral">
             <h2 class="card-title w-full block text-center font-mono">
@@ -30,16 +20,11 @@
           </div>
         </div>
         <!-- ArConnect uses own encryption method, which is not normal RSA encryption and not compatible with most software -->
-        <div
-          class="card card-compact m-2 w-1/3 bg-base-200 cursor-pointer"
-          @click="connectArweaveApp"
-        >
+        <div class="card card-compact m-2 w-1/3 bg-base-200 cursor-pointer" @click="connectArweaveApp">
           <figure>
             <img
               src="https://yctstiqqys3b4j5qb55sxtn6airb6a56tlwxtkfi36of6cbg2a5a.arweave.net/wKcpohDEth4nsA97K82-AiIfA76a7XmoqN-cXwgm0Do"
-              alt="Arweave.app"
-              width="900"
-            />
+              alt="Arweave.app" width="900" />
           </figure>
           <div class="card-body w-full flex bg-neutral">
             <h2 class="card-title w-full block text-center font-mono">
@@ -53,6 +38,7 @@
 </template>
 <script setup>
 import Everpay from "everpay";
+import { DataItem } from "arbundles";
 import {
   useArWallet,
   useAccount,
@@ -203,6 +189,9 @@ async function connectArweaveApp() {
   webwallet.namespaces.arweaveWallet.type = "Arweave.app";
   webwallet.namespaces.arweaveWallet.signature = async (message) => {
     return await webwallet.signMessage(message, { hashAlgorithm: "SHA-256" });
+  };
+  webwallet.namespaces.arweaveWallet.signDataItem = async (tx) => {
+    return await webwallet.signDataItem(tx)
   };
   arWalletState.value = webwallet.namespaces.arweaveWallet;
 

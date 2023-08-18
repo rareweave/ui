@@ -1,32 +1,15 @@
 <template>
-  <div
-    class="Select flex justify-start items-center max-w-[1740px] min-h-12 mx-auto overflow-hidden"
-  >
+  <div class="Select flex justify-start items-center max-w-[1740px] min-h-12 mx-auto overflow-hidden">
     <div class="Spacer"></div>
     <div class="Topbar">
       <div class="Current">items: {{ nfts.length }}</div>
       <div class="Search">
         <span class="InputWrapper">
-          <input
-            type="text"
-            placeholder="Search..."
-            v-on:input="onSearch"
-            v-model="searchInput"
-            class="Input__Search"
-          />
+          <input type="text" placeholder="Search..." v-on:input="onSearch" v-model="searchInput" class="Input__Search" />
           <span class="SearchIcon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="feather feather-search"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-search">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -48,8 +31,7 @@
     <div class="Menu">
       <div class="MenuSection">
         <div
-          class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
-        >
+          class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl">
           <h2 class="Amazing--br">Exploration</h2>
           <span></span>
         </div>
@@ -57,48 +39,39 @@
           <div class="MenuOption">
             <div class="V1__button_wrapper">
               <span class="V1__button_decoration"></span>
-              <button
-                class="V1__button"
-                @click="
-                  selectedCollection = {};
-                  searchInput = '';
-                  forSaleOnly = false;
-                  filter = { minPrice: 0, maxPrice: 0, type: 'all' };
-                  updateUrl(null);
-                  refreshResults();
-                "
-              >
+              <button class="V1__button" @click="
+                selectedCollection = {};
+              searchInput = '';
+              forSaleOnly = false;
+              filter = { minPrice: 0, maxPrice: 0, type: 'all' };
+              updateUrl(null);
+              refreshResults();
+              ">
                 All
               </button>
             </div>
           </div>
         </div>
       </div>
-      <template
-        v-if="
-          (account &&
-            account.addr &&
-            selectedCollection?.state?.admins.includes(account.addr)) ||
-          (account &&
-            account.addr &&
-            selectedCollection?.admins?.includes(account.addr))
-        "
-      >
+      <template v-if="(account &&
+          account.addr &&
+          selectedCollection?.state?.admins.includes(account.addr)) ||
+        (account &&
+          account.addr &&
+          selectedCollection?.admins?.includes(account.addr))
+        ">
         <div class="MenuSection">
           <div
-            class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
-          >
+            class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl">
             <h2 class="Amazing--br">Admin Only</h2>
             <span></span>
           </div>
           <div class="MenuOptions">
             <div class="MenuOption">
               <div class="FilterButton">
-                <label
-                  for="add-modal"
-                  class="btn btn-xl text-lg amazing-button rounded-md hover:rounded-lg transition-all font-mono m-1 w-full"
-                  >Add NFTS</label
-                >
+                <label for="add-modal"
+                  class="btn btn-xl text-lg amazing-button rounded-md hover:rounded-lg transition-all font-mono m-1 w-full">Add
+                  NFTS</label>
               </div>
             </div>
           </div>
@@ -139,8 +112,7 @@
       </div> -->
       <div class="MenuSection">
         <div
-          class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
-        >
+          class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl">
           <h2 class="Amazing--br">Filter</h2>
           <span></span>
         </div>
@@ -148,37 +120,21 @@
           <div class="MenuOption">
             <div class="Row">
               <label> Min: </label>
-              <input
-                type="number"
-                v-model="filter.minPrice"
-                min="0"
-                max="1000000000"
-                step="0.1"
-              />
+              <input type="number" v-model="filter.minPrice" min="0" max="1000000000" step="0.1" />
               <span> AR </span>
             </div>
           </div>
           <div class="MenuOption">
             <div class="Row">
               <label> Max: </label>
-              <input
-                type="number"
-                v-model="filter.maxPrice"
-                min="0"
-                max="1000000000"
-                step="0.1"
-              />
+              <input type="number" v-model="filter.maxPrice" min="0" max="1000000000" step="0.1" />
               <span> AR </span>
             </div>
           </div>
           <div class="MenuOption">
             <div class="Row">
               <label class="cursor-pointer label">
-                <input
-                  type="checkbox"
-                  v-model="forSaleOnly"
-                  class="checkbox checkbox-warning"
-                />
+                <input type="checkbox" v-model="forSaleOnly" class="checkbox checkbox-warning" />
                 <span class="label-text ml-2">For sale only</span>
               </label>
             </div>
@@ -199,15 +155,12 @@
               <button class="MenuButton" @click="refreshResults()">
                 Apply
               </button>
-              <button
-                class="Reset"
-                @click="
-                  filter = { minPrice: 0, maxPrice: 0, type: 'all' };
-                  forSaleOnly = false;
-                  forSaleOnly = false;
-                  refreshResults();
-                "
-              >
+              <button class="Reset" @click="
+                filter = { minPrice: 0, maxPrice: 0, type: 'all' };
+              forSaleOnly = false;
+              forSaleOnly = false;
+              refreshResults();
+              ">
                 Remove filter
               </button>
             </div>
@@ -217,37 +170,28 @@
       <!--Bring back later probably, just glome wont support this for now-->
       <div class="MenuSection">
         <div
-          class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl"
-        >
+          class="MenuHeader relative flex flex-row justify-between items-center w-full h-auto m-0 p-3 font-bold text-2xl">
           <h2 class="Amazing--br">Collection detection</h2>
           <span></span>
         </div>
 
-        <div
-          if="collections.length > 0"
-          class="MenuOptions"
-          v-for="(collection, index) in [
-            ...new Set(
-              collections?.filter(
-                (collection) =>
-                  collection.state.name !== undefined &&
-                  collection.state.name !== ''
-              )
-            ),
-          ]"
-          :key="collection.id"
-        >
+        <div if="collections.length > 0" class="MenuOptions" v-for="(collection, index) in [
+          ...new Set(
+            collections?.filter(
+              (collection) =>
+                collection.state.name !== undefined &&
+                collection.state.name !== ''
+            )
+          ),
+        ]" :key="collection.id">
           <div class="MenuOption highlite">
             <div class="V1__button_wrapper">
               <span class="V1__button_decoration"></span>
-              <button
-                class="V1__button"
-                @click="
-                  selectedCollection = collection;
-                  updateUrl(collection.id);
-                  refreshResults();
-                "
-              >
+              <button class="V1__button" @click="
+                selectedCollection = collection;
+              updateUrl(collection.id);
+              refreshResults();
+              ">
                 {{ collection.state.name }}
               </button>
             </div>
@@ -264,46 +208,26 @@
         <h2>No NFTs found</h2>
       </div>
       <div v-else v-if="view === 'grid'" class="Showcase">
-        <NftCard
-          v-for="nft in nfts"
-          :key="nft.id"
-          :nft="nft"
-          :disposable="
-            (account &&
-              account.addr &&
-              selectedCollection?.state?.admins.includes(account.addr)) ||
-            (account &&
-              account.addr &&
-              selectedCollection?.admins?.includes(account.addr))
-          "
-          @remove-item="deleteNFT"
-        />
+        <NftCard v-for="nft in nfts" :key="nft.id" :nft="nft" :disposable="(account &&
+            account.addr &&
+            selectedCollection?.state?.admins.includes(account.addr)) ||
+          (account &&
+            account.addr &&
+            selectedCollection?.admins?.includes(account.addr))
+          " @remove-item="deleteNFT" />
       </div>
       <div v-if="!isLoading.nfts && view === 'list'" class="Details">
-        <NftRow
-          v-for="nft in nfts"
-          :key="nft.id"
-          :nft="nft"
-          :disposable="
-            (account &&
-              account.addr &&
-              selectedCollection?.state?.admins.includes(account.addr)) ||
-            (account &&
-              account.addr &&
-              selectedCollection?.admins?.includes(account.addr))
-          "
-          @remove-item="deleteNFT"
-        />
+        <NftRow v-for="nft in nfts" :key="nft.id" :nft="nft" :disposable="(account &&
+            account.addr &&
+            selectedCollection?.state?.admins.includes(account.addr)) ||
+          (account &&
+            account.addr &&
+            selectedCollection?.admins?.includes(account.addr))
+          " @remove-item="deleteNFT" />
       </div>
     </div>
   </div>
-  <input
-    type="checkbox"
-    id="add-modal"
-    class="modal-toggle"
-    :checked="false"
-    v-model="addModalOpened"
-  />
+  <input type="checkbox" id="add-modal" class="modal-toggle" :checked="false" v-model="addModalOpened" />
   <div class="modal">
     <div class="modal-box relative flex flex-col">
       <label for="add-modal" class="btn btn-sm absolute right-2 top-2">✕</label>
@@ -311,13 +235,8 @@
         {{ selectedCollection.name }}
       </h3>
       <form class="modal-action flex flex-col" @submit.prevent="addNft">
-        <input
-          v-model="nftBeingAdded"
-          class="input input-bordered w-full rounded-lg p-2"
-          type="text"
-          required
-          placeholder="NFT IDs (Seperate with spaces)"
-        />
+        <input v-model="nftBeingAdded" class="input input-bordered w-full rounded-lg p-2" type="text" required
+          placeholder="NFT IDs (Seperate with spaces)" />
         <button type="submit" class="btn btn-primary rounded-lg mt-4">
           Add
         </button>
@@ -439,17 +358,13 @@ async function refreshResults() {
     {
       method: "POST",
       body: {
-        filterScript: `return (${
-          selectedCollection.value?.state?.items ? `includes(variables.items,id)` : "true"
-        } and state.owner~="0" and ${
-          forSaleOnly.value ? "state.forSale==variables.forSale" : "true"
-        } and ${
-          searchInput.value
+        filterScript: `return (${selectedCollection.value?.state?.items ? `includes(variables.items,id)` : "true"
+          } and state.owner~="0" and ${forSaleOnly.value ? "state.forSale==variables.forSale" : "true"
+          } and ${searchInput.value
             ? "(similarityScore(state.description,variables.search)>=0.2 or similarityScore(state.name,variables.search)>=0.7)"
             : "true"
-        } and ${filter.value > 0 ? " state.price>=variables.minPrice" : "true"} and ${
-          filter.value > 0 ? "state.price<=variables.maxPrice" : "true"
-        })`,
+          } and ${filter.value > 0 ? " state.price>=variables.minPrice" : "true"} and ${filter.value > 0 ? "state.price<=variables.maxPrice" : "true"
+          })`,
         variables: {
           search: searchInput.value,
           forSale: forSaleOnly.value,
@@ -495,14 +410,20 @@ async function deleteNFT(contract) {
     },
   ];
 
-  let tx = await arweave.createTransaction({
+  let tx = {
+    tags: tags,
     data: "Glome Contract Call",
-    tags: encodeTags(tags),
-  });
+  };
 
   try {
-    console.log(wallet.value);
-    console.log(await wallet.value.dispatch(tx));
+    const signed = await arWallet.value.signDataItem(tx)
+    await fetch(`${GlomeNode}/tx`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/octet-stream"
+      },
+      body: signed
+    });
     nfts.value = nfts.value.filter((nft) => nft.id != contract);
   } catch (e) {
     console.log(e);
@@ -584,9 +505,8 @@ onMounted(async () => {
     {
       method: "POST",
       body: {
-        filterScript: `return ${
-          selectedCollection.value?.items ? `includes(variables.items,id)` : "true"
-        } and state.owner~="0"`,
+        filterScript: `return ${selectedCollection.value?.items ? `includes(variables.items,id)` : "true"
+          } and state.owner~="0"`,
         variables: {
           items: selectedCollection.value?.items,
         },
