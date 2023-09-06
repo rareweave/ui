@@ -76,7 +76,9 @@
       </div>
       <div class="form-control flex flex-col items-stretch">
         <label class="label flex flex-col justify-start items-start mt-8 mx-16">
-          <span class="text-xl font-bold"> Name: </span>
+          <span class="text-xl font-bold"> 
+            Name: 
+          </span>
         </label>
         <input
           v-model="title"
@@ -87,7 +89,9 @@
           placeholder="Enter the name of your NFT"
         />
         <label class="label flex flex-col justify-start items-start mt-8 mx-16">
-          <span class="text-xl font-bold"> Description: </span>
+          <span class="text-xl font-bold"> 
+            Description: 
+          </span>
         </label>
         <textarea
           placeholder="Enter a detailed description of your NFT. (max 500 characters)"
@@ -99,7 +103,9 @@
         <div class="flex flex-wrap mt-8 mx-16">
           <div class="flex flex-col justify-start items-start mr-16">
             <label class="label flex flex-col justify-start items-start">
-              <span class="text-xl font-bold"> Price: </span>
+              <span class="text-xl font-bold"> 
+                Price: 
+              </span>
             </label>
             <label class="flex input-group flex-1 w-max">
               <input
@@ -118,7 +124,9 @@
           </div>
           <div class="flex flex-col justify-start items-start">
             <label class="label flex flex-col justify-start items-start">
-              <span class="text-xl font-bold"> Royalty: </span>
+              <span class="text-xl font-bold"> 
+                Royalty: 
+              </span>
             </label>
             <label class="flex input-group flex-1 w-max">
               <input
@@ -142,14 +150,18 @@
         <div class="flex flex-wrap mt-8 mx-16">
           <div class="flex flex-col justify-start items-start mr-16">
             <label class="label flex flex-col justify-start items-start">
-              <span class="text-xl font-bold">Chain:</span>
+              <span class="text-xl font-bold">
+                Chain:
+              </span>
             </label>
             <div class="dropdown inline-block relative">
               <select
                 v-model="chain"
                 class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200"
               >
-                <option selected>Select a Chain</option>
+                <option selected>
+                  Select a Chain
+                </option>
                 <option v-for="chain in Coins.Chains" :value="chain">
                   {{ chain }}
                 </option>
@@ -162,7 +174,9 @@
             v-if="chain && Coins[chain]?.length > 1"
           >
             <label class="label flex flex-col justify-start items-start">
-              <span class="text-xl font-bold">Coin:</span>
+              <span class="text-xl font-bold">
+                Coin:
+              </span>
             </label>
             <div class="dropdown inline-block relative">
               <select
@@ -176,11 +190,13 @@
             </div>
           </div>
 
-          <div class="flex flex-col justify-start items-start mr-16">
+          <div class="flex flex-col justify-start items-stretch flex-1">
             <label class="label flex flex-col justify-start items-start">
-              <span class="text-xl font-bold">Address:</span>
+              <span class="text-xl font-bold">
+                Address:
+              </span>
             </label>
-            <div class="dropdown inline-block relative">
+            <div class="flex-1 dropdown inline-flex relative">
               <input
                 v-model="address"
                 required
@@ -195,29 +211,40 @@
           </div>
         </div>
 
-        <div class="flex flex-wrap mt-8 mx-16">
+        <div class="flex flex-col mt-8 mx-16">
           <label class="label flex flex-col justify-start items-start">
-            <span class="text-xl font-bold">Supported Royalties:</span>
-            <span class="pt-2 text-gray-500">
-              *When someone buys your NFT, They can change the payment method to
+            <span class="text-xl font-bold">Royalties and supported chains:</span>
+            <span class="pt-2 text-gray-500 max-w-[960px]">
+              As RareWeave supports multiple chains and coins, you can set a royalty addresses for each chain.
+              Royalties are paid on the same chain as the payment.
+              When a buyer selects his chain, the royalty will be sent to the respective address.
+              <!-- *When someone buys your NFT, They can change the payment method to
               one of these,
               <br />
-              and youll recieve the royalties in that respective chain
+              and youll recieve the royalties in that respective chain -->
             </span>
           </label>
 
           <table class="table-auto w-full">
             <thead>
               <tr>
-                <th class="px-4 py-2">Chain</th>
-                <th class="px-4 py-2">Address</th>
+                <th class="py-2">
+                  Chain
+                </th>
+                <th class="py-2">
+                  Address
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(chain, index) in Coins.royaltyList" :key="index">
-                <td class="border px-4 py-2">{{ chain }}</td>
-                <td class="border px-4 py-2">
-                  <input v-model="addressList[index]" class="w-full" />
+                <td class="border border-2 border-gray-700 bg-[rgba(11,17,23,1)] px-4 py-2">
+                  {{ chain }}
+                </td>
+                <td class="border border-2 border-gray-700">
+                  <input v-model="addressList[index]" 
+                    class="bg-[rgba(11,17,23,1)] text-white py-1 px-6 outline-none focus:outline-none transition-colors duration-200 w-full"
+                  />
                 </td>
               </tr>
             </tbody>
