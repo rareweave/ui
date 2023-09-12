@@ -1,20 +1,13 @@
 <template>
-  <div
-    class="relative flex flex-col justify-start items-center h-auto w-max mx-auto text-left"
-  >
-    <form
-      v-if="!uploading"
+  <div class="relative flex flex-col justify-start items-center h-auto w-max mx-auto text-left">
+    <form v-if="!uploading"
       class="h-full-navbared flex-1 flex flex-col items-start justify-center bg-[rgba(17,23,32,.2)] rounded-[2.5rem] overflow-hidden mt-8 mb-32 pb-24"
       style="
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12),
           1px 2px 4px rgba(0, 0, 0, 0.1), 2px 4px 8px rgba(0, 0, 0, 0.09),
           3px 6px 12px rgba(0, 0, 0, 0.09), -1px -2px 8px rgba(0, 0, 0, 0.07);
-      "
-      @submit.prevent="mint"
-    >
-      <div
-        class="w-full flex flex-fow flex-nowrap justify-between items-center mt-16 px-16"
-      >
+      " @submit.prevent="mint">
+      <div class="w-full flex flex-fow flex-nowrap justify-between items-center mt-16 px-16">
         <h1 class="text-3xl font-bold flex-1">
           Create a new <span class="rareweave-font">RareWeave</span> NFT
         </h1>
@@ -27,47 +20,25 @@
         <p class="text-lg">
           Click to upload, or drag and drop your NFT content:
         </p>
-        <label
-          for="dropzone-file"
-          class="drzone flex flex-col justify-center items-center min-w-[316px] w-[432px] max-w-[85vw] aspect-[16/9] border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200 border-gray-700 hover:border-[rgba(107,114,124,1)] bg-[rgba(11,17,23,1)] mt-2"
-        >
+        <label for="dropzone-file"
+          class="drzone flex flex-col justify-center items-center min-w-[316px] w-[432px] max-w-[85vw] aspect-[16/9] border-2 border-dashed rounded-lg cursor-pointer transition-colors duration-200 border-gray-700 hover:border-[rgba(107,114,124,1)] bg-[rgba(11,17,23,1)] mt-2">
           <div class="flex flex-col items-start justify-center pt-5 pb-6">
             <span v-if="!imageObjectUrl">
               <img src="/upload_nft.png" class="Fileicon w-16 h-16" />
             </span>
             <template v-else>
-              <img
-                v-if="fileMeta?.type?.startsWith('image')"
-                :src="imageObjectUrl"
-                class="inline-flex"
-              />
-              <video
-                v-else-if="fileMeta?.type?.startsWith('video')"
-                autoplay
-                muted
-                controls
-              >
+              <img v-if="fileMeta?.type?.startsWith('image')" :src="imageObjectUrl" class="inline-flex" />
+              <video v-else-if="fileMeta?.type?.startsWith('video')" autoplay muted controls>
                 <source :src="imageObjectUrl" :type="fileMeta.type" />
                 Your browser does not support the video tag.
               </video>
-              <audio
-                v-else-if="fileMeta?.type?.startsWith('audio')"
-                autoplay
-                muted
-                controls
-              >
+              <audio v-else-if="fileMeta?.type?.startsWith('audio')" autoplay muted controls>
                 <source :src="imageObjectUrl" :type="fileMeta.type" />
                 Your browser does not support the audio tag.
               </audio>
             </template>
           </div>
-          <input
-            id="dropzone-file"
-            type="file"
-            class="hidden"
-            required
-            @change="uploadNftContent"
-          />
+          <input id="dropzone-file" type="file" class="hidden" required @change="uploadNftContent" />
         </label>
         <p class="mt-1 text-md text-gray-500">
           <span>*</span>Currently supported file types: SVG, PNG, JPG, GIF, MP4,
@@ -78,22 +49,14 @@
         <label class="label flex flex-col justify-start items-start mt-8 mx-16">
           <span class="text-xl font-bold"> Name: </span>
         </label>
-        <input
-          v-model="title"
-          required
-          type="text"
-          maxlength="40"
+        <input v-model="title" required type="text" maxlength="40"
           class="mx-16 bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"
-          placeholder="Enter the name of your NFT"
-        />
+          placeholder="Enter the name of your NFT" />
         <label class="label flex flex-col justify-start items-start mt-8 mx-16">
           <span class="text-xl font-bold"> Description: </span>
         </label>
-        <textarea
-          placeholder="Enter a detailed description of your NFT. (max 500 characters)"
-          v-model="description"
-          class="mx-16 bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none min-h-[128px] border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"
-        ></textarea>
+        <textarea placeholder="Enter a detailed description of your NFT. (max 500 characters)" v-model="description"
+          class="mx-16 bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none min-h-[128px] border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"></textarea>
 
         <!-- Price Drop downs -->
         <div class="flex flex-wrap mt-8 mx-16">
@@ -102,16 +65,9 @@
               <span class="text-xl font-bold"> Price: </span>
             </label>
             <label class="flex input-group flex-1 w-max">
-              <input
-                v-model="price"
-                type="number"
-                placeholder="0,5"
-                step="0.01"
-                class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1 w-max"
-              />
-              <span
-                class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700"
-              >
+              <input v-model="price" type="number" placeholder="0,5" step="0.01"
+                class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1 w-max" />
+              <span class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700">
                 {{ coin }}
               </span>
             </label>
@@ -121,17 +77,9 @@
               <span class="text-xl font-bold"> Royalty: </span>
             </label>
             <label class="flex input-group flex-1 w-max">
-              <input
-                v-model="royalty"
-                type="number"
-                required
-                placeholder="3"
-                step="0.1"
-                class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"
-              />
-              <span
-                class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700"
-              >
+              <input v-model="royalty" type="number" required placeholder="3" step="0.1"
+                class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1" />
+              <span class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700">
                 %
               </span>
             </label>
@@ -145,10 +93,8 @@
               <span class="text-xl font-bold">Chain:</span>
             </label>
             <div class="dropdown inline-block relative">
-              <select
-                v-model="chain"
-                class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200"
-              >
+              <select v-model="chain"
+                class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200">
                 <option selected>Select a Chain</option>
                 <option v-for="chain in Coins.Chains" :value="chain">
                   {{ chain }}
@@ -157,18 +103,13 @@
             </div>
           </div>
 
-          <div
-            class="flex flex-col justify-start items-start mr-16"
-            v-if="chain && Coins[chain]?.length > 1"
-          >
+          <div class="flex flex-col justify-start items-start mr-16" v-if="chain && Coins[chain]?.length > 1">
             <label class="label flex flex-col justify-start items-start">
               <span class="text-xl font-bold">Coin:</span>
             </label>
             <div class="dropdown inline-block relative">
-              <select
-                v-model="coin"
-                class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200"
-              >
+              <select v-model="coin"
+                class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200">
                 <option v-for="coin in Coins[chain]" :value="coin">
                   {{ coin }}
                 </option>
@@ -181,13 +122,9 @@
               <span class="text-xl font-bold">Address:</span>
             </label>
             <div class="dropdown inline-block relative">
-              <input
-                v-model="address"
-                required
-                type="text"
+              <input v-model="address" required type="text"
                 class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"
-                placeholder="Address"
-              />
+                placeholder="Address" />
             </div>
             <span class="pt-2 text-gray-500">
               *This will be the address that recieves payments/Royalties
@@ -230,47 +167,28 @@
             *On rareweave a collection is defined as a group of NFTs that you
             own rather than a group of NFTs that you create.
           </span>
-          <NuxtLink
-            to="/collection/create"
-            class="text-[#fc466b] hover:underline transition-colors duration-200 ease-in-out py-2"
-          >
+          <NuxtLink to="/collection/create"
+            class="text-[#fc466b] hover:underline transition-colors duration-200 ease-in-out py-2">
             Click here to create a new collection.
           </NuxtLink>
         </label>
         <label class="input-group flex w-[50%] mx-16">
-          <input
-            v-model="collectionId"
-            type="text"
-            placeholder="Collection"
-            class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"
-          />
-          <span
-            class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700"
-          >
+          <input v-model="collectionId" type="text" placeholder="Collection"
+            class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1" />
+          <span class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700">
             ID
           </span>
         </label>
         <label class="cursor-pointer label my-2 pr-0 mt-8 mx-16 flex-1">
           <span class="text-xl font-bold"> For sale </span>
-          <input
-            type="checkbox"
-            class="toggle toggle-accent"
-            checked
-            v-model="forSale"
-          />
+          <input type="checkbox" class="toggle toggle-accent" checked v-model="forSale" />
         </label>
-        <button
-          type="submit"
-          class="Button Amazing--button mt-8 mx-16 w-min px-8 py-2 text-2xl font-bold"
-        >
+        <button type="submit" class="Button Amazing--button mt-8 mx-16 w-min px-8 py-2 text-2xl font-bold">
           Mint
         </button>
       </div>
     </form>
-    <div
-      v-else
-      class="h-full-navbared flex-1 flex flex-col items-center justify-center font-mono"
-    >
+    <div v-else class="h-full-navbared flex-1 flex flex-col items-center justify-center font-mono">
       <div class="loading-wrapper h-20 m-2 flex items-center justify-center">
         <div class="loading"></div>
       </div>
@@ -438,7 +356,7 @@ async function mint() {
   });
 
   if (nftContent.byteLength > 100000) {
-    await arweave.transactions.sign(tx);
+    tx = await wallet.value.sign(tx)
     let uploader = await arweave.transactions.getUploader(tx);
     while (!uploader.isComplete) {
       await uploader.uploadChunk();
