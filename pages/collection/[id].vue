@@ -87,7 +87,7 @@ const { Warp, Contract, WarpFactory } = await import("warp-contracts");
 import { useAccount, useArweave } from "../../composables/useState";
 import setArweave from "../../plugins/arweave";
 import b64urlEncode from "base64url-encode";
-import { nftContractId } from "../../config/contracts.json";
+import { nftContractId, legacyNftContract} from "../../config/contracts.json";
 import { GlomeNode } from "../../config/config.json";
 
 const arweave = useArweave().value;
@@ -100,7 +100,7 @@ let state = ref(await $fetch(`${GlomeNode}/state/` + collectionId));
 console.log(b64urlEncode(`id⊂${JSON.stringify(state.value.items)}`));
 let nfts = ref(
   await $fetch(
-    `${GlomeNode}/contracts-under-code/${nftContractId}?expandStates=true`,
+    `${GlomeNode}/contracts-under-code/${nftContractId}|${legacyNftContract}?expandStates=true`,
     {
       method: "POST",
       body: {

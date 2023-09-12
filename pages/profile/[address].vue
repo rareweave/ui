@@ -278,6 +278,7 @@ import {
 import setArweave from "../../plugins/arweave";
 import {
   nftContractId,
+  legacyNftContract,
   collectionContractId,
 } from "../../config/contracts.json";
 import { GlomeNode } from "../../config/config.json";
@@ -302,7 +303,7 @@ let userAnsName = (
   await $fetch(`https://ans-resolver.herokuapp.com/resolve/${user.value?.addr}`)
 )?.domain;
 let ownedNfts = await $fetch(
-  `${GlomeNode}/contracts-under-code/${nftContractId}?expandStates=true`,
+  `${GlomeNode}/contracts-under-code/${nftContractId}|${legacyNftContract}?expandStates=true`,
   {
     method: "POST",
     body: {

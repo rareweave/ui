@@ -251,7 +251,7 @@ import NftCard from "../components/NftCard.vue";
 import { useArWallet, useAccount, useArweave } from "../composables/useState";
 import NftRow from "../components/NftRow.vue";
 import debounce from "lodash.debounce";
-import { nftContractId, collectionContractId } from "../config/contracts.json";
+import { nftContractId, collectionContractId, legacyNftContract } from "../config/contracts.json";
 import { GlomeNode } from "../config/config.json";
 import setArweave from "../plugins/arweave";
 const router = useRouter();
@@ -354,7 +354,7 @@ async function updateUrl(collection) {
 async function refreshResults() {
 
   nfts.value = await $fetch(
-    `${GlomeNode}/contracts-under-code/${nftContractId}?expandStates=true`,
+    `${GlomeNode}/contracts-under-code/${nftContractId}|${legacyNftContract}?expandStates=true`,
     {
       method: "POST",
       body: {
@@ -501,7 +501,7 @@ onMounted(async () => {
     console.log(FetchCollection);
   }
   let nftList = await $fetch(
-    `${GlomeNode}/contracts-under-code/${nftContractId}?expandStates=true`,
+    `${GlomeNode}/contracts-under-code/${nftContractId}|${legacyNftContract}?expandStates=true`,
     {
       method: "POST",
       body: {
