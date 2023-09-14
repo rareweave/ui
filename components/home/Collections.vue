@@ -82,8 +82,8 @@ const getData = () => {
     {
       method: "POST",
       body: {
-        sortScript: `secondContract.creationTime-firstContract.creationTime`,
-        filterScript: `"type"!state.name="string"&("len"!state.items>3)`,
+        sortScript: `return secondContract.creationTime-firstContract.creationTime`,
+        filterScript: `return (type(state.name)=="string"&&length(state.items)>3))`,
       },
     }
   )

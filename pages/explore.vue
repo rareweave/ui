@@ -179,7 +179,7 @@
           ...new Set(
             collections?.filter(
               (collection) =>
-                collection.state.name !== undefined &&
+                collection?.state?.name !== undefined &&
                 collection.state.name !== ''
             )
           ),
@@ -192,7 +192,7 @@
               updateUrl(collection.id);
               refreshResults();
               ">
-                {{ collection.state.name }}
+                {{ collection?.state?.name }}
               </button>
             </div>
           </div>
@@ -232,7 +232,7 @@
     <div class="modal-box relative flex flex-col">
       <label for="add-modal" class="btn btn-sm absolute right-2 top-2">✕</label>
       <h3 class="font-bold text-lg text-center">
-        {{ selectedCollection.name }}
+        {{ selectedCollection?.name }}
       </h3>
       <form class="modal-action flex flex-col" @submit.prevent="addNft">
         <input v-model="nftBeingAdded" class="input input-bordered w-full rounded-lg p-2" type="text" required
