@@ -486,7 +486,7 @@ async function payRoyalty() {
     console.log(payRoyalty);
 
     await wait(10000);
-
+    console.log("Defining tags")
     var tags = [
       {
         name: "Contract",
@@ -527,6 +527,7 @@ async function payRoyalty() {
     };
 
     try {
+      console.log("Trying to sign")
       const signed = await arWallet.value.signDataItem(tx)
       await fetch(`${GlomeNode}/tx`, {
         method: "POST",
