@@ -1,203 +1,308 @@
 <template>
-  <div class="h-full-navbared w-full flex flex-col items-center justify-center">
-    <div class="m-2 rounded mt-6">
-      <img
-        v-if="nftState?.contentType?.startsWith('image')"
-        :src="
-          'https://prophet.rareweave.store/_ipx/width_320,animated,f_webp/https://prophet.rareweave.store/' +
-          nftId
-        "
-        class="inline-flex max-h-[20rem] max-w-20rem"
-      />
-      <video
-        v-else-if="nftState?.contentType?.startsWith('video')"
-        autoplay
-        muted
-        loop
-        controls
-      >
-        <source
-          :src="'https://prophet.rareweave.store/' + nftId"
-          :type="nftState?.contentType"
-        />
-        Your browser does not support the video tag.
-      </video>
-
-      <audio v-else-if="nftState?.contentType?.startsWith('audio')" controls>
-        <source
-          :src="'https://prophet.rareweave.store/' + nftId"
-          :type="nftState?.contentType"
-        />
-        Your browser does not support the audio tag.
-      </audio>
-    </div>
-    <h1 class="text-3xl text-center font-mono">{{ nftState.name }}</h1>
-    <template v-if="account && account.addr && account.addr == nftState.owner">
-      <textarea
-        class="text-md textarea font-sans m-2 max-w-[32rem] w-full overflow-auto transition-none textarea-bordered rounded-md"
-        v-model="nftState.description"
-      ></textarea>
-    </template>
-    <template v-else>
-      <p
-        class="text-md text-center font-sans p-2 max-w-[32rem]"
-        v-if="nftState.description"
-      >
-        {{ nftState.description }}
-      </p>
-      <p class="text-md text-center font-sans text-zinc-500" v-else>
-        [This NFT has no description]
-      </p>
-    </template>
-    <div class="my-2 w-max min-w-[14rem] font-mono">
-      <div
-        class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-      >
-        Owner:
-        <div
-          v-if="account && account.addr && account.addr == nftState.owner"
-          class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center"
-        >
-          You
-        </div>
-        <NuxtLink
-          :to="'/profile/' + nftState.owner"
-          v-else
-          class="text-sm rounded-xl p-1 ml-2 bg-zinc-700 flex-row flex items-center"
-        >
-          <img
-            :src="nftOwner?.profile?.avatarURL"
-            v-if="nftOwner?.profile?.avatarURL"
-            class="w-8 rounded-xl mr-2"
-          />
-          {{
-            nftOwnerANS ||
-            nftOwner?.handle ||
-            (nftState.owner.length > 11
-              ? nftState.owner.slice(0, 4) + "..." + nftState.owner.slice(-4)
-              : nftState.owner)
-          }}
-        </NuxtLink>
-      </div>
-      <div
-        class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-      >
-        Minter:
-        <div
-          v-if="account && account.addr && account.addr == nftMinter.addr"
-          class="text-sm rounded-xl p-2 ml-2 bg-zinc-700 flex-row flex items-center"
-        >
-          You
-        </div>
-        <NuxtLink
-          :to="'/profile/' + nftState.minter"
-          v-else
-          class="text-sm rounded-xl p-1 ml-2 bg-zinc-700 flex-row flex items-center"
-        >
-          <img
-            :src="nftMinter?.profile?.avatarURL"
-            class="w-8 rounded-xl mr-2"
-          />
-          {{ nftMinterANS || nftMinter?.handle }}
-        </NuxtLink>
-      </div>
-      <div
-        class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-      >
-        For sale:
-        <template v-if="isNftOwner">
-          <input
-            type="checkbox"
-            :class="[
-              'toggle',
-              nftState.forSale ? 'toggle-success' : 'toggle-error',
-            ]"
-            v-model="nftState.forSale"
-          />
-        </template>
-        <template v-else>
-          <div v-if="nftState.forSale" class="p-2 bg-green-600 text-sm">
-            Yes
-          </div>
-          <div v-else class="p-2 bg-red-600 text-sm">No</div>
-        </template>
-      </div>
-      <template v-if="nftState.forSale">
-        <div
-          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-        >
-          Price:
-          <template v-if="isNftOwner">
-            <div class="p-1 pr-2 bg-zinc-700 text-sm">
-              <input
-                v-model="nftPrice"
-                type="number"
-                step="0.1"
-                class="input text-start appearance-[textfield] w-14 rounded-none px-1 input-sm bg-transparent"
-                placeholder="Price"
+  <div class="h-full-navbared pagewidth flex flex-col items-stretch justify-start mx-auto">
+    <div class="relative flex flex-row flex-wrap justify-stretch items-stretch w-full h-full mt-12">
+      <div class="relative flex-1 flex flex-col items-center justify-center h-full">
+        <span class="relative w-full flex justify-center items-center aspect-square">
+          <Graphic :nft="nft" :allowZoom="false" />
+        </span>
+        <div class="relative flex justify-between items-center w-full">
+          <span class="relative flex justify-center items-center">
+            <NuxtLink :to="`https://arweave.net/${nft.id}`" 
+              target="_blank" 
+              class="relative flex justify-center items-centerAmazing--br"
+            >
+              <img
+                src="/link.png"
+                class="w-6 h-6 mr-2"
               />
-              AR
+              .../{{ nft.id }}
+            </NuxtLink>
+          </span>
+          <span class="relative flex justify-center items-center">
+            <span class="relative flex justify-center items-center">
+              <img
+                src="/comment.png"
+                class="w-6 h-6"
+              />
+              <span class="my-2 mx-4 font-bold">
+                {{ comments.length }}
+              </span>
+            </span>
+            <span class="relative flex justify-center items-center">
+              <img
+                src="/unliked.png"
+                class="w-6 h-6"
+              />
+              <span class="my-2 mx-4 font-bold">
+                -
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="relative flex-1 flex flex-col flex justify-start items-stretch">
+        <div class="my-4 ml-10 mr-2 flex justify-between items-center">
+          <span>
+            <span>
+              Minter:
+            </span>
+            <NuxtLink :to="'/profile/' + nft.state.minter" class="Amazing--br font-bold">
+              {{ nftMinterANS || nft.state.minter }}
+            </NuxtLink>
+          </span>
+          <label
+            v-if="isNftOwner"
+            for="transfer-modal"
+            class="btn btn-primary rounded-md my-2 px-12 text-md flex justify-around items-center"
+            :class="{
+              'btn-disabled': isSomeoneElseBuying,
+            }"
+          >
+            Send
+            <img
+              src="/send-24.png"
+              class="w-4 h-4 ml-4"
+            />
+          </label>
+        </div>
+        <div class="mt-8 mx-10">  
+          <h1 class="text-3xl text-center font-mono text-start font-bold">
+            {{ nftState.name }}
+          </h1>
+        </div>
+        <div class="my-4 mx-10 flex justify-start items-center">
+          <span class="font-bold">
+            Owned by:
+          </span>
+          <NuxtLink :to="'/profile/' + nft.state.owner" class="text-blue-600 ml-2">
+            <span class="relative flex justify-start items-center">
+              <img
+                :src="nftOwner?.profile?.avatarURL"
+                v-if="nftOwner?.profile?.avatarURL"
+                class="w-6 h-=6 rounded-xl mr-2"
+              />
+              {{ nftOwnerANS
+                || nftOwner?.handle
+                || (nftState.owner.length > 11
+                  ? nftState.owner.slice(0, 4) + "..." + nftState.owner.slice(-4)
+                  : nftState.owner)
+              }}
+            </span>
+          </NuxtLink>
+        </div>
+        <div class="relative flex flex-col rounded-xl border border-1 border-gray-400 my-4 mx-8 p-4">
+          <h2 class="mx-1">
+            Current price
+          </h2>
+          <div class="relative flex justify-between items-stretch flex-col mx-1 my-2"
+            v-if="nftState.forSale && !isNftOwner"  
+          >
+            <span class="text-2xl font-bold">
+              {{ nftPrice }} AR ({{ nftRoyalty }}% royalty) <span class="text-sm">Estimated royalty: {{ parseInt(nftPrice * (nftRoyalty / 100) * 1_000_000) / 1_000_000 }} AR</span>
+            </span>
+            <span class="text-sm font-bold mb-2">
+              {{ (nftPrice * 1e12).toString() }} (+ estimated {{ (parseInt(nftPrice * (nftRoyalty / 100) * 1_000_000) * 1_000_000).toString() }}) winston
+            </span>
+            <span :style="[nftPrice > 0 ? { display: 'none' } : {}, !changed ? { display: 'none'} : {}]" class="text-yellow-500 mt-2">Listing for free!</span>
+          </div>
+          <div class="relative flex justify-between items-stretch flex-col mx-1 my-2"
+            v-else-if="!nftState.forSale && !isNftOwner"
+          >
+            <span class="text-2xl font-bold">
+              Not for sale
+            </span>
+            <span class="text-sm font-bold mb-2">
+              No previous price actions available yet, coming soon tm.
+            </span>
+          </div>
+          <div class="relative flex justify-between items-stretch flex-col mx-1 my-2"
+            v-else-if="isNftOwner"
+          >
+            <h2 class="my-2 text-xl font-bold">
+              Set listing price
+            </h2>
+            <span class="flex justify-start items-center">
+              <input 
+                type="number"
+                class="input-bordered p-2 outline-none border-2 border-gray-400 rounded-md mr-2"
+                placeholder="Price in AR"
+                v-model="nftPrice"
+                min="0"
+                step="0.01"
+                
+              />
+              <span>AR</span>
+            </span>
+            <h2 class="my-2 text-xl font-bold">
+              Set royalties
+            </h2>
+            <span class="flex justify-start items-center">
+              <input
+                type="number"
+                class="input-bordered p-2 outline-none border-2 border-gray-400 rounded-md mr-2"
+                placeholder="Royalty in %"
+                v-model="nftRoyalty"
+                min="0"
+                max="100"
+                step="0.01"
+              />
+              <span>%</span>
+            </span>
+
+          </div>
+          <div class="mt-2 mx-1">
+            <span v-if="account && account.addr">
+              <div v-if="!isNftOwner">
+                <button :disabled="isSomeoneElseBuying || !nftState.forSale" 
+                  :class="['Button px-8 py-2 text-xl font-bold',
+                    !isSomeoneElseBuying && nftState.forSale ? 'Amazing--button' : 'invisible'
+                ]"
+                  for="buy-modal">
+                  Buy now
+                </button>
+              </div>
+              <div v-else class="flex justify-start items-center">
+                <div class="relative flex flex-row items-center justify-start">
+                  <button v-if="!nftState.forSale" :class="['px-4 py-2 text-xl flex flex-row justify-start items-center']"
+                    @click="setNftForsale(true)"
+                  >
+                    <img
+                      src="/add.png"
+                      class="w-6 h-6 mr-2"
+                    />
+                    List for sale
+                  </button>
+                  <button v-else-if="nftState.forSale" :class="['Button px-4 py-2 text-xl font-bold flex flex-row justify-start items-center Awesome--button2']"
+                    @click="setNftForsale(false)"
+                  >
+                    <img
+                      src="/remove.png"
+                      class="w-6 h-6 mr-2"
+                    />
+                    Remove listing
+                  </button>
+                </div>
+                <span v-if="nftState.forSale && (nftPrice <= 0 || !nftPrice)" class="text-yellow-500 ml-2">
+                  Listing for free!
+                </span>
+              </div>
+            </span>
+            <span v-else-if="!account">
+              <NuxtLink to="/login" class="btn btn-primary">
+                Login
+              </NuxtLink>
+            </span>
+          </div>
+        </div>
+        <div class="relative flex flex-col my-4 mx-10">
+          <h2 class="text-2xl font-bold my-2 Amazing--red">
+            About this NFT
+          </h2>
+          <div class="relative flex flex-col justify-start items-start my-2 transition-all duration-500">
+            <h4 class="font-bold my-2 text-xl flex justify-between items-center w-full">
+              <span class="text-rwpeach">
+                Description:
+              </span>
+              <span v-if="isNftOwner" class="cursor-pointer">
+                <img
+                  src="/edit.png"
+                  class="w-6 h-6 mr-2"
+                  alt="Edit description"
+                  @click="setEditing(true)"
+                />
+              </span>
+            </h4>
+            <div v-if="!editing" class="font-bold">
+              <p class="font-bold">
+                {{ nftState.description }}
+              </p>
             </div>
-          </template>
-          <div v-else class="p-2 bg-zinc-700 text-sm">{{ nftPrice }} AR</div>
+            <textarea v-else
+              id="desc"
+              class="relative w-full min-h-[10rem] p-2 outline-none border-2 border-gray-400 rounded-md"
+              type="text"
+              required
+              placeholder="Description"
+              v-model="nftState.description"
+              @focusout="!changed ? setEditing(false) : null"
+            ></textarea>
+          </div>
+          <div class="relative flex flex-col justify-start items-start my-2">
+            <h4 class="font-bold my-2 text-xl text-rwpeach">
+              Content type:
+            </h4>
+            <p class="font-bold">
+              {{ nftState.contentType }}
+            </p>
+          </div>
+          <div class="relative flex flex-col justify-start items-start my-2">
+            <h4 class="font-bold my-2 text-xl text-rwpeach">
+              TXID:
+            </h4>
+            <p class="font-bold">
+              {{ nftId }}
+            </p>
+          </div>
+          <div class="relative flex flex-col justify-start items-start mt-4">
+            <h2 class="font-bold my-2 text-xl text-rwpeach">
+              Current payment information:
+            </h2>
+            <div class="relative flex justify-start items-center">
+              <div class="relative flex flex-col justify-start items-start min-w-[186px]">
+                <h4 class="text-xl">
+                  Chain:
+                </h4>
+                <p class="font-bold">
+                  Arweave
+                </p>
+              </div>
+              <div class="relative flex flex-col justify-start items-start">
+                <h4 class="text-xl">
+                  Token:
+                </h4>
+                <p class="font-bold">
+                  AR
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div
-          class="rounded-none w-full bg-zinc-900 border-b-2 border-black text-white p-2 flex flex-row items-center justify-between"
-        >
-          Royalty:
-          <div class="p-2 bg-zinc-700 text-sm">{{ nftRoyalty }}%</div>
+        <div :class="['relative flex flex-col my-4 mx-10',
+          changed ? 'visible' : 'invisible'
+        ]">
+          <span v-if="account && account.addr && isNftOwner">
+            <div class="relative flex p-4 rounded-xl border border-1 border-gray-700"
+              style="box-shadow: 
+                0px 0px 1px rgba(0, 0, 0, 0.9),
+                1px 1px 2px rgba(139, 139, 139, 0.175),
+                2px 2px 4px rgba(197, 192, 197, 0.175),
+                inset 0px 0px 1px rgba(158, 158, 158, 0.9),
+                inset 1px 1px 2px rgba(133, 132, 132, 0.175),
+                inset 2px 2px 4px rgba(49, 49, 49, 0.175)
+              ;"
+            >
+              <button v-if="isNftOwner" :class="['my-2 mr-8 px-8 py-3 text-xl font-bold amazing-button2 rounded-md']"
+                :disabled="!changed"
+                @click="saveChangesToNft"
+              >
+                Save changes
+              </button>
+              <button class="my-2 mr-8 px-8 py-3 text-xl font-bold rounded-md bg-[rgba(0, 1, 3, 1.00)] text-gray-500" for="buy-modal"
+                @click="resetState"
+              >
+                Reset
+              </button>
+            </div>
+          </span>
         </div>
-      </template>
-      <button
-        v-if="isNftOwner"
-        :class="[
-          'btn',
-          'amazing-button2',
-          'rounded-md',
-          'w-full',
-          'my-2',
-          ,
-          changed ? '' : 'btn-disabled',
-        ]"
-        :disabled="!changed"
-        @click="saveChangesToNft"
-      >
-        Save changes
-      </button>
-      <label
-        v-if="isNftOwner"
-        for="transfer-modal"
-        :class="{
-          btn: true,
-          'btn-primary': true,
-          'rounded-md': true,
-          'w-full': true,
-          'my-2': true,
-          'text-md': true,
-          'btn-disabled': isSomeoneElseBuying,
-        }"
-        >Transfer</label
-      >
-      <label
-        v-else-if="account && account.addr && nftState.forSale"
-        for="buy-modal"
-      >
-        <amazing-button
-          :disabled="isSomeoneElseBuying"
-          :non-btn="true"
-          class="mt-2 w-full"
-          for="buy-modal"
-          >Buy</amazing-button
-        >
-      </label>
-      <!-- Put this part before </body> tag -->
+        <input
+          type="checkbox"
+          id="buy-modal"
+          class="modal-toggle"
+          :checked="false"
+        />
+      </div>
     </div>
-    <input
-      type="checkbox"
-      id="buy-modal"
-      class="modal-toggle"
-      :checked="false"
-    />
     <div class="modal">
       <div class="modal-box relative flex flex-col" v-if="buyStatus != 3">
         <label
@@ -281,7 +386,16 @@
         </div>
       </div>
     </div>
-    <Comments class="mx-6" :content="nftId" />
+    
+      <div class="flex flex-col items-center justify-center border-t border-1 border-gray-400/75 mt-8">
+        <Comments class="mx-6" 
+          :comments="comments" 
+          :id="nftId"
+          :account="account"
+          :wallet="wallet"
+          :arweave="arweave"
+        />
+      </div>
     <input
       type="checkbox"
       id="transfer-modal"
@@ -328,121 +442,139 @@
   </div>
 </template>
 <script setup>
-import {
-  useAccount,
-  useArweave,
-  useAccountTools,
-  useWallet,
-} from "../../composables/useState";
-import setArweave from "../../plugins/arweave";
+import { GlomeNode } from "~/settings.json";
+import { useAccount, useArweave, useAccountTools, useWallet } from "~/composables/useState";
+import setArweave from "~/plugins/arweave";
+import ansResolver from "~/plugins/ans-resolver";
+import fetchComments from "~/plugins/fetch-comments";
 
-import { GlomeNode } from "../../config/config.json";
+const WinstonToAR_fixed = winston => parseFloat(parseFloat(arweave.ar.winstonToAr(winston)).toFixed(3));
+
+const encodeTags = tags => tags.map(tag => ({
+  name: btoa(tag.name),
+  value: btoa(tag.value),
+}));
+
+const setNftForsale = v => {
+  nftState.value.forSale = v;
+};
 
 const arweave = useArweave().value;
-if (!arweave) setArweave();
+if (!arweave) 
+  setArweave();
 
-let wallet = useWallet();
-
+const wallet = useWallet();
 const account = useAccount();
 const accountTools = useAccountTools().value;
 
+const comments = ref([]);
+const editing = ref(false);
+
 let height = ref((await $fetch(`${GlomeNode}/info`)).height);
-
 let nftId = useRoute().params.id || useRoute().hash.slice(1);
-
-let nftStateOrig = await $fetch(`${GlomeNode}/state/` + nftId);
+let initialState = await $fetch(`${GlomeNode}/state/` + nftId);
 
 let transferModalOpened = ref(false);
-let nftState = ref(JSON.parse(JSON.stringify(nftStateOrig)));
+let nftState = ref(JSON.parse(JSON.stringify(initialState)));
+
+let nft = ref({
+  id: nftId,
+  state: nftState.value,
+});
+
+comments.value = await fetchComments(nft.value.id);
+
 let isBuying = computed(
-  () =>
-    nftState.value.reservationTxId &&
-    height.value - nftState.value.reservationBlockHeight < 12 &&
-    nftState.value.reserver == account.value?.addr
+  () => nftState.value.reservationTxId
+    && height.value - nftState.value.reservationBlockHeight < 12
+    && nftState.value.reserver == account.value?.addr
 );
+
 let isSomeoneElseBuying = computed(
-  () =>
-    nftState.value.reservationTxId &&
-    height.value - nftState.value.reservationBlockHeight < 16 &&
-    nftState.value.reserver != account.value?.addr
+  () => nftState.value.reservationTxId
+    && height.value - nftState.value.reservationBlockHeight < 16
+    && nftState.value.reserver != account.value?.addr
 );
+
 let payingRoyalty = ref(false);
 let buyStatus = ref(0);
 let transferRecipient = ref("");
-let nftPrice = ref(
-  parseFloat(
-    parseFloat(arweave.ar.winstonToAr(nftState.value.price)).toFixed(3)
-  )
-);
+let nftPrice = ref(WinstonToAR_fixed(nftState.value.price));
 let nftRoyalty = ref(parseFloat(nftState.value.royalty * 100));
-let nftOwner = ref(
-  await accountTools.get(nftState.value.owner).catch((e) => null)
+
+let nftOwner = ref(await accountTools
+    .get(nftState.value.owner)
+    .catch(e => null)
 );
+
 let nftMinter = await accountTools
   .get(nftState.value.minter)
-  .catch((e) => null);
-let nftOwnerANS = ref(
-  (
-    await $fetch(
-      `https://ans-resolver.herokuapp.com/resolve/${nftState.value.owner}`
-    )
-  )?.domain
+  .catch(e => null);
+
+let nftOwnerANS = ref(await ansResolver(nftState.value.owner));
+
+let nftMinterANS = await ansResolver(nftState.value.minter);
+
+let isNftOwner = computed(() => account.value 
+  && account.value.addr 
+  && account.value.addr == nftState.value.owner
 );
-let nftMinterANS = (
-  await $fetch(
-    `https://ans-resolver.herokuapp.com/resolve/${nftState.value.minter}`
-  )
-)?.domain;
-let isNftOwner = computed(
-  () =>
-    account.value &&
-    account.value.addr &&
-    account.value.addr == nftState.value.owner
+
+let changed = computed(() => nftPrice.value != WinstonToAR_fixed(initialState.price)
+  || nftState.value.description != initialState.description
+  || nftState.value.forSale != initialState.forSale
 );
-let changed = computed(() => {
-  let ch =
-    nftPrice.value !=
-      parseFloat(
-        parseFloat(arweave.ar.winstonToAr(nftStateOrig.price)).toFixed(3)
-      ) ||
-    nftStateOrig.description != nftState.value.description ||
-    nftStateOrig.forSale != nftState.value.forSale;
-  return ch;
-});
+
 let updaterInterval = setInterval(async () => {
   height.value = (await $fetch(`${GlomeNode}/info`)).height;
 
   if (!changed.value) {
-    nftStateOrig.value = await fetch(`${GlomeNode}/state/` + nftId).then(
-      (res) => res.json()
-    );
-    if (
-      !nftStateOrig.value.reservationTxId &&
-      height.value - nftStateOrig.value.reservationBlockHeight < 12 &&
-      nftStateOrig.value.reserver == account.value?.addr &&
-      nftStateOrig.value.reservationTxId != nftState.value.reservationTxId
-    ) {
+    await fetchState();
+    
+    if (!initialState.value.reservationTxId
+      && height.value - initialState.value.reservationBlockHeight < 12
+      && initialState.value.reserver == account.value?.addr
+      && initialState.value.reservationTxId != nftState.value.reservationTxId
+    )
       finalizeBuy();
-    }
-    nftState.value = JSON.parse(JSON.stringify(nftStateOrig.value));
-    nftPrice.value = parseFloat(
-      parseFloat(arweave.ar.winstonToAr(nftState.value.price)).toFixed(3)
-    );
-    nftOwner.value = await accountTools
+
+    nftState.value = JSON.parse(JSON.stringify(initialState.value));
+    nftPrice.value = parseFloat(parseFloat(arweave.ar.winstonToAr(nftState.value.price)).toFixed(3));
+
+    const getAccounttools = async () => await accountTools
       .get(nftState.value.owner)
-      .catch((e) => ({ addr: nftState.value.owner }));
-    console.log(
-      await accountTools
-        .get(nftState.value.owner)
-        .catch((e) => ({ addr: nftState.value.owner }))
-    );
-    nftOwnerANS.value = (
-      await $fetch(
-        `https://ans-resolver.herokuapp.com/resolve/${nftState.value.owner}`
-      )
-    )?.domain;
+      .catch(e => ({ addr: nftState.value.owner}));
+
+    nftOwner.value = await getAccounttools();
+    console.log(await getAccounttools());
+
+    nftOwnerANS.value = await ansResolver(nftState.value.owner);
   }
-}, 50000);
+}, 50_000);
+
+const setEditing = v => {
+    editing.value = v;
+    if (v)
+      setTimeout(() => {
+        document.body.querySelector("#desc").focus();
+      }, 100);
+};
+
+const fetchState = async () => {
+    initialState.value = await fetch(`${GlomeNode}/state/${nftId}`)
+      .then(res => res.json());
+};
+
+const resetState = async () => {
+  await fetchState();
+  
+  nftState.value = JSON.parse(JSON.stringify(initialState.value));
+
+  nftPrice.value = WinstonToAR_fixed(nftState.value.price);
+  nftRoyalty.value = parseFloat(nftState.value.royalty * 100);
+
+  setEditing(false);
+};
 
 onBeforeUnmount(() => clearInterval(updaterInterval));
 
@@ -491,7 +623,7 @@ async function saveChangesToNft() {
     alert("Failed to post the transaction to update your NFT");
   }
 
-  nftStateOrig.value = JSON.parse(
+  initialState.value = JSON.parse(
     JSON.stringify({
       ...nftState.value,
       price: arweave.ar.arToWinston(nftPrice.value),
@@ -500,14 +632,15 @@ async function saveChangesToNft() {
   console.log(
     nftPrice.value !=
       parseFloat(
-        parseFloat(arweave.ar.winstonToAr(nftStateOrig.value.price)).toFixed(3)
+        parseFloat(arweave.ar.winstonToAr(initialState.value.price)).toFixed(3)
       ),
-    nftStateOrig.value.description != nftState.value.description,
-    nftStateOrig.value.forSale != nftState.value.forSale
+    initialState.value.description != nftState.value.description,
+    initialState.value.forSale != nftState.value.forSale
   );
 }
 
 function buy() {}
+
 async function payRoyalty() {
   buyStatus.value = 1;
   payingRoyalty.value = true;
@@ -542,11 +675,9 @@ async function payRoyalty() {
     },
   ];
 
-  let feeEstimate = await fetch(
-    `https://g8way.io/price/1000000/${nftState.value.minter}`
-  )
-    .then((res) => res.text())
-    .catch((err) => {
+  let feeEstimate = await fetch(`https://g8way.io/price/1000000/${nftState.value.minter}`)
+    .then(res => res.text())
+    .catch(err => {
       alert("Failed to get the fee estimate");
       payRoyalty.value = false;
     });
@@ -562,18 +693,21 @@ async function payRoyalty() {
 
   try {
     await arweave.transactions.sign(tx);
-  } catch (e) {
+  } 
+  catch (e) {
     alert("You need to sign the transaction to pay the royalty");
     payRoyalty.value = false;
-  }
+  };
 
   try {
     await arweave.transactions.post(tx);
-  } catch (e) {
+  } 
+  catch (e) {
     alert("Failed to post the transaction to pay the royalty");
     payRoyalty.value = false;
-  }
+  };
 }
+
 async function finalizeBuy() {
   buyStatus.value = 2;
   let reservationTxId = nftState.value.reservationTxId;
@@ -627,9 +761,8 @@ async function finalizeBuy() {
     }).then((tx) => tx.json())
   ).data.transaction.block.id;
 
-  let feeEstimate = await fetch(
-    `https://g8way.io/price/1000000/${nftState.value.owner}`
-  ).then((res) => res.text());
+  let feeEstimate = await fetch(`https://g8way.io/price/1000000/${nftState.value.owner}`)
+    .then(res => res.text());
 
   let tx = await arweave.createTransaction({
     tags: encodeTags(tags),
@@ -641,20 +774,23 @@ async function finalizeBuy() {
 
   try {
     await arweave.transactions.sign(tx);
-  } catch (e) {
+  } 
+  catch (e) {
     alert("Transaction was not signed. Please try again.");
-  }
+  };
+
   try {
     await arweave.transactions.post(tx);
-  } catch (e) {
+  } 
+  catch (e) {
     alert("Transaction post failed. Please try again.");
-  }
+  };
 
   let finalizationCheckInterval = setInterval(() => {
     if (nftState.value.owner == account.value.addr) {
       buyStatus.value = 3;
       clearInterval(finalizationCheckInterval);
-    }
+    };
   });
 }
 
@@ -697,29 +833,33 @@ async function transfer() {
   try {
     console.log(wallet);
     await wallet.value.dispatch(tx);
-  } catch (e) {
+  } 
+  catch (e) {
     console.log(e);
     alert("Failed to post the transaction to transfer your nft");
-  }
+  };
 
   nftState.value.owner = transferRecipient.value;
-  nftStateOrig.value = JSON.parse(JSON.stringify(nftState.value));
+  initialState.value = JSON.parse(JSON.stringify(nftState.value));
   nftOwner.value = await accountTools.get(nftState.value.owner);
 
-  nftOwnerANS.value = (
-    await $fetch(
-      `https://ans-resolver.herokuapp.com/resolve/${nftState.value.owner}`
-    )
-  )?.domain;
+  nftOwnerANS.value = await ansResolver(nftState.value.owner);
   transferModalOpened.value = false;
-}
+};
 
-function encodeTags(tags) {
-  return tags.map((tag) => ({
-    name: btoa(tag.name),
-    value: btoa(tag.value),
-  }));
-}
+const messagesStream = new EventSource(`https://socioweave.rareweave.store/comment-stream/${nftId}`);
+
+function addMessage(ev) {
+  comments.value.unshift(JSON.parse(ev.data));
+};
+
+messagesStream.addEventListener("newMessage", addMessage)
+
+onUnmounted(() => {
+    messagesStream.removeEventListener("newMessage", addMessage)
+    messagesStream.close()
+});
+
 definePageMeta({
   layout: "without-auth",
 });
@@ -736,5 +876,9 @@ definePageMeta({
   transition: transform 0.5s ease 0s;
   transform: scale(1.05);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+.pagewidth {
+  width: calc((100% - var(--page-spacing) * 2));
+  max-width: var(--page-max-width);
 }
 </style>

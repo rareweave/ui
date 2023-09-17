@@ -2,7 +2,8 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 export default defineNuxtConfig({
     modules: [
         '@nuxtjs/tailwindcss',
-        'nuxt-lazy-load'
+        'nuxt-lazy-load',
+        '@tresjs/nuxt'
     ],
     plugins: [
     ],

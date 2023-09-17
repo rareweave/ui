@@ -1,0 +1,11 @@
+{
+    "GlomeNode": "https://glome.rareweave.store",
+    "nftContractId": "hcszckSXA5GTg6zg65nk6RQtT4aRHDzyxOOoD6DEGxg",
+    "collectionContractId": "mhbnvFZFgAEjiP-islmBgox8_qD70xNcR1CCcNPo3ps",
+    "AnsResolver": {
+        "endpoint": "https://ans-resolver.herokuapp.com/resolve"
+    },
+    "SocioWeave": {
+        "endpoint": "https://socioweave.rareweave.store/comments"
+    }    
+}

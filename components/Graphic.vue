@@ -1,15 +1,13 @@
 <template>
   <div class="Imagewrapper">
     <div class="Fetching__data load">
-      <span class=""></span>
+      <span></span>
     </div>
     <img
       v-if="nft.state?.contentType?.startsWith('image')"
-      :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${
-        nft.contractTxId || nft.id
-      }`"
+      :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${nft.contractTxId || nft.id}`"
       :alt="nft.state.name || 'Nft'"
-      class="Image"
+      :class="['Image', !allowZoom ? '' : 'Zoom']"
       @load="imgHasBeenLoaded"
       @error="imgNotLoaded"
     />
@@ -27,6 +25,17 @@
       />
       Your browser does not support the video tag.
     </video>
+    <span v-else-if="nft.state?.contentType?.startsWith('application/x-zip-compressed')
+    || nft.state?.contentType?.startsWith('application/x-rar-compressed')
+    ">
+      <img
+        src="/compressed-0.png"
+        alt="ZIP or RAR file icon"
+        class="relative flex justify-center items-center w-full h-full object-cover transition-all duration-200 ease-in-out hover:w-full hover:h-full Record"
+        @load="imgHasBeenLoaded"
+        @error="imgNotLoaded"
+      />
+    </span>
     <span v-else-if="nft.state?.contentType?.startsWith('audio')">
       <img
         src="/rw-record-static.gif"
@@ -50,10 +59,25 @@
         />
       </audio>
     </span>
+    <span v-else-if="[
+      '',
+      'model/gltf',
+      'model/glb',
+      'model/vrm'
+    ]
+      .includes(nft.state?.contentType)
+    "
+      class="relative flex justify-center items-center w-full h-full"
+    >
+      <VRM :src="`https://prophet.rareweave.store/${nft.contractTxId || nft.id}`"/>
+    </span>
   </div>
 </template>
 <script setup>
-const { nft } = defineProps(["nft"]);
+const { nft, allowZoom } = defineProps([
+  "nft", "allowZoom"
+]);
+
 function imgHasBeenLoaded(e) {
   e.target.parentNode.querySelector(".load").style.display = "none";
 }
@@ -115,7 +139,7 @@ function audioFreezeChild(e) {
   transition: 0.23s ease-in-out;
 }
 
-.Image:hover {
+.Zoom:hover {
   width: 108%;
   min-width: 108%;
   height: 108%;
