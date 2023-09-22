@@ -277,6 +277,7 @@ watch(chain, () => {
 async function mint() {
   console.log(addressList.value);
   let initState = {
+    version:2,
     owner: account.value.addr,
     minter: account.value.addr,
     name: title.value,

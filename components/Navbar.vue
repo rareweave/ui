@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed top-0 left-0 w-full h-[128px] z-[99] invisible">
+  <div class="fixed top-0 left-0 w-full h-[128px] z-[99] ">
     <div class="absolute top-[88px] w-full h-0 m-0">
       <div class="relative w-full max-w-[1740px] mx-auto">
         <div
@@ -8,7 +8,7 @@
           <div
             class="flex flex-col py-2 px-4 bg-blue-800 font-white rounded-lg"
           >
-            <span class="text-l font-semibold"> RareWeave is in alpha </span>
+            <span class="text-l font-semibold"> RareWeave is in early preview </span>
             <span class="text-xs">
               Please report any bugs to
               <a
@@ -30,7 +30,7 @@
           RareWeave
         </NuxtLink>
       </div>
-      <div v-if="account" class="Rightside --desktop">
+      <div v-if="arweaveSigner.isSignerSet" class="Rightside --desktop">
         <NuxtLink
           class="bg-transparent ml-4 mr-1 p-2 text-lg font-bold"
           to="/create"
@@ -52,29 +52,28 @@
         <NuxtLink
           class="flex flex-row justify-between items-center bg-[rgba(255,255,255,0.06)] hover:border-[rgba(240,246,252,0.3)] border-[rgba(240,246,252,0.1)] border border-solid transition-colors ml-4 mr-1 rounded-lg pr-2"
           :replace="false"
-          :to="'/profile/' + account.addr"
+          :to="'/profile/' + arweaveSigner.address"
         >
           <span
             class="flex flex-row px-1 py-0 my-1 border-r-[1px] border-dashed border-gray-600"
           >
             <img
               class="rounded-md max-w-[32px] max-h-[32px]"
-              alt="Pfp"
-              :src="account.profile.avatarURL"
+              :src="arweaveSigner?.account?.profile?.avatarURL"
             />
             <span class="Accountname Amazing--red mx-2">
-              {{ ansaddr || account.handle }}
+              {{ arweaveSigner.ans || arweaveSigner?.account?.handle }}
             </span>
           </span>
           <div class="Icon">
             <span class="AR"> a </span>
           </div>
           <span class="amount">
-            {{ (Math.floor(spendable * 10_000) / 10_000).toFixed(3) }}
+            {{ (Math.floor(arweaveSigner.spendable * 10_000) / 10_000).toFixed(3) }}
           </span>
         </NuxtLink>
       </div>
-      <div v-if="account" class="Rightside --mobile">
+      <div v-if="arweaveSigner.isSignerSet" class="Rightside --mobile">
         <div class="Menu">
           <button
             class="Amazing--button py-1 px-2 text-lg font-semibold rounded-md"
@@ -98,22 +97,23 @@
             <NuxtLink
               class="Item Account"
               :replace="false"
-              :to="'/profile/' + account.addr"
+              :to="'/profile/' + arweaveSigner.address"
             >
               <span class="Accountname">
-                <img class="Pfp" :src="account.profile.avatarURL" />
+                <img class="Pfp" :src="arweaveSigner.account.profile.avatarURL" />
               </span>
               <span class="Account--connected">
-                {{ ansaddr || account.handle }}
+                {{ arweaveSigner.ans|| arweaveSigner.account.handle }}
                 <span v-if="true">
-                  {{ Math.floor(spendable * 100) / 100 + " AR" }}
+                  {{ Math.floor(arweaveSigner.spendable * 100) / 100 + " AR" }}
                 </span>
               </span>
             </NuxtLink>
           </div>
         </div>
       </div>
-      <div v-if="!account" class="Rightside --desktop">
+      <template v-if="!arweaveSigner.isSignerSet">
+      <div class="Rightside --desktop">
         <NuxtLink class="bg-transparent ml-4 mr-1 p-2 text-lg font-bold" to="/">
           Home
         </NuxtLink>
@@ -123,11 +123,11 @@
         >
           Explore
         </NuxtLink>
-        <NuxtLink to="/login" class="ml-4 mr-1 p-1 pr-0 text-lg font-bold">
-          <awesome-button :nonBtn="true"> Login </awesome-button>
-        </NuxtLink>
+        <div  class="ml-4 mr-1 p-1 pr-0 text-lg font-bold">
+          <awesome-button @click="arweaveSigner.callOverlay()"> Login </awesome-button>
+        </div>
       </div>
-      <div v-if="!account" class="Rightside --mobile">
+      <div class="Rightside --mobile">
         <div class="Menu">
           <button
             class="Amazing--button py-1 px-2 text-lg font-semibold rounded-md"
@@ -142,27 +142,17 @@
           >
             <NuxtLink class="Item" to="/"> Home </NuxtLink>
             <NuxtLink class="Item" to="/explore"> Explore </NuxtLink>
-            <NuxtLink class="Item Amazing--red" to="/login"> Login </NuxtLink>
+            <button class="Item Amazing--red" @click="arweaveSigner.callOverlay()" > Login </button>
           </div>
         </div>
       </div>
+      </template>
     </div>
   </div>
 </template>
 <script setup>
-import {
-  useSpendable,
-  useAccount,
-  useArWallet,
-  useAnsaddr,
-  useNotifications,
-} from "../composables/useState";
 
-const account = useAccount(),
-  spendable = useSpendable(),
-  ansaddr = useAnsaddr(),
-  wallet = useArWallet().value,
-  notifications = useNotifications().value;
+const arweaveSigner=useArweaveSigner()
 
 const setShow = (k, v) => {
   show.value[k] = v;

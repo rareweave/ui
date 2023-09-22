@@ -6,6 +6,7 @@
   <div v-else>
     <connect-wallet :show="true" />
   </div>
+  <Notifications/>
 </template>
 <script setup>
 import { useArWallet } from "~/composables/useState";

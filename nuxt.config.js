@@ -1,6 +1,16 @@
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 export default defineNuxtConfig({
-  modules: ["@nuxtjs/tailwindcss", "nuxt-lazy-load"],
+  modules: ["@nuxtjs/tailwindcss", '@formkit/auto-animate/nuxt', "nuxt-lazy-load", '@pinia/nuxt'],
+   pinia: {
+    autoImports: [
+      // automatically imports `defineStore`
+      'defineStore', // import { defineStore } from 'pinia'
+      'usePinia'
+    ],
+  },
+  imports: {
+    dirs: ['stores']
+  },
   target: "static",
   mode: "spa",
   typescript: false,
@@ -63,4 +73,10 @@ export default defineNuxtConfig({
       }),
     ],
   },
+  components: [
+    {
+      path: '~/components', // will get any components nested in let's say /components/test too
+      pathPrefix: false,
+    },
+  ]
 });

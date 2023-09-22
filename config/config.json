@@ -1,3 +1,6 @@
 {
-  "GlomeNode": "https://glome.rareweave.store"
+  "GlomeNode": "https://glome.rareweave.store",
+  "txExplorer":"https://arweave.app/tx/",
+  "arweaveAppUrl":"arweave.app",
+  "arweaveGateway":"ar-io.net"
 }

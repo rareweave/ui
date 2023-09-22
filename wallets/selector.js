@@ -5,7 +5,7 @@ import {
   useArweaveWallet,
 } from "../composables/useState";
 
-export async function walletFacotry(wallet) {
+export async function walletFactory(wallet) {
   console.log(wallet);
   switch (wallet) {
     case "solana": {
@@ -18,6 +18,9 @@ export async function walletFacotry(wallet) {
 
     case "everpay": {
       return useEverpayWallet().value;
+    }
+    default: {
+      return null
     }
   }
 }

@@ -1,0 +1,17 @@
+{
+    "arweave":{
+        "AR":12,
+        "U":6
+    },
+    "everpay":{
+        "ETH":18,
+        "GLMR":18,
+        "BNB":18,
+        "USDC":18,
+        "DAI":18,
+        "WBTC":18
+    },
+    "solana":{
+        "SOL":9
+    }
+}
