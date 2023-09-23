@@ -1,19 +1,19 @@
 <template>
   <div class="h-full-navbared w-full flex flex-col items-center justify-center max-w-full">
     <form v-if="!uploading"
-      class="h-full-navbared  flex flex-col items-start justify-center bg-[rgba(17,23,32,.2)] rounded-[2.5rem] overflow-hidden mt-8 mb-32 pb-24 mx-8 max-w-full"
+      class="h-full-navbared  flex flex-col items-start justify-center bg-[rgba(17,23,32,.2)] rounded-[2.5rem] overflow-hidden mt-8 mb-32 pb-24 mx-0 md:mx-8 max-w-full"
       style="
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12),
           1px 2px 4px rgba(0, 0, 0, 0.1), 2px 4px 8px rgba(0, 0, 0, 0.09),
           3px 6px 12px rgba(0, 0, 0, 0.09), -1px -2px 8px rgba(0, 0, 0, 0.07);
       " @submit.prevent="mint">
-      <div class="w-full flex flex-fow flex-nowrap justify-center items-center mt-16 px-16">
+      <div class="w-full flex flex-fow flex-nowrap justify-center items-center mt-16 px-1 md:px-16">
         <h1 class="text-3xl font-bold text-center ">
           Create a new <span class="rareweave-font">RareWeave</span> NFT
         </h1>
       </div>
 
-      <div class="flex flex-col items-start justify-center w-full mt-16 px-16 mx-4">
+      <div class="flex flex-col items-start justify-center w-full mt-16 px-1 md:px-16 mx-0 md:mx-4">
         <label class="flex justify-start items-start">
           <span class="text-xl font-bold"> Content: </span>
         </label>
@@ -45,7 +45,7 @@
           HTML
         </p>
       </div>
-      <div class="form-control flex flex-col items-start max-w-full p-4 mx-16">
+      <div class="form-control flex flex-col items-start max-w-full p-4 mx-0 md:mx-16">
         <label class="label flex flex-col justify-start items-start mt-8">
           <span class="text-xl font-bold"> Name: </span>
         </label>
@@ -135,7 +135,7 @@
 
         <!-- Listing Coin/Chain -->
         <div class="flex flex-wrap flex-col mt-8  w-full">
-          <div class="flex flex-row w-full mb-2">
+          <div class="flex flex-col md:flex-row w-full mb-2">
             <div class="flex flex-col justify-start items-start mr-16">
               <label class="label flex flex-col justify-start items-start">
                 <span class="text-xl font-bold">Chain:</span>
@@ -222,10 +222,10 @@
             Click here to create a new collection.
           </NuxtLink>
         </label>
-        <label class="input-group flex w-[50%] ">
+        <label class="input-group flex w-96 max-w-full">
           <input v-model="collectionId" type="text" placeholder="Collection"
-            class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 " />
-          <span class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700">
+            class="bg-zinc-900 w-full text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-zinc-700 focus:border-zinc-500 transition-colors duration-200 " />
+          <span class="w-12 text-center justify-center border border-l-0 border-zinc-600 bg-zinc-700">
             ID
           </span>
         </label>
