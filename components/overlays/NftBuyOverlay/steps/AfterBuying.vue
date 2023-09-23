@@ -8,7 +8,7 @@
     </div>
 </template>
 <script setup>
-import config from "~/config/config.json"
+
 const { signer, nftFactory } = defineProps(["signer", "nftFactory"])
 let emit = defineEmits(['broadcasted', 'finalized'])
 

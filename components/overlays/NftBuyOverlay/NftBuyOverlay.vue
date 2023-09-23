@@ -40,16 +40,29 @@
             </li>
 
         </ol>
-        <div v-show="!isLoading"
+        <div v-show="!isLoading" v-if="nftFactory.version==1"
             class="p-2 border border-t-0 flex items-center w-full text-sm font-medium text-center rounded-t-none rounded-lg shadow-sm text-gray-400 border-gray-700 justify-center">
-            <PayRoyalty :nftFactory="nftFactory" :signer="paymentSigner" v-if="currentStep == 1"
+            <PayRoyaltyV1 :nftFactory="nftFactory" :signer="paymentSigner" v-if="currentStep == 1"
                 @broadcasted="()=>setLoading('Wait for your transaction to be included in block', 'It may take several minutes')" 
                 @finalized="()=>setLoading('Wait for execution','You\'re almost there! You transaction is included in block, just wait for Glome (our smart contract engine) to it. It shouldn\'t take too long','spinner')" />
-            <PayFinalization :nftFactory="nftFactory" :signer="paymentSigner" v-if="currentStep == 2"
+            <PayFinalizationV1 :nftFactory="nftFactory" :signer="paymentSigner" v-if="currentStep == 2"
                     @broadcasted="() => setLoading('Wait for your transaction to be included in block', 'It may take several minutes')" 
                     @finalized="() => setLoading('Wait for execution', 'You\'re almost there! You transaction is included in block, just wait for Glome (our smart contract engine) to it. It shouldn\'t take too long', 'spinner')" />
             <AfterBuying :nftFactory="nftFactory" v-if="currentStep==3"/>
         </div>
+
+
+                <div v-show="!isLoading" v-if="nftFactory.version == 2"
+                class="p-2 border border-t-0 flex items-center w-full text-sm font-medium text-center rounded-t-none rounded-lg shadow-sm text-gray-400 border-gray-700 justify-center">
+                 <ConnectForeignWallet v-if="currentStep==0" :nftFactory="nftFactory" @connected="setSigner"/>
+                <PayRoyalty :nftFactory="nftFactory" :signer="paymentSigner" v-if="currentStep == 1"
+                    @broadcasted="() => setLoading('Wait for your transaction to be included in block', 'It may take several minutes')" 
+                    @finalized="() => setLoading('Wait for execution', 'You\'re almost there! You transaction is included in block, just wait for Glome (our smart contract engine) to it. It shouldn\'t take too long', 'spinner')" />
+                <PayFinalization :nftFactory="nftFactory" :signer="paymentSigner" v-if="currentStep == 2"
+                        @broadcasted="() => setLoading('Wait for your transaction to be included in block', 'It may take several minutes')" 
+                        @finalized="() => setLoading('Wait for execution', 'You\'re almost there! You transaction is included in block, just wait for Glome (our smart contract engine) to it. It shouldn\'t take too long', 'spinner')" />
+                <AfterBuying :nftFactory="nftFactory" v-if="currentStep == 3"/>
+            </div>
         <div v-if="isLoading"
             class="p-2 border border-t-0 flex items-center w-fulltext-sm font-medium text-center rounded-t-none rounded-lg shadow-sm flex-col text-gray-400 border-gray-700 justify-center">
 
@@ -84,13 +97,16 @@ const paymentSigner = ref(null)
 const isLoading = ref(false)
 const loadingMessage = ref("")
 const loadingSubMessage = ref('')
-const loadbar=ref(null)
-const progress = ref('0%')
+const loadbar = ref(null)
+const reserverAddress = ref(null)
 const loadingType = ref('loadbar')
 
 setInterval(()=> console.log(arweaveSigner?.networkInfo?.height),10000)
 
-const reserverAddress = ref(null)
+function setSigner(signer) {
+    paymentSigner.value=signer
+}
+
 
 watch(() => ({ ...nftFactory.nftState, _currentheight: arweaveSigner?.networkInfo?.height }), function reloadReserverAddress() {
 

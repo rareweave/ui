@@ -1,19 +1,19 @@
 <template>
-  <div class="relative flex flex-col justify-start items-center h-auto w-max mx-auto text-left">
+  <div class="h-full-navbared w-full flex flex-col items-center justify-center max-w-full">
     <form v-if="!uploading"
-      class="h-full-navbared flex-1 flex flex-col items-start justify-center bg-[rgba(17,23,32,.2)] rounded-[2.5rem] overflow-hidden mt-8 mb-32 pb-24"
+      class="h-full-navbared  flex flex-col items-start justify-center bg-[rgba(17,23,32,.2)] rounded-[2.5rem] overflow-hidden mt-8 mb-32 pb-24 mx-8 max-w-full"
       style="
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.12),
           1px 2px 4px rgba(0, 0, 0, 0.1), 2px 4px 8px rgba(0, 0, 0, 0.09),
           3px 6px 12px rgba(0, 0, 0, 0.09), -1px -2px 8px rgba(0, 0, 0, 0.07);
       " @submit.prevent="mint">
-      <div class="w-full flex flex-fow flex-nowrap justify-between items-center mt-16 px-16">
-        <h1 class="text-3xl font-bold flex-1">
+      <div class="w-full flex flex-fow flex-nowrap justify-center items-center mt-16 px-16">
+        <h1 class="text-3xl font-bold text-center ">
           Create a new <span class="rareweave-font">RareWeave</span> NFT
         </h1>
       </div>
 
-      <div class="flex flex-col items-start justify-center w-full mt-16 px-16">
+      <div class="flex flex-col items-start justify-center w-full mt-16 px-16 mx-4">
         <label class="flex justify-start items-start">
           <span class="text-xl font-bold"> Content: </span>
         </label>
@@ -45,29 +45,76 @@
           HTML
         </p>
       </div>
-      <div class="form-control flex flex-col items-stretch">
-        <label class="label flex flex-col justify-start items-start mt-8 mx-16">
+      <div class="form-control flex flex-col items-start max-w-full p-4 mx-16">
+        <label class="label flex flex-col justify-start items-start mt-8">
           <span class="text-xl font-bold"> Name: </span>
         </label>
         <input v-model="title" required type="text" maxlength="40"
-          class="mx-16 bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"
+          class="bg-zinc-800 w-full max-w-lg bg-[rgba(11,17,23,1)] border text-white py-2 px-6 rounded-lg outline-none focus:outline-none border-gray-700 focus:border-gray-500 transition-colors duration-200 "
           placeholder="Enter the name of your NFT" />
-        <label class="label flex flex-col justify-start items-start mt-8 mx-16">
+        <label class="label flex flex-col justify-start items-start mt-8 ">
           <span class="text-xl font-bold"> Description: </span>
         </label>
         <textarea placeholder="Enter a detailed description of your NFT. (max 500 characters)" v-model="description"
-          class="mx-16 bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none min-h-[128px] border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"></textarea>
+          class=" bg-zinc-800 w-full max-w-lg bg-[rgba(11,17,23,1)] border text-white p-3 rounded-lg outline-none focus:outline-none border-gray-700 focus:border-gray-500 transition-colors duration-200 min-h-[120px] "></textarea>
 
         <!-- Price Drop downs -->
-        <div class="flex flex-wrap mt-8 mx-16">
+        <div class="flex flex-row items-center justify-center  mt-4 gap-3">
+        <label for="forSale"> For Sale: </label>  <label for="forSale" class="relative h-8 w-14 cursor-pointer ">
+   
+      <input
+        type="checkbox"
+        id="forSale"
+        v-model="forSale"
+        class="peer sr-only [&:checked_+_span_svg[data-checked-icon]]:block [&:checked_+_span_svg[data-unchecked-icon]]:hidden"
+      />
+
+      <span
+        class="absolute inset-y-0 start-0 z-10 m-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-zinc-900 text-gray-400 transition-all peer-checked:start-6 peer-checked:text-green-600"
+      >
+        <svg
+          data-unchecked-icon
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <svg
+          data-checked-icon
+          xmlns="http://www.w3.org/2000/svg"
+          class="hidden h-4 w-4"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </span>
+
+      <span
+        class="absolute inset-0 rounded-full bg-gray-800 transition peer-checked:bg-green-500"
+      ></span>
+    </label>
+   </div>
+        <div class="flex flex-wrap mt-8 ">
           <div class="flex flex-col justify-start items-start mr-16">
             <label class="label flex flex-col justify-start items-start">
               <span class="text-xl font-bold"> Price: </span>
             </label>
-            <label class="flex input-group flex-1 w-max">
+            <label class="flex input-group  w-max">
               <input v-model="price" type="number" placeholder="0,5" step="0.01"
-                class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1 w-max" />
-              <span class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700">
+                class="bg-zinc-800 text-white p-3 border-r-0 rounded-lg outline-none focus:outline-none border-2 border-zinc-700 focus:border-gray-500 transition-colors duration-200 w-32" />
+              <span class="w-12 text-center justify-center border-none border-zinc-700 border-l-0 bg-zinc-900">
                 {{ coin }}
               </span>
             </label>
@@ -76,10 +123,10 @@
             <label class="label flex flex-col justify-start items-start">
               <span class="text-xl font-bold"> Royalty: </span>
             </label>
-            <label class="flex input-group flex-1 w-max">
+            <label class="flex input-group w-max">
               <input v-model="royalty" type="number" required placeholder="3" step="0.1"
-                class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1" />
-              <span class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700">
+                class="bg-zinc-800 text-white p-3 border-r-0 rounded-lg outline-none focus:outline-none border-2 border-zinc-700 focus:border-gray-500 transition-colors duration-200 w-24" />
+              <span class="w-12 text-center justify-center border-none border-zinc-700 border-l-0 bg-zinc-900">
                 %
               </span>
             </label>
@@ -87,81 +134,84 @@
         </div>
 
         <!-- Listing Coin/Chain -->
-        <div class="flex flex-wrap mt-8 mx-16">
-          <div class="flex flex-col justify-start items-start mr-16">
-            <label class="label flex flex-col justify-start items-start">
-              <span class="text-xl font-bold">Chain:</span>
-            </label>
-            <div class="dropdown inline-block relative">
-              <select v-model="chain"
-                class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200">
-                <option selected>Select a Chain</option>
-                <option v-for="chain in Coins.Chains" :value="chain">
-                  {{ chain }}
-                </option>
-              </select>
+        <div class="flex flex-wrap flex-col mt-8  w-full">
+          <div class="flex flex-row w-full mb-2">
+            <div class="flex flex-col justify-start items-start mr-16">
+              <label class="label flex flex-col justify-start items-start">
+                <span class="text-xl font-bold">Chain:</span>
+              </label>
+              <SelectItem :options="Coins.Chains.map(c => ({ label: c, value: c }))" v-model="chain" />
+            </div>
+
+            <div class="flex flex-col justify-start items-start mr-16" v-if="chain">
+              <label class="label flex flex-col justify-start items-start">
+                <span class="text-xl font-bold">Coin:</span>
+              </label>
+              <SelectItem :options="Coins[chain].map(c => ({ label: c, value: c }))" v-model="coin" />
+
             </div>
           </div>
 
-          <div class="flex flex-col justify-start items-start mr-16" v-if="chain && Coins[chain]?.length > 1">
-            <label class="label flex flex-col justify-start items-start">
-              <span class="text-xl font-bold">Coin:</span>
-            </label>
-            <div class="dropdown inline-block relative">
-              <select v-model="coin"
-                class="dropdown-select bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200">
-                <option v-for="coin in Coins[chain]" :value="coin">
-                  {{ coin }}
-                </option>
-              </select>
-            </div>
-          </div>
 
-          <div class="flex flex-col justify-start items-start mr-16">
-            <label class="label flex flex-col justify-start items-start">
-              <span class="text-xl font-bold">Address:</span>
-            </label>
-            <div class="dropdown inline-block relative">
-              <input v-model="address" required type="text"
-                class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1"
-                placeholder="Address" />
-            </div>
-            <span class="pt-2 text-gray-500">
-              *This will be the address that recieves payments/Royalties
-            </span>
+          <div class="dropdown flex flex-row relative items-center mt-3 w-full  max-w-[90%]">
+            <label for="listingAddress"
+              class="font-bold p-2 min-w-max h-full rounded-l-lg bg-zinc-800 border border-zinc-700 border-r-0">Listing
+              address</label>
+            <input v-model="listingAddress" required type="text" id="listingAddress"
+              class="bg-zinc-700 w-full max-w-lg bg-[rgba(11,17,23,1)] border text-white py-2 px-6 rounded-l-none rounded-r-lg outline-none focus:outline-none border-l-0 border-gray-700 focus:border-gray-500 transition-colors duration-200 "
+              placeholder="Address" />
           </div>
+          <span class="pt-2 text-gray-500">
+            This will be the address that recieves payments/Royalties
+          </span>
         </div>
 
-        <div class="flex flex-wrap mt-8 mx-16">
+
+        <div class="flex flex-wrap mt-8 ">
           <label class="label flex flex-col justify-start items-start">
             <span class="text-xl font-bold">Supported Royalties:</span>
             <span class="pt-2 text-gray-500">
-              *When someone buys your NFT, They can change the payment method to
-              one of these,
+              When someone sells your NFT, they can change the payment method to
+              one of these (if you set address),
               <br />
-              and youll recieve the royalties in that respective chain
+              and you'll recieve the royalties in the respective chain
             </span>
           </label>
 
-          <table class="table-auto w-full">
-            <thead>
-              <tr>
-                <th class="px-4 py-2">Chain</th>
-                <th class="px-4 py-2">Address</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(chain, index) in Coins.royaltyList" :key="index">
-                <td class="border px-4 py-2">{{ chain }}</td>
-                <td class="border px-4 py-2">
-                  <input v-model="addressList[index]" class="w-full" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+
+          <div class="relative overflow-x-auto rounded-xl w-full max-w-2xl">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" class="px-6 py-3">
+                    Chain
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Address
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(chain, index) in Coins.royaltyList" :key="index"
+                  :class="[index != Coins.royaltyList.length - 1 ? 'border-b' : '', 'bg-zinc-900', 'border-gray-700']">
+                  <th scope="row" class="px-6 py-4 font-medium text-base capitalize whitespace-nowrap text-white ">
+                    {{ chain }}
+                  </th>
+                  <td class="px-6 py-4">
+                    <input v-model="addressList[index]"
+                      class="w-full border outline-none focus:border-zinc-600 transition-colors border-zinc-700 text-base p-2" />
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+
         </div>
 
-        <label class="label flex flex-col justify-start items-start mt-8 px-16">
+        <label class="label flex flex-col justify-start items-start mt-8 ">
           <span class="text-xl font-bold"> Collection: </span>
           <span class="pt-2 text-gray-500">
             *On rareweave a collection is defined as a group of NFTs that you
@@ -172,23 +222,20 @@
             Click here to create a new collection.
           </NuxtLink>
         </label>
-        <label class="input-group flex w-[50%] mx-16">
+        <label class="input-group flex w-[50%] ">
           <input v-model="collectionId" type="text" placeholder="Collection"
-            class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 flex-1" />
+            class="bg-[rgba(11,17,23,1)] text-white py-3 px-6 rounded-lg outline-none focus:outline-none border-2 border-gray-700 focus:border-gray-500 transition-colors duration-200 " />
           <span class="w-12 text-center justify-center border border-l-0 border-gray-700 bg-gray-700">
             ID
           </span>
         </label>
-        <label class="cursor-pointer label my-2 pr-0 mt-8 mx-16 flex-1">
-          <span class="text-xl font-bold"> For sale </span>
-          <input type="checkbox" class="toggle toggle-accent" checked v-model="forSale" />
-        </label>
-        <button type="submit" class="Button Amazing--button mt-8 mx-16 w-min px-8 py-2 text-2xl font-bold">
+
+        <amazing-button type="submit" class="w-56 max-w-full mx-auto text-2xl font-bold">
           Mint
-        </button>
+        </amazing-button>
       </div>
     </form>
-    <div v-else class="h-full-navbared flex-1 flex flex-col items-center justify-center font-mono">
+    <div v-else class="h-full-navbared flex flex-col items-center justify-center font-mono">
       <div class="loading-wrapper h-20 m-2 flex items-center justify-center">
         <div class="loading"></div>
       </div>
@@ -203,16 +250,19 @@
 <script setup>
 import { Buffer } from "buffer";
 import Big from "big.js";
-import { useArWallet, useAccount, useArweave } from "../composables/useState";
+
 import setArweave from "../plugins/arweave";
 import { nftContractId } from "../config/contracts.json";
 import { GlomeNode } from "../config/config.json";
 import Coins from "../config/coins";
 
+const utils = useUtils()
+const arweaveSigner = useArweaveSigner()
+
 const arweave = useArweave().value;
 if (!arweave) setArweave();
 
-const account = useAccount();
+
 const wallet = useArWallet();
 
 // NFT Data
@@ -223,7 +273,6 @@ const price = ref(0.5);
 
 const chain = ref("arweave");
 const coin = ref("AR");
-const address = ref(account.value.addr);
 
 const royalty = ref(3);
 const forSale = ref(true);
@@ -234,7 +283,9 @@ const fileMeta = ref({});
 
 const arweaveIndex = Coins.royaltyList.indexOf("arweave");
 const addressList = ref(new Array(Coins.royaltyList.length).fill(""));
-addressList.value[arweaveIndex] = account.value.addr;
+const listingAddress = ref(arweaveSigner.address)
+addressList.value[arweaveIndex] = arweaveSigner.address;
+watch(() => arweaveSigner.address, () => addressList.value[arweaveIndex] = arweaveSigner.address)
 
 let nftContent = new ArrayBuffer(0);
 
@@ -265,26 +316,26 @@ function readAsArrayBuffer(file) {
 
 // Null the coin value, incase they set a denom, then change the chain value
 watch(chain, () => {
+  console.log(Coins[chain.value][0])
   coin.value = Coins[chain.value][0];
 
   if (chain.value == "arweave" || chain.value == "everpay") {
-    address.value = account.value.addr;
+    listingAddress.value = arweaveSigner.address;
   } else {
-    address.value = "";
+    listingAddress.value = "";
   }
 });
 
 async function mint() {
-  console.log(addressList.value);
   let initState = {
-    version:2,
-    owner: account.value.addr,
-    minter: account.value.addr,
+    version: 2,
+    owner: arweaveSigner.address,
+    minter: arweaveSigner.address,
     name: title.value,
     description: description.value,
     ticker: "RWNFT",
     balances: {
-      [account.value.addr]: 1,
+      [arweaveSigner.address]: 1,
     },
     contentType: fileMeta.value.type,
     createdAt: Date.now(),
@@ -294,10 +345,11 @@ async function mint() {
     reservationBlockHeight: 0,
     royalty: royalty.value / 100,
     royaltyAddresses: {
-      arweave: account.value.addr,
-      everpay: account.value.addr,
+      arweave: arweaveSigner.address,
+      everpay: arweaveSigner.address,
     },
-    listingAddress: address.value,
+    reservationTimestamp: 0,
+    listingAddress: listingAddress.value,
     listingChain: chain.value,
     listingCoin: coin.value,
   };
@@ -310,7 +362,7 @@ async function mint() {
   });
 
   uploading.value = true;
-  let tx = await arweave.createTransaction({
+  let tx = await utils.arweave.createTransaction({
     data: Buffer.from(new Uint8Array(nftContent)),
     tags: encodeTags([
       {
@@ -357,8 +409,8 @@ async function mint() {
   });
 
   if (nftContent.byteLength > 100000) {
-    tx = await wallet.value.sign(tx)
-    let uploader = await arweave.transactions.getUploader(tx);
+    tx = { ...await arweaveSigner.signer.sign(tx), data: tx.data }
+    let uploader = await utils.arweave.transactions.getUploader(tx);
     while (!uploader.isComplete) {
       await uploader.uploadChunk();
       console.log(
@@ -421,5 +473,9 @@ function encodeTags(tags) {
     value: btoa(tag.value),
   }));
 }
+
+definePageMeta({
+  layout: "without-auth",
+});
 </script>
 <style scoped></style>
