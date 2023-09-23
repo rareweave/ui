@@ -5,7 +5,7 @@
             <span class="float-right">&#x25BC;</span>
         </button>
         <ul v-if="isOpen" class="absolute w-full rounded-t-none -mt-px bg-zinc-900 rounded-lg shadow z-50 border border-t-0 border-zinc-700">
-            <li v-for="(option, optionIndex) in options" :key="option.value" @click="selectOption(option)"
+            <li v-for="(option, optionIndex) in props.options" :key="option.value" @click="selectOption(option)"
                 :class="['p-2', 'transition-colors', 'border-b', 'border-zinc-800', 'hover:bg-gray-700', 'text-white', 'cursor-pointer', 'max-h-48',optionIndex==options.length-1?'rounded-b-lg':'']">
                 {{ option.label }}
             </li>
@@ -42,11 +42,11 @@ const selectOption = (option) => {
 };
 
 watch(
-    () => modelValue,
+    () => props.modelValue,
     (newValue) => {
         console.log("new value")
-        console.log(newValue)
-        selected.value = options.find(o => o.value == newValue);
+        console.log(newValue,props.options, props.options.find(o => o.value == newValue))
+        selected.value = props.options.find(o => o.value == newValue);
     }
 );
 

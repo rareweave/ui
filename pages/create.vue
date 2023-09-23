@@ -230,7 +230,7 @@
           </span>
         </label>
 
-        <amazing-button type="submit" class="w-56 max-w-full mx-auto text-2xl font-bold">
+        <amazing-button type="submit" class="w-56 max-w-full mx-auto text-2xl font-bold mt-4">
           Mint
         </amazing-button>
       </div>
