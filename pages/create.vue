@@ -363,7 +363,7 @@ async function mint() {
 
   uploading.value = true;
   let tx = await utils.arweave.createTransaction({
-    data: Buffer.from(new Uint8Array(nftContent)),
+    data: new Uint8Array(nftContent),
     tags: encodeTags([
       {
         name: "App-Name",
@@ -409,7 +409,13 @@ async function mint() {
   });
 
   if (nftContent.byteLength > 100000) {
-    tx = { ...await arweaveSigner.signer.sign(tx), data: tx.data }
+    
+    let signedPart = await arweaveSigner.signer.sign(tx)//we can't just use this as tx body since arconnect doesn't give us normal tx
+    tx.signature = signedPart.signature
+    tx.tags = signedPart.tags
+    tx.owner = signedPart.owner
+    tx.id = signedPart.id
+
     let uploader = await utils.arweave.transactions.getUploader(tx);
     while (!uploader.isComplete) {
       await uploader.uploadChunk();

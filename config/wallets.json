@@ -1,18 +1,14 @@
 {
-  "solana": {
-    "solflare": {
-      "link": "https://yctstiqqys3b4j5qb55sxtn6airb6a56tlwxtkfi36of6cbg2a5a.arweave.net/wKcpohDEth4nsA97K82-AiIfA76a7XmoqN-cXwgm0Do"
-    },
-    "phantom": {
-      "link": "https://asdz5ntcfrwuhrvlyea7dniausgrdikhhh4nbnfqr5ooikllcrfa.arweave.net/BIeetmIsbUPGq8EB8bUApI0RoUc5-NC0sI9c5ClrFEo"
-    }
-  },
-  "arweave": {
+  "everpay": {
     "arconnect": {
-      "link": "https://7qx7gbohuua3h7r32vf6ddrjoi7mkdmczz6cdtcq2e3dhdpavd3q.arweave.net/_C_zBcelAbP-O9VL4Y4pcj7FDYLOfCHMUNE2M43gqPc"
+      "name":"Arconnect",
+      "logo": "_C_zBcelAbP-O9VL4Y4pcj7FDYLOfCHMUNE2M43gqPc",
+      "api":"TBD"
     },
-    "arweaveapp": {
-      "link": "https://yctstiqqys3b4j5qb55sxtn6airb6a56tlwxtkfi36of6cbg2a5a.arweave.net/wKcpohDEth4nsA97K82-AiIfA76a7XmoqN-cXwgm0Do"
+    "metamask": {
+      "name": "Metamask",
+      "logo": "FMsBkbFi6jRep1jFjK7cthZfvOa3KNtdPgruG8Juzyg",
+      "api": "TBD"
     }
   }
 }
