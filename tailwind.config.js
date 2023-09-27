@@ -6,6 +6,7 @@ module.exports = {
             'sans': ['Nunito Sans', 'sans-serif'],
             'serif': ['ui-serif', 'Georgia'],
             'mono': ['Iosevka Aile Web', 'monospace'],
+            'arimo': ['Arimo', 'sans-serif'],
             'display': ['Oswald'],
             'body': ['"Open Sans"'],
         }

@@ -1,55 +1,44 @@
 <template>
-  <div class="Component">
-    <NuxtLink :to="'/nft/' + nft.id" class="Card">
+  <div class="relative flex flex-col flex-wrap items-center box-border">
+    <NuxtLink :to="'/nft/' + nft.id" class="relative flex flex-col flex-nowrap justify-start w-72 h-96 mt-1.5 ml-2 mr-2 mb-5 p-0">
       <Graphic :nft="nft" />
-      <div class="Buttons">
+      <div class="absolute flex top-0 right-0 m-1">
         <button
           v-if="disposable"
           @click.prevent.stop="$emit('remove-item', nft.id)"
-          class="Disposable"
+          class="bg-red-400 rounded-sm p-1"
         >
           ✕
         </button>
       </div>
-      <div class="Info">
-        <div class="Row">
-          <h4 class="Nft Name Detail">
+      <div class="relative flex flex-col flex-nowrap items-stretch justify-between w-full h-16 box-border">
+        <div class="flex m-0 p-1 h-10">
+          <h4 class="relative flex flex-row flex-nowrap items-center justify-start flex-1 text-left h-8 p-3 text-base font-semibold font-arimo text-white whitespace-nowrap overflow-clip text-ellipsis">
             {{ nft.state.name || "-no title-" }}
           </h4>
-          <span class="Nft Rarity">
-            <!-- <span>
-              0
-            </span>
-            <img
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEUElEQVR4nO1ZS4hcVRC9MQpqYqILUYKfhdGoKMZMXPgBV+LGD6JBsxEXookfXCXjQomiglslfkmCMQE3JrrTZKLLIEpQEYxkYf4zXfU6PTPdVW9G0RypN3VnGrs7/Z3OG+gDD6an7jv31a2q+zk3hAEGGGCAAfKMZBKrSDDMigOkOMwCYcE0KUZZMcKC15Iybm6Vr1jGLSx43d7NOATTxplx2/8Em3kaN/XOAcVaUnzHCjR7SHCWFd+SYHUjPhbc6W3OtsLJigOJYqhjBwBcxIKtsUNSnCHFtkTxiEVnDFhyFLj4TIprE8XDLPiIFCV36B9SvAlgcRXfYlK8bbbIx4IPWfCQcRjXGLDEuAuKR0mxPWsTB0jwPoAL23JiYgJXkOL7bEQESoq3ikUsa/ZekuAyUryRpcnMaH5uDrgTu53PUmiLtW3GVyximTnPgjRGZ3wcl7cciegECU5YKoQ2YalFguM+8rurnDhGgjva5UsUQyQ4GZ1pKTKWTtGJRLEidIjRFNdnAzFXP8dLKa7rlC9RrIjOkOC9Zo3Xej5qJ5GowzfkqWTPmm75WLDG0owE/56TL85OVhPddjrLKdhsT8/4FO94lEfqNrDZIs4mrRR2q4jF3iu+UgnL4+zI07ixpgEJXnVHtoWcgxU7vFY21TOOmNHm8JBzFBSPeXrtrzGS4Ejm5RRWhpwjmSuDP2qMLKhkRmBpyDkIWOrrUqXGGFdP2yqEnOM0cGncddQYSXDajN0sgv1CUXGNF/vJGiMrfnVHOt9p9gmJ4i4v9l9qjKzY5bPWhpBzkOJFd+SzesaX3Lgz5Bzsg06KF+qf2GaM43ku+BPAJaSYzMpgEqvqNiLFoSwqKdaFnIJTPOWF/mPDRqR42aNyCMCikDMAWMSKn/0bNzYL26g3fDzkDKR4wqNxqmn6x6K3Odp2miEnKNmuV3CqYZH/H3aMJMFPPoPtCDkBK3b6av5Dy8eCQgW3RwEhUTwfzjNIsdGdmCqWcWtbL7PgWU+xvwoVPBDOE0jwoH2Df8szHZFEISJTAFPcE/oMSnFfph+0IjicC5keJfgiOtPPyHCK+0lR9r6/7Pq47Irj1zFHOcX6MM/gFOuzvmb63GPf0BNiVwq3z2pUik/ali9b7IcV71bpwrt63o+tqiaHZprSTCffmLTaK37jYsU+rwfTrbbM6+7CBGtSTHjY/yykuLtbTkpxLwuOxk2rCdu9+dpmHU9hJSt+i8q7pUMneeyL7zAJ/nYnDtsuPPRbACDFp7P3GIKDNIUb2hoMwcF4bUCCj+1aYX6/uvmClZ33XZcdBnBBo/aW94niuajasILsziXkAaNlXMmCvVW3TPtMIGggGuyviuIeezfkDZxiHSsSz/cJTvFktJmCyYpiLGiLSsgzSHA1C76qGvWtLPig6vfeQgVXhYUCEjyd3fzOOWAr9SthIWKsgttI8bs99ndYyCiVsDxPJ80BQp/wH2RN1davrsprAAAAAElFTkSuQmCC"
-              alt="RareWeave"
-              width="20"
-              height="20"
-            /> -->
-          </span>
         </div>
-        <div class="Row">
-          <span class="Nft Owner Detail" v-if="nft.state.owner">
+        <div class="flex m-0 p-1 h-10">
+          <span class="relative flex flex-row flex-nowrap items-center justify-start flex-1 max-w-[80%] text-left pt-0 px-3 pb-3 h-8 p-3 text-base font-semibold font-arimo text-white whitespace-nowrap overflow-clip text-ellipsis" v-if="nft.state.owner">
             Owned:&nbsp;
-            <NuxtLink :to="'/profile/' + nft.state.owner" class="Nft Link">
+            <NuxtLink :to="'/profile/' + nft.state.owner" class="relative flex flex-row flex-nowrap items-center text-[rgba(221,232,255,0.5)] no-underline hover:text-[rgba(251,250,255,0.5)] hover:underline">
               {{ nft.state.owner }}
             </NuxtLink>
           </span>
         </div>
         <div
           :class="{
-            'Row --forSale': nft.state.forSale,
-            Row: !nft.state.forSale,
+            'flex m-0 p-1 h-10 last:-mt-3 last:justify-between last:rounded-[0_0_8px_8px] hover:bg-gradient-to-r hover:from-violet-500 hover:to-orange-500': nft.state.forSale,
+            'flex m-0 p-1 h-10 last:-mt-3 last:justify-between': !nft.state.forSale,
           }"
         >
-          <div class="Nft Price">
-            <span class="Nft Split">
-              <span class="Icon">
-                <span class="AR">
-                  <img :src="coinImage" alt="My Happy SVG" />
+          <div class="relative flex flex-row flex-nowrap items-center flex-[1_1_0px] p-0">
+              <span class="relative flex flex-row flex-nowrap items-center flex-1 p-0">
+                <span class="flex-[0_0_32px] h-8 ml-1 mr-2">
+                  <span>
+                    <img :src="coinImage" alt="Arweave" />
+                  </span>
                 </span>
-              </span>
-              <span class="Nft" v-if="nft.state.forSale">
+              <span class="relative flex flex-row flex-nowrap items-center" v-if="nft.state.forSale">
                 {{
                   Big(nft?.state?.price) /
                   Big(
@@ -62,7 +51,7 @@
               </span>
             </span>
           </div>
-          <span class="Nft Buy Btn">
+          <span class="relative flex flex-row flex-nowrap items-center flex-[0_0_max-content]">
             {{ nft.state.forSale ? "Buy Now" : "Not For Sale" }}
           </span>
         </div>
@@ -80,228 +69,3 @@ const coinImage = nft.state.listingChain
 
 const { nft, disposable } = defineProps(["nft", "disposable"]);
 </script>
-<style scoped>
-.Component {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.Card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  width: 286px;
-  height: 398px;
-  background-color: rgba(17, 23, 32, 1);
-  margin: 6px 9px 18px;
-  padding: 0;
-  box-sizing: content-box;
-  border: 1px solid rgba(43, 56, 68, 0.33);
-  border-radius: 8px;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.17), 1px 2px 2px rgba(0, 0, 0, 0.17),
-    2px 4px 4px rgba(0, 0, 0, 0.17), 4px 8px 8px rgba(0, 0, 0, 0.17),
-    8px 16px 16px rgba(0, 0, 0, 0.17), 16px 32px 32px rgba(0, 0, 0, 0.17);
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.17), 1px 2px 2px rgba(0, 0, 0, 0.17),
-    2px 4px 4px rgba(0, 0, 0, 0.17), 4px 8px 8px rgba(0, 0, 0, 0.17),
-    8px 16px 16px rgba(0, 0, 0, 0.17);
-}
-
-.Card::after {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  width: calc((100%) + (2 * 2px));
-  height: calc((100%) + (2 * 2px));
-  background: radial-gradient(
-    ellipse at center,
-    rgba(17, 23, 32, 0),
-    rgba(17, 23, 32, 0)
-  ) !important;
-  border-radius: 6px;
-  z-index: -1;
-  background-size: 200% 200%;
-}
-
-.Card:hover {
-  /* border: 1px solid rgba(255, 255, 255, 0); */
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.17), 1px 2px 2px rgba(0, 0, 0, 0.17),
-    2px 4px 4px rgba(0, 0, 0, 0.17), 4px 8px 8px rgba(0, 0, 0, 0.17),
-    8px 16px 16px rgba(0, 0, 0, 0.17), 16px 32px 32px rgba(0, 0, 0, 0.17);
-  background-color: rgba(17, 23, 32, 1);
-}
-
-/* 
-.Component:hover .Card::after {
-  background: conic-gradient(
-    rgba(236, 236, 236, 0.333),
-    rgba(236, 236, 236, 0.666),
-    rgba(252, 252, 252, 0.333),
-    rgba(236, 236, 236, 0.666),
-    rgba(252, 252, 252, 0.333),
-    rgba(236, 236, 236, 0.666),
-    rgba(252, 252, 252, 0.333)
-  ) !important;
-} */
-
-.--forSale:hover {
-  /* background: linear-gradient(93deg, rgba(129,234,174,1), rgb(9, 192, 238)); */
-  background: linear-gradient(93deg, rgb(158 19 131), rgb(238 129 9));
-  /* background: rgb(214 116 8); */
-}
-
-.Imagewrapper {
-  max-height: 286px;
-  border-radius: 8px 8px 0 0;
-}
-
-.Buttons {
-  position: absolute;
-  display: flex;
-  top: 0;
-  right: 0;
-  margin: 0.5em 1em;
-}
-
-.Info {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  justify-content: space-between;
-  width: 100%;
-  height: 64px;
-  margin: 3px 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.Row {
-  display: flex;
-  margin: 0;
-  padding: 0.25em;
-  height: 40px;
-}
-
-.Row:nth-last-child(1) {
-  margin-top: -12px;
-  justify-content: space-between;
-  border-radius: 0 0 8px 8px;
-}
-
-.Nft {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  transition: 0.36s ease-in-out;
-}
-
-.Nft.Detail {
-  height: 32px;
-  padding: 0 12px;
-  font-size: 12pt;
-  font-weight: 600;
-  font-family: "Arimo", sans-serif;
-  color: rgba(251, 250, 255, 1);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.Nft.Rarity {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 8px;
-}
-
-.Nft.Name {
-  justify-content: flex-start;
-  flex: 1 1 0px;
-  text-align: left;
-}
-
-.Nft.Owner {
-  justify-content: flex-start;
-  flex: 1 1 0px;
-  max-width: 80%;
-  text-align: left;
-  padding: 0 12px 12px;
-}
-
-.Link {
-  color: rgba(221, 232, 255, 0.5) !important;
-  text-decoration: none !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.Link:hover {
-  color: rgba(251, 250, 255, 0.5);
-  text-decoration: 1px underline !important;
-}
-
-.Nft.Price {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: flex-start;
-  flex: 1 1 0px;
-  padding: 0 14px 0 10px;
-}
-
-.Split {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: flex-start;
-  flex: 1 1 0px;
-  padding: 0;
-}
-
-.Icon {
-  flex: 0 0 32px;
-  height: 32px;
-  margin-left: -2px;
-  margin-right: 6px;
-}
-
-.Buy {
-  flex: 0 0 max-content;
-  padding: 0 12px;
-}
-
-.Disposable {
-  background-color: #cc352d;
-  border-radius: 2rem;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-  transition: transform 1s ease 0s;
-  padding: 0.2em 0.2em;
-  font-size: 1.2em;
-}
-
-.Disposable:hover {
-  transition: transform 0.5s ease 0s;
-  background-color: #a12720;
-  transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
-}
-</style>
