@@ -56,8 +56,8 @@
                 class="p-2 border border-t-0 flex items-center w-full text-sm font-medium text-center rounded-t-none rounded-lg shadow-sm text-gray-400 border-gray-700 justify-center">
                  <ConnectForeignWallet v-if="currentStep==0" :nftFactory="nftFactory" @connected="setSigner"/>
                 <PayRoyalty :nftFactory="nftFactory" :signer="paymentSigner" v-if="currentStep == 1"
-                    @broadcasted="() => setLoading('Wait for your transaction to be included in block', 'It may take several minutes')" 
-                    @finalized="() => setLoading('Wait for execution', 'You\'re almost there! You transaction is included in block, just wait for Glome (our smart contract engine) to it. It shouldn\'t take too long', 'spinner')" />
+                    @broadcastedOnSourceChain="() => setLoading('Wait for your transaction to be processed by '+nftFactory.nftState.listingChain, 'It may take some time')" 
+                    @sentToGlome="() => setLoading('Wait for execution', 'You\'re almost there! You transaction is included in block, just wait for Glome (our smart contract engine) to it. It shouldn\'t take too long', 'spinner')" />
                 <PayFinalization :nftFactory="nftFactory" :signer="paymentSigner" v-if="currentStep == 2"
                         @broadcasted="() => setLoading('Wait for your transaction to be included in block', 'It may take several minutes')" 
                         @finalized="() => setLoading('Wait for execution', 'You\'re almost there! You transaction is included in block, just wait for Glome (our smart contract engine) to it. It shouldn\'t take too long', 'spinner')" />
@@ -97,21 +97,23 @@ const paymentSigner = ref(null)
 const isLoading = ref(false)
 const loadingMessage = ref("")
 const loadingSubMessage = ref('')
+const time= ref(Date.now())
 const loadbar = ref(null)
 const reserverAddress = ref(null)
 const loadingType = ref('loadbar')
 
-setInterval(()=> console.log(arweaveSigner?.networkInfo?.height),10000)
+setInterval(()=>time.value=Date.now(),3000)
 
 function setSigner(signer) {
-    paymentSigner.value=signer
+    paymentSigner.value = signer
+    currentStep.value=1
 }
 
 
-watch(() => ({ ...nftFactory.nftState, _currentheight: arweaveSigner?.networkInfo?.height }), function reloadReserverAddress() {
+watch(() => ({ ...nftFactory.nftState, _currentheight: arweaveSigner?.networkInfo?.height, currentStep: currentStep.value }), function reloadReserverAddress() {
 
     if (!nftFactory.loaded) { reserverAddress.value = null; return }
-    if (!nftFactory.nftState.reserver || ((arweaveSigner?.networkInfo?.height - nftFactory.nftState.reservationBlockHeight) > 13))// reservation is 15 blocks, gateways is most likely lagging 1 block behind, and it's too late/dengerous to broadcast on block 14 
+    if (!nftFactory.nftState.reserver || nftFactory.version==1?((arweaveSigner?.networkInfo?.height - nftFactory.nftState.reservationBlockHeight) > 13): ((time.value - nftFactory.nftState.reservationTimestamp) > 600000))// reservation is 15 blocks, gateways is most likely lagging 1 block behind, and it's too late/dengerous to broadcast on block 14 
     { reserverAddress.value = null; } else {
             reserverAddress.value = nftFactory.nftState.reserver
     }
@@ -136,11 +138,24 @@ watch(()=>nftFactory.nftBuyOverlayShown, function reset() {
     currentStep.value = 0
 
     if (nftFactory.version == 1) {
-        currentStep.value = 1
-        paymentSigner.value = arweaveSigner
-        if (reserverAddress.value == arweaveSigner.address) {
+        if (currentStep.value == 0) {
+            currentStep.value = 1
+            paymentSigner.value = arweaveSigner
+        }
+        else if (reserverAddress.value == arweaveSigner.address&& currentStep.value==1) {
             currentStep.value=2
         }
+    } else if (nftFactory.version == 2) {
+        if (!paymentSigner.value) {
+            currentStep.value = 0
+            return
+        } else if(currentStep.value==0) {
+            currentStep.value=1
+        } 
+        if(reserverAddress.value == arweaveSigner.address && currentStep.value == 1) {
+            currentStep.value = 2
+        }
+        
     }
 
 

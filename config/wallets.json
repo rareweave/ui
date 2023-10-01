@@ -1,14 +1,10 @@
 {
-  "everpay": {
-    "arconnect": {
-      "name":"Arconnect",
-      "logo": "_C_zBcelAbP-O9VL4Y4pcj7FDYLOfCHMUNE2M43gqPc",
-      "api":"TBD"
-    },
-    "metamask": {
-      "name": "Metamask",
-      "logo": "FMsBkbFi6jRep1jFjK7cthZfvOa3KNtdPgruG8Juzyg",
-      "api": "TBD"
+  "solana": {
+    "phantom": {
+      "name":"Phantom",
+      "logo":"BIeetmIsbUPGq8EB8bUApI0RoUc5-NC0sI9c5ClrFEo",
+      "api":"USxrCzfIdKjyjEcRu9ruaURUtPxmt7CB8eVMLAcCiSk",
+      "gateway":"https://api.metaplex.solana.com/"
     }
   }
 }

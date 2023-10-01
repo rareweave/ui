@@ -57,6 +57,43 @@ export const useArweaveSigner = defineStore("arweaveSigner", () => {
             return true
         }
     }
+    async function interactWithGlome(contractId, methodName, input) {
+        const signedDataItem = await signDataItem({
+            data: "Glome contract call",
+            tags: [{
+                name: "Contract",
+                value: contractId
+            },
+                {
+                    name: "Input",
+                    value: JSON.stringify({
+                        function: methodName,
+                     ...input
+                    }),
+                },
+                {
+                    name: "App-Name",
+                    value: "SmartWeaveAction",
+                },
+                {
+                    name: "App-Version",
+                    value: "0.3.0",
+                },
+                {
+                    name: "SDK",
+                    value: "Glome",
+                },
+            ]
+        })
+        
+        await $fetch(`${config.GlomeNode}/tx`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/octet-stream"
+            },
+            body: signedDataItem
+        });
+    }
     async function signDataItem(dataItem) {
         if (isSignerSet.value == true) {
             return await signer.value.signDataItem(dataItem)
@@ -145,7 +182,7 @@ export const useArweaveSigner = defineStore("arweaveSigner", () => {
     }
 
 
-    return { setSigner, isSignerSet, callOverlay, signDataItem, logout, sendCoins, account, address, signer, overlayShown, ans, spendable, networkInfo }
+    return { setSigner, isSignerSet, callOverlay, signDataItem, logout, sendCoins, account, address, signer, overlayShown, ans, spendable, networkInfo,interactWithGlome }
 })
 
 function encodeTags(tags) {
