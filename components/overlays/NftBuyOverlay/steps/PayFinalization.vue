@@ -22,7 +22,8 @@ const arweaveSigner=useArweaveSigner()
 
 async function signPayment() {
 
-    const sent = await signer.value.sendCoins(await signer.value.getActiveAddress(), nftFactory.nftState.listingAddress, nftFactory.nftState.price,{})
+    const sent = await signer.value.sendCoins(await signer.value.getActiveAddress(), nftFactory.nftState.listingAddress, nftFactory.nftState.price, {})
+    const sig = await signer.value.signature("Sign to confirm transaction " + sent + " as payment for NFT to address " +arweaveSigner.address)
     emit('broadcastedOnSourceChain', sent)
     notifications.showNotification('success', 'Transaction broadcated', 'Transaction is broadcated to ' + nftFactory.nftState.listingChain + ' network and waiting to be included in block', { title: "View transaction", href: config.blockExplorers[nftFactory.nftState.listingChain] + sent })
     await signer.value.waitForFinality(sent)
@@ -31,7 +32,8 @@ async function signPayment() {
     await arweaveSigner.interactWithGlome(nftFactory.nftId, 'finalize-buy', {
         price: nftFactory.nftState.price,
         transferTxID: sent,
-        reservationTxId: nftFactory.nftState.reservationTxId
+        reservationTxId: nftFactory.nftState.reservationTxId,
+        signature: sig
     })
     emit("sentToGlome")
    

@@ -16,6 +16,7 @@
 </template>
 <script setup>
 import config from "~/config/config.json"
+import bs58 from 'bs58'
 const { signer, nftFactory } = defineProps(["signer", "nftFactory"])
 let emit=defineEmits(['broadcastedOnSourceChain','finalizedOnSourceChain','sentToGlome'])
 const notifications=useNotifications()
@@ -23,13 +24,15 @@ const arweaveSigner=useArweaveSigner()
 
 async function signPayment() {
 
-    const sent = await signer.value.sendCoins(await signer.value.getActiveAddress(), nftFactory.nftState.royaltyAddresses[nftFactory.nftState.listingChain], nftFactory.royaltyAmount,{})
+    const sent = await signer.value.sendCoins(await signer.value.getActiveAddress(), nftFactory.nftState.royaltyAddresses[nftFactory.nftState.listingChain], nftFactory.royaltyAmount, {})
+    const sig = await signer.value.signature("Sign to confirm transaction " + sent + " as royalty and locking NFT to " + arweaveSigner.address)
+  
     emit('broadcastedOnSourceChain', sent)
     notifications.showNotification('success', 'Transaction broadcated', 'Transaction is broadcated to ' + nftFactory.nftState.listingChain + ' network and waiting to be included in block', { title: "View transaction", href: config.blockExplorers[nftFactory.nftState.listingChain] + sent })
     await signer.value.waitForFinality(sent)
     emit("finalizedOnSourceChain")
     notifications.showNotification('success', 'Transaction finalized', "Your transaction is included in block", { title: "View transaction", href: config.blockExplorers[nftFactory.nftState.listingChain] + sent })
-    await arweaveSigner.interactWithGlome(nftFactory.nftId, 'reserve-buying-zone',{price:nftFactory.nftState.price,transferTxID:sent})
+    await arweaveSigner.interactWithGlome(nftFactory.nftId, 'reserve-buying-zone',{price:nftFactory.nftState.price,transferTxID:sent,signature:sig})
     emit("sentToGlome")
    
 }
