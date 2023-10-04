@@ -59,8 +59,8 @@
                     @broadcastedOnSourceChain="() => setLoading('Wait for your transaction to be processed by '+nftFactory.nftState.listingChain, 'It may take some time')" 
                     @sentToGlome="() => setLoading('Wait for execution', 'You\'re almost there! You transaction is included in block, just wait for Glome (our smart contract engine) to it. It shouldn\'t take too long', 'spinner')" />
                 <PayFinalization :nftFactory="nftFactory" :signer="paymentSigner" v-if="currentStep == 2"
-                        @broadcasted="() => setLoading('Wait for your transaction to be included in block', 'It may take several minutes')" 
-                        @finalized="() => setLoading('Wait for execution', 'You\'re almost there! You transaction is included in block, just wait for Glome (our smart contract engine) to it. It shouldn\'t take too long', 'spinner')" />
+                     @broadcastedOnSourceChain="() => setLoading('Wait for your transaction to be processed by ' + nftFactory.nftState.listingChain, 'It may take some time')" 
+                        @sentToGlome="() => setLoading('Wait for execution', 'You\'re almost there! You transaction is included in block, just wait for Glome (our smart contract engine) to it. It shouldn\'t take too long', 'spinner')" />
                 <AfterBuying :nftFactory="nftFactory" v-if="currentStep == 3"/>
             </div>
         <div v-if="isLoading"
