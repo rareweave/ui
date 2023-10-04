@@ -424,7 +424,7 @@ async function mint() {
       );
     }
   } else {
-    tx = await wallet.value.dispatch(tx);
+    tx = await arweaveSigner.signer.dispatch(tx);
   }
 
   async function checkNFT(nftId, tries = 0) {
