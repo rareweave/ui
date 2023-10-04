@@ -1,12 +1,8 @@
 <template>
-    <div class="Footer">
-        <div class="Top">
-            <h2 class="Title">
-                <!-- RareWeave -->
-            </h2>
-        </div>
-        <div class="Links">
-            <NuxtLink to="https://twitter.com/rareweave" target="_blank" class="Link">
+    <div class="relative flex flex-col justify-start items-center w-full h-full m-5">
+        <div class="relative flex flex-col justify-center items-center w-1/4 border-solid border-b border-b-gray-700" />
+        <div class="relative flex flex-row flex-wrap justify-center items-center w-full mt-4 mx-0 mb-8">
+            <NuxtLink to="https://twitter.com/rareweave" target="_blank" class="relative flex flex-row justify-center items-center mx-4 my-8 p-2 border-2 rounded-full border-[#4a7a96] hover:shadow-[0px_0px_20px_5px_#4a7a96]">
                 <span class="Icon--svg">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32" height="32" viewBox="0,0,256,256"
                         style="fill:#000000;">
@@ -23,7 +19,7 @@
                     </svg>
                 </span>
             </NuxtLink>
-            <NuxtLink to="https://discord.gg/2esZrmXsqs" target="_blank" class="Link">
+            <NuxtLink to="https://discord.gg/2esZrmXsqs" target="_blank" class="relative flex flex-row justify-center items-center mx-4 my-8 p-2 border-2 rounded-full border-[#4a7a96] hover:shadow-[0px_0px_20px_5px_#4a7a96]">
                 <span class="Icon--svg">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32" height="32" viewBox="0,0,256,256"
                         style="fill:#000000;">
@@ -40,7 +36,7 @@
                     </svg>
                 </span>
             </NuxtLink>
-            <NuxtLink to="https://github.com/rareweave/" target="_blank" class="Link">
+            <NuxtLink to="https://github.com/rareweave/" target="_blank" class="relative flex flex-row justify-center items-center mx-4 my-8 p-2 border-2 rounded-full border-[#4a7a96] hover:shadow-[0px_0px_20px_5px_#4a7a96]">
                 <span class="Icon--svg">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32" height="32" viewBox="0,0,256,256"
                         style="fill:#000000;">
@@ -58,88 +54,10 @@
                 </span>
             </NuxtLink>
         </div>
-        <div class="Whitepaper">
+        <div class="relative flex flex-row justify-center items-center hover:underline">
             <NuxtLink to="https://arweave.net/oIrgzZt3UBW9ct_WzIVTxO6XO1w1AJKJEsrncJJ2IAI" target="_blank" class="--link">
                 Why RareWeave works, is it magic?
             </NuxtLink>
         </div>
     </div>
 </template>
-<script setup>
-</script>
-<style scoped>
-.Footer {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin: 5rem 0;
-}
-
-.Top {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 680px;
-    max-width: 90vw;
-    min-width: 316px;
-    height: auto;
-    min-height: 196px;
-    border-bottom: 1px solid rgba(172, 172, 172, 0.5);
-}
-
-.Links {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin: 1rem 0 2rem;
-    flex-wrap: wrap;
-}
-
-.Link {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 1rem 2rem;
-    padding: .5rem;
-    border: 2px solid #4a7a96;
-    border-radius: 50%;
-}
-
-.Link:hover {
-    background: rgba(0, 0, 0, 1);
-    box-shadow:
-        -1px 1px 6px #4a7a9631,
-        12px -9px 24px #4a7a9631,
-        -6px 8px 24px #4a7a9631,
-        -4px 11px 24px #4a7a9631,
-        -8px -6px 12px #4a7a9631,
-        1px -2px 2px #4a7a9631,
-        2px -4px 4px #4a7a9631,
-        4px -8px 8px #4a7a9631,
-        12px 6px 12px #4a7a9631,
-        -4px -4px 12px #4a7a9631;
-    ;
-}
-
-.Whitepaper {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.Whitepaper:hover {
-    text-decoration: underline;
-}</style>

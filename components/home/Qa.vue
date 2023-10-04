@@ -11,13 +11,13 @@
                 </p>
             </div>
             <div class="flex flex-col items-center justify-center w-full flex-1 mx-auto mt-20">
-                <div v-for="question in questions" :key="question.q"
+                <div v-for="{ question, answer } in QUESTIONS" :key="question.q"
                     class="flex flex-col bg-[#111720] rounded-lg py-4 px-8 mt-4">
                     <h4>
-                        {{ question.q }}
+                        {{ question }}
                     </h4>
                     <p>
-                        {{ question.a }}
+                        {{ answer }}
                     </p>
                 </div>
             </div>
@@ -25,22 +25,22 @@
     </div>
 </template>
 <script setup>
-const questions = [
+const QUESTIONS = [
     {
-        q: "What is RareWeave?",
-        a: "RareWeave is a decentralized NFT marketplace built on the Arweave permaweb. It is a place where you can buy and sell NFTs, and where you can create your own NFT collections."
+      question: "What is RareWeave?",
+      answer: "RareWeave is a decentralized NFT marketplace built on the Arweave permaweb. It is a place where you can buy and sell NFTs, and where you can create your own NFT collections."
     },
     {
-        q: "What is an NFT?",
-        a: "An NFT is a non-fungible token, which means that it is a unique token that cannot be replaced by another token. NFTs are used to represent ownership of digital assets, such as art, music, collectibles, and more."
+      question: "What is an NFT?",
+      answer: "An NFT is a non-fungible token, which means that it is a unique token that cannot be replaced by another token. NFTs are used to represent ownership of digital assets, such as art, music, collectibles, and more."
     },
     {
-        q: "What is Arweave?",
-        a: "Arweave is a decentralized storage network that allows you to store data permanently. It is a new type of blockchain that uses a novel consensus mechanism called proof-of-access to make permanent data storage cheap, reliable, and easy for anyone to use."
+      question: "What is Arweave?",
+      answer: "Arweave is a decentralized storage network that allows you to store data permanently. It is a new type of blockchain that uses a novel consensus mechanism called proof-of-access to make permanent data storage cheap, reliable, and easy for anyone to use."
     },
     {
-        q: "What is the Arweave permaweb?",
-        a: "The Arweave permaweb is a decentralized storage network that allows you to store data permanently. It is a new type of blockchain that uses a novel consensus mechanism called proof-of-access to make permanent data storage cheap, reliable, and easy for anyone to use."
+      question: "What is the Arweave permaweb?",
+      answer: "The Arweave permaweb is a decentralized storage network that allows you to store data permanently. It is a new type of blockchain that uses a novel consensus mechanism called proof-of-access to make permanent data storage cheap, reliable, and easy for anyone to use."
     }
 ];
 </script>

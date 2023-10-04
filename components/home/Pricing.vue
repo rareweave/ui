@@ -21,7 +21,7 @@
                       {{ (rates[unit] / AR).toFixed(7) }} AR
                     </span>
                     <span class="relative flex text-2xl font-bold text-gray-400">
-                      ~{{ ((rates[unit] / AR) * price).toFixed(2) }} USD
+                      ~{{ ((rates[unit] / AR) * price).toFixed(3) }} USD
                     </span>
                     <span class="relative flex text-xs font-semibold text-gray-700">
                       {{ rates[unit] }} winston

@@ -30,7 +30,6 @@
         </div>
     </div>
 </template>
-
 <script setup>
 const steps = [
     {
