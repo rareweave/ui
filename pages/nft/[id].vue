@@ -16,7 +16,7 @@
               </template>
         </div>
 
-        <Comments :content="nftFactory.nftId" />
+        <Comments :nft-id="nftFactory.nftId" />
     </div>
 </template>
 <script setup>

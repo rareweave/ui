@@ -35,13 +35,13 @@ async function connectArconnect() {
             "ACCESS_ARWEAVE_CONFIG",
         ]);
     }
-
+    console
     arweaveSigner.setSigner({
         ...window.arweaveWallet, decrypt: (actualData, opts) => {
 
-            return window.arweaveWallet.decrypt(typedArrayToBuffer(actualData), {name:"RSA-OAEP"})        
+            return window.arweaveWallet.decrypt(typedArrayToBuffer(actualData), {name:"RSA-OAEP"})
     } })
-    
+
 }
 async function connectArweaveApp() {
     let webwallet = new ArweaveWebWallet(

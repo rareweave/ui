@@ -1,8 +1,7 @@
 <template>
   <div
-    v-if="comments?.length || arweaveSigner.isSignerSet"
-    class="w-full flex flex-col m-2 max-w-2xl bg-zinc-900/50 p-2 rounded-md mb-4"
-  >
+    v-if="arweaveSigner.isSignerSet"
+    class="w-full flex flex-col m-2 max-w-2xl bg-zinc-900/50 p-2 rounded-md mb-4">
     <h2 class="text-xl w-full text-center">Comments</h2>
     <div
       v-if="arweaveSigner.isSignerSet"
@@ -31,7 +30,8 @@
           ></textarea>
         </div>
         <awesome-button class="place-self-end mb-2" @click="post"
-          >Post</awesome-button
+        >Post
+        </awesome-button
         >
       </div>
     </div>
@@ -55,7 +55,7 @@
               {{ comment.profile.handle }}
             </div>
             <p class="text-xs ml-2 p-[2px] text-gray-500">
-              {{ timeToRelative(comment.timestamp) }}
+              {{ formatDistance(comment.timestamp, new Date(), { addSuffix: true }) }}
             </p>
           </div>
 
@@ -69,8 +69,10 @@
       </div>
     </div>
   </div>
-  <div v-else class="p-2 bg-zinc-800 rounded-md border-zinc-700 border mt-4 text-white font-semibold cursor-pointer hover:bg-zinc-900 transition-colors " @click="arweaveSigner.callOverlay()">
-  Log in to comment
+  <div v-else
+       class="p-2 bg-zinc-800 rounded-md border-zinc-700 border mt-4 text-white font-semibold cursor-pointer hover:bg-zinc-900 transition-colors "
+       @click="arweaveSigner.callOverlay()">
+    Log in to comment
   </div>
 </template>
 
@@ -79,85 +81,52 @@ import { formatDistance } from "date-fns";
 import SubaccountsLib from "arweave-subaccounts";
 import { ArweaveSigner, createData } from "arbundles";
 
-const utils = useUtils()
-const arweaveSigner = useArweaveSigner()
+const { nftId } = defineProps(["nftId"]);
 
-let { content } = defineProps(["content"]);
-
-const arweave = utils.arweave
+const utils = useUtils();
+const arweaveSigner = useArweaveSigner();
 
 const commentContent = ref("");
-const comments = ref([]);
-const commentsContents = { contents: {} };
+const { data: comments } = useFetch(`https://socioweave.rareweave.store/comments/${nftId}`);
+
+const commentsSource = ref(new EventSource(
+  "https://socioweave.rareweave.store/comment-stream/" + nftId
+));
 
 async function post() {
-  if (!commentContent.value.length) {
-    return;
-  }
-  let subaccount;
-  if (
-    localStorage.getItem("subaccount") &&
-    JSON.parse(localStorage.getItem("subaccount")).master === arweaveSigner.address
-  ) {
-    subaccount = JSON.parse(localStorage.getItem("subaccount")).subaccount;
-  } else {
-    let Subaccounts = new SubaccountsLib(
-      arweave,
-      arweaveSigner.signer,
-      `https://ar-io.net/graphql`,
-      `https://ar-io.net/`
-    );
-    subaccount = await Subaccounts.useSubaccount("Comments");
-    localStorage.setItem(
-      "subaccount",
-      JSON.stringify({ master: arweaveSigner.address, subaccount: subaccount })
-    );
-  }
+  const subaccounts = new SubaccountsLib(utils.arweave, arweaveSigner.signer, "https://ar-io.net/graphql", "https://ar-io.net");
 
-  let signer = new ArweaveSigner(subaccount.jwk);
-  console.log({
+  const commentsSubaccount = localStorage.getItem("commentsSubaccount")
+    ? JSON.parse(localStorage.getItem("commentsSubaccount"))
+    : await subaccounts.useSubaccount("Comments").then((subaccount) => localStorage.setItem("commentsSubaccount", JSON.stringify(subaccount)));
+  const signer = new ArweaveSigner(commentsSubaccount.jwk);
+
+  const content = createData(commentContent.value, signer, {
     tags: [
       { name: "Content-Type", value: "text/plain" },
       { name: "Data-Protocol", value: "Comment" },
-      { name: "Data-Source", value: content },
-    ],
-  })
-  let dataItem = createData(commentContent.value, signer, {
-    tags: [
-      { name: "Content-Type", value: "text/plain" },
-      { name: "Data-Protocol", value: "Comment" },
-      { name: "Data-Source", value: content },
-    ],
+      { name: "Data-Source", value: nftId }
+    ]
   });
-  await dataItem.sign(signer);
-  await $fetch(`https://socioweave.rareweave.store/tx`, {
+  await content.sign(signer);
+
+  await $fetch("https://socioweave.rareweave.store/tx", {
     method: "POST",
     headers: {
-      "Content-Type": "application/octet-stream",
+      "Content-Type": "application/octet-stream"
     },
-    body: new Blob([dataItem.getRaw()], { type: "application/octet-stream" }),
+    body: new Blob([content.getRaw()], { type: "application/octet-stream" })
   });
-  commentContent.value = "";
 }
-async function fetchComments() {
-  let fetchedComments = await $fetch(
-    `https://socioweave.rareweave.store/comments/` + content
-  );
-  comments.value = fetchedComments;
+
+function onNewComment({ data: comment }) {
+  comments.value.unshift(JSON.parse(comment))
 }
-fetchComments();
-const messagesStream = new EventSource(
-  "https://socioweave.rareweave.store/comment-stream/" + content
-);
-function addMessage(ev) {
-  comments.value.unshift(JSON.parse(ev.data));
-}
-messagesStream.addEventListener("newMessage", addMessage);
+
+commentsSource.value.addEventListener("newMessage", onNewComment)
+
 onUnmounted(() => {
-  messagesStream.removeEventListener("newMessage", addMessage);
-  messagesStream.close();
+  commentsSource.value.removeEventListener("newMessage", onNewComment);
+  commentsSource.value.close();
 });
-function timeToRelative(timestamp) {
-  return formatDistance(timestamp, new Date(), { addSuffix: true });
-}
 </script>
