@@ -57,6 +57,15 @@ export const useArweaveSigner = defineStore("arweaveSigner", () => {
             return true
         }
     }
+    async function dispatch(tx) {
+        if (isSignerSet.value == true) {
+
+            return await signer.value.dispatch(tx)
+        } else {
+            callOverlay()
+            return null
+        }
+    }
     async function interactWithGlome(contractId, methodName, input) {
         const signedDataItem = await signDataItem({
             data: "Glome contract call",
@@ -182,7 +191,7 @@ export const useArweaveSigner = defineStore("arweaveSigner", () => {
     }
 
 
-    return { setSigner, isSignerSet, callOverlay, signDataItem, logout, sendCoins, account, address, signer, overlayShown, ans, spendable, networkInfo,interactWithGlome }
+    return { setSigner, isSignerSet, callOverlay, signDataItem, logout, sendCoins, account, address, signer, overlayShown, ans, spendable, networkInfo,interactWithGlome ,dispatch}
 })
 
 function encodeTags(tags) {

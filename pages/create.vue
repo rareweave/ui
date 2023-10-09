@@ -60,52 +60,31 @@
 
         <!-- Price Drop downs -->
         <div class="flex flex-row items-center justify-center  mt-4 gap-3">
-        <label for="forSale"> For Sale: </label>  <label for="forSale" class="relative h-8 w-14 cursor-pointer ">
-   
-      <input
-        type="checkbox"
-        id="forSale"
-        v-model="forSale"
-        class="peer sr-only [&:checked_+_span_svg[data-checked-icon]]:block [&:checked_+_span_svg[data-unchecked-icon]]:hidden"
-      />
+          <label for="forSale"> For Sale: </label> <label for="forSale" class="relative h-8 w-14 cursor-pointer ">
 
-      <span
-        class="absolute inset-y-0 start-0 z-10 m-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-zinc-900 text-gray-400 transition-all peer-checked:start-6 peer-checked:text-green-600"
-      >
-        <svg
-          data-unchecked-icon
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-            clip-rule="evenodd"
-          />
-        </svg>
+            <input type="checkbox" id="forSale" v-model="forSale"
+              class="peer sr-only [&:checked_+_span_svg[data-checked-icon]]:block [&:checked_+_span_svg[data-unchecked-icon]]:hidden" />
 
-        <svg
-          data-checked-icon
-          xmlns="http://www.w3.org/2000/svg"
-          class="hidden h-4 w-4"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </span>
+            <span
+              class="absolute inset-y-0 start-0 z-10 m-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-zinc-900 text-gray-400 transition-all peer-checked:start-6 peer-checked:text-green-600">
+              <svg data-unchecked-icon xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd" />
+              </svg>
 
-      <span
-        class="absolute inset-0 rounded-full bg-gray-800 transition peer-checked:bg-green-500"
-      ></span>
-    </label>
-   </div>
+              <svg data-checked-icon xmlns="http://www.w3.org/2000/svg" class="hidden h-4 w-4" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg>
+            </span>
+
+            <span class="absolute inset-0 rounded-full bg-gray-800 transition peer-checked:bg-green-500"></span>
+          </label>
+        </div>
         <div class="flex flex-wrap mt-8 ">
           <div class="flex flex-col justify-start items-start mr-16">
             <label class="label flex flex-col justify-start items-start">
@@ -235,15 +214,24 @@
         </amazing-button>
       </div>
     </form>
-    <div v-else class="h-full-navbared flex flex-col items-center justify-center font-mono">
-      <div class="loading-wrapper h-20 m-2 flex items-center justify-center">
-        <div class="loading"></div>
+    <div v-else class="h-full flex flex-col items-center justify-center font-mono">
+     
+
+      <div
+        class="relative mx-auto w-24 h-24 animate-spin rounded-full bg-gradient-to-r  from-purple-400 via-blue-500 to-red-400 mt-2"
+        v-if="loadingType == 'spinner'">
+        <div
+          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-zinc-900 rounded-full  animate-pulse">
+        </div>
       </div>
       <h1 class="text-2xl text-mono m-2">Uploading your NFT..</h1>
       <p class="text-sm text-center text-zinc-400">
         Wait few minutes for your NFT to be mined. You may take coffee, sit back
         and relax. It will take at least 1 Arweave block (~2 minutes).
       </p>
+       <div class="w-full h-4 mb-4 rounded-full bg-gray-700 mt-6" v-if="loadingType == 'loadbar'">
+          <div ref="loadbar" class="h-4 bg-blue-600 rounded-full dark:bg-blue-500 " :style="loadbarStyles"></div>
+        </div>
     </div>
   </div>
 </template>
@@ -277,7 +265,9 @@ const coin = ref("AR");
 const royalty = ref(3);
 const forSale = ref(true);
 const collectionId = ref("");
-
+const loadingType = ref('spinner')
+const loadingPercentage = ref(0)
+const loadbarStyles=computed(()=>({'width':loadingPercentage.value+'%'}))
 const imageObjectUrl = ref(null);
 const fileMeta = ref({});
 
@@ -297,6 +287,7 @@ async function uploadNftContent(e) {
     imageObjectUrl.value = URL.createObjectURL(e.target.files[0]);
     fileMeta.value = e.target.files[0];
     nftContent = await readAsArrayBuffer(e.target.files[0]);
+    console.log(nftContent.byteLength)
   }
 }
 
@@ -361,7 +352,7 @@ async function mint() {
     }
   });
 
-  uploading.value = true;
+
   let tx = await utils.arweave.createTransaction({
     data: new Uint8Array(nftContent),
     tags: encodeTags([
@@ -407,9 +398,15 @@ async function mint() {
       },
     ]),
   });
-
+console.log(nftContent.byteLength)
   if (nftContent.byteLength > 100000) {
-    
+    if (!arweaveSigner.isSignerSet) {
+      return arweaveSigner.callOverlay(false)
+    } else {
+      loadingType.value = 'loadbar'
+      loadingPercentage.value=0
+      uploading.value = true;
+    }
     let signedPart = await arweaveSigner.signer.sign(tx)//we can't just use this as tx body since arconnect doesn't give us normal tx
     tx.signature = signedPart.signature
     tx.tags = signedPart.tags
@@ -419,12 +416,20 @@ async function mint() {
     let uploader = await utils.arweave.transactions.getUploader(tx);
     while (!uploader.isComplete) {
       await uploader.uploadChunk();
+      loadingPercentage.value= uploader.pctComplete
       console.log(
         `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
       );
     }
   } else {
-    tx = await arweaveSigner.signer.dispatch(tx);
+     
+    tx = await arweaveSigner.dispatch(tx);
+    if (tx != null) {
+      loadingType.value = 'spinner'
+      uploading.value = true;
+    } else {
+      return
+    }
   }
 
   async function checkNFT(nftId, tries = 0) {
@@ -484,4 +489,4 @@ definePageMeta({
   layout: "without-auth",
 });
 </script>
-<style scoped></style>
+
