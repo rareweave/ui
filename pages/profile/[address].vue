@@ -4,8 +4,7 @@
     :style="{
       backgroundImage: ` linear-gradient(-200deg,rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)),radial-gradient(#000000a0, #000000ff), url('${
         user?.profile?.banner &&
-        user?.profile?.banner !=
-          'ar://a0ieiziq2JkYhWamlrUCHxrGYnHWUAMcONxRmfkWt-k'
+        user?.profile?.banner !== DEFAULT_AVATAR
           ? user?.profile?.bannerURL
           : '/profile-default-bg.jpg'
       }')`,
@@ -47,7 +46,7 @@
         </div>
       </div>
     </template>
-    <template v-else-if="selfProfile">
+    <template v-else-if="isSelfProfile">
       <div
         class="flex flex-col items-center justify-center w-full md:w-96 m-4 pt-4 px-4"
       >
@@ -147,7 +146,7 @@
         </button>
       </div>
       <h2 class="text-center text-2xl font-mono">Owned NFTs:</h2>
-      <div class="Showcase">
+      <div class="relative grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] auto-rows-[1fr] w-full max-w-[90vw] min-w-[286px] overflow-x-auto">
         <NftCard v-for="nft in ownedNfts" :key="nft.contractTxId" :nft="nft" />
       </div>
 
@@ -249,7 +248,7 @@
         </label>
       </div>
       <h2 class="text-center text-2xl font-mono">Owned NFTs:</h2>
-      <div class="Showcase">
+      <div class="relative grid grid-cols-[repeat(auto-fill_minmax(300px,1fr))] auto-rows-fr w-full max-w-[90vw] min-w-[286px] overflow-x-auto">
         <NftCard v-for="nft in ownedNfts" :key="nft.contractTxId" :nft="nft" />
       </div>
 
@@ -281,33 +280,43 @@ import {
   legacyNftContract,
   collectionContractId,
 } from "../../config/contracts.json";
-import { GlomeNode } from "../../config/config.json";
-const arweave = useArweave().value;
-if (!arweave) setArweave();
+import { GLOME_NODE } from "../../config/config.json";
+import { ar } from "date-fns/locale";
+const DEFAULT_AVATAR = "ar://a0ieiziq2JkYhWamlrUCHxrGYnHWUAMcONxRmfkWt-k";
 
-const account = useAccount();
-const accountTools = useAccountTools().value;
-const wallet = useArWallet();
+const arweave = useArweave();
+if(!arweave) setArweave()
 
-let profileAddress = computed(
-  () => useRoute().params.address || useRoute().hash.slice(1)
-).value;
+const arweaveSigner = useArweaveSigner();
+const account = useAccountTools().value;
+
+const route = useRoute();
+const profileAddress = computed(() => route.params.address);
 
 const avatarObjectUrl = ref(null);
 
-let userProfileOrig = ref(
-  await accountTools.get(profileAddress).catch((e) => null)
-);
-let user = ref(JSON.parse(JSON.stringify(userProfileOrig.value)));
-let userAnsName = (
-  await $fetch(`https://ans-resolver.herokuapp.com/resolve/${user.value?.addr}`)
-)?.domain;
-let ownedNfts = await $fetch(
-  `${GlomeNode}/contracts-under-code/${nftContractId}|${legacyNftContract}?expandStates=true`,
+const userProfileOrig = ref(await account.get(profileAddress.value));
+const user = ref(userProfileOrig);
+
+const { data: { domain: userAnsName } } = useFetch(`https://ans-resolver.herokuapp.com/resolve/${user.value?.addr}`);
+const { data: ownedNfts } = useFetch(
+  `${GLOME_NODE}/contracts-under-code/${nftContractId}|${legacyNftContract}?expandStates=true`,
   {
     method: "POST",
     body: {
-      filterScript: `state.owner=variables.address`,
+      filterScript: `return state.owner == variables.address`,
+      variables: {
+        address: user.value?.addr,
+      },
+    },
+  }
+);
+const { data: ownedCollections } = useFetch(
+  `${GLOME_NODE}/contracts-under-code/${collectionContractId}?expandStates=true`,
+  {
+    method: "POST",
+    body: {
+      filterScript: `return includes(variables.address, state.admins)`,
       variables: {
         address: user.value?.addr,
       },
@@ -315,61 +324,26 @@ let ownedNfts = await $fetch(
   }
 );
 
-let ownedCollections = await $fetch(
-  `${GlomeNode}/contracts-under-code/${collectionContractId}?expandStates=true`,
-  {
-    method: "POST",
-    body: {
-      filterScript: `variables.address⊂state.admins`,
-      variables: {
-        address: user.value?.addr,
-      },
-    },
-  }
-);
+const isSelfProfile = profileAddress.value === arweaveSigner?.address;
 
-console.log(ownedCollections);
-let changed = computed(() => {
-  let ch = JSON.stringify(user.value) != JSON.stringify(userProfileOrig.value);
-  return ch;
-});
-let selfProfile = profileAddress == account?.value?.addr;
-console.log(selfProfile);
 function encodeTags(tags) {
   return tags.map((tag) => ({ name: btoa(tag.name), value: btoa(tag.value) }));
 }
-let pfpMeta = ref(null);
-async function uploadNewPfp(e) {
-  if (e.target.files && e.target.files[0]) {
-    if (avatarObjectUrl.value) {
-      URL.revokeObjectURL(avatarObjectUrl.value);
-    }
-    avatarObjectUrl.value = URL.createObjectURL(e.target.files[0]);
-    pfpMeta.value = e.target.files[0];
-    let pfpContent = await readAsArrayBuffer(e.target.files[0]);
-    let tx = await arweave.createTransaction({
-      data: Buffer.from(new Uint8Array(pfpContent)),
-      tags: encodeTags([
-        { name: "App-Name", value: "RareWeave" },
-        { name: "App-Version", value: "0.3.0" },
-      ]),
-    });
-    if (pfpContent.byteLength > 100000) {
-      await arweave.transactions.sign(tx);
-      let uploader = await arweave.transactions.getUploader(tx);
 
-      while (!uploader.isComplete) {
-        await uploader.uploadChunk();
-        console.log(
-          `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
-        );
-      }
-    } else {
-      tx = await wallet.value.dispatch(tx);
-    }
-    user.value.profile.avatar = "ar://" + tx.id;
-    console.log(tx.id);
-  }
+async function uploadNewPfp(event) {
+  const profilePicture = event.target.files[0];
+  if(!profilePicture) return;
+  const rawProfilePicture = new Uint8Array(await readAsArrayBuffer(profilePicture));
+
+  const transaction = await arweaveSigner.dispatch(await arweave.value.createTransaction({
+    data: Buffer.from(rawProfilePicture),
+    tags: encodeTags([
+      { name: "App-Name", value: "RareWeave" },
+      { name: "App-Version", value: "0.3.0" },
+    ])
+  }))
+
+  user.value.profile.avatar = `ar://${transaction.id}`
 }
 function readAsArrayBuffer(file) {
   return new Promise((resolve) => {
@@ -384,24 +358,14 @@ function readAsArrayBuffer(file) {
     reader.readAsArrayBuffer(file);
   });
 }
+
 async function saveChangesToProfile() {
-  await accountTools.connect();
-  await accountTools.updateProfile(user.value.profile);
-  userProfileOrig.value = JSON.parse(JSON.stringify(user.value));
+  await account.connect()
+  await account.updateProfile(user.value.profile);
+  userProfileOrig.value = user.value;
 }
+
 definePageMeta({
   layout: "without-auth",
 });
 </script>
-<style scoped>
-.Showcase {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-auto-rows: 1fr;
-  width: 100%;
-  max-width: 90vw;
-  min-width: 286px;
-  overflow-x: auto;
-}
-</style>
