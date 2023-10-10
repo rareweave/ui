@@ -267,10 +267,6 @@
 <script setup>
 import { Buffer } from "buffer";
 import {
-  useArWallet,
-  useAccount,
-  useSpendable,
-  useAnsaddr,
   useArweave,
   useAccountTools,
 } from "../../composables/useState";
@@ -280,8 +276,7 @@ import {
   legacyNftContract,
   collectionContractId,
 } from "../../config/contracts.json";
-import { GLOME_NODE } from "../../config/config.json";
-import { ar } from "date-fns/locale";
+import { GlomeNode } from "../../config/config.json";
 const DEFAULT_AVATAR = "ar://a0ieiziq2JkYhWamlrUCHxrGYnHWUAMcONxRmfkWt-k";
 
 const arweave = useArweave();
@@ -300,7 +295,7 @@ const user = ref(userProfileOrig);
 
 const { data: { domain: userAnsName } } = useFetch(`https://ans-resolver.herokuapp.com/resolve/${user.value?.addr}`);
 const { data: ownedNfts } = useFetch(
-  `${GLOME_NODE}/contracts-under-code/${nftContractId}|${legacyNftContract}?expandStates=true`,
+  `${GlomeNode}/contracts-under-code/${nftContractId}|${legacyNftContract}?expandStates=true`,
   {
     method: "POST",
     body: {
@@ -312,7 +307,7 @@ const { data: ownedNfts } = useFetch(
   }
 );
 const { data: ownedCollections } = useFetch(
-  `${GLOME_NODE}/contracts-under-code/${collectionContractId}?expandStates=true`,
+  `${GlomeNode}/contracts-under-code/${collectionContractId}?expandStates=true`,
   {
     method: "POST",
     body: {
