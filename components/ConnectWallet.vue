@@ -133,7 +133,7 @@ async function connectArweaveApp() {
       let tx = await arweave.createTransaction({
         data: "Payment",
         target: to,
-        quantity: amount.toString(),
+        quantity: amount.toString (),
         reward: feeEstimate,
       });
 
