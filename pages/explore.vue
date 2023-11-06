@@ -107,7 +107,7 @@
                 {{ rarifiedCollection.name }}...[{{ rarifiedCollection.count }}]
               </button>
             </div>
-          </div> 
+          </div>
         </div>
       </div> -->
       <div class="MenuSection">
@@ -306,7 +306,6 @@ async function updateUrl(collection) {
 }
 
 async function refreshResults() {
-
   nfts.value = await $fetch(
     `${GlomeNode}/contracts-under-code/${nftContractId}|${legacyNftContract}?expandStates=true`,
     {
@@ -317,13 +316,12 @@ async function refreshResults() {
           } and ${searchInput.value
             ? "(similarityScore(state.description,variables.search)>=0.2 or similarityScore(state.name,variables.search)>=0.7)"
             : "true"
-          } and ${filter.value > 0 ? " state.price>=variables.minPrice" : "true"} and ${filter.value > 0 ? "state.price<=variables.maxPrice" : "true"
-          })`,
+          } and state.price>=tonumber(variables.minPrice) and state.price<=tonumber(variables.maxPrice))`,
         variables: {
           search: searchInput.value,
           forSale: forSaleOnly.value,
-          minPrice: filter.value.minPrice * 1e12,
-          maxPrice: filter.value.maxPrice * 1e12,
+          minPrice: (filter.value.minPrice * 1e12).toString(),
+          maxPrice: (filter.value.maxPrice * 1e12).toString(),
           items: selectedCollection.value?.state?.items,
         },
       },
