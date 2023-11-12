@@ -405,17 +405,12 @@ async function refreshResults() {
     {
       method: "POST",
       body: {
-        filterScript: `${
-          selectedCollection.value?.state?.items ? `(id⊂variables.items)&` : ""
-        }(1⊕(state.owner="0"))&${
-          forSaleOnly.value ? "(state.forSale=variables.forSale)&" : ""
-        }${
-          searchInput.value
-            ? "((state.description~variables.search)|(state.name~variables.search))"
-            : "1"
-        }${filter.value > 0 ? "&(state.price≥variables.minPrice)" : ""}${
-          filter.value > 0 ? "&(state.price≤variables.maxPrice)" : ""
-        }`,
+        filterScript: `return (${selectedCollection.value?.state?.items ? `includes(variables.items,id)` : "true"
+        } and state.owner~="0" and ${forSaleOnly.value ? "state.forSale==variables.forSale" : "true"
+        } and ${searchInput.value
+          ? "(similarityScore(state.description,variables.search)>=0.2 or similarityScore(state.name,variables.search)>=0.7)"
+          : "true"
+        } and state.price>=tonumber(variables.minPrice) and state.price<=tonumber(variables.maxPrice))`,
         variables: {
           search: searchInput.value,
           forSale: forSaleOnly.value,
@@ -550,9 +545,8 @@ onMounted(async () => {
     {
       method: "POST",
       body: {
-        filterScript: `${
-          selectedCollection.value?.items ? `(id⊂variables.items)&` : ""
-        }(1⊕(state.owner="0"))`,
+        filterScript: `return ${selectedCollection.value?.items ? `includes(variables.items,id)` : "true"
+        } and state.owner~="0"`,
         variables: {
           items: selectedCollection.value?.items,
         },
