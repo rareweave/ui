@@ -1,15 +1,10 @@
 <template>
-  <div class="Imagewrapper">
-    <div class="Fetching__data load">
-      <span class=""></span>
-    </div>
+  <div class="relative w-full h-full overflow-hidden flex justify-center items-center transform-gpu max-h-[286px] rounded-t-lg">
     <img
       v-if="nft.state?.contentType?.startsWith('image')"
-      :src="`https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net/${
-        nft.contractTxId || nft.id
-      }`"
+      :src="`${BASE_IMAGE_URL}/${nft.contractTxId || nft.id}`"
       :alt="nft.state.name || 'Nft'"
-      class="Image"
+      class="relative flex justify-center items-center w-full min-w-full h-full min-h-full object-cover transition-all ease-in-out duration-300 hover:w-[108%] hover:min-w-[108%] hover:h-[108%] hover:min-h-[108%]"
       @load="imgHasBeenLoaded"
       @error="imgNotLoaded"
     />
@@ -19,10 +14,10 @@
       muted
       controls
       loop
-      class="Video"
+      class="relative flex justify-center items-center w-full min-w-full h-full min-h-full object-cover transition-all ease-in-out duration-75"
     >
       <source
-        :src="`https://prophet.rareweave.store/${nft.contractTxId || nft.id}`"
+        :src="`${BASE_URL}${nft.contractTxId || nft.id}`"
         :type="nft.state?.contentType"
       />
       Your browser does not support the video tag.
@@ -45,7 +40,7 @@
         @mouseout="audioFreezeChild"
       >
         <source
-          :src="`https://prophet.rareweave.store/${nft.contractTxId || nft.id}`"
+          :src="`${BASE_URL}/${nft.contractTxId || nft.id}`"
           :type="nft.state?.contentType"
         />
       </audio>
@@ -53,6 +48,9 @@
   </div>
 </template>
 <script setup>
+const BASE_IMAGE_URL = "https://prophet.rareweave.store/_ipx/width_420,f_webp/https://arweave.net";
+const BASE_URL = "https://prophet.rareweave.store";
+
 const { nft } = defineProps(["nft"]);
 function imgHasBeenLoaded(e) {
   e.target.parentNode.querySelector(".load").style.display = "none";
@@ -76,55 +74,3 @@ function audioFreezeChild(e) {
   e.target.parentNode.querySelector(".Record").src = "/rw-record-static.gif";
 }
 </script>
-<style scoped>
-.Imagewrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform-style: preserve-3d;
-}
-
-.load {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.--error {
-  mix-blend-mode: luminosity;
-  height: 100% !important;
-}
-
-.Imagewrapper {
-  max-height: 286px;
-  border-radius: 8px 8px 0 0;
-}
-
-.Image,
-.Video {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-width: 100%;
-  height: 100%;
-  min-height: 100%;
-  object-fit: cover;
-  transition: 0.23s ease-in-out;
-}
-
-.Image:hover {
-  width: 108%;
-  min-width: 108%;
-  height: 108%;
-  min-height: 108%;
-}
-</style>
