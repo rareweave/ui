@@ -1,44 +1,47 @@
 <template>
-  <div class="relative flex flex-col flex-wrap items-center box-border">
-    <NuxtLink :to="'/nft/' + nft.id" class="relative flex flex-col flex-nowrap justify-start w-72 h-96 mt-1.5 ml-2 mr-2 mb-5 p-0">
+  <div class="relative flex flex-col flex-wrap items-center justify-center m-0 p-0 box-border">
+    <NuxtLink :to="'/nft/' + nft.id"
+              class="relative flex flex-col flex-nowrap justify-start items-center w-[286px] h-[398px] bg-[rgba(17,23,32,1)] m-[6px_9px_18px] p-0 box-content border border-[rgba(43,56,68,0.33)] rounded-lg">
       <Graphic :nft="nft" />
-      <div class="absolute flex top-0 right-0 m-1">
+      <div class="absolute flex top-0 right-0 m-2 mt-2 mr-4">
         <button
           v-if="disposable"
           @click.prevent.stop="$emit('remove-item', nft.id)"
-          class="bg-red-400 rounded-sm p-1"
+          class="bg-[#cc352d] rounded-full shadow-2xl transition-transform duration-1000 ease-in-out p-[0.2em] text-base"
         >
           ✕
         </button>
       </div>
-      <div class="relative flex flex-col flex-nowrap items-stretch justify-between w-full h-16 box-border">
+      <div
+        class="relative flex flex-col flex-nowrap items-stretch justify-between w-full h-16 m-0 mt-0.5 mb-0.5 p-0 box-border">
         <div class="flex m-0 p-1 h-10">
-          <h4 class="relative flex flex-row flex-nowrap items-center justify-start flex-1 text-left h-8 p-3 text-base font-semibold font-arimo text-white whitespace-nowrap overflow-clip text-ellipsis">
+          <h4
+            class="font-[Arimo] relative flex flex-row flex-nowrap items-center transition-all ease-in-out duration-100 h-8 p-0 pl-3 text-lg font-semibold text-[rgba(251,250,255,1)] whitespace-nowrap overflow-hidden overflow-ellipsis justify-start flex-[1_1_0] text-left">
             {{ nft.state.name || "-no title-" }}
           </h4>
         </div>
         <div class="flex m-0 p-1 h-10">
-          <span class="relative flex flex-row flex-nowrap items-center justify-start flex-1 max-w-[80%] text-left pt-0 px-3 pb-3 h-8 p-3 text-base font-semibold font-arimo text-white whitespace-nowrap overflow-clip text-ellipsis" v-if="nft.state.owner">
+          <span
+            class="relative flex flex-row flex-nowrap justify-start flex-1 max-w-[80%] items-center h-8 p-[0_12px_12px] text-base font-semibold font-[Arimo] color-white truncate"
+            v-if="nft.state.owner">
             Owned:&nbsp;
-            <NuxtLink :to="'/profile/' + nft.state.owner" class="relative flex flex-row flex-nowrap items-center text-[rgba(221,232,255,0.5)] no-underline hover:text-[rgba(251,250,255,0.5)] hover:underline">
+            <NuxtLink :to="'/pofirle/' + nft.state.owner" class="relative flex flex-row flex-nowrap items-center transition-all ease-in-out duration-100 text-[rgba(221,232,255,0.5)] no-underline whitespace-nowrap overflow-hidden overflow-ellipsis hover:text-[rgba(251,250,255,0.5)] hover:underline">
               {{ nft.state.owner }}
             </NuxtLink>
           </span>
         </div>
         <div
           :class="{
-            'flex m-0 p-1 h-10 last:-mt-3 last:justify-between last:rounded-[0_0_8px_8px] hover:bg-gradient-to-r hover:from-violet-500 hover:to-orange-500': nft.state.forSale,
-            'flex m-0 p-1 h-10 last:-mt-3 last:justify-between': !nft.state.forSale,
+            'flex m-0 p-[0.25em] h-[40px] [&:nth-last-child(1)]:-mt-[12px] [&:nth-last-child(1)]:justify-between [&:nth-last-child(1)]:rounded-b-lg hover:bg-gradient-to-l hover:from-[rgb(158,19,131)] hover:to-[rgb(238,129,9)]': nft.state.forSale,
+            'flex m-0 p-[0.25em] h-[40px] [&:nth-last-child(1)]:-mt-[12px] [&:nth-last-child(1)]:justify-between [&:nth-last-child(1)]:rounded-b-lg': !nft.state.forSale,
           }"
         >
-          <div class="relative flex flex-row flex-nowrap items-center flex-[1_1_0px] p-0">
-              <span class="relative flex flex-row flex-nowrap items-center flex-1 p-0">
-                <span class="flex-[0_0_32px] h-8 ml-1 mr-2">
-                  <span>
-                    <img :src="coinImage" alt="Arweave" />
-                  </span>
-                </span>
-              <span class="relative flex flex-row flex-nowrap items-center" v-if="nft.state.forSale">
+          <div class="relative flex flex-row flex-nowrap items-center transition-all ease-in-out duration-100 justify-start flex-[1_1_0] p-0 pr-3.5 pl-2.5">
+            <span class="relative flex flex-row flex-nowrap items-center transition-all ease-in-out duration-100 justify-start flex-[1_1_0] p-0">
+              <span class="flex-[0_0_32px] h-8 -ml-1 mr-1.5">
+                <img :src="coinImage" />
+              </span>
+              <span class="relative flex flex-row flex-nowrap items-center transition-all ease-in-out duration-100" v-if="nft.state.forSale">
                 {{
                   Big(nft?.state?.price) /
                   Big(
@@ -51,7 +54,7 @@
               </span>
             </span>
           </div>
-          <span class="relative flex flex-row flex-nowrap items-center flex-[0_0_max-content]">
+          <span class="relative flex flex-row flex-nowrap items-center transition-all ease-in-out duration-100 flex-[0_0_max-content] p-[0_12px]">
             {{ nft.state.forSale ? "Buy Now" : "Not For Sale" }}
           </span>
         </div>
@@ -63,9 +66,9 @@
 import Coins from "../config/coins";
 import Big from "big.js";
 
+const { nft, disposable } = defineProps(["nft", "disposable"]);
+
 const coinImage = nft.state.listingChain
   ? ref(`/coin-images/${nft.state.listingChain}.svg`)
   : ref(`/coin-images/arweave.svg`);
-
-const { nft, disposable } = defineProps(["nft", "disposable"]);
 </script>

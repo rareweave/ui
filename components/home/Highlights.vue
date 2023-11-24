@@ -4,7 +4,7 @@
             <h2 class="text-white text-left whitespace-nowrap max-w-[85vw] text-3xl font-semibold">
                 Highlighted
             </h2>
-            <div class="Showcase">
+            <div class="grid grid-cols-auto-fill min-w-[288px] max-w-[300px] auto-rows-[420px] justify-start items-start w-full h-full m-0">
                 <div v-if="isLoading.nfts">
                     <div class="Loading">
                         <span></span>

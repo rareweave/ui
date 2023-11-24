@@ -102,6 +102,11 @@ function audioFreezeChild(e) {
   height: 100% !important;
 }
 
+.Imagewrapper {
+  max-height: 286px;
+  border-radius: 8px 8px 0 0;
+}
+
 .Image,
 .Video {
   position: relative;
