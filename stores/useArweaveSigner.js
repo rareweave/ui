@@ -94,7 +94,7 @@ export const useArweaveSigner = defineStore("arweaveSigner", () => {
                 },
             ]
         })
-        
+
         await $fetch(`${config.GlomeNode}/tx`, {
             method: "POST",
             headers: {
@@ -148,7 +148,7 @@ export const useArweaveSigner = defineStore("arweaveSigner", () => {
                         await fetch("https://" + config.arweaveGateway + "/tx/" + tx.id)
                     ).json();
                     // if it didn't throw error it's in block
-                    
+
                     let txBlock = await fetchBlockForTx(tx.id)
                     if (!txBlock) {
                         console.log("couldn't fetch gql",txBlock)
@@ -194,12 +194,6 @@ export const useArweaveSigner = defineStore("arweaveSigner", () => {
     return { setSigner, isSignerSet, callOverlay, signDataItem, logout, sendCoins, account, address, signer, overlayShown, ans, spendable, networkInfo,interactWithGlome ,dispatch}
 })
 
-function encodeTags(tags) {
-    return tags.map((tag) => ({
-        name: btoa(tag.name),
-        value: btoa(tag.value),
-    }));
-}
 function wait(ms) {
     return new Promise((resolve) => {
         setTimeout(resolve, ms);

@@ -96,5 +96,7 @@
 </template>
 
 <script setup>
+import AwesomeButton from "./AwesomeButton.vue";
+
 const arweaveSigner = useArweaveSigner();
 </script>

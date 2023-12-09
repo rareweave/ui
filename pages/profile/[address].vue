@@ -138,8 +138,6 @@
         </div>
         <button
           class="btn amazing-button2 rounded-md w-full my-2"
-          :class="changed ? '' : 'btn-disabled'"
-          :disabled="!changed"
           @click="saveChangesToProfile"
         >
           Save changes
@@ -320,10 +318,6 @@ const { data: ownedCollections } = useFetch(
 );
 
 const isSelfProfile = profileAddress.value === arweaveSigner?.address;
-
-function encodeTags(tags) {
-  return tags.map((tag) => ({ name: btoa(tag.name), value: btoa(tag.value) }));
-}
 
 async function uploadNewPfp(event) {
   const profilePicture = event.target.files[0];

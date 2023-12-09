@@ -88,13 +88,6 @@ async function submitChanges() {
   await arweaveSigner.dispatch(transaction)
 }
 
-function encodeTags(tags) {
-  return tags.map((tag) => ({
-    name: btoa(tag.name),
-    value: btoa(tag.value),
-  }));
-}
-
 onMounted(nftFactory.keepUpdated)
 onUnmounted(nftFactory.stopUpdates)
 </script>

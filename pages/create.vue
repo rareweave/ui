@@ -215,7 +215,7 @@
       </div>
     </form>
     <div v-else class="h-full flex flex-col items-center justify-center font-mono">
-     
+
 
       <div
         class="relative mx-auto w-24 h-24 animate-spin rounded-full bg-gradient-to-r  from-purple-400 via-blue-500 to-red-400 mt-2"
@@ -422,7 +422,7 @@ console.log(nftContent.byteLength)
       );
     }
   } else {
-     
+
     tx = await arweaveSigner.dispatch(tx);
     if (tx != null) {
       loadingType.value = 'spinner'
@@ -476,13 +476,6 @@ console.log(nftContent.byteLength)
 
   await checkNFT(tx.id);
   await navigateTo("/nft/" + tx.id);
-}
-
-function encodeTags(tags) {
-  return tags.map((tag) => ({
-    name: btoa(tag.name),
-    value: btoa(tag.value),
-  }));
 }
 
 definePageMeta({
