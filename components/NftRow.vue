@@ -54,7 +54,6 @@
   </div>
 </template>
 <script setup>
-import Graphic from "./Graphic.vue";
 const { nft } = defineProps(["nft"]);
 </script>
 <style scoped>

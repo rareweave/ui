@@ -1,7 +1,7 @@
 <template>
   <div class="Component">
     <NuxtLink :to="'/nft/' + nft.id" class="Card">
-      <Graphic :nft="nft" />
+      <Graphic :nft="nft" allowZoom="true" />
       <div class="Buttons">
         <button
           v-if="disposable"
