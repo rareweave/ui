@@ -68,7 +68,7 @@ async function post() {
     if (localStorage.getItem("subaccount") && JSON.parse(localStorage.getItem("subaccount")).master === account.value.addr) {
         subaccount = JSON.parse(localStorage.getItem("subaccount")).subaccount
     } else {
-        let Subaccounts = new SubaccountsLib(arweave, wallet.value, `https://g8way.io/graphql`,`https://g8way.io/`)
+        let Subaccounts = new SubaccountsLib(arweave, wallet.value, `https://ar-io.net/graphql`,`https://ar-io.net/`)
         subaccount = await Subaccounts.useSubaccount("Comments")
         localStorage.setItem("subaccount", JSON.stringify({ master: account.value.addr, subaccount: subaccount }))
     }

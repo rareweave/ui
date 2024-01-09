@@ -268,7 +268,7 @@
           controls
         >
           <source
-            :src="'https://g8way.io/' + nftId"
+            :src="'https://ar-io.net/' + nftId"
             :type="nftState?.contentType"
           />
           Your browser does not support the video tag.
@@ -543,7 +543,7 @@ async function payRoyalty() {
   ];
 
   let feeEstimate = await fetch(
-    `https://g8way.io/price/1000000/${nftState.value.minter}`
+    `https://ar-io.net/price/1000000/${nftState.value.minter}`
   )
     .then((res) => res.text())
     .catch((err) => {
@@ -609,7 +609,7 @@ async function finalizeBuy() {
   ];
 
   let royaltyAnchor = (
-    await fetch(`https://g8way.io/graphql`, {
+    await fetch(`https://ar-io.net/graphql`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -628,7 +628,7 @@ async function finalizeBuy() {
   ).data.transaction.block.id;
 
   let feeEstimate = await fetch(
-    `https://g8way.io/price/1000000/${nftState.value.owner}`
+    `https://ar-io.net/price/1000000/${nftState.value.owner}`
   ).then((res) => res.text());
 
   let tx = await arweave.createTransaction({

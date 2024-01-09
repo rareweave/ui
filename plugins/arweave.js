@@ -4,7 +4,7 @@ import { useArweave } from "../composables/useState";
 export default defineNuxtPlugin(async function setArweave() {
     const arweave = useArweave();
     arweave.value = Arweave.init({
-        host: "g8way.io",
+        host: "ar-io.net",
         port: 443,
         protocol: "https",
         timeout: 60_000,

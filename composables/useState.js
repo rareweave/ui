@@ -19,7 +19,7 @@ export const useArweave = () => useState("arweave", () => null);
 
 export const useAccountTools = () => useState("accountTools", () => new Account({
     gateway: {
-        host: "g8way.io",
+        host: "ar-io.net",
         port: 443,
         protocol: "https",
         timeout: 60_000,
